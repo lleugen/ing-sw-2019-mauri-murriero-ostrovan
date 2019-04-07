@@ -11,43 +11,43 @@ import java.util.List;
  * for managing the highest tasks of the match (AKA the game manager)
  */
 public class GameBoard {
-    public GameBoard() {
-    }
+  public GameBoard() {
+  }
 
-    /**
-     * 
-     */
-    private GameBoard gameBoard;
+  /**
+   *
+   */
+  private GameBoard gameBoard;
 
-    /**
-     * 
-     */
-    private KillScoreBoard killScoreBoard;
+  /**
+   *
+   */
+  private KillScoreBoard killScoreBoard;
 
-    /**
-     * 
-     */
-    private Map map;
+  /**
+   *
+   */
+  private Map map;
 
-    /**
-     * 
-     */
-    private List<Player> players;
+  /**
+   *
+   */
+  private List<Player> players;
 
-    /**
-     * 
-     */
-    private Player firstPlayer;
+  /**
+   *
+   */
+  private Player firstPlayer;
 
-    /**
-     * 
-     */
-    private Player currentPlayer;
+  /**
+   *
+   */
+  private Player currentPlayer;
 
-    /**
-     * 
-     */
-    public GameBoard getGameBoard() {
-    }
+  /**
+   *
+   */
+  public GameBoard getGameBoard() {
+  }
 
 }

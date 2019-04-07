@@ -2,89 +2,91 @@ package it.polimi.se2019.model.deck;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
- *  An implementation for a deck of cards.
- *  Each card is represented by an ArrayList of {@link Grabbable}, and on
- *  each deck you can draw a card (a card is randomly chosen from the list of
- *  available cards in the deck) or discard a card (a card is inserted in the
- *  discarded area of the deck).
- *  When drawing a card from an empty available deck, the discarded deck is
- *  shuffled and placed as the available deck
+ * An implementation for a deck of cards.
+ * Each card is represented by an ArrayList of {@link Grabbable}, and on
+ * each deck you can draw a card (a card is randomly chosen from the list of
+ * available cards in the deck) or discard a card (a card is inserted in the
+ * discarded area of the deck).
+ * When drawing a card from an empty available deck, the discarded deck is
+ * shuffled and placed as the available deck
  */
 public class Deck<G extends Grabbable> {
-    /**
-     *  Init a new deck
-     *
-     *  @param elements The deck's content
-     */
-    public Deck(List<List<G>> elements) {
+  /**
+   * Init a new deck
+   *
+   * @param elements The deck's content.
+   * @throws NullPointerException if elements is not a valid list
+   *                              __WARN__ Elements are NOT cloned
+   */
+  public Deck(List<List<G>> elements) {
+    this.discarded.addAll(elements);
+    this.available.clear();
+    this.swap();
+    this.shuffle();
+  }
 
+  /**
+   * Contains the available elements of the deck
+   */
+  private List<List<G>> available;
+
+  /**
+   * Contains the discarded elements of the deck
+   */
+  private List<List<G>> discarded;
+
+  /**
+   * Draw a new element from the deck.
+   * If no element is available, the discarded zone is shuffled and placed as
+   * a new available list of elements.
+   *
+   * @return An element from the available deck
+   * @throws NullPointerException if both available list and discarded list
+   *                              are empty
+   */
+  public List<G> draw() {
+    if (this.available.isEmpty()) {
+      if (this.discarded.isEmpty()) {
+        throw new NullPointerException();
+      } else {
+        this.swap();
+        this.shuffle();
+      }
     }
 
-    /**
-     *  Contains the available elements of the deck
-     */
-    private List<List<G>> available;
+    return this.available.remove(0);
+  }
 
-    /**
-     *  Contains the discarded elements of the deck
-     */
-    private List<List<G>> discarded;
+  /**
+   * Discard an element.
+   * The element is inserted in the discarded list, which is shuffled when
+   * the available list becomes empty.
+   *
+   * @param discarded The element to discard to the deck discarded zone
+   */
+  public void discard(List<G> discarded) {
+    this.discarded.add(discarded);
+  }
 
-    /**
-     *  Draw a new element from the deck.
-     *  If no element is available, the discarded zone is shuffled and placed as
-     *  a new available list of elements.
-     *
-     *  @return An element from the available deck
-     *
-     *  @throws EmptyDeckException  if both available list and discarded list
-     *  are empty
-     */
-    public List<G> draw() throws EmptyDeckException {
-        /*
-         *  TODO Remember to check if both the available deck and the discarded
-         *  deck are empty, as drawing from a fully empty deck may result in
-         *  errors, if the implementation is bad
-         */
-    }
+  /**
+   * Shuffle the AVAILABLE list
+   */
+  private void shuffle() {
+    Collections.shuffle(this.discarded);
+  }
 
-    /**
-     *  Discard an element.
-     *  The element is inserted in the discarded list, which is shuffled when
-     *  the available list becomes empty.
-     *
-     *  @param discarded The element to discard to the deck discarded zone
-     */
-    public void discard(List<G> discarded) {
-
-    }
-
-    /**
-     *  Shuffle the AVAILABLE list
-     */
-    private void shuffle() {
-
-    }
-
-    /**
-     *  Swap the content of the discarded list with the content of the
-     *  available list.
-     */
-    private void swap() {
-
-    }
-
-    /**
-     *  Thrown when attempting to draw an element from a completely empty deck
-     *  (AKA both available list empty and discard list empty)
-     */
-    private class EmptyDeckException extends Exception {
-        @Override
-        public String toString() {
-            return "You cannot draw an element from a completely empty deck";
-        }
-    }
+  /**
+   * Swap the content of the discarded list with the content of the
+   * available list.
+   */
+  private void swap() {
+    List<List<G>> tmp;
+    tmp = this.discarded;
+    this.discarded = this.available;
+    this.available = tmp;
+  }
 }

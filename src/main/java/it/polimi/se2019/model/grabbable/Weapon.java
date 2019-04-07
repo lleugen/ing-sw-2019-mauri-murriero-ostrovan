@@ -5,121 +5,121 @@ import it.polimi.se2019.model.player.Player;
 import java.util.List;
 
 /**
- * Weapon represent the model for a physical Weapon card.
+ * WeaponController represent the model for a physical WeaponController card.
  * The effect of the card will be implemented in the controller of the weapon
  */
 public class Weapon extends Grabbable {
 
-    /**
-     * Inits a new Weapon
-     *
-     * @param name Name of the Weapon
-     * @param desc Description of the weapon
-     * @param grabCost Cost to be paid for grabbing the weapon from a square
-     * @param reloadCost Cost to pay for reloading the weapon
-     *
-     * __WARN__ A weapon is ALWAYS initialized as loaded
-     */
-    public Weapon(
-        String name, String desc,
-        List<Ammo> grabCost, List<Ammo> reloadCost
-    ) {
-        super();
-        this.name = name;
-        this.description = desc;
-        this.grabCost = grabCost;
-        this.reloadCost = reloadCost;
-        this.loaded = true;
-    }
+  /**
+   * Inits a new WeaponController
+   *
+   * @param name       Name of the WeaponController
+   * @param desc       Description of the weapon
+   * @param grabCost   Cost to be paid for grabbing the weapon from a square
+   * @param reloadCost Cost to pay for reloading the weapon
+   *                   <p>
+   *                   __WARN__ A weapon is ALWAYS initialized as loaded
+   */
+  public Weapon(
+          String name, String desc,
+          List<Ammo> grabCost, List<Ammo> reloadCost
+  ) {
+    super();
+    this.name = name;
+    this.description = desc;
+    this.grabCost = grabCost;
+    this.reloadCost = reloadCost;
+    this.loaded = true;
+  }
 
-    /**
-     * Cost to pay for reloading the weapon
-     */
-    private List<Ammo> reloadCost;
+  /**
+   * Cost to pay for reloading the weapon
+   */
+  private List<Ammo> reloadCost;
 
-    /**
-     * Cost to be paid for grabbing the weapon from a square
-     */
-    private List<Ammo> grabCost;
+  /**
+   * Cost to be paid for grabbing the weapon from a square
+   */
+  private List<Ammo> grabCost;
 
-    /**
-     * True if the weapon is loaded and ready to use, false otherwise
-     */
-    private boolean loaded;
+  /**
+   * True if the weapon is loaded and ready to use, false otherwise
+   */
+  private boolean loaded;
 
-    /**
-     * Current owner of the Weapon
-     */
-    private Player owner;
+  /**
+   * Current owner of the WeaponController
+   */
+  private Player owner;
 
-    /**
-     * Description of the weapon
-     */
-    private String description;
+  /**
+   * Description of the weapon
+   */
+  private String description;
 
-    /**
-     * Name of the weapon
-     */
-    private String name;
+  /**
+   * Name of the weapon
+   */
+  private String name;
 
-    /**
-     * Unload a weapon (a weapon unloaded cannot be used)
-     */
-    public void unload() {
-        this.loaded = false;
-    }
+  /**
+   * Unload a weapon (a weapon unloaded cannot be used)
+   */
+  public void unload() {
+    this.loaded = false;
+  }
 
-    /**
-     * Reload a weapon (a weapon reloaded can be used)
-     */
-    public void reload() {
-        this.loaded = true;
-    }
+  /**
+   * Reload a weapon (a weapon reloaded can be used)
+   */
+  public void reload() {
+    this.loaded = true;
+  }
 
-    /**
-     * @return The cost to be paid for grabbing the Weapon
-     */
-    public List<Ammo> getGrabCost() {
-    }
+  /**
+   * @return The cost to be paid for grabbing the WeaponController
+   */
+  public List<Ammo> getGrabCost() {
+  }
 
-    /**
-     * @return The cost to be paid for reloading the Weapon
-     */
-    public List<Ammo> getReloadCost() {
-    }
+  /**
+   * @return The cost to be paid for reloading the WeaponController
+   */
+  public List<Ammo> getReloadCost() {
+  }
 
-    /**
-     * @return true if the weapon is loaded, false otherwise
-     */
-    public boolean isLoaded() {
-        return this.loaded;
-    }
+  /**
+   * @return true if the weapon is loaded, false otherwise
+   */
+  public boolean isLoaded() {
+    return this.loaded;
+  }
 
-    /**
-     * @return The current owner of the Weapon
-     */
-    public Player getOwner() {
-    }
+  /**
+   * @return The current owner of the WeaponController
+   */
+  public Player getOwner() {
+  }
 
-    /**
-     * @return The description of the weapon
-     */
-    public String getDescription() {
-        return this.description;
-    }
+  /**
+   * @return The description of the weapon
+   */
+  public String getDescription() {
+    return this.description;
+  }
 
-    /**
-     * @return The name of the Weapon
-     */
-    public String getName() {
-        return this.name;
-    }
+  /**
+   * @return The name of the WeaponController
+   */
+  public String getName() {
+    return this.name;
+  }
 
-    /**
-     * Set a new owner for the weapon
-     *
-     * @param player The new owner of the weapon
-     */
-    public void setOwner(Player player) {
-    }
+  /**
+   * Set a new owner for the weapon
+   *
+   * @param player The new owner of the weapon
+   */
+  public void setOwner(Player player) {
+  }
 }

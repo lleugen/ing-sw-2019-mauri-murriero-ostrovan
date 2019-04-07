@@ -6,20 +6,22 @@ package it.polimi.se2019.model.map;
  * linked together, and therefore the list of squares can easily be retrived
  */
 public class Map {
-    /**
-     * 
-     */
-    private Square root;
+  /**
+   *
+   */
+  private Square root;
 
-    /**
-     * Init a new map
-     *
-     * @param mapType The type of the map to generate
-     */
-    public void Map(String mapType) {}
+  /**
+   * Init a new map
+   *
+   * @param mapType The type of the map to generate
+   */
+  public void Map(String mapType) {
+  }
 
-    /**
-     * Gets the root square
-     */
-    public Square getRoot() {}
+  /**
+   * Gets the root square
+   */
+  public Square getRoot() {
+  }
 }
