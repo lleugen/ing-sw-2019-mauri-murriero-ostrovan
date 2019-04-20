@@ -37,6 +37,6 @@ public class SpawnSquare extends Square {
    * @return The grabbed weapon
    */
   @Override
-  public List<Weapon> grab() {
+  public List<Grabbable> grab() {
   }
 }

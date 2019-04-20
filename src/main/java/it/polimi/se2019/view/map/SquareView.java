@@ -6,9 +6,8 @@ package it.polimi.se2019.view.map;
  */
 public abstract class SquareView {
   /**
-   * Display a square, the implementation will be defined in the subclasses.
-   * A square will have to display its contents and the players present
-   * on that square.
+   * Display a square, the implementation will be defined in the subclasses. A square will have to display its contents
+   * and the players present on that square.
    */
   public void displaySquare() {
   }

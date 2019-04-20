@@ -2,6 +2,8 @@ package it.polimi.se2019.model.grabbable;
 
 import it.polimi.se2019.model.player.Player;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -9,29 +11,6 @@ import java.util.List;
  * The effect of the card will be implemented in the controller of the weapon
  */
 public class Weapon extends Grabbable {
-
-  /**
-   * Inits a new WeaponController
-   *
-   * @param name       Name of the WeaponController
-   * @param desc       Description of the weapon
-   * @param grabCost   Cost to be paid for grabbing the weapon from a square
-   * @param reloadCost Cost to pay for reloading the weapon
-   *                   <p>
-   *                   __WARN__ A weapon is ALWAYS initialized as loaded
-   */
-  public Weapon(
-          String name, String desc,
-          List<Ammo> grabCost, List<Ammo> reloadCost
-  ) {
-    super();
-    this.name = name;
-    this.description = desc;
-    this.grabCost = grabCost;
-    this.reloadCost = reloadCost;
-    this.loaded = true;
-  }
-
   /**
    * Cost to pay for reloading the weapon
    */
@@ -61,6 +40,28 @@ public class Weapon extends Grabbable {
    * Name of the weapon
    */
   private String name;
+
+  /**
+   * Inits a new WeaponController
+   *
+   * @param name       Name of the WeaponController
+   * @param desc       Description of the weapon
+   * @param grabCost   Cost to be paid for grabbing the weapon from a square
+   * @param reloadCost Cost to pay for reloading the weapon
+   *                   <p>
+   *                   __WARN__ A weapon is ALWAYS initialized as loaded
+   */
+  public Weapon(
+          String name, String desc,
+          List<Ammo> grabCost, List<Ammo> reloadCost
+  ) {
+    super();
+    this.name = name;
+    this.description = desc;
+    this.grabCost = grabCost;
+    this.reloadCost = reloadCost;
+    this.loaded = true;
+  }
 
   /**
    * Unload a weapon (a weapon unloaded cannot be used)

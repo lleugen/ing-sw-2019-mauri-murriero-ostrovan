@@ -10,27 +10,32 @@ public abstract class PlayerBoard {
   }
 
   /**
-   *
+   * The list of marks the player has been assigned. Marks become damage when the players is attacked by the player
+   * who assigned the marks.
    */
   private List<Player> MarksAssigned;
 
   /**
-   *
+   * The ordered list of players who dealt damage to this player. A player appears on the least once for every point
+   * of damage dealt
    */
   private List<Player> DamageReceived;
 
   /**
-   *
+   * The number of times this player has died
    */
   private Integer deaths;
 
   /**
-   *
+   * The amount of point to be assigned for killing this player. The first position contains the number of points to
+   * be assigned to the player who dealt the most damage, in second position is the number of points to be given to
+   * the player who dealt second to most damage etc.
    */
   private List<Integer> DeathValue;
 
   /**
-   *
+   * The side the player's board is on currently. The player board has two sides : one for normal play and one for
+   * the final frenetic round.
    */
   private boolean boardSide;
 
@@ -53,7 +58,7 @@ public abstract class PlayerBoard {
   }
 
   /**
-   * @return ???
+   * @return the amount of points to be assigned to those who kill this player.
    */
   public List<Integer> getDeathValue() {
   }
@@ -86,3 +91,4 @@ public abstract class PlayerBoard {
   public boolean getBoardSide() {
   }
 }
+

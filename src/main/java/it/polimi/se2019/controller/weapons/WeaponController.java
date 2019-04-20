@@ -42,6 +42,8 @@ public abstract class WeaponController {
 
   /**
    * Choose which targets to shoot.
+   *
+   * @param possibleTargets ???
    */
   public List<Player> chooseTargets(List<Player> possibleTargets) {
 
@@ -49,6 +51,8 @@ public abstract class WeaponController {
 
   /**
    * Apply the weapon's effects on selected targets.
+   *
+   * @param targets ???
    */
   public void shootTargets(List<Player> targets) {
   }

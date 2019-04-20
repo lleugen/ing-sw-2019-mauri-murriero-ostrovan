@@ -2,6 +2,7 @@ package it.polimi.se2019.model.deck;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,29 +31,21 @@ public class Deck<G extends Grabbable> {
   }
 
   /**
-   * Contains the available elements of the deck
-   */
-  private List<List<G>> available;
-
-  /**
-   * Contains the discarded elements of the deck
-   */
-  private List<List<G>> discarded;
-
-  /**
    * Draw a new element from the deck.
    * If no element is available, the discarded zone is shuffled and placed as
    * a new available list of elements.
    *
    * @return An element from the available deck
-   * @throws NullPointerException if both available list and discarded list
-   *                              are empty
+   *
+   * @throws EmptyDeckException if both available list and discarded list
+   *                            are empty
    */
-  public List<G> draw() {
+  public synchronized List<G> draw() {
     if (this.available.isEmpty()) {
       if (this.discarded.isEmpty()) {
-        throw new NullPointerException();
-      } else {
+        throw new EmptyDeckException();
+      }
+      else {
         this.swap();
         this.shuffle();
       }
@@ -68,14 +61,14 @@ public class Deck<G extends Grabbable> {
    *
    * @param discarded The element to discard to the deck discarded zone
    */
-  public void discard(List<G> discarded) {
+  public synchronized void discard(List<G> discarded) {
     this.discarded.add(discarded);
   }
 
   /**
    * Shuffle the AVAILABLE list
    */
-  private void shuffle() {
+  private synchronized void shuffle() {
     Collections.shuffle(this.discarded);
   }
 
@@ -83,10 +76,17 @@ public class Deck<G extends Grabbable> {
    * Swap the content of the discarded list with the content of the
    * available list.
    */
-  private void swap() {
+  private synchronized void swap() {
     List<List<G>> tmp;
     tmp = this.discarded;
     this.discarded = this.available;
     this.available = tmp;
+  }
+}
+
+class EmptyDeckException extends RuntimeException {
+  @Override
+  public String toString() {
+    return "Deck is completely empty!";
   }
 }

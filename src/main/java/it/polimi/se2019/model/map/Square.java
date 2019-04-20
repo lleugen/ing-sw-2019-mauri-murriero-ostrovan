@@ -8,7 +8,6 @@ import java.util.List;
  * A Square is an abstract representation of a tile in the map.
  * Using this abstraction allow us to skip dealing with specific square
  * implementation when generating the map or moving the player.
- * <p>
  * Few funcitons are exposed, which allows for base operations on squares and
  * are implemented in specific extensions of this class
  */
@@ -21,6 +20,8 @@ public abstract class Square {
    * @param adjacencies The list of adjacents squares
    */
   public Square(String roomId, List<Direction> adjacencies) {
+    this.adjacencies = adjacencies;
+    this.idRoom = roomId;
   }
 
   /**
@@ -44,6 +45,7 @@ public abstract class Square {
    * @return The list of adjacencies squares
    */
   public List<Direction> getAdjacencies() {
+    return this.adjacencies;
   }
 
   /**
@@ -51,15 +53,12 @@ public abstract class Square {
    *
    * @return The grabbed items
    */
-  public List<Grabbable> grab() {
-  }
+  public abstract List<Grabbable> grab();
 
   /**
    * Refill the square
    *
    * @param objects A list of item to refill the square with
    */
-  public void refill(List<Grabbable> objects) {
-
-  }
+  public abstract void refill(List<Grabbable> objects);
 }

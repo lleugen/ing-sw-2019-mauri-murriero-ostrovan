@@ -8,4 +8,4 @@ package it.polimi.se2019.model.grabbable;
 public abstract class Grabbable {
   public Grabbable() {
   }
-}
+ }

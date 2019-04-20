@@ -49,5 +49,4 @@ public class GameBoard {
    */
   public GameBoard getGameBoard() {
   }
-
 }
