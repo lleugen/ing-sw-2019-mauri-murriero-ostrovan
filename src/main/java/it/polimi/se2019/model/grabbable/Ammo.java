@@ -57,4 +57,52 @@ public class Ammo extends Grabbable {
   public Integer getYellow() {
     return null;
   }
+
+  /**
+   *
+   */
+  public void addRed(integer amount) {
+
+  }
+
+  /**
+   *
+   * @param amount
+   */
+  public void addBlue(integer amount){
+
+  }
+
+  /**
+   *
+   * @param amount
+   */
+  public void addYellow(integer amount){
+
+  }
+
+  /**
+   *
+   * @param amount
+   */
+  public void useRed(integer amount){
+
+  }
+
+  /**
+   *
+   * @param amount
+   */
+  public void useBlue(integer amount){
+
+  }
+
+  /**
+   *
+   * @param amount
+   */
+  public void useYellow(integer amount){
+
+  }
 }
+
