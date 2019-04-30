@@ -117,7 +117,7 @@ public class PlayerBoard {
       //foreach player, get their damage and memorize their index if they are worthy
       for(int i = 0;  i < distinctDamagers.size(); i++){
           int counter = 0;
-          for(int j = 0; j < damageReceived.size(); i++){
+          for(int j = 0; j < damageReceived.size(); j++){
               if(damageReceived.get(j) == distinctDamagers.get(i))
                   counter++;
           }
