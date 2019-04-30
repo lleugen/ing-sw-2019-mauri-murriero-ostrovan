@@ -99,5 +99,35 @@ public class PlayerBoard {
   public boolean getIfIsFrenzy() {
     return isFrenzy;
   }
+
+    /**
+     *
+     * @return the player who dealt more damage to this playerboard
+     */
+  public Player getMostWorthyPlayer(){
+      ArrayList<Player> distinctDamagers = new ArrayList<Player>();
+      Integer index = 0, count = 0;
+
+      //create a distinct list of players who dealt damages, in order of first blood first
+      for(int i = 0; i < damageReceived.size(); i++) {
+          if (!distinctDamagers.contains(damageReceived.get(i)))
+              distinctDamagers.add(damageReceived.get(i));
+      }
+
+      //foreach player, get their damage and memorize their index if they are worthy
+      for(int i = 0;  i < distinctDamagers.size(); i++){
+          int counter = 0;
+          for(int j = 0; j < damageReceived.size(); i++){
+              if(damageReceived.get(j) == distinctDamagers.get(i))
+                  counter++;
+          }
+          if(counter > count){
+              count = counter;
+              index = i;
+          }
+      }
+
+      return distinctDamagers.get(index);
+  }
 }
 
