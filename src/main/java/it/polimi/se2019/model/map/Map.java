@@ -16,12 +16,13 @@ public class Map {
    *
    * @param mapType The type of the map to generate
    */
-  public void Map(String mapType) {
+  public Map(String mapType) {
   }
 
   /**
    * Gets the root square
    */
   public Square getRoot() {
+    return this.root;
   }
 }
