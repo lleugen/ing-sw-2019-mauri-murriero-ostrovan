@@ -100,7 +100,8 @@ public class Ammo extends Grabbable {
    * @param amount subtract amount red ammunition cubes from the ammo box
    */
   public void useRed(int amount){
-
+    this.red = this.red - amount;
+    if(this.red < 0) this.red = 0;
   }
 
   /**
@@ -108,7 +109,8 @@ public class Ammo extends Grabbable {
    * @param amount subtract amount of blue ammunition cubes from the ammo box
    */
   public void useBlue(int amount){
-
+    this.blue = this.blue - amount;
+    if(this.blue < 0) this.blue = 0;
   }
 
   /**
@@ -116,7 +118,8 @@ public class Ammo extends Grabbable {
    * @param amount subtract amount of yellow ammunition cubes from the ammo box
    */
   public void useYellow(int amount){
-
+    this.yellow = this.yellow - amount;
+    if(this.yellow < 0) this.yellow = 0;
   }
 }
 
