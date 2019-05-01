@@ -53,12 +53,12 @@ public abstract class Square {
    *
    * @return The grabbed items
    */
-  public abstract List<Grabbable> grab();
+  //public abstract Grabbable grab();
 
   /**
    * Refill the square
    *
    * @param objects A list of item to refill the square with
    */
-  public abstract void refill(List<Grabbable> objects);
+  public abstract void refill();
 }
