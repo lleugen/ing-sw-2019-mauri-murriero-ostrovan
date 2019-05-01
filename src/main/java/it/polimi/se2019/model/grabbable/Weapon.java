@@ -14,12 +14,12 @@ public class Weapon extends Grabbable {
   /**
    * Cost to pay for reloading the weapon
    */
-  private List<Ammo> reloadCost;
+  private Ammo reloadCost;
 
   /**
    * Cost to be paid for grabbing the weapon from a square
    */
-  private List<Ammo> grabCost;
+  private Ammo grabCost;
 
   /**
    * True if the weapon is loaded and ready to use, false otherwise
@@ -53,7 +53,7 @@ public class Weapon extends Grabbable {
    */
   public Weapon(
           String name, String desc,
-          List<Ammo> grabCost, List<Ammo> reloadCost
+          Ammo grabCost, Ammo reloadCost
   ) {
     super();
     this.name = name;
@@ -80,13 +80,17 @@ public class Weapon extends Grabbable {
   /**
    * @return The cost to be paid for grabbing the WeaponController
    */
-  public List<Ammo> getGrabCost() {
+  public Ammo getGrabCost() {
+    Ammo grabCostCopy = new Ammo(this.grabCost.getRed(), this.grabCost.getBlue(), this.grabCost.getYellow());
+    return grabCostCopy;
   }
 
   /**
    * @return The cost to be paid for reloading the WeaponController
    */
-  public List<Ammo> getReloadCost() {
+  public Ammo getReloadCost() {
+    Ammo reloadCostCopy = new Ammo(this.reloadCost.getRed(), this.reloadCost.getBlue(), this.reloadCost.getYellow());
+    return reloadCostCopy;
   }
 
   /**
@@ -100,6 +104,7 @@ public class Weapon extends Grabbable {
    * @return The current owner of the WeaponController
    */
   public Player getOwner() {
+    return this.owner;
   }
 
   /**
@@ -122,5 +127,6 @@ public class Weapon extends Grabbable {
    * @param player The new owner of the weapon
    */
   public void setOwner(Player player) {
+    this.owner = player;
   }
 }
