@@ -1,8 +1,8 @@
 package java.it.polimi.se2019.model.deck;
 
-import it.polimi.se2019.model.grabbable.Grabbable;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
+import java.it.polimi.se2019.model.grabbable.Grabbable;
+import java.it.polimi.se2019.model.grabbable.PowerUpCard;
+import java.it.polimi.se2019.model.grabbable.Weapon;
 
 import java.util.List;
 

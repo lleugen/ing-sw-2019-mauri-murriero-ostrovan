@@ -1,4 +1,4 @@
-package it.polimi.se2019.controller;
+package java.it.polimi.se2019.controller;
 
 import it.polimi.se2019.controller.player_state.PlayerStateController;
 import it.polimi.se2019.model.map.Direction;

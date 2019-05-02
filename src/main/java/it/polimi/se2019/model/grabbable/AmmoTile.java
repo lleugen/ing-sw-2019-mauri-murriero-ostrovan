@@ -14,6 +14,15 @@ public class AmmoTile extends Grabbable {
    */
   private boolean hasPowerUp;
 
+  public Ammo getAmmo(){
+    return new Ammo(this.ammo.getRed(), this.ammo.getBlue(), this.ammo.getYellow());
+  }
+
+  public boolean getPowerUp(){
+    boolean hasPowerUpCopy = hasPowerUp;
+    return hasPowerUpCopy;
+  }
+
   public AmmoTile(int redAmount, int blueAmount, int yellowAmount, boolean containsPowerup) {
     ammo = new Ammo(redAmount, blueAmount, yellowAmount);
     hasPowerUp = containsPowerup;
