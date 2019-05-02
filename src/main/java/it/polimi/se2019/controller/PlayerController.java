@@ -1,7 +1,8 @@
-package it.polimi.se2019.controller;
+package java.it.polimi.se2019.controller;
 
 import it.polimi.se2019.controller.player_state.PlayerStateController;
-import it.polimi.se2019.model.map.Direction;
+import java.it.polimi.se2019.model.map.Direction;
+import java.it.polimi.se2019.model.player.Player;
 
 /**
  * This class controls player actions, it contains the player's current state
@@ -32,7 +33,13 @@ public class PlayerController {
    *                  it is a class containing a reference the next
    *                  square and information on whether there is a wall or not
    */
-  public void move(Direction direction) {
+  public void move(Player player, Direction direction) {
+    if(direction.isBlocked()){
+      //return cannot move exception
+    }
+    else {
+      player.move(direction);
+    }
   }
 
   /**

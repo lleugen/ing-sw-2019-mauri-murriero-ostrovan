@@ -1,6 +1,7 @@
 package java.it.polimi.se2019.model.player;
 
-import it.polimi.se2019.model.map.Square;
+import java.it.polimi.se2019.model.map.Direction;
+import java.it.polimi.se2019.model.map.Square;
 
 import java.util.List;
 
@@ -90,8 +91,8 @@ public class Player {
   /**
    * Move the player
    */
-  public void move() {
-
+  public void move(Direction direction) {
+    this.position = direction.getSquare();
   }
 
   /**
