@@ -1,4 +1,4 @@
-package it.polimi.se2019.model.map;
+package java.it.polimi.se2019.model.map;
 
 /**
  * A Direction is an attribute of square containing information about adjacent

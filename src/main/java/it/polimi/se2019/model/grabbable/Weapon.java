@@ -1,9 +1,7 @@
-package it.polimi.se2019.model.grabbable;
+package java.it.polimi.se2019.model.grabbable;
 
-import it.polimi.se2019.model.player.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.it.polimi.se2019.model.player.Player;
+import java.it.polimi.se2019.model.player.Inventory;
 import java.util.List;
 
 /**
@@ -73,7 +71,25 @@ public class Weapon extends Grabbable {
   /**
    * Reload a weapon (a weapon reloaded can be used)
    */
-  public void reload() {
+  public void reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
+    int redPowerUpCards = 0;
+    int bluePowerUpCards = 0;
+    int yellowPowerUpCards = 0;
+    for(PowerUpCard powerUp : powerUpCards){
+      if((powerUp.getAmmoEquivalent().getRed() == 1)&(powerUp.getAmmoEquivalent().getBlue() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
+        redPowerUpCards ++;
+      }
+      else if((powerUp.getAmmoEquivalent().getBlue() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
+        bluePowerUpCards ++;
+      }
+      else if((powerUp.getAmmoEquivalent().getYellow() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getBlue() == 0)){
+        yellowPowerUpCards ++;
+      }
+      this.owner.getInventory().discardPowerUp(powerUp);
+    }
+    playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
+    playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
+    playerAmmoBox.useYellow(this.grabCost.getYellow() - yellowPowerUpCards);
     this.loaded = true;
   }
 
@@ -97,7 +113,9 @@ public class Weapon extends Grabbable {
    * @return true if the weapon is loaded, false otherwise
    */
   public boolean isLoaded() {
-    return this.loaded;
+    boolean loadedCopy;
+    loadedCopy = this.loaded;
+    return loadedCopy;
   }
 
   /**

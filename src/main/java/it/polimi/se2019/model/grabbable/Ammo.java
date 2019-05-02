@@ -1,4 +1,4 @@
-package it.polimi.se2019.model.grabbable;
+package java.it.polimi.se2019.model.grabbable;
 
 /**
  * The ammo class represents a box of ammunition cubes
@@ -24,7 +24,7 @@ public class Ammo extends Grabbable {
    * @param blueAmount The amount of blue ammunition cubes in the ammo box
    * @param yellowAmount The amount of yellow ammunition cubes in the ammo box
    */
-  public void Ammo(Integer redAmount, Integer blueAmount, Integer yellowAmount) {
+  public Ammo(Integer redAmount, Integer blueAmount, Integer yellowAmount) {
     if (redAmount<=3){
       red = redAmount;
     }
