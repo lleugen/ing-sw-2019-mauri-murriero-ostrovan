@@ -1,4 +1,4 @@
-package it.polimi.se2019.model.grabbable;
+package java.it.polimi.se2019.model.grabbable;
 
 import it.polimi.se2019.model.player.Player;
 

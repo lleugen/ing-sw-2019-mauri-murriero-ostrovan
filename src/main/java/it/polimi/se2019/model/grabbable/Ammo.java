@@ -1,9 +1,9 @@
-package it.polimi.se2019.model.grabbable;
+package java.it.polimi.se2019.model.grabbable;
 
 /**
  * The ammo class represents a box of ammunition cubes
  */
-public class Ammo extends Grabbable {
+public class Ammo extends it.polimi.se2019.model.grabbable.Grabbable {
   /**
    * The amount of red ammunition cubes in the ammo box
    */
