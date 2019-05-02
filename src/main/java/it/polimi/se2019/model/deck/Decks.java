@@ -1,4 +1,4 @@
-package it.polimi.se2019.model.deck;
+package java.it.polimi.se2019.model.deck;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
 import it.polimi.se2019.model.grabbable.PowerUpCard;

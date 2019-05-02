@@ -1,9 +1,7 @@
 package java.it.polimi.se2019.model.grabbable;
 
-import it.polimi.se2019.model.player.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.it.polimi.se2019.model.player.Player;
+import java.it.polimi.se2019.model.player.Inventory;
 import java.util.List;
 
 /**
@@ -73,7 +71,24 @@ public class Weapon extends Grabbable {
   /**
    * Reload a weapon (a weapon reloaded can be used)
    */
-  public void reload() {
+  public void reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
+    int redPowerUpCards = 0;
+    int bluePowerUpCards = 0;
+    int yellowPowerUpCards = 0;
+    for(PowerUpCard powerUp : powerUpCards){
+      if(powerUp.getAmmoEquivalent() == new Ammo(1,0,0)){
+        redPowerUpCards ++;
+      }
+      else if(powerUp.getAmmoEquivalent() == new Ammo(0,1,0)){
+        bluePowerUpCards ++;
+      }
+      else if(powerUp.getAmmoEquivalent() == new Ammo(0,0,1)){
+        yellowPowerUpCards ++;
+      }
+    }
+    playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
+    playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
+    playerAmmoBox.useYellow(this.grabCost.getYellow() - yellowPowerUpCards);
     this.loaded = true;
   }
 
