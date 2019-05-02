@@ -76,15 +76,16 @@ public class Weapon extends Grabbable {
     int bluePowerUpCards = 0;
     int yellowPowerUpCards = 0;
     for(PowerUpCard powerUp : powerUpCards){
-      if(powerUp.getAmmoEquivalent() == new Ammo(1,0,0)){
+      if((powerUp.getAmmoEquivalent().getRed() == 1)&(powerUp.getAmmoEquivalent().getBlue() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
         redPowerUpCards ++;
       }
-      else if(powerUp.getAmmoEquivalent() == new Ammo(0,1,0)){
+      else if((powerUp.getAmmoEquivalent().getBlue() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
         bluePowerUpCards ++;
       }
-      else if(powerUp.getAmmoEquivalent() == new Ammo(0,0,1)){
+      else if((powerUp.getAmmoEquivalent().getYellow() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getBlue() == 0)){
         yellowPowerUpCards ++;
       }
+      this.owner.getInventory().discardPowerUp(powerUp);
     }
     playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
     playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
