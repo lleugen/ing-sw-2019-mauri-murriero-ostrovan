@@ -112,7 +112,9 @@ public class Weapon extends Grabbable {
    * @return true if the weapon is loaded, false otherwise
    */
   public boolean isLoaded() {
-    return this.loaded;
+    boolean loadedCopy;
+    loadedCopy = this.loaded;
+    return loadedCopy;
   }
 
   /**
