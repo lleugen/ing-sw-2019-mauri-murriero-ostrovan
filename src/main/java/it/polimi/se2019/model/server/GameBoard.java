@@ -1,7 +1,8 @@
-package it.polimi.se2019.model.server;
+package java.it.polimi.se2019.model.server;
 
-import it.polimi.se2019.model.map.Map;
-import it.polimi.se2019.model.player.Player;
+import java.it.polimi.se2019.model.deck.Decks;
+import java.it.polimi.se2019.model.map.Map;
+import java.it.polimi.se2019.model.player.Player;
 
 import java.util.List;
 
@@ -47,6 +48,19 @@ public class GameBoard {
   /**
    *
    */
+  private Decks decks;
+
+  /**
+   *
+   */
+  public Decks getDecks(){
+    return this.decks;
+  }
+
+  /**
+   *
+   */
   public GameBoard getGameBoard() {
+    return this.gameBoard;
   }
 }

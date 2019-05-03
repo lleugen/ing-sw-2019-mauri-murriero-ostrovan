@@ -1,10 +1,10 @@
 package java.it.polimi.se2019.model.player;
 
-import it.polimi.se2019.model.grabbable.Ammo;
-import it.polimi.se2019.model.grabbable.Grabbable;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
-import it.polimi.se2019.model.deck.*;
+import java.it.polimi.se2019.model.grabbable.Ammo;
+import java.it.polimi.se2019.model.grabbable.Grabbable;
+import java.it.polimi.se2019.model.grabbable.PowerUpCard;
+import java.it.polimi.se2019.model.grabbable.Weapon;
+import java.it.polimi.se2019.model.deck.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ import java.util.List;
  * using the same interface Grabbable
  */
 public class Inventory {
-  public Inventory() {
+  public Inventory(Decks decks) {
       ammo = new Ammo();//il costruttore di ammo deve accettare 3 parametri, ma mettendoli da errore
       weapons = new ArrayList<Weapon>();
       powerUps = new ArrayList<PowerUpCard>();
-      this.addToInventory(drawPowerUp());//drawPowerUp deve essere definito
+      this.addToInventory(decks.drawPowerUp());
   }
 
   /**
@@ -110,13 +110,13 @@ public class Inventory {
   }
 
   /**
-   * @param ammoList is the ammo to be subtracted from the players inventory
+   * @param ammunition is the ammo to be subtracted from the players inventory
    */
   public void useAmmo(Ammo ammunition) {
       /*bisogna definire i metodi useColour di ammo*/
       this.ammo.useRed(ammunition.getRed());
       this.ammo.useBlue(ammunition.getBlue());
-      this.ammo.useYello(ammunition.getYellow());
+      this.ammo.useYellow(ammunition.getYellow());
   }
 
   /**

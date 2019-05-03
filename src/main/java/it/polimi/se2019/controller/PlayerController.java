@@ -1,8 +1,9 @@
 package java.it.polimi.se2019.controller;
 
-import it.polimi.se2019.controller.player_state.PlayerStateController;
+import java.it.polimi.se2019.controller.player_state.PlayerStateController;
 import java.it.polimi.se2019.model.map.Direction;
 import java.it.polimi.se2019.model.player.Player;
+import java.it.polimi.se2019.model.server.GameBoard;
 
 /**
  * This class controls player actions, it contains the player's current state
@@ -24,6 +25,11 @@ public class PlayerController {
    *
    */
   private PlayerStateController state;
+
+  /**
+   *
+   */
+  private GameBoard gameBoardReference;
 
 
   /**
@@ -47,7 +53,10 @@ public class PlayerController {
    * The player has to draw a power up card, then discard one and spawns in
    * the square corresponding to the discarded card's equivalent ammo colour.
    */
-  public void spawn() {
+  public void spawn(Player player) {
+    player.getInventory().addToInventory(gameBoardReference.getDecks().drawPowerUp());
+    //ask player to choose a power up card to discard
+    //playerView.chooseSpawnLocation??
   }
 
   /**
