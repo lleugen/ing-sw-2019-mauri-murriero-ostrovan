@@ -1,7 +1,8 @@
 package java.it.polimi.se2019.model.map;
 
-import it.polimi.se2019.model.grabbable.Grabbable;
+import java.it.polimi.se2019.model.grabbable.*;
 
+import java.it.polimi.se2019.model.grabbable.Grabbable;
 import java.util.List;
 
 /**
@@ -12,7 +13,19 @@ import java.util.List;
  * are implemented in specific extensions of this class
  */
 public abstract class Square {
+  /**
+   *
+   */
+  private Grabbable item;
 
+
+
+  /**
+   *
+   */
+  public Grabbable getItem(){
+    return item;
+  }
   /**
    * Inits a new Square
    *

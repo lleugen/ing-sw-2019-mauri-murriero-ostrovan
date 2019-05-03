@@ -1,6 +1,5 @@
 package java.it.polimi.se2019.model.map;
 
-import java.it.polimi.se2019.model.grabbable.Ammo;
 import java.it.polimi.se2019.model.grabbable.AmmoTile;
 import java.it.polimi.se2019.model.grabbable.Grabbable;
 import java.it.polimi.se2019.model.player.Inventory;

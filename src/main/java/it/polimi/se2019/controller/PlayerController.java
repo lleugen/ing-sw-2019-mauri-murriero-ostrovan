@@ -79,6 +79,7 @@ public class PlayerController {
    * Grab the ammo tile or a weapon from the current square and add
    * the corresponding resources to the inventory.
    */
-  public void grab() {
+  public void grab(Player player) {
+    player.getPosition().
   }
 }

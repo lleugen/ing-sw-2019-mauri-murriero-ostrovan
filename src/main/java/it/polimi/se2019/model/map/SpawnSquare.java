@@ -1,7 +1,7 @@
 package java.it.polimi.se2019.model.map;
 
-import it.polimi.se2019.model.grabbable.Grabbable;
-import it.polimi.se2019.model.grabbable.Weapon;
+import java.it.polimi.se2019.model.grabbable.Grabbable;
+import java.it.polimi.se2019.model.grabbable.Weapon;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,8 @@ public class SpawnSquare extends Square {
    *
    * @return The grabbed weapon
    */
-  public Grabbable grab(int index) {
+  public Grabbable grab() {
+    //ask player which weapon he or she wants to pick up and obtain index
     Weapon weaponCopy = weaponList.get(index);
     weaponList.remove(index);
     return weaponCopy;

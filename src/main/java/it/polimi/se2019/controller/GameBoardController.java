@@ -1,6 +1,6 @@
 package it.polimi.se2019.controller;
 
-import it.polimi.se2019.model.player.Player;
+import java.it.polimi.se2019.model.player.Player;
 
 /**
  * The game board controller is the game manager, it initializes a game by
