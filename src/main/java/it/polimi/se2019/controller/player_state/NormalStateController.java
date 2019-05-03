@@ -1,4 +1,4 @@
-package it.polimi.se2019.controller.player_state;
+package java.it.polimi.se2019.controller.player_state;
 
 public class NormalStateController extends PlayerStateController {
   public NormalStateController() {

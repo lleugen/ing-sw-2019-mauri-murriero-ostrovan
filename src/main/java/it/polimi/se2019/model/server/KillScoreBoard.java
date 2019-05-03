@@ -1,6 +1,6 @@
-package it.polimi.se2019.model.server;
+package java.it.polimi.se2019.model.server;
 
-import it.polimi.se2019.model.player.Player;
+import java.it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;

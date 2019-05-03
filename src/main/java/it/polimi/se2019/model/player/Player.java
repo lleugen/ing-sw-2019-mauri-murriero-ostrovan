@@ -1,14 +1,17 @@
 package java.it.polimi.se2019.model.player;
 
+import java.it.polimi.se2019.controller.player_state.PlayerStateController;
+import java.it.polimi.se2019.model.map.Direction;
 import java.it.polimi.se2019.model.map.Square;
 
+import java.it.polimi.se2019.model.server.GameBoard;
 import java.util.List;
 
 /**
  * Player contains all the player data, and related collections (eg: Inventory)
  */
 public class Player {
-  public Player(String name, String character) {
+  public Player(String name, String character, GameBoard gameBoard) {
     this.name = name;
     this.character = character;
     this.points = 0;
@@ -43,6 +46,10 @@ public class Player {
    */
   private Integer points;
 
+  /**
+   *
+   */
+  private GameBoard gameBoardReference;
 
   /**
    * @return the player's character
@@ -60,7 +67,7 @@ public class Player {
   /**
    * Set the player's state, which determines the available actions
    */
-  public void setState() {
+  public void setState(PlayerStateController state) {
   }
 
   /**
@@ -90,8 +97,8 @@ public class Player {
   /**
    * Move the player
    */
-  public void move() {
-
+  public void move(Direction direction) {
+    this.position = direction.getSquare();
   }
 
   /**
