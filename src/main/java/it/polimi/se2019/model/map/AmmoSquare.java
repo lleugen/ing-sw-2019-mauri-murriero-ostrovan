@@ -1,8 +1,9 @@
 package java.it.polimi.se2019.model.map;
 
-import it.polimi.se2019.model.grabbable.Ammo;
-import it.polimi.se2019.model.grabbable.AmmoTile;
-import it.polimi.se2019.model.grabbable.Grabbable;
+import java.it.polimi.se2019.model.grabbable.Ammo;
+import java.it.polimi.se2019.model.grabbable.AmmoTile;
+import java.it.polimi.se2019.model.grabbable.Grabbable;
+import java.it.polimi.se2019.model.player.Inventory;
 
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class AmmoSquare extends Square {
    * @return the grabbed items
    */
   public Grabbable grab() {
-    AmmoTile ammoTileCopy = new AmmoTile(this.ammos.ammo.getRed(), this.ammos.ammo.getBlue(), this.ammos.ammo.getYellow(), this.ammos.powerUp);
+    AmmoTile ammoTileCopy = new AmmoTile(this.ammos.getAmmo.getRed(), this.ammos.getAmmo.getBlue(),
+            this.ammos.getAmmo.getYellow(), this.ammos.getPowerUp);
     ammos = null;
     return ammoTileCopy;
   }
