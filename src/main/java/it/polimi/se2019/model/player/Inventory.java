@@ -18,11 +18,11 @@ import java.util.List;
  * using the same interface Grabbable
  */
 public class Inventory {
-  public Inventory() {
+  public Inventory(Decks decks) {
       ammo = new Ammo();//il costruttore di ammo deve accettare 3 parametri, ma mettendoli da errore
       weapons = new ArrayList<Weapon>();
       powerUps = new ArrayList<PowerUpCard>();
-      this.addToInventory(drawPowerUp());//drawPowerUp deve essere definito
+      this.addToInventory(decks.drawPowerUp());
   }
 
   /**
@@ -75,6 +75,7 @@ public class Inventory {
    */
   public void addToInventory(Grabbable item) {
 
+
   }
 
   /**
@@ -109,13 +110,13 @@ public class Inventory {
   }
 
   /**
-   * @param ammoList is the ammo to be subtracted from the players inventory
+   * @param ammunition is the ammo to be subtracted from the players inventory
    */
   public void useAmmo(Ammo ammunition) {
       /*bisogna definire i metodi useColour di ammo*/
       this.ammo.useRed(ammunition.getRed());
       this.ammo.useBlue(ammunition.getBlue());
-      this.ammo.useYello(ammunition.getYellow());
+      this.ammo.useYellow(ammunition.getYellow());
   }
 
   /**

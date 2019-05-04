@@ -1,5 +1,6 @@
 package it.polimi.se2019.model.server;
 
+import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 
@@ -90,7 +91,19 @@ public class GameBoard {
   /**
    * @return the map
    */
-  public Map getMap(){
+  public Map getMap() {
     return this.map;
+  }
+
+  /**
+   * Contains the list of decks associated to this GameBoard
+   */
+  private Decks decks;
+
+  /**
+   * @return the decks
+   */
+  public Decks getDecks(){
+    return this.decks;
   }
 }

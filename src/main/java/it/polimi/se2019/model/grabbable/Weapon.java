@@ -1,9 +1,7 @@
 package it.polimi.se2019.model.grabbable;
 
 import it.polimi.se2019.model.player.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import it.polimi.se2019.model.player.Inventory;
 import java.util.List;
 
 /**
@@ -14,12 +12,12 @@ public class Weapon extends Grabbable {
   /**
    * Cost to pay for reloading the weapon
    */
-  private List<Ammo> reloadCost;
+  private Ammo reloadCost;
 
   /**
    * Cost to be paid for grabbing the weapon from a square
    */
-  private List<Ammo> grabCost;
+  private Ammo grabCost;
 
   /**
    * True if the weapon is loaded and ready to use, false otherwise
@@ -53,7 +51,7 @@ public class Weapon extends Grabbable {
    */
   public Weapon(
           String name, String desc,
-          List<Ammo> grabCost, List<Ammo> reloadCost
+          Ammo grabCost, Ammo reloadCost
   ) {
     super();
     this.name = name;
@@ -73,33 +71,58 @@ public class Weapon extends Grabbable {
   /**
    * Reload a weapon (a weapon reloaded can be used)
    */
-  public void reload() {
+  public void reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
+    int redPowerUpCards = 0;
+    int bluePowerUpCards = 0;
+    int yellowPowerUpCards = 0;
+    for(PowerUpCard powerUp : powerUpCards){
+      if((powerUp.getAmmoEquivalent().getRed() == 1)&(powerUp.getAmmoEquivalent().getBlue() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
+        redPowerUpCards ++;
+      }
+      else if((powerUp.getAmmoEquivalent().getBlue() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
+        bluePowerUpCards ++;
+      }
+      else if((powerUp.getAmmoEquivalent().getYellow() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getBlue() == 0)){
+        yellowPowerUpCards ++;
+      }
+      this.owner.getInventory().discardPowerUp(powerUp);
+    }
+    playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
+    playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
+    playerAmmoBox.useYellow(this.grabCost.getYellow() - yellowPowerUpCards);
     this.loaded = true;
   }
 
   /**
    * @return The cost to be paid for grabbing the WeaponController
    */
-  public List<Ammo> getGrabCost() {
+  public Ammo getGrabCost() {
+    Ammo grabCostCopy = new Ammo(this.grabCost.getRed(), this.grabCost.getBlue(), this.grabCost.getYellow());
+    return grabCostCopy;
   }
 
   /**
    * @return The cost to be paid for reloading the WeaponController
    */
-  public List<Ammo> getReloadCost() {
+  public Ammo getReloadCost() {
+    Ammo reloadCostCopy = new Ammo(this.reloadCost.getRed(), this.reloadCost.getBlue(), this.reloadCost.getYellow());
+    return reloadCostCopy;
   }
 
   /**
    * @return true if the weapon is loaded, false otherwise
    */
   public boolean isLoaded() {
-    return this.loaded;
+    boolean loadedCopy;
+    loadedCopy = this.loaded;
+    return loadedCopy;
   }
 
   /**
    * @return The current owner of the WeaponController
    */
   public Player getOwner() {
+    return this.owner;
   }
 
   /**
@@ -122,5 +145,6 @@ public class Weapon extends Grabbable {
    * @param player The new owner of the weapon
    */
   public void setOwner(Player player) {
+    this.owner = player;
   }
 }

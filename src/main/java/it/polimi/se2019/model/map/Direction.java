@@ -29,6 +29,7 @@ public class Direction {
    * @return The next square in this direction
    */
   public Square getSquare() {
+    return square;
   }
 
   /**

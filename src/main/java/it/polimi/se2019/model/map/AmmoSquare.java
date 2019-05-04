@@ -1,6 +1,9 @@
 package it.polimi.se2019.model.map;
 
+import it.polimi.se2019.model.grabbable.Ammo;
+import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.Grabbable;
+import it.polimi.se2019.model.player.Inventory;
 
 import java.util.List;
 
@@ -21,14 +24,22 @@ public class AmmoSquare extends Square {
   /**
    * The list of Ammos of PowerUps placed on this square
    */
-  private List<Grabbable> ammos;
+  private AmmoTile ammos;
 
   /**
    * Grab items from the square
    *
    * @return the grabbed items
    */
-  @Override
-  public List<Grabbable> grab() {
+  public Grabbable grab() {
+    AmmoTile ammoTileCopy = new AmmoTile(this.ammos.getAmmo.getRed(), this.ammos.getAmmo.getBlue(),
+            this.ammos.getAmmo.getYellow(), this.ammos.getPowerUp);
+    ammos = null;
+    return ammoTileCopy;
+  }
+
+  public void refill(){
+    //draw an ammo tile from the ammo tile deck
+    //ammos = drawn ammo tile
   }
 }
