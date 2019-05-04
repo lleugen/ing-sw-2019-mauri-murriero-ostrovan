@@ -50,14 +50,27 @@ public class GameBoard {
     this.firstPlayer = firstPlayer;
     this.currentPlayer = firstPlayer;
     this.map = new Map(mapType);
-    this.players.addAll(players);
+
+    Integer i;
+    Player tmp;
+    for (i = 0; i < players.size(); i++){
+      tmp = players.get(i);
+      this.players.add(tmp);
+    }
   }
 
   /**
    * Updates the gameboard to set the next player as active
    */
-  public void nextPlayer(){
-    this.currentPlayer = (this.currentPlayer + 1) % this.players.size();
+  public synchronized void nextPlayer(){
+    Integer nextPlayerId = this.currentPlayer + 1;
+
+    // If last player, restarting from the beginning
+
+    if (nextPlayerId == (this.players.size() - 1)){
+      nextPlayerId = 0;
+    }
+    this.currentPlayer = nextPlayerId;
   }
 
   /**
