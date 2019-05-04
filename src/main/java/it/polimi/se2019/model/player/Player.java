@@ -1,10 +1,10 @@
-package java.it.polimi.se2019.model.player;
+package it.polimi.se2019.model.player;
 
-import java.it.polimi.se2019.controller.player_state.PlayerStateController;
-import java.it.polimi.se2019.model.map.Direction;
-import java.it.polimi.se2019.model.map.Square;
+import it.polimi.se2019.controller.player_state.PlayerStateController;
+import it.polimi.se2019.model.map.Direction;
+import it.polimi.se2019.model.map.Square;
 
-import java.it.polimi.se2019.model.server.GameBoard;
+import it.polimi.se2019.model.server.GameBoard;
 import java.util.List;
 
 /**

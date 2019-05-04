@@ -1,4 +1,4 @@
-package java.it.polimi.se2019.controller.player_state;
+package it.polimi.se2019.controller.player_state;
 
 public class Adrenaline2StateController extends PlayerStateController {
   public Adrenaline2StateController() {

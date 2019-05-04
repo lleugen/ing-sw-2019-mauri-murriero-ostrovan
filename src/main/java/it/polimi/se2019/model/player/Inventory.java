@@ -1,10 +1,10 @@
-package java.it.polimi.se2019.model.player;
+package it.polimi.se2019.model.player;
 
-import java.it.polimi.se2019.model.grabbable.Ammo;
-import java.it.polimi.se2019.model.grabbable.Grabbable;
-import java.it.polimi.se2019.model.grabbable.PowerUpCard;
-import java.it.polimi.se2019.model.grabbable.Weapon;
-import java.it.polimi.se2019.model.deck.*;
+import it.polimi.se2019.model.grabbable.Ammo;
+import it.polimi.se2019.model.grabbable.Grabbable;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
+import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.deck.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

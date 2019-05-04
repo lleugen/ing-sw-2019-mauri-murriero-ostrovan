@@ -1,4 +1,4 @@
-package java.it.polimi.se2019.model.grabbable;
+package it.polimi.se2019.model.grabbable;
 
 /**
  * The ammo class represents a box of ammunition cubes

@@ -1,8 +1,8 @@
-package java.it.polimi.se2019.model.server;
+package it.polimi.se2019.model.server;
 
-import java.it.polimi.se2019.model.deck.Decks;
-import java.it.polimi.se2019.model.map.Map;
-import java.it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.model.deck.Decks;
+import it.polimi.se2019.model.map.Map;
+import it.polimi.se2019.model.player.Player;
 
 import java.util.List;
 

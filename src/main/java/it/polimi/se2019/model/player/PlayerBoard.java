@@ -1,4 +1,4 @@
-package java.it.polimi.se2019.model.player;
+package it.polimi.se2019.model.player;
 
 import java.util.ArrayList;
 import java.util.List;
