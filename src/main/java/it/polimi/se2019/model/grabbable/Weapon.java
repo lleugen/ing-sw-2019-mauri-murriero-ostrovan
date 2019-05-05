@@ -72,25 +72,36 @@ public class Weapon extends Grabbable {
    * Reload a weapon (a weapon reloaded can be used)
    */
   public void reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
-    int redPowerUpCards = 0;
-    int bluePowerUpCards = 0;
-    int yellowPowerUpCards = 0;
-    for(PowerUpCard powerUp : powerUpCards){
-      if((powerUp.getAmmoEquivalent().getRed() == 1)&(powerUp.getAmmoEquivalent().getBlue() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
-        redPowerUpCards ++;
+    if(!loaded)
+    {
+      int redPowerUpCards = 0;
+      int bluePowerUpCards = 0;
+      int yellowPowerUpCards = 0;
+      for(PowerUpCard powerUp : powerUpCards){
+        if((powerUp.getAmmoEquivalent().getRed() == 1)&(powerUp.getAmmoEquivalent().getBlue() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
+          redPowerUpCards ++;
+        }
+        else if((powerUp.getAmmoEquivalent().getBlue() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
+          bluePowerUpCards ++;
+        }
+        else if((powerUp.getAmmoEquivalent().getYellow() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getBlue() == 0)){
+          yellowPowerUpCards ++;
+        }
+        this.owner.getInventory().discardPowerUp(powerUp);
       }
-      else if((powerUp.getAmmoEquivalent().getBlue() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
-        bluePowerUpCards ++;
+      try{
+        playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
+        playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
+        playerAmmoBox.useYellow(this.grabCost.getYellow() - yellowPowerUpCards);
       }
-      else if((powerUp.getAmmoEquivalent().getYellow() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getBlue() == 0)){
-        yellowPowerUpCards ++;
+      catch(Ammo.InsufficientAmmoException exception){
+        throw new UnableToReloadException();
       }
-      this.owner.getInventory().discardPowerUp(powerUp);
+      this.loaded = true;
     }
-    playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
-    playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
-    playerAmmoBox.useYellow(this.grabCost.getYellow() - yellowPowerUpCards);
-    this.loaded = true;
+    else{
+      throw new WeaponAlreadyLoadedException();
+    }
   }
 
   /**
@@ -147,4 +158,22 @@ public class Weapon extends Grabbable {
   public void setOwner(Player player) {
     this.owner = player;
   }
+
+  public static class WeaponAlreadyLoadedException extends RuntimeException
+  {
+    @Override
+    public String toString() {
+      return "This weapon is already loaded.";
+    }
+  }
+
+  public static class UnableToReloadException extends RuntimeException
+  {
+    @Override
+    public String toString() {
+      return "Not enough resources to reload the weapon.";
+    }
+  }
 }
+
+
