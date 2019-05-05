@@ -1,7 +1,7 @@
 package it.polimi.se2019.model.map;
 
-import java.it.polimi.se2019.model.grabbable.Grabbable;
-import java.it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.grabbable.Grabbable;
+import it.polimi.se2019.model.grabbable.Weapon;
 
 import java.util.ArrayList;
 import java.util.Collections;

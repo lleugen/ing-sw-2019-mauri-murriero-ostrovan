@@ -80,6 +80,5 @@ public class PlayerController {
    * the corresponding resources to the inventory.
    */
   public void grab(Player player) {
-    player.getPosition().
   }
 }

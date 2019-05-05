@@ -1,8 +1,8 @@
 package it.polimi.se2019.model.map;
 
-import java.it.polimi.se2019.model.grabbable.*;
+import it.polimi.se2019.model.grabbable.*;
 
-import java.it.polimi.se2019.model.grabbable.Grabbable;
+import it.polimi.se2019.model.grabbable.Grabbable;
 import java.util.List;
 
 /**
