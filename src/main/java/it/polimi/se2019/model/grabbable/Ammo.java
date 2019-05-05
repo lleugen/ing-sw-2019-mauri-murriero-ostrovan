@@ -77,7 +77,9 @@ public class Ammo extends Grabbable {
    */
   public void addRed(int amount) {
     this.red  = this.red + amount;
-    if(this.red > 3) this.red = 3;
+    if(this.red > 3) {
+      this.red = 3;
+    }
   }
 
   /**
@@ -85,7 +87,9 @@ public class Ammo extends Grabbable {
    */
   public void addBlue(int amount){
     this.blue = this.blue + amount;
-    if(this.blue > 3) this.blue = 3;
+    if(this.blue > 3) {
+      this.blue = 3;
+    }
   }
 
   /**
@@ -93,15 +97,21 @@ public class Ammo extends Grabbable {
    */
   public void addYellow(int amount){
     this.yellow = this.yellow + amount;
-    if(this.yellow > 3) this.yellow = 3;
+    if(this.yellow > 3) {
+      this.yellow = 3;
+    }
   }
 
   /**
    * @param amount subtract amount red ammunition cubes from the ammo box
    */
   public void useRed(int amount){
-    this.red = this.red - amount;
-    if(this.red < 0) this.red = 0;
+    if(getRed() < amount){
+      throw new InsufficientAmmoException();
+    }
+    else{
+      this.red = this.red - amount;
+    }
   }
 
   /**
@@ -109,8 +119,12 @@ public class Ammo extends Grabbable {
    * @param amount subtract amount of blue ammunition cubes from the ammo box
    */
   public void useBlue(int amount){
-    this.blue = this.blue - amount;
-    if(this.blue < 0) this.blue = 0;
+    if(getBlue() < amount){
+      throw new InsufficientAmmoException();
+    }
+    else{
+      this.blue = this.blue - amount;
+    }
   }
 
   /**
@@ -118,8 +132,20 @@ public class Ammo extends Grabbable {
    * @param amount subtract amount of yellow ammunition cubes from the ammo box
    */
   public void useYellow(int amount){
-    this.yellow = this.yellow - amount;
-    if(this.yellow < 0) this.yellow = 0;
+    if(getYellow() < amount) {
+      throw new InsufficientAmmoException();
+    }
+    else {
+      this.yellow = this.yellow - amount;
+    }
+
+  }
+  public static class InsufficientAmmoException extends RuntimeException
+  {
+    @Override
+    public String toString() {
+      return "Not enough ammo!";
+    }
   }
 }
 

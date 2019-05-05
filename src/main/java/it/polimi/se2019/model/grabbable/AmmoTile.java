@@ -27,4 +27,6 @@ public class AmmoTile extends Grabbable {
     ammo = new Ammo(redAmount, blueAmount, yellowAmount);
     hasPowerUp = containsPowerup;
   }
+
+
 }
