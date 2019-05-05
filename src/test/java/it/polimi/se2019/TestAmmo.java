@@ -4,7 +4,7 @@ import it.polimi.se2019.model.grabbable.Ammo;
 import org.junit.Test;
 
 import static it.polimi.se2019.model.grabbable.Ammo.compare;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestAmmo {
     @Test
