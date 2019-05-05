@@ -20,8 +20,10 @@ public class Map {
    * Init a new map
    *
    * @param mapType The type of the map to generate
+   *
+   * @throws UnknownMapTypeException if the type is not valid
    */
-  public Map(String mapType) {
+  public Map(String mapType) throws UnknownMapTypeException{
   }
 
   /**
