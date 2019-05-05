@@ -1,9 +1,9 @@
-package java.it.polimi.se2019.controller;
+package it.polimi.se2019.controller;
 
-import java.it.polimi.se2019.controller.player_state.PlayerStateController;
-import java.it.polimi.se2019.model.map.Direction;
-import java.it.polimi.se2019.model.player.Player;
-import java.it.polimi.se2019.model.server.GameBoard;
+import it.polimi.se2019.controller.player_state.PlayerStateController;
+import it.polimi.se2019.model.map.Direction;
+import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.model.server.GameBoard;
 
 /**
  * This class controls player actions, it contains the player's current state

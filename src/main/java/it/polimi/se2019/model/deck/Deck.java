@@ -1,8 +1,7 @@
-package java.it.polimi.se2019.model.deck;
+package it.polimi.se2019.model.deck;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

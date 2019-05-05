@@ -1,4 +1,4 @@
-package java.it.polimi.se2019.model.map;
+package it.polimi.se2019.model.map;
 
 import java.it.polimi.se2019.model.grabbable.*;
 

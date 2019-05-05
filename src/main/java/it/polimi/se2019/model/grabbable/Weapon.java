@@ -1,7 +1,7 @@
-package java.it.polimi.se2019.model.grabbable;
+package it.polimi.se2019.model.grabbable;
 
-import java.it.polimi.se2019.model.player.Player;
-import java.it.polimi.se2019.model.player.Inventory;
+import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.model.player.Inventory;
 import java.util.List;
 
 /**
