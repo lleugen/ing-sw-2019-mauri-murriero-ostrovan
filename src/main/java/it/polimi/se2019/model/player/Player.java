@@ -2,6 +2,7 @@ package it.polimi.se2019.model.player;
 
 import it.polimi.se2019.controller.player_state.PlayerStateController;
 import it.polimi.se2019.model.map.Direction;
+import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 
 import it.polimi.se2019.model.server.GameBoard;
@@ -76,7 +77,7 @@ public class Player {
    * @param sender The player that did damage to the current player
    * @param amount The amount of damage taken
    */
-  public void takeDamege(Player sender, int amount) {
+  public void takeDamage(Player sender, int amount) {
     for (int i = 0; i < amount; i++) {
       this.board.setDamage(sender);
     }
