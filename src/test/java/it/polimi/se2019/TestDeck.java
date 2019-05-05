@@ -139,5 +139,8 @@ public class TestDeck {
         fail("Deck was not shuffled");
       }
     }
+    catch(EmptyDeckException exception){
+      fail("The deck is empty.");
+    }
   }
 }
