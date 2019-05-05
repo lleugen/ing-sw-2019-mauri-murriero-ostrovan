@@ -23,7 +23,7 @@ public class TestDeck {
       testDeck.draw();
       fail("Exception was not raised");
     }
-    catch (EmptyDeckException){
+    catch (EmptyDeckException exception){
       // Test Passed
     }
   }
@@ -50,7 +50,7 @@ public class TestDeck {
         fail("Draw should return exactly the same item passed in constructor");
       }
     }
-    catch (EmptyDeckException){
+    catch (EmptyDeckException exception){
       fail("Raised EmptyDeckException on a nonempty deck");
     }
   }
@@ -100,7 +100,7 @@ public class TestDeck {
         fail("Something not insert in deck was returned");
       }
     }
-    catch (EmptyDeckException){
+    catch (EmptyDeckException exception){
       fail("Raised EmptyDeckException on a nonempty deck");
     }
   }
@@ -129,7 +129,7 @@ public class TestDeck {
       testDeck.discard(returnedElement1);
       try {
         returnedElement2 = testDeck.draw();
-      } catch (EmptyDeckException) {
+      } catch (EmptyDeckException exception) {
         fail("You must shuffle the deck when it is empty")
       }
 
