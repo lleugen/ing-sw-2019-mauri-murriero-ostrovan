@@ -42,7 +42,8 @@ public class SpawnSquare extends Square {
    *
    * @return The grabbed weapon
    */
-  public Grabbable grab(int index) {
+  public Grabbable grab() {
+    //ask player which weapon he or she wants to pick up and obtain index
     Weapon weaponCopy = weaponList.get(index);
     weaponList.remove(index);
     return weaponCopy;
