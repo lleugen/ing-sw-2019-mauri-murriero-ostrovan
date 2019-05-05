@@ -83,9 +83,3 @@ public class Deck<G extends Grabbable> {
   }
 }
 
-class EmptyDeckException extends RuntimeException {
-  @Override
-  public String toString() {
-    return "Deck is completely empty!";
-  }
-}
