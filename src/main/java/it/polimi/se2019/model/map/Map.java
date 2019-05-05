@@ -12,6 +12,11 @@ public class Map {
   private Square root;
 
   /**
+   *
+   */
+  private Square[][] mapSquares;
+
+  /**
    * Init a new map
    *
    * @param mapType The type of the map to generate
