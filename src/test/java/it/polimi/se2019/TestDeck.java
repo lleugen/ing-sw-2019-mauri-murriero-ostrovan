@@ -130,7 +130,7 @@ public class TestDeck {
       try {
         returnedElement2 = testDeck.draw();
       } catch (EmptyDeckException exception) {
-        fail("You must shuffle the deck when it is empty")
+        fail("You must shuffle the deck when it is empty");
       }
 
       if (returnedElement2.equals(elements)) {
