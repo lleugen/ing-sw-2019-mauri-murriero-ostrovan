@@ -21,7 +21,7 @@ public class Decks {
    * and with the Ammos discarded (taken from the board and added to the
    * player inventory)
    */
-  private final Deck<Grabbable> ammoDeck;
+  private final Deck<AmmoTile> ammoDeck;
 
   /**
    * Contains the deck with the PowerUps not already placed to the board, and
@@ -64,7 +64,7 @@ public class Decks {
    * @return the drawn Ammos
    * @throws EmptyDeckException if no more card are available to draw
    */
-  public Grabbable drawAmmoTile() throws EmptyDeckException {
+  public AmmoTile drawAmmoTile() throws EmptyDeckException {
     Grabbable toReturn;
     toReturn = this.ammoDeck.draw();
     return toReturn;
@@ -97,7 +97,7 @@ public class Decks {
    *
    * @param discarded The AmmoTile to discard
    */
-  public void discardAmmoTile(Grabbable discarded) {
+  public void discardAmmoTile(AmmoTile discarded) {
     this.ammoDeck.discard(discarded);
   }
 

@@ -20,7 +20,7 @@ public class Inventory {
     ammo = new Ammo(1, 1, 1);
     weapons = new ArrayList<Weapon>();
     powerUps = new ArrayList<PowerUpCard>();
-    this.addToInventory(decks.drawPowerUp());
+    this.addPowerUpToInventory(decks.drawPowerUp());
   }
 
   /**
