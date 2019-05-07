@@ -53,6 +53,20 @@ public abstract class Square {
   private List<Direction> adjacencies;
 
   /**
+   *
+   */
+  protected void setAdjacencies(List<Direction> adj){
+    adjacencies = adj;
+  }
+
+  protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
+    adjacencies.get(0).setBlocked(north);
+    adjacencies.get(1).setBlocked(east);
+    adjacencies.get(2).setBlocked(south);
+    adjacencies.get(3).setBlocked(west);
+  }
+
+  /**
    * The id of the room this Square belongs to
    */
   private String idRoom;
