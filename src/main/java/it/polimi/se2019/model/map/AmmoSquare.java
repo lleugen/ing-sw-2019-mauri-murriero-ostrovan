@@ -32,14 +32,16 @@ public class AmmoSquare extends Square {
    * @return the grabbed items
    */
   public Grabbable grab() {
-    AmmoTile ammoTileCopy = new AmmoTile(this.ammos.getAmmo.getRed(), this.ammos.getAmmo.getBlue(),
-            this.ammos.getAmmo.getYellow(), this.ammos.getPowerUp);
+    AmmoTile ammoTileCopy = new AmmoTile(ammos.getAmmo().getRed(), ammos.getAmmo().getBlue(),
+            ammos.getAmmo().getYellow(), ammos.getPowerUp());
     ammos = null;
     return ammoTileCopy;
   }
 
   public void refill(){
     //draw an ammo tile from the ammo tile deck
-    //ammos = drawn ammo tile
+    if(ammos == null){
+      ammos = getDecks().drawAmmoTile();
+    }
   }
 }

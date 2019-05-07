@@ -1,5 +1,6 @@
 package it.polimi.se2019.model.map;
 
+import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
@@ -17,6 +18,15 @@ public abstract class Square {
    *
    */
   private Grabbable item;
+
+  /**
+   *
+   */
+  private Decks decks;
+
+  public Decks getDecks(){
+    return decks;
+  }
 
 
 
@@ -70,8 +80,6 @@ public abstract class Square {
 
   /**
    * Refill the square
-   *
-   * @param objects A list of item to refill the square with
    */
   public abstract void refill();
 }
