@@ -23,30 +23,31 @@ public abstract class PlayerStateController {
    */
 
   public PlayerStateController() {
+
   }
 
   /**
    *
    */
-  private int turnActionLimit;
+  protected int turnActionLimit;
 
   /**
    *
    */
-  private int availableActions;
+  protected int availableActions;
 
   /**
    *
    * @param maxDistance max distance from current square to the final square
    */
-  private void move(int maxDistance){
+  protected void move(int maxDistance){
 
   }
 
   /**
    *
    */
-  private void grab(){
+  protected void grab(){
 
   }
 
