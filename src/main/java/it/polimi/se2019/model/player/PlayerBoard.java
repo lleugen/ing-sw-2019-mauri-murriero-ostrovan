@@ -1,6 +1,7 @@
 package it.polimi.se2019.model.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -88,8 +89,7 @@ public class PlayerBoard {
    */
   public void turnAround() {
     deathValues.clear();
-    deathValues.add(2);
-    deathValues.add(1);
+    deathValues = new ArrayList<Integer>(Arrays.asList(2, 1, 1, 1, 1, 1));
     isFrenzy = true;
   }
 
