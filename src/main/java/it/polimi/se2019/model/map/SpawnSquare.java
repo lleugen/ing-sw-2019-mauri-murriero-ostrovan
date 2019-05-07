@@ -2,6 +2,8 @@ package it.polimi.se2019.model.map;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,8 +44,10 @@ public class SpawnSquare extends Square {
    *
    * @return The grabbed weapon
    */
-  public Grabbable grab() {
+  public Grabbable grab(PlayerView player) {
     //ask player which weapon he or she wants to pick up and obtain index
+    int index;
+    index = player.pickWeapon(weaponList);
     Weapon weaponCopy = weaponList.get(index);
     weaponList.remove(index);
     return weaponCopy;
@@ -52,5 +56,9 @@ public class SpawnSquare extends Square {
   public void refill(){
     //draw a weapon from the weapons cards deck
     //add the drawn weapon to weaponsList
+    while(weaponList.size() < 3){
+      Weapon newWeapon = getDecks().drawWeapon();//decks deve restituire un'arma, non una lista
+      weaponList.add(newWeapon);
+    }
   }
 }

@@ -26,6 +26,13 @@ public class Direction {
   private Square square;
 
   /**
+   *
+   */
+  protected void setBlocked(boolean isBlocked){
+    blocked = isBlocked;
+  }
+
+  /**
    * @return The next square in this direction
    */
   public Square getSquare() {

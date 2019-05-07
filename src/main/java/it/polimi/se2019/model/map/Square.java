@@ -1,5 +1,6 @@
 package it.polimi.se2019.model.map;
 
+import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
@@ -17,6 +18,15 @@ public abstract class Square {
    *
    */
   private Grabbable item;
+
+  /**
+   *
+   */
+  private Decks decks;
+
+  public Decks getDecks(){
+    return decks;
+  }
 
 
 
@@ -41,6 +51,20 @@ public abstract class Square {
    * The list of adjacencies squares
    */
   private List<Direction> adjacencies;
+
+  /**
+   *
+   */
+  protected void setAdjacencies(List<Direction> adj){
+    adjacencies = adj;
+  }
+
+  protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
+    adjacencies.get(0).setBlocked(north);
+    adjacencies.get(1).setBlocked(east);
+    adjacencies.get(2).setBlocked(south);
+    adjacencies.get(3).setBlocked(west);
+  }
 
   /**
    * The id of the room this Square belongs to
@@ -70,8 +94,6 @@ public abstract class Square {
 
   /**
    * Refill the square
-   *
-   * @param objects A list of item to refill the square with
    */
   public abstract void refill();
 }
