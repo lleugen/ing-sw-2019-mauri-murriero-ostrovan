@@ -23,17 +23,42 @@ public abstract class PlayerStateController {
    */
 
   public PlayerStateController() {
+
   }
 
   /**
    *
    */
-  private int turnActionLimit;
+  protected int turnActionLimit;
 
   /**
    *
    */
-  private int availableActions;
+  protected int availableActions;
+
+  /**
+   *
+   * @param maxDistance max distance from current square to the final square
+   */
+  protected void move(int maxDistance){
+
+  }
+
+  /**
+   *
+   */
+  protected void grab(){
+
+  }
+
+  /**
+   *
+   * @param damages
+   * @param marks
+   */
+  protected void attack(int damages, int marks){
+
+  }
 
   /**
    *
@@ -45,13 +70,15 @@ public abstract class PlayerStateController {
    * @return the number of actions the player can still make on the
    * current turn
    */
-  public int getAvailabelActions() {
+  public int getAvailableActions() {
+    return availableActions;
   }
 
   /**
    *
    */
   private void resetActions() {
+    this.availableActions = turnActionLimit;
   }
 
   /**
