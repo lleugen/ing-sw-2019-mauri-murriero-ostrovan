@@ -2,6 +2,7 @@ package it.polimi.se2019.model.server;
 
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.map.Map;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.List;
@@ -46,11 +47,17 @@ public class GameBoard {
    *
    * @throws NullPointerException if players contains a null player
    */
-  public GameBoard(String mapType, List<Player> players, Integer firstPlayer){
+  public GameBoard(int mapType, List<Player> players, Integer firstPlayer){
     this.killScoreBoard = new KillScoreBoard();
     this.firstPlayer = firstPlayer;
     this.currentPlayer = firstPlayer;
-    this.map = new Map(mapType);
+    try{
+      this.map = new Map(mapType);
+    }
+    catch (UnknownMapTypeException exception){
+      //handle exception
+    }
+
 
     Integer i;
     Player tmp;
@@ -58,6 +65,14 @@ public class GameBoard {
       tmp = players.get(i);
       this.players.add(tmp);
     }
+  }
+
+  public List<Player> getPlayers(){
+    return players;
+  }
+
+  public int getFirstPlayer(){
+    return firstPlayer;
   }
 
   /**

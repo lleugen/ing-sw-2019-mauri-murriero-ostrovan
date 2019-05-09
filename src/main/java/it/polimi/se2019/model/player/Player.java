@@ -60,18 +60,6 @@ public class Player {
   }
 
   /**
-   * @return the player's state, which determines the available actions
-   */
-  public void getState() {
-  }
-
-  /**
-   * Set the player's state, which determines the available actions
-   */
-  public void setState(PlayerStateController state) {
-  }
-
-  /**
    * Add damage to the player
    *
    * @param sender The player that did damage to the current player

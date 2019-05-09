@@ -7,7 +7,12 @@ import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
 import it.polimi.se2019.model.deck.Deck;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.model.server.GameBoard;
+
+import java.lang.management.GarbageCollectorMXBean;
+import java.util.List;
 
 /**
  * The game board controller is the game manager, it initializes a game by
@@ -17,21 +22,13 @@ import it.polimi.se2019.model.player.Player;
  */
 public class GameBoardController {
   public GameBoardController() {
+
   }
 
   /**
-   * The player who's turn it is currently
+   * A list of all the active matches
    */
-  private Player currentPlayer;
-
-  /**
-   * This method generates one of the four possible maps for the game based
-   * on the first player's input
-   *
-   * @param mapType is an integer that specifies the map to be generated
-   */
-  public void generateMap(int mapType) {
-  }
+  private List<GameBoard> activeGames;
 
   /**
    * This method creates a player class (model) for each player who joins the
@@ -40,7 +37,8 @@ public class GameBoardController {
    * card and a player board with empty damage and marks lists,
    * 0 deaths, "8 6 4 2 1 1" death value and board side '0'.
    */
-  public void initializePlayers() {
+  public void initializePlayers(GameBoard board) {
+
   }
 
   /**
@@ -1668,14 +1666,14 @@ public class GameBoardController {
    * turn, replaces resources that have been picked up during a turn and
    * resolves player deaths.
    */
-  public void playTurns() {
+  public void playTurns(GameBoard board) {
   }
 
   /**
    * This method starts the game by generating a map, initializing players
    * and starting the main game loop
    */
-  public void startGame() {
+  public void startGame(GameBoard board) {
   }
 
   /**
@@ -1683,6 +1681,6 @@ public class GameBoardController {
    * number of skulls on the scoreboard reaches 0 after this final round the
    * scoreboard will be resolved and the game will end
    */
-  public void playFrenzyTurn() {
+  public void playFrenzyTurn(GameBoard board) {
   }
 }
