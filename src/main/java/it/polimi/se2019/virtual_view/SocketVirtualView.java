@@ -44,12 +44,10 @@ public class SocketVirtualView extends AbstractVirtualView {
   private ObservableList<byte[]> downstreamLog;
 
   /**
-   * Inits a new local virtual view.
+   * Inits a new socket virtual view
    *
-   * A local virtual view can be used as a child view of another virtual view.
-   * It doesn't have any remote logic, and transfer any work to the parent view.
-   * Therefore, while initializing a LocalVirtualView, you must pass to it
-   * a function used to pass model updates to the parent view
+   * A socket virtual view can be used to expose a controller on a server to a
+   * remote network handler on a client, using a TCP connection
    *
    * @param namespace Namespace of the view
    * @param port Port to which bind the socket
