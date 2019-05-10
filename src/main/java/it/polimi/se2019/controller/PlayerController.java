@@ -21,30 +21,33 @@ public class PlayerController {
   public PlayerController() {
   }
 
-  /**
-   *
-   */
-  private PlayerStateController state;
-
-  /**
-   *
-   */
-  private GameBoard gameBoardReference;
-
+  private GameBoardController gameBoardController;
 
   /**
    * Move the player 1 square in one of four directions
-   *
-   * @param direction is the direction that the players moves towards,
-   *                  it is a class containing a reference the next
-   *                  square and information on whether there is a wall or not
+   * @param playerName the name of the player
+   * @param direction is the direction that the players moves towards
+   *                  0 = north
+   *                  1 = east
+   *                  2 = south
+   *                  3 = west
    */
-  public void move(Player player, Direction direction) {
-    if(direction.isBlocked()){
-      //return cannot move exception
+  public void move(String playerName, int direction) {
+    //find the player with playerName
+    Player player = null;
+    for(GameBoard match : gameBoardController.getActiveGames()){
+      for(Player p : match.getPlayers()){
+        if(p.getName().equals(playerName)){
+          player = p;
+        }
+      }
     }
-    else {
-      player.move(direction);
+    //move the player
+    if(player != null){
+      player.move(player.getPosition().getAdjacencies().get(direction));
+    }
+    else{
+      throw new NonExistingPlayerException();
     }
   }
 
@@ -54,7 +57,7 @@ public class PlayerController {
    * the square corresponding to the discarded card's equivalent ammo colour.
    */
   public void spawn(Player player) {
-    player.getInventory().addToInventory(gameBoardReference.getDecks().drawPowerUp());
+    player.getInventory().addToInventory(player.getMatch().getDecks().drawPowerUp());
     //ask player to choose a power up card to discard
     //playerView.chooseSpawnLocation??
   }
@@ -80,5 +83,18 @@ public class PlayerController {
    * the corresponding resources to the inventory.
    */
   public void grab(Player player) {
+  }
+
+  public static class InvalidMovementException extends RuntimeException{
+    @Override
+    public String toString(){
+      return"This movement is not possible";
+    }
+  }
+  public static class NonExistingPlayerException extends RuntimeException{
+    @Override
+    public String toString(){
+      return"This player does not exist";
+    }
   }
 }

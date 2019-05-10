@@ -20,6 +20,16 @@ public class PlayerView {
   private ActionSetView actionSet;
 
   /**
+   *
+   */
+  private String name;
+
+  public String getName(){
+    return name;
+  }
+
+
+  /**
    * Display the player board, the inventory and the set of available actions.
    */
   public void displayPlayer() {

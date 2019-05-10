@@ -16,7 +16,14 @@ public class Player {
     this.name = name;
     this.character = character;
     this.points = 0;
+    this.state = 0;
+    match = gameBoard;
   }
+
+  /**
+   * The match the player is part of
+   */
+  private GameBoard match;
 
   /**
    * The player's name
@@ -48,9 +55,25 @@ public class Player {
   private Integer points;
 
   /**
+   * The state the players is in, which determines the possible actions
+   */
+  private int state;
+
+  /**
    *
    */
   private GameBoard gameBoardReference;
+
+  public int getState(){
+    return state;
+  }
+
+  /**
+   *
+   */
+  public GameBoard getMatch(){
+    return match;
+  }
 
   /**
    * @return the player's character

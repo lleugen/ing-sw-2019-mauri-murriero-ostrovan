@@ -31,6 +31,13 @@ public class GameBoardController {
   private List<GameBoard> activeGames;
 
   /**
+   *
+   */
+  public List<GameBoard> getActiveGames(){
+    return activeGames;
+  }
+
+  /**
    * This method creates a player class (model) for each player who joins the
    * game and adds it to the "players" list in the game board model.
    * A player is created with an inventory containing only one power up
