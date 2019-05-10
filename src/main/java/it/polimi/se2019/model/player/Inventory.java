@@ -1,9 +1,6 @@
 package it.polimi.se2019.model.player;
 
-import it.polimi.se2019.model.grabbable.Ammo;
-import it.polimi.se2019.model.grabbable.Grabbable;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.grabbable.*;
 import it.polimi.se2019.model.deck.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,12 +16,17 @@ import java.util.List;
  */
 public class Inventory {
   public Inventory(Decks decks) {
-      ammo = new Ammo();//il costruttore di ammo deve accettare 3 parametri, ma mettendoli da errore
-      weapons = new ArrayList<Weapon>();
-      powerUps = new ArrayList<PowerUpCard>();
-      this.addToInventory(decks.drawPowerUp());
+    decksReference = decks;
+    ammo = new Ammo(1, 1, 1);
+    weapons = new ArrayList<Weapon>();
+    powerUps = new ArrayList<PowerUpCard>();
+    this.addPowerUpToInventory(decks.drawPowerUp());
   }
 
+  /**
+   * Reference to the decks
+   */
+  private Decks decksReference;
   /**
    * The player's ammo box
    */
@@ -44,9 +46,7 @@ public class Inventory {
    * @return a copy of the player's ammo box
    */
   public Ammo getAmmo() {
-    Ammo ammoCopy = null;
-    /*clone ammo*/
-    return ammoCopy;
+    return new Ammo(getAmmo().getRed(), getAmmo().getBlue(), getAmmo().getYellow());
   }
 
   /**
@@ -68,38 +68,39 @@ public class Inventory {
   }
 
   /**
-   * Add a new element to the inventory
-   * The right function for each type of item is automatically chosen
-   *
-   * @param item Element to add to the inventory
+   * Add a new weapon to the inventory
    */
-  public void addToInventory(Grabbable item) {
-
-
+  public void addWeaponToInventory(Weapon item){
+    if(weapons.size()<4){
+      weapons.add(item);
+    }
+    else{
+      throw new InventoryFullException();
+    }
   }
 
   /**
-   * @param powerUpCard is the card to be added to the inventory
+   * Add a power up card to the inventory
    */
-  private void addPowerUp(PowerUpCard powerUpCard) {
-    powerUps.add(powerUpCard);
+  public void addPowerUpToInventory(PowerUpCard item){
+    if(powerUps.size()<4){
+      powerUps.add(item);
+    }
+    else{
+      throw new InventoryFullException();
+    }
   }
 
   /**
-   * @param weapon is the weapon to be added to the player's inventory
+   * Add ammo tile to inventory
    */
-  private void addWeapon(Weapon weapon) {
-    weapons.add(weapon);
-  }
-
-  /**
-   * @param ammunition is the ammo to be added to the player's ammo box
-   */
-  private void addAmmo(Ammo ammunition) {
-    /*bisogna definire i metodi addColour di ammo*/
-    ammo.addRed(ammunition.getRed());
-    ammo.addBlue(ammunition.getBlue());
-    ammo.addYellow(ammunition.getYellow());
+  public void addAmmoTileToInventory(AmmoTile item){
+    ammo.addRed(item.getAmmo().getRed());
+    ammo.addBlue(item.getAmmo().getBlue());
+    ammo.addYellow(item.getAmmo().getYellow());
+    if(item.getPowerUp()){
+      addPowerUpToInventory(decksReference.drawPowerUp());
+    }
   }
 
   /**
@@ -113,7 +114,6 @@ public class Inventory {
    * @param ammunition is the ammo to be subtracted from the players inventory
    */
   public void useAmmo(Ammo ammunition) {
-      /*bisogna definire i metodi useColour di ammo*/
       this.ammo.useRed(ammunition.getRed());
       this.ammo.useBlue(ammunition.getBlue());
       this.ammo.useYellow(ammunition.getYellow());
@@ -124,5 +124,14 @@ public class Inventory {
    */
   public void discardWeapon(Weapon weapon) {
       this.weapons.remove(weapon);
+  }
+
+
+  public static class InventoryFullException extends RuntimeException
+  {
+    @Override
+    public String toString() {
+      return "Inventory is full.";
+    }
   }
 }

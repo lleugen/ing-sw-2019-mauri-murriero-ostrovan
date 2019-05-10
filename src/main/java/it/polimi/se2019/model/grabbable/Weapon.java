@@ -34,6 +34,8 @@ public class Weapon extends Grabbable {
    */
   private String description_eng;
   private String description_ita;
+  private String description;
+  private String name;
 
   public String getDescription_eng() {
     return description_eng;

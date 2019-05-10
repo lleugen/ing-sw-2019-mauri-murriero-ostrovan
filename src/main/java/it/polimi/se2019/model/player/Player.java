@@ -137,7 +137,6 @@ public class Player {
           else
             i++;
       }
-      respawn();
     }
   }
 
@@ -145,9 +144,9 @@ public class Player {
    * Bring the player back into the game : set damage to 0, draw a power up card, discard a power up card
    * and spawn in the spawn point of the card's equivalent ammo colour
    */
-  public void respawn() {
+  public void respawn(Square spawnPoint) {
     board.getDamageReceived().clear();
-
+    position = spawnPoint;
   }
 
   /**

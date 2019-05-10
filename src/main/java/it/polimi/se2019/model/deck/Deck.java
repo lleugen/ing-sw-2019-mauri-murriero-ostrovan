@@ -15,18 +15,29 @@ import java.util.List;
  * shuffled and placed as the available deck
  */
 public class Deck<G extends Grabbable> {
+
   /**
-   * Init a new deck
+   * List of available cards, those that have not been drawn yet
+   */
+  private List<G> discarded;
+
+  /**
+   * List of the cards than have been drawn
+   */
+  private List<G> available;
+
+  /**
+   * Initialise a new deck
    *
    * @param elements The deck's content.
    * @throws NullPointerException if elements is not a valid list
    *                              __WARN__ Elements are NOT cloned
    */
-  public Deck(List<List<G>> elements) {
+  public Deck(List<G> elements) {
     this.discarded.addAll(elements);
     this.available.clear();
-    this.swap();
     this.shuffle();
+    this.swap();
   }
 
   /**
@@ -39,33 +50,26 @@ public class Deck<G extends Grabbable> {
    * @throws EmptyDeckException if both available list and discarded list
    *                            are empty
    */
-  public synchronized List<G> draw() {
+  public synchronized G draw() {
     if (this.available.isEmpty()) {
       if (this.discarded.isEmpty()) {
         throw new EmptyDeckException();
       }
       else {
-        this.swap();
         this.shuffle();
+        this.swap();
       }
     }
-
-    return this.available.remove(0);
+    G card = available.get(0);
+    available.remove(0);
+    return card;
   }
 
-  /**
-   * Discard an element.
-   * The element is inserted in the discarded list, which is shuffled when
-   * the available list becomes empty.
-   *
-   * @param discarded The element to discard to the deck discarded zone
-   */
-  public synchronized void discard(List<G> discarded) {
-    this.discarded.add(discarded);
+  public void discard(G card){
+    discarded.add(card);
   }
-
   /**
-   * Shuffle the AVAILABLE list
+   * Shuffle the discarded list
    */
   private synchronized void shuffle() {
     Collections.shuffle(this.discarded);
@@ -76,7 +80,7 @@ public class Deck<G extends Grabbable> {
    * available list.
    */
   private synchronized void swap() {
-    List<List<G>> tmp;
+    List<G> tmp;
     tmp = this.discarded;
     this.discarded = this.available;
     this.available = tmp;
