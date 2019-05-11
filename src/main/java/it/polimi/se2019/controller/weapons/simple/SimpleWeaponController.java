@@ -1,6 +1,9 @@
 package it.polimi.se2019.controller.weapons.simple;
 
 import it.polimi.se2019.controller.weapons.WeaponController;
+import it.polimi.se2019.model.player.Player;
+
+import java.util.List;
 
 /**
  * This is an abstract marker class, it doesn't have its own methods
@@ -9,6 +12,8 @@ import it.polimi.se2019.controller.weapons.WeaponController;
  * Simple weapons only have one possible effect.
  */
 public abstract class SimpleWeaponController extends WeaponController {
-  public SimpleWeaponController() {
-  }
+    /**
+     * Make a list of all possible targets.
+     */
+    public abstract List<Player> findTargets(Player shooter);
 }

@@ -12,10 +12,11 @@ import java.util.List;
  * Player contains all the player data, and related collections (eg: Inventory)
  */
 public class Player {
-  public Player(String name, String character, GameBoard gameBoard) {
+  public Player(String name, String character) {
     this.name = name;
     this.character = character;
     this.points = 0;
+    this.state = 0;
   }
 
   /**
@@ -48,27 +49,25 @@ public class Player {
   private Integer points;
 
   /**
+   * The state the players is in, which determines the possible actions
+   */
+  private int state;
+
+  /**
    *
    */
   private GameBoard gameBoardReference;
+
+  public int getState(){
+    return state;
+  }
+
 
   /**
    * @return the player's character
    */
   public String getCharacter() {
     return this.character;
-  }
-
-  /**
-   * @return the player's state, which determines the available actions
-   */
-  public void getState() {
-  }
-
-  /**
-   * Set the player's state, which determines the available actions
-   */
-  public void setState(PlayerStateController state) {
   }
 
   /**

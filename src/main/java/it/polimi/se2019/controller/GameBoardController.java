@@ -7,7 +7,13 @@ import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
 import it.polimi.se2019.model.deck.Deck;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.model.server.GameBoard;
+import it.polimi.se2019.view.player.PlayerView;
+
+import java.lang.management.GarbageCollectorMXBean;
+import java.util.List;
 
 /**
  * The game board controller is the game manager, it initializes a game by
@@ -17,20 +23,34 @@ import it.polimi.se2019.model.player.Player;
  */
 public class GameBoardController {
   public GameBoardController() {
+
   }
 
   /**
-   * The player who's turn it is currently
+   *
    */
-  private Player currentPlayer;
+  private List<Player> players;
+  private List<PlayerView> clients;
+  private GameBoard gameBoard;
+  private List<WeaponController> weaponControllers;
 
   /**
-   * This method generates one of the four possible maps for the game based
-   * on the first player's input
-   *
-   * @param mapType is an integer that specifies the map to be generated
+   * getter methods for each relevant attribute
    */
-  public void generateMap(int mapType) {
+  public List<Player> getPlayers(){
+    return players;
+  }
+
+  public List<PlayerView> getClients(){
+    return clients;
+  }
+
+  public GameBoard getGameBoard(){
+    return gameBoard;
+  }
+
+  public List<WeaponController> getWeaponControllers(){
+    return weaponControllers;
   }
 
   /**
@@ -40,7 +60,9 @@ public class GameBoardController {
    * card and a player board with empty damage and marks lists,
    * 0 deaths, "8 6 4 2 1 1" death value and board side '0'.
    */
+  //!i player devono essere già inizializzati, questo va nel server
   public void initializePlayers() {
+
   }
 
   /**
@@ -1664,18 +1686,18 @@ public class GameBoardController {
   }
 
   /**
+   * This method starts the game by generating a map, initializing players
+   * and starting the main game loop
+   */
+  public void startGame(List<Player> players) {
+  }
+
+  /**
    * This method is the main game loop, it makes players do actions on their
    * turn, replaces resources that have been picked up during a turn and
    * resolves player deaths.
    */
   public void playTurns() {
-  }
-
-  /**
-   * This method starts the game by generating a map, initializing players
-   * and starting the main game loop
-   */
-  public void startGame() {
   }
 
   /**
