@@ -10,6 +10,7 @@ import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.server.GameBoard;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.lang.management.GarbageCollectorMXBean;
 import java.util.List;
@@ -26,16 +27,37 @@ public class GameBoardController {
   }
 
   /**
-   * A list of all the active matches
+   *
    */
-  private List<GameBoard> activeGames;
+  private List<Player> players;
+  public List<Player> getPlayers(){
+    return players;
+  }
 
   /**
    *
    */
-  public List<GameBoard> getActiveGames(){
-    return activeGames;
+  private List<PlayerView> clients;
+  public List<PlayerView> getClients(){
+    return clients;
   }
+
+  /**
+   *
+   */
+  private GameBoard gameBoard;
+  public GameBoard getGameBoard(){
+    return gameBoard;
+  }
+
+  /**
+   *
+   */
+  private List<WeaponController> weaponControllers;
+  public List<WeaponController> getWeaponControllers(){
+    return weaponControllers;
+  }
+
 
   /**
    * This method creates a player class (model) for each player who joins the
@@ -1669,18 +1691,18 @@ public class GameBoardController {
   }
 
   /**
+   * This method starts the game by generating a map, initializing players
+   * and starting the main game loop
+   */
+  public void startGame() {
+  }
+
+  /**
    * This method is the main game loop, it makes players do actions on their
    * turn, replaces resources that have been picked up during a turn and
    * resolves player deaths.
    */
-  public void playTurns(GameBoard board) {
-  }
-
-  /**
-   * This method starts the game by generating a map, initializing players
-   * and starting the main game loop
-   */
-  public void startGame(GameBoard board) {
+  public void playTurns() {
   }
 
   /**
@@ -1688,6 +1710,6 @@ public class GameBoardController {
    * number of skulls on the scoreboard reaches 0 after this final round the
    * scoreboard will be resolved and the game will end
    */
-  public void playFrenzyTurn(GameBoard board) {
+  public void playFrenzyTurn() {
   }
 }

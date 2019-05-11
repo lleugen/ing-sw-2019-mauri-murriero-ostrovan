@@ -55,6 +55,11 @@ public abstract class Square {
   /**
    *
    */
+  public abstract Grabbable grab(int index);
+
+  /**
+   *
+   */
   protected void setAdjacencies(List<Direction> adj){
     adjacencies = adj;
   }

@@ -21,6 +21,22 @@ public class Map {
   private Square[][] mapSquares;
 
   /**
+   *
+   */
+  private Square redSpawnPoint;
+  private Square blueSpawnPoint;
+  private Square yellowSpawnPoint;
+  public Square getRedSpawnPoint(){
+    return redSpawnPoint;
+  }
+  public Square getBlueSpawnPoint(){
+    return blueSpawnPoint;
+  }
+  public Square getYellowSpawnPoint(){
+    return yellowSpawnPoint;
+  }
+
+  /**
    * Init a new map
    *
    * @param mapType The type of the map to generate
@@ -47,7 +63,7 @@ public class Map {
     else if(mapType == 1){
       mapSquares[0][0] = new AmmoSquare("blue", null);
       mapSquares[0][1] = new AmmoSquare("blue", null);
-      mapSquares[0][2] = new AmmoSquare("blue", null);
+      mapSquares[0][2] = new SpawnSquare("blue", null);
       mapSquares[0][3] = new AmmoSquare("gray", null);
 
       mapSquares[1][0] = new SpawnSquare("red", null);
@@ -93,6 +109,9 @@ public class Map {
       mapSquares[2][3] = new SpawnSquare("yellow", null);
     }
     root = mapSquares[0][0];
+    redSpawnPoint = mapSquares[0][2];
+    blueSpawnPoint = mapSquares[1][0];
+    yellowSpawnPoint = mapSquares[2][3];
     //add square adjacencies
     for(int i = 0; i<4; i++){
       for(int j = 0; j<3; j++){
