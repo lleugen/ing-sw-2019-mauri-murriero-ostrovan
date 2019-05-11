@@ -25,16 +25,16 @@ public class PlayerController {
 
   private GameBoardController gameBoardController;
   private PlayerView client;
+  private Player player;
 
   /**
    *
    */
-  public PlayerController(GameBoardController gameBoard, PlayerView c) {
+  public PlayerController(GameBoardController gameBoard, Player p, PlayerView c) {
     gameBoardController = gameBoard;
     client = c;
+    player = p;
   }
-
-
 
   /**
    * Identify a player given his name
@@ -103,7 +103,6 @@ public class PlayerController {
   public void shoot(String playerName) {
     String weapon = client.chooseWeapon();
     WeaponController weaponController = null;
-    List<Player> targets = weaponController.findTargets(identifyPlayer(playerName));
     List<String> targetNames = null;
     List<String> chosenTargetNames = null;
     List<Player> chosenTargets = null;
@@ -113,6 +112,10 @@ public class PlayerController {
         weaponController = w;
       }
     }
+
+    //weapon will choose the targets, but weapon needs a reference to the client
+    /*
+    List<Player> targets = weaponController.findTargets(identifyPlayer(playerName));
     for(Player p : targets){
       targetNames.add(p.getName());
     }
@@ -120,7 +123,10 @@ public class PlayerController {
     for(String s : chosenTargetNames){
       chosenTargets.add(identifyPlayer(s));
     }
-    weaponController.shootTargets(chosenTargets);
+    */
+    weaponController.shootTargets();
+
+    weaponController.
   }
 
   /**

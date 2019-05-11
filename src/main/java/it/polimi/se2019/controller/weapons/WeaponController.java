@@ -48,11 +48,6 @@ public abstract class WeaponController {
   }
 
   /**
-   * Make a list of all possible targets.
-   */
-  public abstract List<Player> findTargets(Player shooter);
-
-  /**
    * Choose which targets to shoot.
    *
    * @param possibleTargets ???
