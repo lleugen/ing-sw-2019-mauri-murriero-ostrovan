@@ -249,4 +249,21 @@ public class Map {
     positionCoordinates.add(yCoordinate);
     return positionCoordinates;
   }
+
+  /**
+   * Calculate the Manhattan distance between two squares
+   */
+  public Integer calculateDistance(Square a, Square b){
+    List<Integer> aCoordinates = getSquareCoordinates(a);
+    List<Integer> bCoordinates = getSquareCoordinates(b);
+    Integer xDifference = aCoordinates.get(0) - bCoordinates.get(0);
+    if(xDifference < 0){
+      xDifference = -xDifference;
+    }
+    Integer yDifference = aCoordinates.get(1) - bCoordinates.get(1);
+    if(yDifference < 0){
+      yDifference = -yDifference;
+    }
+    return(xDifference + yDifference);
+  }
 }
