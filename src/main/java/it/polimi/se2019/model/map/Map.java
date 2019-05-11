@@ -1,5 +1,9 @@
 package it.polimi.se2019.model.map;
 
+import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.model.server.GameBoard;
+import org.ietf.jgss.GSSManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +18,11 @@ public class Map {
    *
    */
   private Square root;
+
+  /**
+   * the game board this map belongs to
+   */
+  private GameBoard gameBoard;
 
   /**
    *
@@ -43,7 +52,8 @@ public class Map {
    *
    * @throws UnknownMapTypeException if the type is not valid
    */
-  public Map(int mapType) throws UnknownMapTypeException{
+  public Map(int mapType, GameBoard g) throws UnknownMapTypeException{
+    gameBoard = g;
     if(mapType == 0){
       mapSquares[0][0] = new AmmoSquare("blue", null);
       mapSquares[0][1] = new AmmoSquare("blue", null);
@@ -181,5 +191,62 @@ public class Map {
    */
   public Square getRoot() {
     return this.root;
+  }
+
+  /**
+   * Get a list of visible squares from one square
+   */
+  public List<Square> getVisibleSquares(Square position){
+    List<Square> visibleSquares = new ArrayList<>();
+    List<String> visibleRooms = new ArrayList<>();
+    for(Direction d : position.getAdjacencies()){
+      if(!d.isBlocked()){
+        visibleRooms.add(d.getSquare().getIdRoom());
+      }
+    }
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<2; j++){
+        for(String s : visibleRooms){
+          if(mapSquares[i][j].getIdRoom().equals(s)){
+            visibleSquares.add(mapSquares[i][j]);
+          }
+        }
+      }
+    }
+    return visibleSquares;
+  }
+
+  /**
+   * Get a list of all visible players from a square
+   */
+  public List<Player> getVisiblePlayers(Square position){
+    List<Player> visiblePlayers = new ArrayList<>();
+    List<Square> visibleSquares = getVisibleSquares(position);
+    for(Player p : gameBoard.getPlayers()){
+      if(visibleSquares.contains(p.getPosition())){
+        visiblePlayers.add(p);
+      }
+    }
+    return visiblePlayers;
+  }
+
+  /**
+   * get the coordinates of a square
+   */
+  public List<Integer> getSquareCoordinates(Square position){
+    int xCoordinate = 0;
+    int yCoordinate = 0;
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<2; j++){
+        if(mapSquares[i][j].equals(position)){
+          xCoordinate = i;
+          yCoordinate = j;
+        }
+      }
+    }
+    List<Integer> positionCoordinates = new ArrayList<>();
+    positionCoordinates.add(xCoordinate);
+    positionCoordinates.add(yCoordinate);
+    return positionCoordinates;
   }
 }

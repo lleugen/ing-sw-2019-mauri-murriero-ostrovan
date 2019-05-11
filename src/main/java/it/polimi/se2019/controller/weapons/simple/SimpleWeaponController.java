@@ -9,6 +9,5 @@ import it.polimi.se2019.controller.weapons.WeaponController;
  * Simple weapons only have one possible effect.
  */
 public abstract class SimpleWeaponController extends WeaponController {
-  public SimpleWeaponController() {
-  }
+
 }

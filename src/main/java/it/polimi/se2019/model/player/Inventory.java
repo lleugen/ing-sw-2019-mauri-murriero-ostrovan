@@ -67,6 +67,10 @@ public class Inventory {
     return powerUpsCopy;
   }
 
+  public void addItemToInventory(Grabbable item){
+
+  }
+
   /**
    * Add a new weapon to the inventory
    */

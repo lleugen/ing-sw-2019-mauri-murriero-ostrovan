@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
@@ -21,18 +22,20 @@ public abstract class WeaponController {
   private List<Player> targets;
 
   /**
+   * game board to which this weaponController belongs
+   */
+  private GameBoardController gameBoardController;
+
+  public GameBoardController getGameBoardController() {
+    return gameBoardController;
+  }
+
+  /**
    *
    */
   private String name;
   public String getName(){
     return name;
-  }
-
-  /**
-   * Weapons are created at the start of the game.
-   */
-  public WeaponController(String n) {
-    name = n;
   }
 
   /**
@@ -47,14 +50,14 @@ public abstract class WeaponController {
   /**
    * Make a list of all possible targets.
    */
-  public List<Player> findTargets(Player shooter) {
-  }
+  public abstract List<Player> findTargets(Player shooter);
 
   /**
    * Choose which targets to shoot.
    *
    * @param possibleTargets ???
    */
+  //!non è necessario, va eliminato
   public List<Player> chooseTargets(List<Player> possibleTargets) {
 
   }

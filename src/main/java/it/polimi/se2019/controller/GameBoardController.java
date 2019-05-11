@@ -30,34 +30,28 @@ public class GameBoardController {
    *
    */
   private List<Player> players;
+  private List<PlayerView> clients;
+  private GameBoard gameBoard;
+  private List<WeaponController> weaponControllers;
+
+  /**
+   * getter methods for each relevant attribute
+   */
   public List<Player> getPlayers(){
     return players;
   }
 
-  /**
-   *
-   */
-  private List<PlayerView> clients;
   public List<PlayerView> getClients(){
     return clients;
   }
 
-  /**
-   *
-   */
-  private GameBoard gameBoard;
   public GameBoard getGameBoard(){
     return gameBoard;
   }
 
-  /**
-   *
-   */
-  private List<WeaponController> weaponControllers;
   public List<WeaponController> getWeaponControllers(){
     return weaponControllers;
   }
-
 
   /**
    * This method creates a player class (model) for each player who joins the
@@ -66,7 +60,8 @@ public class GameBoardController {
    * card and a player board with empty damage and marks lists,
    * 0 deaths, "8 6 4 2 1 1" death value and board side '0'.
    */
-  public void initializePlayers(GameBoard board) {
+  //!i player devono essere già inizializzati, questo va nel server
+  public void initializePlayers() {
 
   }
 
@@ -1694,7 +1689,7 @@ public class GameBoardController {
    * This method starts the game by generating a map, initializing players
    * and starting the main game loop
    */
-  public void startGame() {
+  public void startGame(List<Player> players) {
   }
 
   /**

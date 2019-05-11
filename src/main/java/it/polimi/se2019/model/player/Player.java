@@ -12,18 +12,12 @@ import java.util.List;
  * Player contains all the player data, and related collections (eg: Inventory)
  */
 public class Player {
-  public Player(String name, String character, GameBoard gameBoard) {
+  public Player(String name, String character) {
     this.name = name;
     this.character = character;
     this.points = 0;
     this.state = 0;
-    match = gameBoard;
   }
-
-  /**
-   * The match the player is part of
-   */
-  private GameBoard match;
 
   /**
    * The player's name
@@ -68,12 +62,6 @@ public class Player {
     return state;
   }
 
-  /**
-   *
-   */
-  public GameBoard getMatch(){
-    return match;
-  }
 
   /**
    * @return the player's character
