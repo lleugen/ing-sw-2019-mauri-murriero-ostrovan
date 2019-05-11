@@ -3,7 +3,7 @@ package it.polimi.se2019.model.grabbable;
 /**
  * Ammo tile represents an ammo tile that can be picked up from a square. It contains an ammo box and optionally a power up card
  */
-public class AmmoTile extends Grabbable {
+public class AmmoTile extends Grabbable{
   /**
    * The ammunition box contained in the ammo tile
    */
