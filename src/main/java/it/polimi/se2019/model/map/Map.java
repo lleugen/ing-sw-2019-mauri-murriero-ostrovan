@@ -1,11 +1,9 @@
 package it.polimi.se2019.model.map;
 
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.model.server.GameBoard;
-import org.ietf.jgss.GSSManager;
+import it.polimi.se2019.model.GameBoard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

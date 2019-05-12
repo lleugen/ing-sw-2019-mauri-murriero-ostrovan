@@ -65,7 +65,7 @@ public class Decks {
    * @throws EmptyDeckException if no more card are available to draw
    */
   public AmmoTile drawAmmoTile() throws EmptyDeckException {
-    Grabbable toReturn;
+    AmmoTile toReturn;
     toReturn = this.ammoDeck.draw();
     return toReturn;
   }

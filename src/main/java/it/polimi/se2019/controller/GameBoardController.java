@@ -7,12 +7,10 @@ import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
 import it.polimi.se2019.model.deck.Deck;
 import it.polimi.se2019.model.grabbable.Weapon;
-import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.model.server.GameBoard;
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerView;
 
-import java.lang.management.GarbageCollectorMXBean;
 import java.util.List;
 
 /**
@@ -1689,7 +1687,9 @@ public class GameBoardController {
    * This method starts the game by generating a map, initializing players
    * and starting the main game loop
    */
-  public void startGame(List<Player> players) {
+  public void startGame() {
+    playTurns();
+    playFrenzyTurn();
   }
 
   /**

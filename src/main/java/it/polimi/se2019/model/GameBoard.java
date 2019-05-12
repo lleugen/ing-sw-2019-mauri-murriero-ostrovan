@@ -1,4 +1,4 @@
-package it.polimi.se2019.model.server;
+package it.polimi.se2019.model;
 
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.map.Map;

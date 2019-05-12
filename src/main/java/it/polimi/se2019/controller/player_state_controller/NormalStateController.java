@@ -1,16 +1,15 @@
-package it.polimi.se2019.controller.player_state;
+package it.polimi.se2019.controller.player_state_controller;
 
 public class NormalStateController extends PlayerStateController {
   public NormalStateController() {
     turnActionLimit = 2;
-    availableActions = 2;
   }
 
   /**
    *
    */
   public void runAround() {
-    move(3);
+
   }
 
   /**
