@@ -46,12 +46,12 @@ public class PlayerStateController {
         player.getInventory().addPowerUpToInventory(gameBoardController.getGameBoard().getDecks().drawPowerUp());
         //ask player to choose a power up card to discard, return a colour
         //client will have to be the PlayerView stub
-        String colour = client.chooseSpawnLocation();
-        if(colour.equals("red")){
+        int discardedCard = client.chooseSpawnLocation();
+        if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
             //spawn on the red spawnpoint
             player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
         }
-        else if(colour.equals("blue")){
+        else if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getBlue() == 1){
             //spawn on the blue spawnpoint
             player.respawn(gameBoardController.getGameBoard().getMap().getBlueSpawnPoint());
         }
@@ -59,6 +59,7 @@ public class PlayerStateController {
             //spawn on the yellow spawnpoint
             player.respawn(gameBoardController.getGameBoard().getMap().getYellowSpawnPoint());
         }
+        player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(discardedCard));
     }
 
     /**
