@@ -10,13 +10,23 @@ import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerStateController {
+public abstract class PlayerStateController {
 
-    private Player player;
-    private PlayerView client;
-    private GameBoardController gameBoardController;
+    protected Player player;
+    protected PlayerView client;
+    protected GameBoardController gameBoardController;
+    protected Integer availableActions;
+
+    public Integer getAvailableActions(){
+        return  availableActions;
+    }
+
+    public abstract void runAround();
+    public abstract void grabStuff();
+    public abstract void shootPeople();
 
     /**
      * Move the player 1 square in one of four directions
@@ -70,9 +80,6 @@ public class PlayerStateController {
     public void shoot() {
         String weapon = client.chooseWeapon();
         WeaponController weaponController = null;
-        List<String> targetNames = null;
-        List<String> chosenTargetNames = null;
-        List<Player> chosenTargets = null;
 
         for(WeaponController w : gameBoardController.getWeaponControllers()){
             if(w.getName().equals(weapon)){
@@ -80,18 +87,7 @@ public class PlayerStateController {
             }
         }
 
-        //weapon will choose the targets, but weapon needs a reference to the client
-    /*
-    List<Player> targets = weaponController.findTargets(identifyPlayer(playerName));
-    for(Player p : targets){
-      targetNames.add(p.getName());
-    }
-    chosenTargetNames = client.chooseTargets(targetNames);
-    for(String s : chosenTargetNames){
-      chosenTargets.add(identifyPlayer(s));
-    }
-    */
-
+        weaponController.fire(player, client);
     }
 
     /**
@@ -100,22 +96,28 @@ public class PlayerStateController {
      * and set the weapon as loaded.
      */
     public void reload() {
-        List<String> playersWeapons = null;
+        List<String> playersWeapons = new ArrayList<>();
         String weaponToReloadName = null;
-        List<Integer> cardsToUseIndexes = null;
-        List<PowerUpCard> cardsToUse = null;
+        List<Integer> cardsToUseIndexes = new ArrayList<>();
+        List<PowerUpCard> cardsToUse = new ArrayList<>();
 
+        //make a list of the player's weapons
         for(Weapon w : player.getInventory().getWeapons()){
             playersWeapons.add(w.getName());
         }
-        weaponToReloadName = client.chooseWeaponToReaload(playersWeapons);
+        //choose which one to reload
+        weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
 
+        //get the weapon given its name
         for(Weapon w : player.getInventory().getWeapons()){
             if(w.getName().equals(weaponToReloadName)){
+                //choose which power up cards to use for reloading
                 cardsToUseIndexes = client.choosePowerUpCardsForReload();
+                //get the chosen cards
                 for(int i : cardsToUseIndexes){
                     cardsToUse.add(player.getInventory().getPowerUps().get(i));
                 }
+                //reload the weapon
                 w.reload(cardsToUse, player.getInventory().getAmmo());
             }
         }

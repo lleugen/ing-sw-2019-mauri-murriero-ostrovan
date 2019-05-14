@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.controller.weapons.alternative_effects.*;
 import it.polimi.se2019.controller.weapons.optional_effects.*;
@@ -19,18 +20,42 @@ import java.util.List;
  * the number of skulls reaches 0, after that it runs the final frenzy round and
  * ends the game.
  */
-public class GameBoardController {
-  public GameBoardController() {
-
+public class GameBoardController{
+  public GameBoardController(List<Player> p, List<PlayerController> c, List<PlayerView> v, GameBoard g, ControllerFacadeImplementation f) {
+    players = p;
+    playerControllers = c;
+    clients = v;
+    gameBoard = g;
+    controllerFacade = f;
+    weaponControllers.add(new CyberBladeController());
+    weaponControllers.add(new ElectroscytheController());
+    weaponControllers.add(new PlasmaGunController());
+    weaponControllers.add(new GrenadeLauncherController());
+    weaponControllers.add(new RocketLauncherController());
+    weaponControllers.add(new HellionController());
+    weaponControllers.add(new TractorBeamController());
+    weaponControllers.add(new LockRifleController());
+    weaponControllers.add(new  VortexCannonController());
+    weaponControllers.add(new MachineGunController());
+    weaponControllers.add(new ThorController());
+    weaponControllers.add(new HeatSeekerController());
+    weaponControllers.add(new WhisperController());
+    weaponControllers.add(new FurnaceController());
+    weaponControllers.add(new RailGunController());
+    weaponControllers.add(new ShotgunController());
+    weaponControllers.add(new ZX2Controller());
+    weaponControllers.add(new FlameThrowerController());
+    weaponControllers.add(new PowerGloveController());
+    weaponControllers.add(new ShockwaveController());
+    weaponControllers.add(new SledgeHammerController());
   }
 
-  /**
-   *
-   */
   private List<Player> players;
+  private List<PlayerController> playerControllers;
   private List<PlayerView> clients;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
+  private ControllerFacadeImplementation controllerFacade;
 
   /**
    * getter methods for each relevant attribute
@@ -51,17 +76,9 @@ public class GameBoardController {
     return weaponControllers;
   }
 
-  /**
-   * This method creates a player class (model) for each player who joins the
-   * game and adds it to the "players" list in the game board model.
-   * A player is created with an inventory containing only one power up
-   * card and a player board with empty damage and marks lists,
-   * 0 deaths, "8 6 4 2 1 1" death value and board side '0'.
-   */
-  //!i player devono essere già inizializzati, questo va nel server
-  public void initializePlayers() {
 
-  }
+
+
 
   /**
    * Initializes the whole set of weapons and adds them to the deck
@@ -1698,6 +1715,14 @@ public class GameBoardController {
    * resolves player deaths.
    */
   public void playTurns() {
+    int currentPlayer = 0;
+    while(gameBoard.getKillScoreBoard().gameRunning()){
+      clients.get(currentPlayer).playTurn(ControllerFacadeImplementation controllerFacade, playerControllers.get(currentPlayer).getState().getAvailableActions());
+      currentPlayer++;
+      if(currentPlayer == players.size()){
+        currentPlayer = 0;
+      }
+    }
   }
 
   /**

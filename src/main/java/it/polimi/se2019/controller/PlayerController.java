@@ -1,12 +1,6 @@
 package it.polimi.se2019.controller;
 
 import it.polimi.se2019.controller.player_state_controller.*;
-import it.polimi.se2019.controller.weapons.WeaponController;
-import it.polimi.se2019.model.grabbable.AmmoTile;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
-import it.polimi.se2019.model.map.SpawnSquare;
-import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
@@ -43,23 +37,11 @@ public class PlayerController {
     state = stateControllerList.get(0);
   }
 
-  /*
-   * Identify a player given his name
-   //non serve più questo metodo
-  public Player identifyPlayer(String playerName){
-    Player player = null;
-    for(Player p : gameBoardController.getPlayers()){
-      if(p.getName().equals(playerName)){
-        player = p;
-      }
-    }
-    if(player != null){
-      return player;
-    }
-    else{
-      throw new NonExistingPlayerException();
-    }
-  }*/
+  public PlayerStateController getState(){
+    return state;
+  }
 
-
+  public PlayerView getClient(){
+    return client;
+  }
 }

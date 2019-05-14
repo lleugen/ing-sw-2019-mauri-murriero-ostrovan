@@ -1,12 +1,32 @@
 package it.polimi.se2019.view.player;
 
+import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
+import it.polimi.se2019.controller.ControllerFacadeImplementation;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
   public PlayerView(){
+  }
+
+  /**
+   * reference to the controller
+   */
+  ControllerFacadeImplementation controller;
+
+  /**
+   * Take turn
+   */
+  public void playTurn(Integer availableActions){
+    for(int i = 0; i<availableActions; i++){
+      String chosenAction = chooseAction();
+      if(chosenAction.equals("run")){
+        controller
+      }
+      else if()
+    }
   }
 
   /**
@@ -29,8 +49,33 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   private String name;
 
+  private String character;
+
   public String getName(){
     return name;
+  }
+
+  public String getCharacter(){
+    return character;
+  }
+
+  private String chooseAction(){
+
+  }
+
+  /**
+   * @return int indicating the map type chosen
+   */
+  @Override
+  public int chooseMap(){
+    //ask
+    //return
+  }
+
+  @Override
+  public int chooseNumberOfPlayers(){
+    //ask
+    //return
   }
 
   /**
@@ -65,7 +110,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return the name of the weapon to reload
    */
   @Override
-  public List<String> chooseWeaponToReload(List<String> weapons){
+  public String chooseWeaponToReload(List<String> weapons){
 
   }
 

@@ -55,7 +55,7 @@ public abstract class Square {
   /**
    *
    */
-  public abstract Grabbable grab(int index);
+  public abstract <T extends Grabbable> T grab(int index);
 
   /**
    *

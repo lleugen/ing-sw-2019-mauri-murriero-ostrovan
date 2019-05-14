@@ -6,9 +6,24 @@ import java.rmi.RemoteException;
 
 public interface ViewFacadeInterfaceRMI extends Remote {
     /**
+     * make a player take his turn
+     */
+    void playTurn(Integer availableActions);
+
+    /**
      * @return index of the power up card to discard
      */
     int chooseSpawnLocation();
+
+    /**
+     * Choose map type for the match
+     */
+    int chooseMap();
+
+    /**
+     * choose how many players will be in the game
+     */
+    int chooseNumberOfPlayers();
 
     /**
      * @return chosen weapon name
@@ -25,7 +40,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
      * @param weapons that can be reloaded
      * @return the name of the weapon to reload
      */
-    List<String> chooseWeaponToReload(List<String> weapons);
+    String chooseWeaponToReload(List<String> weapons);
 
     /**
      * @return a list of integers indicating which cards from the player's inventory to use when reloading

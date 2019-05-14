@@ -47,12 +47,11 @@ public class GameBoard {
    *
    * @throws NullPointerException if players contains a null player
    */
-  public GameBoard(int mapType, List<Player> players, Integer firstPlayer){
+  public GameBoard(int mapType, List<Player> players){
     this.killScoreBoard = new KillScoreBoard();
-    this.firstPlayer = firstPlayer;
     this.currentPlayer = firstPlayer;
     try{
-      this.map = new Map(mapType);
+      this.map = new Map(mapType, this);
     }
     catch (UnknownMapTypeException exception){
       //handle exception

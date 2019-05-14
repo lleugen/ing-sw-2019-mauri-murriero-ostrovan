@@ -4,6 +4,7 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,58 +12,55 @@ import java.util.List;
  * and non implemented findTargets and shootTargets
  */
 public abstract class WeaponController {
-  /**
-   * The list of all possible targets
-   */
-  private List<Player> possibleTargets;
 
-  /**
-   * Targets chosen by the player from the list of all possible targets.
-   */
-  private List<Player> targets;
-
-  /**
-   * game board to which this weaponController belongs
-   */
   private GameBoardController gameBoardController;
+  private String name;
+
+  public String getName(){
+    return name;
+  }
 
   public GameBoardController getGameBoardController() {
     return gameBoardController;
   }
 
   /**
-   *
-   */
-  private String name;
-  public String getName(){
-    return name;
-  }
-
-  /**
    * Create a list of valid targets, choose targets and shoot them.
    */
-  public void fire() {
-    possibleTargets = this.findTargets();
-    targets = this.chooseTargets(possibleTargets);
-    this.shootTargets(targets);
+  public void fire(Player player, PlayerView client) {
+    List<String> possibleTargetNames = new ArrayList<>();
+    List<Player> possibleTargets = new ArrayList<>();
+    List<String> chosenTargetNames = new ArrayList<>();
+    List<Player> chosenTargets = new ArrayList<>();
+
+    possibleTargets = findTargets(player);
+    for(Player p : possibleTargets){
+      possibleTargetNames.add(p.getName());
+    }
+
+    chosenTargetNames = client.chooseTargets(possibleTargetNames);
+    for(Player p : gameBoardController.getPlayers()){
+      if(chosenTargetNames.contains(p.getName())){
+        chosenTargets.add(p);
+      }
+    }
+
+    shootTargets(chosenTargets);
   }
 
   /**
-   * Choose which targets to shoot.
-   *
-   * @param possibleTargets ???
+   * Find all possible targets
    */
-  //!non è necessario, va eliminato
-  public List<Player> chooseTargets(List<Player> possibleTargets) {
+  public abstract List<Player> findTargets(Player shooter);
 
-  }
+  /**
+   * Choose targets from the list of possible targets
+   */
+  public abstract List<Player> chooseTargets(List<Player> possibleTargets);
 
   /**
    * Apply the weapon's effects on selected targets.
-   *
-   * @param targets ???
    */
-  public void shootTargets(List<Player> targets) {
-  }
+  public abstract void shootTargets(List<Player> targets);
 
 }

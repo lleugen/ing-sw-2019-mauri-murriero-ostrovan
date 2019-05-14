@@ -15,5 +15,6 @@ public abstract class SimpleWeaponController extends WeaponController {
     /**
      * Make a list of all possible targets.
      */
+    @Override
     public abstract List<Player> findTargets(Player shooter);
 }

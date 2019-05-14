@@ -45,7 +45,7 @@ public class SpawnSquare extends Square {
    * @return The grabbed weapon
    */
   @Override
-  public Grabbable grab(int index) {
+  public Weapon grab(int index) {
     Weapon weaponCopy = weaponList.get(index);
     weaponList.remove(index);
     return weaponCopy;
