@@ -27,39 +27,43 @@ public class CLIView implements RemoteView {
 
         switch (gameMap.getMapType()){
             case 0:
+                mapString =  "Game map: (» = doors)";
                 mapString += "╔===========╗    \n";
                 mapString += "║ A   B   C ║    \n";
-                mapString += "╠ . ===== . ╬===╗\n";
-                mapString += "║ D   E   F . G ║    . -> doors\n";
-                mapString += "╚===╦ . ====╣   ║\n";
-                mapString += "    ║ H   I . J ║\n";
+                mapString += "╠ » ===== » ╬===╗\n";
+                mapString += "║ D   E   F » G ║\n";
+                mapString += "╚===╦ » ====╣   ║\n";
+                mapString += "    ║ H   I » J ║\n";
                 mapString += "    ╚=======╩===╝\n";
                 break;
             case 1:
+                mapString =  "Game map: (» = doors)";
                 mapString += "╔===========╦===╗\n";
-                mapString += "║ A   B   C . D ║\n";
-                mapString += "╠ . ====╦ . ╩=.=╣\n";
-                mapString += "║ E   F ║ G   H ║    . -> doors\n";
-                mapString += "╚===╦ . ╣       ║\n";
-                mapString += "    ║ I . J   K ║\n";
+                mapString += "║ A   B   C » D ║\n";
+                mapString += "╠ » ====╦ » ╩ » ╣\n";
+                mapString += "║ E   F ║ G   H ║\n";
+                mapString += "╚===╦ » ╣       ║\n";
+                mapString += "    ║ I » J   K ║\n";
                 mapString += "    ╚===╩=======╝\n";
                 break;
             case 2:
+                mapString =  "Game map: (» = doors)";
                 mapString += "╔===╦=======╦===╗\n";
-                mapString += "║ A . B   C . D ║\n";
-                mapString += "║   ╠ . ╦ . ╩ . ╣\n";
-                mapString += "║ E ║ F ║ G   H ║    . -> doors\n";
-                mapString += "╠ . ╩ . ╣       ║\n";
-                mapString += "║ I   J . K   L ║\n";
+                mapString += "║ A » B   C » D ║\n";
+                mapString += "║   ╠ » ╦ » ╩ » ╣\n";
+                mapString += "║ E ║ F ║ G   H ║\n";
+                mapString += "╠ » ╩ » ╣       ║\n";
+                mapString += "║ I   J » K   L ║\n";
                 mapString += "╚=======╩=======╝\n";
                 break;
             case 3:
+                mapString =  "Game map: (» = doors)";
                 mapString += "╔===╦=======╗    \n";
-                mapString += "║ A . B   C ║    \n";
-                mapString += "║   ╠ . = . ╩===╗\n";
-                mapString += "║ D ║ E   F . G ║    . -> doors\n";
-                mapString += "╠ . ╩ . ====╣   ║\n";
-                mapString += "║ H   I   J . K ║\n";
+                mapString += "║ A » B   C ║    \n";
+                mapString += "║   ╠ » = » ╬===╗\n";
+                mapString += "║ D ║ E   F » G ║\n";
+                mapString += "╠ » ╩ » ====╣   ║\n";
+                mapString += "║ H   I   J » K ║\n";
                 mapString += "╚===========╩===╝\n";
                 break;
         }
