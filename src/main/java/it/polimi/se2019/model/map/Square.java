@@ -60,6 +60,11 @@ public abstract class Square {
   /**
    *
    */
+  public abstract boolean isSpawnPoint();
+
+  /**
+   *
+   */
   protected void setAdjacencies(List<Direction> adj){
     adjacencies = adj;
   }
