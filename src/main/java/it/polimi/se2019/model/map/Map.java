@@ -30,6 +30,11 @@ public class Map {
   /**
    *
    */
+  private int mapType;
+
+  /**
+   *
+   */
   private Square redSpawnPoint;
   private Square blueSpawnPoint;
   private Square yellowSpawnPoint;
@@ -52,6 +57,7 @@ public class Map {
    */
   public Map(int mapType, GameBoard g) throws UnknownMapTypeException{
     gameBoard = g;
+    this.mapType = mapType;
     if(mapType == 0){
       mapSquares[0][0] = new AmmoSquare("blue", null);
       mapSquares[0][1] = new AmmoSquare("blue", null);
@@ -212,6 +218,13 @@ public class Map {
       }
     }
     return visibleSquares;
+  }
+
+  /**
+   *
+   */
+  public int getMapType(){
+    return this.mapType;
   }
 
   /**

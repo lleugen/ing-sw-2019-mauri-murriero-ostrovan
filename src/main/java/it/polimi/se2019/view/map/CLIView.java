@@ -14,6 +14,7 @@ public class CLIView implements RemoteView {
     @Override
     public void ShowMap() {
         Map gameMap = data.getGameMap();
+
     }
 
     @Override
