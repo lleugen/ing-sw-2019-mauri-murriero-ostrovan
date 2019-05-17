@@ -11,7 +11,7 @@ public class WhisperController extends SimpleWeaponController {
   public WhisperController() {
   }
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
     Map map = getGameBoardController().getGameBoard().getMap();
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Integer> positionCoordinates = map.getSquareCoordinates(shooter.getPosition());
@@ -24,5 +24,13 @@ public class WhisperController extends SimpleWeaponController {
       }
     }
     return visiblePlayers;
+  }
+
+  @Override
+  public void shootTargets(Player shooter, List<Player> targets){
+    for(Player p : targets){
+      p.takeDamage(shooter, 3);
+      p.takeMarks(shooter, 1);
+    }
   }
 }

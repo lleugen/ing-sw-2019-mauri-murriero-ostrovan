@@ -12,7 +12,7 @@ public class HeatSeekerController extends SimpleWeaponController {
   }
   Map map = getGameBoardController().getGameBoard().getMap();
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Player> targettablePlayers = new ArrayList<>();
     for(Player p : getGameBoardController().getGameBoard().getPlayers()){
@@ -21,5 +21,12 @@ public class HeatSeekerController extends SimpleWeaponController {
       }
     }
     return targettablePlayers;
+  }
+
+  @Override
+  public void shootTargets(Player shooter, List<Player> targets){
+    for(Player p : targets){
+      p.takeDamage(shooter, 3);
+    }
   }
 }

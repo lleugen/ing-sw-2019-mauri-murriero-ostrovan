@@ -152,7 +152,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return 0 for north, 1 for east, 2 for south or 3 for west
    */
   @Override
-  public Integer chooseMoveDirection(){
+  public Integer chooseDirection(){
 
   }
 

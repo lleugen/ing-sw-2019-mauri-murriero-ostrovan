@@ -53,10 +53,9 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     int chooseItemToGrab();
 
     /**
-     * @return which firing mode to use : 0 = basic, 1 = powered up
+     * @return a list of flags signaling which firing modes to use
      */
-    //!revisit this one
-    boolean chooseFiringMode();
+    List<Boolean> chooseFiringMode(List<Boolean> firingModes);
 
     /**
      * @param targettableSquareCoordinates the coordinates of all targettable squares
@@ -67,5 +66,5 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return 0 for north, 1 for east, 2 for south or 3 for west
      */
-    Integer chooseMoveDirection();
+    Integer chooseDirection();
 }

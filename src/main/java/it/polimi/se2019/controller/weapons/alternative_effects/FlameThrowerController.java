@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -14,8 +15,8 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   }
   Map map = getGameBoardController().getGameBoard().getMap();
   @Override
-  public List<Player> findTargets(Player shooter, boolean firingMode, PlayerView client){
-
+  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
+    /*
     //targettable squares are all those at distance two or less in the same direction
     List<Square> targettableSquares = new ArrayList<>();
     List<Player> targets = new ArrayList<>();
@@ -79,7 +80,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
         }
       }
       firstTargetName = client.chooseTargets(firstTargetList).get(0);
-      secondTargetName = client.chooseTarget(secondTargetList).get(0);
+      secondTargetName = client.chooseTargets(secondTargetList).get(0);
       for(Player p : getGameBoardController().getPlayers()){
         if(p.getName().equals(firstTargetName)){
           firstTarget = p;
@@ -92,5 +93,24 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       targets.add(secondTarget);
     }
     return targets;
+    */
+    PlayerView client = identifyClient(shooter);
+    if(firingMode.get(1)){
+      //choose one adjacent square, deal 2 damage to everybody in it and deal 1 damage to everybody on the next square in the same direction
+      Integer direction = client.chooseDirection();
+      List<Square> targetSquares = new ArrayList<>();
+      targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
+      targetSquares.add(targetSquares.get(0).getAdjacencies().get(direction).getSquare());
+      List<Player> primaryTargets = new ArrayList<>();
+      List<Player> secondaryTargets = new ArrayList<>();
+      for(Player p : getGameBoardController().getPlayers()){
+        if(targetSquares.get(0).equals(p.getPosition())){
+          primaryTargets.add(p);
+        }
+        else if(targetSquares.get(1).equals(p.getPosition())){
+          secondaryTargets.add(p);
+        }
+      }
+    }
   }
 }

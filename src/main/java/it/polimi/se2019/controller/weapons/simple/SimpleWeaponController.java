@@ -16,5 +16,11 @@ public abstract class SimpleWeaponController extends WeaponController {
      * Make a list of all possible targets.
      */
     @Override
-    public abstract List<Player> findTargets(Player shooter);
+    public abstract List<Player> findTargets(Player shooter, List<Boolean> firingMode);
+
+    /**
+     * Apply the weapon's effects on selected targets.
+     */
+    @Override
+    public abstract void shootTargets(Player shooter, List<Player> targets);
 }

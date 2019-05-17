@@ -18,5 +18,8 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
    * Make a list of all possible targets.
    */
   @Override
-  public abstract List<Player> findTargets(Player shooter);
+  public abstract List<Player> findTargets(Player shooter, List<Boolean> firingMode);
+
+  @Override
+  public abstract void shootTargets(Player shooter, List<Player> targets);
 }
