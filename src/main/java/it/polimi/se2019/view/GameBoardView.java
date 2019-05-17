@@ -60,4 +60,28 @@ public class GameBoardView {
    */
   public void displaySpawnPoints() {
   }
+
+  /**
+   * Display the player board, the inventory and the set of available actions.
+   */
+  public void displayPlayer() {
+  }
+
+  /**
+   *
+   */
+  public void displayPlayerBoard() {
+  }
+
+  /**
+   *
+   */
+  public void displayPlayerInventory() {
+  }
+
+  /**
+   *
+   */
+  public void displayActionSet() {
+  }
 }

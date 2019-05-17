@@ -32,7 +32,7 @@ public class AmmoSquare extends Square {
    * @return the grabbed items
    */
   @Override
-  public Grabbable grab(int index) {
+  public AmmoTile grab(int index) {
     AmmoTile ammoTileCopy = new AmmoTile(ammos.getAmmo().getRed(), ammos.getAmmo().getBlue(),
             ammos.getAmmo().getYellow(), ammos.getPowerUp());
     ammos = null;
