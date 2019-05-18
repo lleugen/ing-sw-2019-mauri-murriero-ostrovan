@@ -1,9 +1,7 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
-import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.List;
 

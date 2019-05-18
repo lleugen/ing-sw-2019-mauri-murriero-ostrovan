@@ -2,7 +2,7 @@ package it.polimi.se2019.controller;
 
 import it.polimi.se2019.controller.player_state_controller.*;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.GUIPlayerView;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class PlayerController {
 
   private GameBoardController gameBoardController;
-  private PlayerView client;
+  private GUIPlayerView client;
   private Player player;
   private PlayerStateController state;
   private List<PlayerStateController> stateControllerList;
@@ -25,7 +25,7 @@ public class PlayerController {
   /**
    *
    */
-  public PlayerController(GameBoardController g, Player p, PlayerView c) {
+  public PlayerController(GameBoardController g, Player p, GUIPlayerView c) {
     gameBoardController = g;
     client = c;
     player = p;
@@ -41,7 +41,7 @@ public class PlayerController {
     return state;
   }
 
-  public PlayerView getClient(){
+  public GUIPlayerView getClient(){
     return client;
   }
 }

@@ -1,7 +1,8 @@
 package it.polimi.se2019.view;
 
+import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 import it.polimi.se2019.view.map.MapView;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.GUIPlayerView;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class GameBoardView {
    * Player view displays player information such as cards in hand and
    * player board
    */
-  private List<PlayerView> players;
+  private List<GUIPlayerView> players;
 
   /**
    *
