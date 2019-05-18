@@ -20,7 +20,7 @@ public class WhisperController extends SimpleWeaponController {
   }
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
     Map map = getGameBoardController().getGameBoard().getMap();
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Integer> positionCoordinates = map.getSquareCoordinates(shooter.getPosition());

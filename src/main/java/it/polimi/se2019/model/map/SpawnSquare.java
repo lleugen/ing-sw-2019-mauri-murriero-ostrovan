@@ -51,6 +51,10 @@ public class SpawnSquare extends Square {
     return weaponCopy;
   }
 
+  public boolean isSpawnPoint(){
+    return true;
+  }
+
   public void refill(){
     //draw a weapon from the weapons cards deck
     //add the drawn weapon to weaponsList
