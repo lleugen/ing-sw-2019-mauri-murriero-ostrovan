@@ -1,9 +1,12 @@
 package it.polimi.se2019.model.server;
 
+import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
+import it.polimi.se2019.controller.ControllerFacadeImplementation;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.GUIPlayerView;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -13,7 +16,7 @@ import java.util.List;
 public class Server {
     private List<Player> players;
     private List<PlayerController> playerControllers;
-    private List<GUIPlayerView> clients;
+    private List<PlayerView> clients;
     private int mapType;
     private int numberOfPlayers;
     private GameBoardController gameBoard;
@@ -44,7 +47,7 @@ public class Server {
      * 0 deaths, "8 6 4 2 1 1" death value and board side '0'.
      */
     }
-    public void createNewPlayer(GUIPlayerView client){
+    public void createNewPlayer(PlayerView client){
         if(clients.isEmpty()){
             mapType = client.chooseMap();
             numberOfPlayers = client.chooseNumberOfPlayers();

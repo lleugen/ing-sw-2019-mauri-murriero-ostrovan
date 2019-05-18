@@ -1,7 +1,8 @@
 package it.polimi.se2019.controller;
 
 import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
-import it.polimi.se2019.view.player.GUIPlayerView;
+import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class ControllerFacadeImplementation implements ControllerFacadeInterface
     public ControllerFacadeImplementation(List<PlayerController> c){
         playerControllers = c;
     }
-    private PlayerController identifyPlayer(GUIPlayerView client){
+    private PlayerController identifyPlayer(PlayerView client){
         PlayerController playerController = null;
         for(PlayerController p : playerControllers){
             if(p.getClient().equals(client)){
@@ -21,19 +22,19 @@ public class ControllerFacadeImplementation implements ControllerFacadeInterface
     }
 
     @Override
-    public void runFacade(GUIPlayerView client){
+    public void runFacade(PlayerView client){
         PlayerController playerController = identifyPlayer(client);
         playerController.getState().runAround();
     }
 
     @Override
-    public void grabFacade(GUIPlayerView client){
+    public void grabFacade(PlayerView client){
         PlayerController playerController = identifyPlayer(client);
         playerController.getState().grabStuff();
     }
 
     @Override
-    public void shootFacade(GUIPlayerView client){
+    public void shootFacade(PlayerView client){
         PlayerController playerController = identifyPlayer(client);
         playerController.getState().shootPeople();
     }

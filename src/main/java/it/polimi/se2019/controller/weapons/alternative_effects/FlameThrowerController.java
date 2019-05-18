@@ -3,7 +3,7 @@ package it.polimi.se2019.controller.weapons.alternative_effects;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.GUIPlayerView;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   }
   Map map = getGameBoardController().getGameBoard().getMap();
   @Override
-  public List<Player> findTargets(Player shooter, boolean firingMode, GUIPlayerView client){
+  public List<Player> findTargets(Player shooter, boolean firingMode, PlayerView client){
 
     //targettable squares are all those at distance two or less in the same direction
     List<Square> targettableSquares = new ArrayList<>();

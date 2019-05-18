@@ -4,11 +4,13 @@ import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 import it.polimi.se2019.controller.ControllerFacadeImplementation;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
   public PlayerView(){
+
   }
 
   /**

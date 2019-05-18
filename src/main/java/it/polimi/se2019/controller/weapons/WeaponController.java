@@ -2,7 +2,7 @@ package it.polimi.se2019.controller.weapons;
 
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.GUIPlayerView;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public abstract class WeaponController {
   /**
    * Create a list of valid targets, choose targets and shoot them.
    */
-  public void fire(Player player, GUIPlayerView client) {
+  public void fire(Player player, PlayerView client) {
     List<String> possibleTargetNames = new ArrayList<>();
     List<Player> possibleTargets = new ArrayList<>();
     List<String> chosenTargetNames = new ArrayList<>();

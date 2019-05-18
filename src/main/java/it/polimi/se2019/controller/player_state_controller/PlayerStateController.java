@@ -8,7 +8,7 @@ import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.GUIPlayerView;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class PlayerStateController {
 
     protected Player player;
-    protected GUIPlayerView client;
+    protected PlayerView client;
     protected GameBoardController gameBoardController;
     protected Integer availableActions;
 
@@ -55,7 +55,7 @@ public abstract class PlayerStateController {
     public void spawn() {
         player.getInventory().addPowerUpToInventory(gameBoardController.getGameBoard().getDecks().drawPowerUp());
         //ask player to choose a power up card to discard, return a colour
-        //client will have to be the GUIPlayerView stub
+        //client will have to be the PlayerView stub
         int discardedCard = client.chooseSpawnLocation();
         if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
             //spawn on the red spawnpoint

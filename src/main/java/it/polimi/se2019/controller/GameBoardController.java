@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.controller.weapons.alternative_effects.*;
 import it.polimi.se2019.controller.weapons.optional_effects.*;
@@ -9,7 +10,7 @@ import it.polimi.se2019.model.deck.Deck;
 import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
-import it.polimi.se2019.view.player.GUIPlayerView;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
  * ends the game.
  */
 public class GameBoardController{
-  public GameBoardController(List<Player> p, List<PlayerController> c, List<GUIPlayerView> v, GameBoard g, ControllerFacadeImplementation f) {
+  public GameBoardController(List<Player> p, List<PlayerController> c, List<PlayerView> v, GameBoard g, ControllerFacadeImplementation f) {
     players = p;
     playerControllers = c;
     clients = v;
@@ -51,7 +52,7 @@ public class GameBoardController{
 
   private List<Player> players;
   private List<PlayerController> playerControllers;
-  private List<GUIPlayerView> clients;
+  private List<PlayerView> clients;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private ControllerFacadeImplementation controllerFacade;
@@ -63,7 +64,7 @@ public class GameBoardController{
     return players;
   }
 
-  public List<GUIPlayerView> getClients(){
+  public List<PlayerView> getClients(){
     return clients;
   }
 
