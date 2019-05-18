@@ -7,8 +7,15 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class Client {
-    public static void main(){
-        PlayerView client = new PlayerView();
+
+    private PlayerView client;
+
+    public void main(){
+        client = new PlayerView();
+        client.generateLoginInfo(this);
+    }
+
+    public void findLobby(){
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }

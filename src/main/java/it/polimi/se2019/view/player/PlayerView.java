@@ -3,8 +3,14 @@ package it.polimi.se2019.view.player;
 import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 import it.polimi.se2019.controller.ControllerFacadeImplementation;
+import it.polimi.se2019.view.Client;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,15 +25,48 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   ControllerFacadeImplementation controller;
 
   /**
+   *
+   */
+  public void generateLoginInfo(Client clientReference){
+    JTextField playerNameField = new JTextField("min 6 chars", 20);
+    JComboBox<String> characterCombo = new JComboBox<>(new String[] {"Banshee", ":D-STRUTT-OR3", "Dozer", "Sprog", "Violetta"});
+    JButton confirmButton = new JButton("Log in");
+    confirmButton.addActionListener(e -> {
+      if(playerNameField.getText().length() >= 6){
+        this.name = playerNameField.getText();
+        this.character = (String) characterCombo.getSelectedItem();
+        loginFrame.setVisible(false);
+        clientReference.findLobby();
+      }
+    });
+
+    loginFrame = new JFrame("Adrenalina - Log in");
+    loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    loginFrame.setResizable(false);
+    loginFrame.setLayout(new FlowLayout());
+    loginFrame.add(new JTextArea("player name:"));
+    loginFrame.add(playerNameField);
+    loginFrame.add(new JTextArea("character:"));
+    loginFrame.add(characterCombo);
+    loginFrame.add(confirmButton);
+    loginFrame.setVisible(true);
+  }
+
+  /**
    * Take turn
    */
   public void playTurn(Integer availableActions){
     for(int i = 0; i<availableActions; i++){
       String chosenAction = chooseAction();
       if(chosenAction.equals("run")){
-        controller
+        controller.runFacade(this);
       }
-      else if()
+      else if(chosenAction.equals("grab")){
+        controller.grabFacade(this);
+      }
+      else if(chosenAction.equals("shoot")){
+        controller.shootFacade(this);
+      }
     }
   }
 
@@ -45,6 +84,11 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    *
    */
   private ActionSetView actionSet;
+
+  /**
+   *
+   */
+  private JFrame loginFrame;
 
   /**
    *

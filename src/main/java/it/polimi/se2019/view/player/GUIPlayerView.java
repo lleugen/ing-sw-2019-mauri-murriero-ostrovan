@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class GUIPlayerView implements ViewFacadeInterfaceRMI {
     public GUIPlayerView(){
-        //mapWindow = new JFrame();
         JDialog w = new JDialog();
         w.setSize(200, 40);
         w.setName("My first JDialog");
