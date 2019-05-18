@@ -9,6 +9,7 @@ import java.util.List;
 
 public class WhisperController extends SimpleWeaponController {
   public WhisperController() {
+    name = "WhisperController";
   }
   @Override
   public List<Player> findTargets(Player shooter, List<Boolean> firingMode){

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class HeatSeekerController extends SimpleWeaponController {
   public HeatSeekerController() {
+    name = "HeatSeekerController";
   }
   Map map = getGameBoardController().getGameBoard().getMap();
   @Override

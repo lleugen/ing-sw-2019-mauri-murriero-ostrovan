@@ -14,8 +14,8 @@ import java.util.List;
  */
 public abstract class WeaponController {
 
-  private GameBoardController gameBoardController;
-  private String name;
+  protected GameBoardController gameBoardController;
+  protected String name;
 
   public WeaponController(String n, GameBoardController g){
       name = n;

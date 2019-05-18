@@ -1,14 +1,15 @@
 package it.polimi.se2019.RMI;
 
+import it.polimi.se2019.controller.SeverFacadeImplementation;
+
 import java.util.List;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 
 public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * make a player take his turn
      */
-    void playTurn(Integer availableActions);
+    void playTurn(SeverFacadeImplementation controllerFacadeImplementation, Integer availableActions);
 
     /**
      * @return index of the power up card to discard

@@ -264,4 +264,16 @@ public class Map {
     }
     return(xDifference + yDifference);
   }
+
+  /**
+   * return a list of all the players on a given square
+   */
+  public List<Player> getPlayersOnSquare(Square position){
+    List<Player> playersOnPosition = new ArrayList<>();
+    for(Player p : gameBoard.getPlayers()){
+      if(p.getPosition().equals(position)){
+        playersOnPosition.add(p);
+      }
+    }
+  }
 }

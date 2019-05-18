@@ -1,14 +1,13 @@
 package it.polimi.se2019.controller;
 
-import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
-import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.RMI.SeverFacadeInterface;
 import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.List;
 
-public class ControllerFacadeImplementation implements ControllerFacadeInterfaceRMI {
+public class SeverFacadeImplementation implements SeverFacadeInterface {
     List<PlayerController> playerControllers;
-    public ControllerFacadeImplementation(List<PlayerController> c){
+    public SeverFacadeImplementation(List<PlayerController> c){
         playerControllers = c;
     }
     private PlayerController identifyPlayer(PlayerView client){

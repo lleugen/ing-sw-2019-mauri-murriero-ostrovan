@@ -1,8 +1,7 @@
 package it.polimi.se2019.view.player;
 
-import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
-import it.polimi.se2019.controller.ControllerFacadeImplementation;
+import it.polimi.se2019.controller.SeverFacadeImplementation;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +13,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    * reference to the controller
    */
-  ControllerFacadeImplementation controller;
+  SeverFacadeImplementation controller;
 
   /**
    * Take turn
