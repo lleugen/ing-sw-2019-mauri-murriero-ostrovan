@@ -2,6 +2,7 @@ package it.polimi.se2019.controller.weapons;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
@@ -16,11 +17,12 @@ public abstract class WeaponController {
 
   protected GameBoardController gameBoardController;
   protected String name;
+  protected List<Boolean> firingMode;
 
-  public WeaponController(String n, GameBoardController g){
-      name = n;
-      gameBoardController = g;
+  public WeaponController(){
   }
+
+  protected Map map = getGameBoardController().getGameBoard().getMap();
 
   public PlayerView identifyClient(Player player){
       PlayerView client = null;
@@ -40,6 +42,7 @@ public abstract class WeaponController {
     return gameBoardController;
   }
 
+
   /**
    * Create a list of valid targets, choose targets and shoot them.
    */
@@ -48,8 +51,9 @@ public abstract class WeaponController {
     List<Player> possibleTargets = new ArrayList<>();
     List<String> chosenTargetNames = new ArrayList<>();
     List<Player> chosenTargets = new ArrayList<>();
-
-    possibleTargets = findTargets(player, new ArrayList<Boolean>());
+    List<Boolean> firingMode = new ArrayList<>();
+    firingMode = selectFiringMode(client);
+    possibleTargets = findTargets(player);
     for(Player p : possibleTargets){
       possibleTargetNames.add(p.getName());
     }
@@ -64,10 +68,12 @@ public abstract class WeaponController {
     shootTargets(player, chosenTargets);
   }
 
+  public abstract List<Boolean> selectFiringMode(PlayerView client);
+
   /**
    * Find all possible targets
    */
-  public abstract List<Player> findTargets(Player shooter, List<Boolean> firingMode);
+  public abstract List<Player> findTargets(Player shooter);
 
   /*
    * Choose targets from the list of possible targets

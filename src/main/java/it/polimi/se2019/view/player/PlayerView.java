@@ -110,12 +110,16 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
 
   }
 
-  /**
-   * @return which firing mode to use : 0 = basic, 1 = powered up
-   */
-  //!revisit this one
   @Override
-  public boolean chooseFiringMode(){
+  public String chooseRoom(List<String> rooms){
+
+  }
+
+  /**
+   * @return which firing mode to use
+   */
+  @Override
+  public Boolean chooseFiringMode(String description){
 
   }
 
@@ -132,7 +136,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return 0 for north, 1 for east, 2 for south or 3 for west
    */
   @Override
-  public Integer chooseDirection(){
+  public Integer chooseDirection(List<Integer> possibleDirections){
 
   }
 

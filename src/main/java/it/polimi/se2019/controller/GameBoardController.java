@@ -9,6 +9,7 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,7 +81,6 @@ public class GameBoardController{
     isReady = true;
   }
 
-
   public Player identifyPlayer(String name){
     Player player = null;
     for(Player p : players){
@@ -91,7 +91,13 @@ public class GameBoardController{
     return player;
   }
 
-
+  public List<String> getPlayerNames(List<Player> players){
+      List<String> names = new ArrayList<>();
+      for(Player p : players){
+          names.add(p.getName());
+      }
+      return names;
+  }
 
   /**
    * This method starts the game by generating a map, initializing players

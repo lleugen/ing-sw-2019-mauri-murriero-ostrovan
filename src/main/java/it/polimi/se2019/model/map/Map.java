@@ -30,11 +30,6 @@ public class Map {
   /**
    *
    */
-  private int mapType;
-
-  /**
-   *
-   */
   private Square redSpawnPoint;
   private Square blueSpawnPoint;
   private Square yellowSpawnPoint;
@@ -55,7 +50,6 @@ public class Map {
    */
   public Map(int mapType, GameBoard g){
     gameBoard = g;
-    this.mapType = mapType;
     if(mapType == 0){
       mapSquares[0][0] = new AmmoSquare("blue", null);
       mapSquares[0][1] = new AmmoSquare("blue", null);
@@ -219,13 +213,6 @@ public class Map {
   }
 
   /**
-   *
-   */
-  public int getMapType(){
-    return this.mapType;
-  }
-
-  /**
    * Get a list of all visible players from a square
    */
   public List<Player> getVisiblePlayers(Square position){
@@ -277,6 +264,19 @@ public class Map {
   }
 
   /**
+   * Get all players one move away
+   */
+  public List<Player> getOneMoveAway(Square position){
+    List<Player> playersOneMoveAway = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!position.getAdjacencies().get(i).isBlocked()){
+        playersOneMoveAway.addAll(getPlayersOnSquare(position.getAdjacencies().get(i).getSquare()));
+      }
+    }
+    return playersOneMoveAway;
+  }
+
+  /**
    * return a list of all the players on a given square
    */
   public List<Player> getPlayersOnSquare(Square position){
@@ -287,5 +287,31 @@ public class Map {
       }
     }
     return playersOnPosition;
+  }
+
+  /**
+   * get directions that are not blocked
+   */
+  public List<Integer> getOpenDirections(Square position){
+    List<Integer> openDirections = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!position.getAdjacencies().get(i).isBlocked()){
+        openDirections.add(i);
+      }
+    }
+    return openDirections;
+  }
+
+  /**
+   * get adjacent squares
+   */
+  public List<Square> getAdjacentSquares(Square position){
+    List<Square> adjacentSquares = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!position.getAdjacencies().get(i).isBlocked()){
+        adjacentSquares.add(position.getAdjacencies().get(i).getSquare());
+      }
+    }
+    return adjacentSquares;
   }
 }
