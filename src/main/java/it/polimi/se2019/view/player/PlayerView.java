@@ -1,32 +1,12 @@
 package it.polimi.se2019.view.player;
 
-import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
-import it.polimi.se2019.controller.ControllerFacadeImplementation;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
   public PlayerView(){
-  }
-
-  /**
-   * reference to the controller
-   */
-  ControllerFacadeImplementation controller;
-
-  /**
-   * Take turn
-   */
-  public void playTurn(Integer availableActions){
-    for(int i = 0; i<availableActions; i++){
-      String chosenAction = chooseAction();
-      if(chosenAction.equals("run")){
-        controller
-      }
-      else if()
-    }
   }
 
   /**
@@ -59,7 +39,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     return character;
   }
 
-  private String chooseAction(){
+  public String chooseAction(){
 
   }
 
@@ -152,7 +132,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return 0 for north, 1 for east, 2 for south or 3 for west
    */
   @Override
-  public Integer chooseMoveDirection(){
+  public Integer chooseDirection(){
 
   }
 

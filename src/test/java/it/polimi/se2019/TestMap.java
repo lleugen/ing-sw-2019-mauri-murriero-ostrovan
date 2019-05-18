@@ -1,5 +1,6 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
@@ -16,25 +17,14 @@ public class TestMap {
    */
   @Test
   public void TestGetRoot() {
-    Map map = new Map("small");
+    GameBoard gameBoard = new GameBoard(0, null);
     Square returnedSquare;
 
     try {
-      returnedSquare = map.getRoot();
+      returnedSquare = gameBoard.getMap().getRoot();
     }
     catch (Exception e){
       fail("something bad happened");
-    }
-  }
-
-  @Test
-  public void TestCreateMapShouldFailUnknownMapType() {
-    try {
-      Map map = new Map("this type is wrong");
-      fail("Exception was not raised");
-    }
-    catch (UnknownMapTypeException e){
-      // Test Passed
     }
   }
 }

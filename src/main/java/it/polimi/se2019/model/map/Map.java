@@ -52,10 +52,8 @@ public class Map {
    * Init a new map
    *
    * @param mapType The type of the map to generate
-   *
-   * @throws UnknownMapTypeException if the type is not valid
    */
-  public Map(int mapType, GameBoard g) throws UnknownMapTypeException{
+  public Map(int mapType, GameBoard g){
     gameBoard = g;
     this.mapType = mapType;
     if(mapType == 0){
@@ -276,5 +274,18 @@ public class Map {
       yDifference = -yDifference;
     }
     return(xDifference + yDifference);
+  }
+
+  /**
+   * return a list of all the players on a given square
+   */
+  public List<Player> getPlayersOnSquare(Square position){
+    List<Player> playersOnPosition = new ArrayList<>();
+    for(Player p : gameBoard.getPlayers()){
+      if(p.getPosition().equals(position)){
+        playersOnPosition.add(p);
+      }
+    }
+    return playersOnPosition;
   }
 }

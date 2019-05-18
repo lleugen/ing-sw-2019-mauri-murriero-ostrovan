@@ -1,10 +1,7 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
-import it.polimi.se2019.controller.ControllerFacadeImplementation;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
-import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
