@@ -99,7 +99,7 @@ public class KillScoreBoard {
 
     // Summing Up Doubles kills
     Integer i;
-    Player p;
+    Player p = null;
     Integer score;
 
     for (i = 0; i < this.doubleKills.size(); i++){

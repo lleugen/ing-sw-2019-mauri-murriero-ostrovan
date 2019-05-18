@@ -38,24 +38,23 @@ public class GameBoard {
    */
   private Integer currentPlayer;
 
+  private boolean killScoreBoardCreated;
+  public boolean isKillScoreBoardCreated(){
+    return killScoreBoardCreated;
+  }
+
   /**
    * Inits the gameBoard
    *
    * @param mapType Type of the map to generate
    * @param players A list of already initialized players
-   * @param firstPlayer Id of the first player in the players list
    *
    * @throws NullPointerException if players contains a null player
    */
   public GameBoard(int mapType, List<Player> players){
-    this.killScoreBoard = new KillScoreBoard();
+    killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
-    try{
-      this.map = new Map(mapType, this);
-    }
-    catch (UnknownMapTypeException exception){
-      //handle exception
-    }
+    this.map = new Map(mapType, this);
 
 
     Integer i;
@@ -70,8 +69,8 @@ public class GameBoard {
     return players;
   }
 
-  public int getFirstPlayer(){
-    return firstPlayer;
+  public void createKillScoreBoard(Integer skulls, Integer[] scores){
+    killScoreBoard = new KillScoreBoard(skulls, scores);
   }
 
   /**

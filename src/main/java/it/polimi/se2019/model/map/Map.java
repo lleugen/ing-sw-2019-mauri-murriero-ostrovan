@@ -47,10 +47,8 @@ public class Map {
    * Init a new map
    *
    * @param mapType The type of the map to generate
-   *
-   * @throws UnknownMapTypeException if the type is not valid
    */
-  public Map(int mapType, GameBoard g) throws UnknownMapTypeException{
+  public Map(int mapType, GameBoard g){
     gameBoard = g;
     if(mapType == 0){
       mapSquares[0][0] = new AmmoSquare("blue", null);
@@ -275,5 +273,6 @@ public class Map {
         playersOnPosition.add(p);
       }
     }
+    return playersOnPosition;
   }
 }

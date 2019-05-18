@@ -18,12 +18,11 @@ import java.util.List;
  * ends the game.
  */
 public class GameBoardController{
-  public GameBoardController(List<Player> p, List<PlayerView> v, GameBoard g, SeverFacadeImplementation f) {
+  public GameBoardController(List<Player> p, List<PlayerView> v, GameBoard g) {
     players = p;
     clients = v;
     gameBoard = g;
     isReady = false;
-    controllerFacade = f;
     weaponControllers.add(new CyberBladeController());
     weaponControllers.add(new ElectroscytheController());
     weaponControllers.add(new PlasmaGunController());
@@ -52,7 +51,6 @@ public class GameBoardController{
   private List<PlayerView> clients;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
-  private SeverFacadeImplementation controllerFacade;
   private boolean isReady;
 
   /**
@@ -112,8 +110,8 @@ public class GameBoardController{
   public void playTurns() {
     int currentPlayer = 0;
     while(gameBoard.getKillScoreBoard().gameRunning()){
-      clients.get(currentPlayer).
-              playTurn(controllerFacade, playerControllers.get(currentPlayer).getState().getAvailableActions());
+      playerControllers.get(currentPlayer).
+              playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
       currentPlayer++;
       if(currentPlayer == players.size()){
         currentPlayer = 0;
@@ -127,5 +125,6 @@ public class GameBoardController{
    * scoreboard will be resolved and the game will end
    */
   public void playFrenzyTurn() {
+    //player the last turn and end the game
   }
 }

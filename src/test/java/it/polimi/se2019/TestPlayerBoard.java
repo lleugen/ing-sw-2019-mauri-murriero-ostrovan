@@ -13,7 +13,7 @@ public class TestPlayerBoard {
     public void testTurnAround()
     {
         PlayerBoard board = new PlayerBoard();
-        Player player = new Player(null,null,null);
+        Player player = new Player(null,null);
         board.setMark(player);
         board.turnAround();
         List<Integer> expectedDeathValue = new ArrayList<Integer>();
