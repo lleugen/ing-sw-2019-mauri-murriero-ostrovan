@@ -3,6 +3,7 @@ package it.polimi.se2019.controller.weapons.simple;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,15 @@ public class HeatSeekerController extends SimpleWeaponController {
     name = "HeatSeekerController";
   }
   Map map = getGameBoardController().getGameBoard().getMap();
+
   @Override
-  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
+  public List<Boolean> selectFiringMode(PlayerView client){
+    List<Boolean> firingMode = new ArrayList<>();
+    firingMode.add(true);
+    return firingMode;
+  }
+  @Override
+  public List<Player> findTargets(Player shooter){
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Player> targettablePlayers = new ArrayList<>();
     for(Player p : getGameBoardController().getGameBoard().getPlayers()){

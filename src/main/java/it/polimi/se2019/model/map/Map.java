@@ -264,6 +264,19 @@ public class Map {
   }
 
   /**
+   * Get all players one move away
+   */
+  public List<Player> getOneMoveAway(Square position){
+    List<Player> playersOneMoveAway = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!position.getAdjacencies().get(i).isBlocked()){
+        playersOneMoveAway.addAll(getPlayersOnSquare(position.getAdjacencies().get(i).getSquare()));
+      }
+    }
+    return playersOneMoveAway;
+  }
+
+  /**
    * return a list of all the players on a given square
    */
   public List<Player> getPlayersOnSquare(Square position){
@@ -274,5 +287,31 @@ public class Map {
       }
     }
     return playersOnPosition;
+  }
+
+  /**
+   * get directions that are not blocked
+   */
+  public List<Integer> getOpenDirections(Square position){
+    List<Integer> openDirections = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!position.getAdjacencies().get(i).isBlocked()){
+        openDirections.add(i);
+      }
+    }
+    return openDirections;
+  }
+
+  /**
+   * get adjacent squares
+   */
+  public List<Square> getAdjacentSquares(Square position){
+    List<Square> adjacentSquares = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!position.getAdjacencies().get(i).isBlocked()){
+        adjacentSquares.add(position.getAdjacencies().get(i).getSquare());
+      }
+    }
+    return adjacentSquares;
   }
 }

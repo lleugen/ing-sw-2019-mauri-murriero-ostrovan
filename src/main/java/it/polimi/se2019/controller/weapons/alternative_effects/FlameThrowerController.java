@@ -19,11 +19,17 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   List<Player> secondaryTargets = new ArrayList<>();
 
   @Override
-  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
+  public List<Player> findTargets(Player shooter){
     primaryTargets.clear();
     secondaryTargets.clear();
     PlayerView client = identifyClient(shooter);
-    Integer direction = client.chooseDirection();
+    List<Integer> possibleDirections = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      if(!shooter.getPosition().getAdjacencies().get(i).isBlocked()){
+        possibleDirections.add(i);
+      }
+    }
+    Integer direction = client.chooseDirection(possibleDirections);
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
     targetSquares.add(targetSquares.get(0).getAdjacencies().get(direction).getSquare());
@@ -69,7 +75,21 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets){
     for(Player p : primaryTargets){
-      if()
+      if(firingMode.get(0)){
+        //basic
+        for(Player a : targets){
+          a.takeDamage(shooter, 1);
+        }
+      }
+      else if(firingMode.get(1)){
+        //bbq
+        for(Player q : primaryTargets){
+          q.takeDamage(shooter, 2);
+        }
+        for(Player r : secondaryTargets){
+          r.takeDamage(shooter, 1);
+        }
+      }
     }
   }
 }
