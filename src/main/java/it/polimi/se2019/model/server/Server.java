@@ -1,61 +1,124 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.controller.GameBoardController;
-import it.polimi.se2019.controller.PlayerController;
-import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
-
+import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Server {
-    private List<Player> players;
-    private List<PlayerController> playerControllers;
-    private List<PlayerView> clients;
-    private int mapType;
-    private int numberOfPlayers;
-    private GameBoardController gameBoard;
+public class Server implements Remote {
+  /**
+   * Contains a reference to every lobby currently active
+   */
+  private Map<String, ServerLobby> lobbyMap;
 
-    public static void main(){
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
-        try {
-            String name = "ServerLobby";
-            ServerLobby lobby = new ServerLobby();
-            ServerLobby stub =
-                    (ServerLobby) UnicastRemoteObject.exportObject(lobby, 0);
-            Registry registry = LocateRegistry.getRegistry();
-            registry.rebind(name, stub);
-            System.out.println("lobby bound to name");
-        } catch (Exception e) {
-            System.err.println("lobby exception:");
-            e.printStackTrace();
-        }
+  /**
+   * Creates a new Server
+   */
+  public Server(){
+    if (System.getSecurityManager() == null) {
+      System.setSecurityManager(new SecurityManager());
     }
 
-    /**
-     * This method creates a player class (model) for each player who joins the
-     * game and adds it to the "players" list in the game board model.
-     * A player is created with an inventory containing only one power up
-     * card and a player board with empty damage and marks lists,
-     * 0 deaths, "8 6 4 2 1 1" death value and board side '0'.
-     */
+    this.lobbyMap = Collections.synchronizedMap(new HashMap<>());
+  }
+
+  /**
+   * Gets a lobby from the server
+   *
+   * @param id Id of the lobby to get
+   *
+   * @return The searched lobby
+   *
+   * @throws LobbyNotFoundException if the id is not found
+   */
+  public ServerLobby getLobby(String id){
+    if (this.lobbyMap.containsKey(id)) {
+      return this.lobbyMap.get(id);
     }
-    public void createNewPlayer(PlayerView client){
-        if(clients.isEmpty()){
-            mapType = client.chooseMap();
-            numberOfPlayers = client.chooseNumberOfPlayers();
-        }
-        clients.add(client);
-        Player newPlayer = new Player(client.getName(), client.getCharacter());
-        players.add(newPlayer);
-        if(players.size() == numberOfPlayers){
-            gameBoard = new GameBoardController(players,)
-            for(int i = 0; i<numberOfPlayers; i++){
-                playerControllers.add(new PlayerController(gameBoard, players.get(i), clients.get(i)))
-            }
+    else {
+      throw new LobbyNotFoundException();
     }
+  }
+
+  /**
+   * Publish the object to the RMI registry, to the given key, at the given port
+   *
+   * @param key The key to publish the server to
+   * @param port The port to publish the server to
+   *
+   * @throws RMIInitializationException if errors occur when initialization the
+   *                                RMI registry
+   */
+  public void publishToRMI(String key, Integer port){
+    try {
+      LocateRegistry.getRegistry().rebind(
+              key,
+              UnicastRemoteObject.exportObject(
+                      this, port
+              )
+      );
+    }
+    catch (java.rmi.RemoteException e){
+      throw new RMIInitializationException(e);
+    }
+  }
+
+  /**
+   * Creates a new lobby
+   *
+   * @param id The id to assign the new lobby to
+   *
+   * @throws LobbyConflictException if the id is already registered
+   */
+  public void createLobby(String id){
+    ServerLobby result;
+    result = this.lobbyMap.putIfAbsent(
+            id,
+            new ServerLobby(
+                    5,
+                    1,
+                    5
+            )
+    );
+
+    if (result != null){
+      throw new LobbyConflictException();
+    }
+  }
+
+  /**
+   * Thrown when there are erros while connecting to the RMI registry
+   */
+  public static class RMIInitializationException extends RuntimeException{
+    RMIInitializationException(Exception e){
+      super(e);
+    }
+
+    @Override
+    public String toString() {
+      return "Unable to start RMI registry";
+    }
+  }
+
+  /**
+   * Thrown when a searched lobby is not found
+   */
+  public static class LobbyNotFoundException extends RuntimeException{
+    @Override
+    public String toString() {
+      return "The searched lobby doesn't exists";
+    }
+  }
+
+  /**
+   * Thrown when trying to create a lobby with an already used id
+   */
+  public static class LobbyConflictException extends RuntimeException{
+    @Override
+    public String toString() {
+      return "A lobby with this id already exists";
+    }
+  }
 }
