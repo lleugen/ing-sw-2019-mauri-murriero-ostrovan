@@ -1,5 +1,7 @@
 package it.polimi.se2019.view.player;
 
+import sun.rmi.runtime.Log;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class ActionSetView extends GUIGenericWindow{
       btnsNames = new String[] {"shoot5", "grab5"};
     }
 
-    actionButtons = new ArrayList<JButton>();
+    actionButtons = new ArrayList<>();
     for(int i = 0; i < btnsNames.length; i++){
       //TO DO: CREATE VIEW WITH BUTTONS
     }
@@ -66,8 +68,11 @@ public class ActionSetView extends GUIGenericWindow{
     try {
       waitMutex();
     }catch(InterruptedException e){
-      System.err.print("Mutex interrupt: " + e.getMessage());
+      System.out.print("Mutex interrupt: " + e.getMessage());
+      Thread.currentThread().interrupt();
     }
+
+    return;
   }
 
 }

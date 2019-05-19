@@ -43,7 +43,7 @@ public abstract class GUIGenericWindow {
      *
      * @param confirmButtons buttons who has to be clicked to unlock the function
      */
-    protected abstract void waitForButtonPress(List<JButton> confirmButtons);
+    protected abstract void waitForButtonPress(List<JButton> confirmButtons) throws InterruptedException;
 
     public boolean isVisible(){
         return frame.isVisible();

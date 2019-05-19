@@ -20,7 +20,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    * reference to the controller
    */
-  ControllerFacadeImplementation controller;
+  /*ControllerFacadeImplementation controller;*/
 
   /**
    *
