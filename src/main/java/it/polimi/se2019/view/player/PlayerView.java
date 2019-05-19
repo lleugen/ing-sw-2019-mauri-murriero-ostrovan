@@ -1,22 +1,20 @@
 package it.polimi.se2019.view.player;
 
-import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 import it.polimi.se2019.controller.ControllerFacadeImplementation;
 import it.polimi.se2019.view.Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
-  public PlayerView(){
 
+  public PlayerView(){
+    weaponLoaderWindow = new GUIWeaponLoader();
+    actionSetWindow = new ActionSetView();
   }
 
   /**
@@ -55,7 +53,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    * Take turn
    */
-  public void playTurn(Integer availableActions){
+  /*public void playTurn(Integer availableActions){
     for(int i = 0; i<availableActions; i++){
       String chosenAction = chooseAction();
       if(chosenAction.equals("run")){
@@ -68,7 +66,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
         controller.shootFacade(this);
       }
     }
-  }
+  }*/
 
   /**
    *
@@ -83,12 +81,17 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    *
    */
-  private ActionSetView actionSet;
+  private ActionSetView actionSetWindow;
 
   /**
    *
    */
   private JFrame loginFrame;
+
+  /**
+   *
+   */
+  private GUIWeaponLoader weaponLoaderWindow;
 
   /**
    *
@@ -105,8 +108,10 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     return character;
   }
 
-  private String chooseAction(){
-
+  private String chooseAction(String actionSetName){
+    List<String> temp = new ArrayList<String>();
+    temp.add(actionSetName);
+    return actionSetWindow.askAndRequest(temp).get(0);
   }
 
   /**
@@ -147,7 +152,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return a list of chosen targets(names)
    */
   @Override
-  public List<String> chooseTargets(List<String> possibleTargets){
+  public String chooseTargets(List<String> possibleTargets){
 
   }
 
@@ -157,7 +162,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseWeaponToReload(List<String> weapons){
-
+    return weaponLoaderWindow.askAndRequest(weapons).get(0);
   }
 
   /**
