@@ -14,6 +14,17 @@ public class Server implements Remote {
   private Map<String, ServerLobby> lobbyMap;
 
   /**
+   * Creates a new Server
+   */
+  public Server(){
+    if (System.getSecurityManager() == null) {
+      System.setSecurityManager(new SecurityManager());
+    }
+
+    this.lobbyMap = Collections.synchronizedMap(new HashMap<>());
+  }
+
+  /**
    * Gets a lobby from the server
    *
    * @param id Id of the lobby to get
@@ -29,17 +40,6 @@ public class Server implements Remote {
     else {
       throw new LobbyNotFoundException();
     }
-  }
-
-  /**
-   * Creates a new Server
-   */
-  public Server(){
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new SecurityManager());
-    }
-
-    this.lobbyMap = Collections.synchronizedMap(new HashMap<>());
   }
 
   /**
@@ -74,7 +74,14 @@ public class Server implements Remote {
    */
   public void createLobby(String id){
     ServerLobby result;
-    result = this.lobbyMap.putIfAbsent(id, new ServerLobby(this));
+    result = this.lobbyMap.putIfAbsent(
+            id,
+            new ServerLobby(
+                    5,
+                    1,
+                    5
+            )
+    );
 
     if (result != null){
       throw new LobbyConflictException();

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PlayerController {
 
-  private GameBoardController gameBoardController;
+//  private GameBoardController gameBoardController;
   private PlayerView client;
   private Player player;
   private PlayerStateController state;
@@ -25,8 +25,8 @@ public class PlayerController {
   /**
    *
    */
-  public PlayerController(GameBoardController g, Player p, PlayerView c) {
-    gameBoardController = g;
+  public PlayerController(/*GameBoardController g*/, Player p, PlayerView c) {
+//    gameBoardController = g;
     client = c;
     player = p;
     stateControllerList.add(new NormalStateController());
