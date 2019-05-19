@@ -121,12 +121,16 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   public int chooseMap(){
     //ask
     //return
+    //TO DO: FORM
+    return 1;
   }
 
   @Override
   public int chooseNumberOfPlayers(){
     //ask
     //return
+    //TO DO: FORM
+    return 4;
   }
 
   /**
@@ -144,7 +148,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseWeapon(){
-
+    //TO DO: FORM
+    return "";
   }
 
   /**
@@ -153,7 +158,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseTargets(List<String> possibleTargets){
-
+    //TO DO: FORM
+    return "";
   }
 
   /**
@@ -170,7 +176,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public List<Integer> choosePowerUpCardsForReload(){
-
+    //TO DO: FORM
+    return null;
   }
 
   /**
@@ -178,7 +185,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public int chooseItemToGrab(){
-
+    //TO DO: FORM
+    return 0;
   }
 
   /**
@@ -187,7 +195,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   //!revisit this one
   @Override
   public boolean chooseFiringMode(){
-
+    //TO DO: FORM
+    return false;
   }
 
   /**
@@ -196,7 +205,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
-
+    //TO DO: FORM
+    return null;
   }
 
   /**
@@ -204,7 +214,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public Integer chooseMoveDirection(){
-
+    //TO DO: FORM
+    return 0;
   }
 
 }

@@ -1,7 +1,5 @@
 package it.polimi.se2019.view.player;
 
-import sun.rmi.runtime.Log;
-
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +56,10 @@ public class ActionSetView extends GUIGenericWindow{
     lockMutex();
     for(int i = 0; i < confirmButtons.size(); i++){
       //Associate button to his action by name, when clicked it returns his name on result global variable
-      confirmButtons.get(i).setName(answers[i]);
-      confirmButtons.get(i).addActionListener(e -> {
-        result = this.getClass().getName();
+      JButton currentBtn = confirmButtons.get(i);
+      currentBtn.setName(answers[i]);
+      currentBtn.addActionListener(e -> {
+        result = currentBtn.getName();
         unlockMutex();
       });
     }
