@@ -24,7 +24,7 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
   @Override
   public List<Boolean> selectFiringMode(PlayerView client){
     List<Boolean> firingMode = new ArrayList<>();
-    Boolean clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for bbq");
+    Boolean clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for powered");
     if(clientChoice){
       firingMode.add(false);
       firingMode.add(true);

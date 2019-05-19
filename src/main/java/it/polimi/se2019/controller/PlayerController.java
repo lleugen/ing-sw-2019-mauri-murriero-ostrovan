@@ -21,19 +21,20 @@ public class PlayerController {
   private Player player;
   private PlayerStateController state;
   private List<PlayerStateController> stateControllerList;
+  private GameBoardController gameBoardController;
 
   /**
    *
    */
-  public PlayerController(/*GameBoardController g*/, Player p, PlayerView c) {
-//    gameBoardController = g;
+  public PlayerController(GameBoardController g, Player p, PlayerView c) {
+    gameBoardController = g;
     client = c;
     player = p;
-    stateControllerList.add(new NormalStateController());
-    stateControllerList.add(new Adrenaline1StateController());
-    stateControllerList.add(new Adrenaline2StateController());
-    stateControllerList.add(new FirstFreneticStateController());
-    stateControllerList.add(new SecondFreneticStateController());
+    stateControllerList.add(new NormalStateController(g, p, c));
+    stateControllerList.add(new Adrenaline1StateController(g, p, c));
+    stateControllerList.add(new Adrenaline2StateController(g, p, c));
+    stateControllerList.add(new FirstFreneticStateController(g, p, c));
+    stateControllerList.add(new SecondFreneticStateController(g, p, c));
     state = stateControllerList.get(0);
   }
 
@@ -46,7 +47,7 @@ public class PlayerController {
    */
   public void playTurn(Integer availableActions){
     for(int i = 0; i<availableActions; i++){
-      String chosenAction = client.chooseAction();
+      String chosenAction = client.chooseAction(state.toString());
       if(chosenAction.equals("run")){
         state.runAround();
         /*

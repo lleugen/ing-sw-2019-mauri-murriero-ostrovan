@@ -25,8 +25,9 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
         possibleTargetNames.add(p.getName());
       }
       //make the client choose one target
+      //incompatible type error will be solved by change to the viewinterface
       targets.add(gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(possibleTargetNames).get(0)));
+              (identifyClient(shooter).chooseTargets(possibleTargetNames)));
     }
     else{
       //rocket fist mode, one target one move away and another target two moves away, but in the same direction
@@ -41,8 +42,9 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
         firstPossibleTargetsNames.add(p.getName());
       }
       //choose first target
+      //incompatible type error will be solved by change to the viewinterface
       targets.add(gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(firstPossibleTargetsNames).get(0)));
+              (identifyClient(shooter).chooseTargets(firstPossibleTargetsNames)));
       //get all possible second targets
       List<Player> possibleSecondTargets = new ArrayList<>();
       if(!targetSquare.getAdjacencies().get(direction).isBlocked()){
@@ -55,8 +57,9 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
         possibleSecondTargetNames.add(p.getName());
       }
       //choose second target
+      //incompatible type error will be solved by change to the viewinterface
       targets.add(gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(possibleSecondTargetNames).get(0)));
+              (identifyClient(shooter).chooseTargets(possibleSecondTargetNames)));
     }
     return targets;
   }

@@ -34,11 +34,14 @@ public class RailGunController extends AlternativeEffectWeaponController {
     if(firingMode.get(0)){
       //basic mode, one target
       targets.add(gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(possibleTargetNames).get(0)));
+              (identifyClient(shooter).chooseTargets(possibleTargetNames)));
     }
     else{
       //piercing mode, choose two targets
-      List<String> targetNames = identifyClient(shooter).chooseTargets(possibleTargetNames);
+      List<String> targetNames = new ArrayList<>();
+      targetNames.add(identifyClient(shooter).chooseTargets(possibleTargetNames));
+      possibleTargetNames.remove(targetNames.get(0));
+      targetNames.add(identifyClient(shooter).chooseTargets(possibleTargetNames));
       targets.add(gameBoardController.identifyPlayer(targetNames.get(0)));
       targets.add(gameBoardController.identifyPlayer(targetNames.get(1)));
     }

@@ -32,7 +32,7 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
         targets.add(gameBoardController.identifyPlayer
                 (identifyClient(shooter).chooseTargets
                         (gameBoardController.getPlayerNames
-                                (map.getPlayersOnSquare(targetSquares.get(i)))).get(0)));
+                                (map.getPlayersOnSquare(targetSquares.get(i))))));
       }
     }
     else{
