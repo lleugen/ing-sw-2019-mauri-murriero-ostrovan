@@ -31,7 +31,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
      * @param possibleTargets is a list of the players who can be targeted(their names)
      * @return a list of chosen targets(names)
      */
-    List<String> chooseTargets(List<String> possibleTargets);
+    String chooseTargets(List<String> possibleTargets);
 
     /**
      * @param weapons that can be reloaded

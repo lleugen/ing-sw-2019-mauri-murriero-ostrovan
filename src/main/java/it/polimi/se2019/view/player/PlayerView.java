@@ -2,11 +2,48 @@ package it.polimi.se2019.view.player;
 
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 
+import it.polimi.se2019.controller.ControllerFacadeImplementation;
+import it.polimi.se2019.view.Client;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
+
   public PlayerView(){
+    weaponLoaderWindow = new GUIWeaponLoader();
+    actionSetWindow = new ActionSetView();
+  }
+
+  /**
+   *
+   */
+  public void generateLoginInfo(Client clientReference){
+    JTextField playerNameField = new JTextField("min 6 chars", 20);
+    JComboBox<String> characterCombo = new JComboBox<>(new String[] {"Banshee", ":D-STRUTT-OR3", "Dozer", "Sprog", "Violetta"});
+    JButton confirmButton = new JButton("Log in");
+    confirmButton.addActionListener(e -> {
+      if(playerNameField.getText().length() >= 6){
+        this.name = playerNameField.getText();
+        this.character = (String) characterCombo.getSelectedItem();
+        loginFrame.setVisible(false);
+        clientReference.findLobby();
+      }
+    });
+
+    loginFrame = new JFrame("Adrenalina - Log in");
+    loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    loginFrame.setResizable(false);
+    loginFrame.setLayout(new FlowLayout());
+    loginFrame.add(new JTextArea("player name:"));
+    loginFrame.add(playerNameField);
+    loginFrame.add(new JTextArea("character:"));
+    loginFrame.add(characterCombo);
+    loginFrame.add(confirmButton);
+    loginFrame.setVisible(true);
   }
 
   /**
@@ -22,7 +59,17 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    *
    */
-  private ActionSetView actionSet;
+  private ActionSetView actionSetWindow;
+
+  /**
+   *
+   */
+  private JFrame loginFrame;
+
+  /**
+   *
+   */
+  private GUIWeaponLoader weaponLoaderWindow;
 
   /**
    *
@@ -39,8 +86,10 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     return character;
   }
 
-  public String chooseAction(){
-
+  private String chooseAction(String actionSetName){
+    List<String> temp = new ArrayList<String>();
+    temp.add(actionSetName);
+    return actionSetWindow.askAndRequest(temp).get(0);
   }
 
   /**
@@ -50,12 +99,16 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   public int chooseMap(){
     //ask
     //return
+    //TO DO: FORM
+    return 1;
   }
 
   @Override
   public int chooseNumberOfPlayers(){
     //ask
     //return
+    //TO DO: FORM
+    return 4;
   }
 
   /**
@@ -73,7 +126,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseWeapon(){
-
+    //TO DO: FORM
+    return "";
   }
 
   /**
@@ -81,8 +135,9 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return a list of chosen targets(names)
    */
   @Override
-  public List<String> chooseTargets(List<String> possibleTargets){
-
+  public String chooseTargets(List<String> possibleTargets){
+    //TO DO: FORM
+    return "";
   }
 
   /**
@@ -91,7 +146,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseWeaponToReload(List<String> weapons){
-
+    return weaponLoaderWindow.askAndRequest(weapons).get(0);
   }
 
   /**
@@ -99,7 +154,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public List<Integer> choosePowerUpCardsForReload(){
-
+    //TO DO: FORM
+    return null;
   }
 
   /**
@@ -107,7 +163,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public int chooseItemToGrab(){
-
+    //TO DO: FORM
+    return 0;
   }
 
   @Override
@@ -120,7 +177,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public Boolean chooseFiringMode(String description){
-
+    //TO DO: FORM
+    return false;
   }
 
   /**
@@ -129,7 +187,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
-
+    //TO DO: FORM
+    return null;
   }
 
   /**
@@ -137,7 +196,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections){
-
+    //TO DO: FORM
+    return 0;
   }
-
 }
