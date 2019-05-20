@@ -1,6 +1,8 @@
 package it.polimi.se2019.controller.weapons;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
@@ -13,8 +15,24 @@ import java.util.List;
  */
 public abstract class WeaponController {
 
-  private GameBoardController gameBoardController;
-  private String name;
+  protected GameBoardController gameBoardController;
+  protected String name;
+  protected List<Boolean> firingMode;
+
+  public WeaponController(){
+  }
+
+  protected Map map = getGameBoardController().getGameBoard().getMap();
+
+  public PlayerView identifyClient(Player player){
+      PlayerView client = null;
+      for(PlayerView c : gameBoardController.getClients()){
+          if(c.getName().equals(player.getName())){
+              client = c;
+          }
+      }
+      return client;
+  }
 
   public String getName(){
     return name;
@@ -24,6 +42,7 @@ public abstract class WeaponController {
     return gameBoardController;
   }
 
+
   /**
    * Create a list of valid targets, choose targets and shoot them.
    */
@@ -32,7 +51,8 @@ public abstract class WeaponController {
     List<Player> possibleTargets = new ArrayList<>();
     List<String> chosenTargetNames = new ArrayList<>();
     List<Player> chosenTargets = new ArrayList<>();
-
+    List<Boolean> firingMode = new ArrayList<>();
+    firingMode = selectFiringMode(client);
     possibleTargets = findTargets(player);
     for(Player p : possibleTargets){
       possibleTargetNames.add(p.getName());
@@ -45,22 +65,25 @@ public abstract class WeaponController {
       }
     }
 
-    shootTargets(chosenTargets);
+    shootTargets(player, chosenTargets);
   }
+
+  public abstract List<Boolean> selectFiringMode(PlayerView client);
 
   /**
    * Find all possible targets
    */
   public abstract List<Player> findTargets(Player shooter);
 
-  /**
+  /*
    * Choose targets from the list of possible targets
-   */
+   *
   public abstract List<Player> chooseTargets(List<Player> possibleTargets);
+  */
 
   /**
    * Apply the weapon's effects on selected targets.
    */
-  public abstract void shootTargets(List<Player> targets);
+  public abstract void shootTargets(Player shooter, List<Player> targets);
 
 }

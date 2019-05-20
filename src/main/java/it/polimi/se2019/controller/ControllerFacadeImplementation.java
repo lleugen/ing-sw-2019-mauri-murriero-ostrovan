@@ -1,7 +1,6 @@
 package it.polimi.se2019.controller;
 
 import it.polimi.se2019.RMI.ControllerFacadeInterfaceRMI;
-import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerView;
 
 import java.util.List;

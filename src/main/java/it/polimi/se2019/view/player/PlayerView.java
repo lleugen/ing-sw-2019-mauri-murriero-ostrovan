@@ -1,6 +1,7 @@
 package it.polimi.se2019.view.player;
 
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
+
 import it.polimi.se2019.controller.ControllerFacadeImplementation;
 import it.polimi.se2019.view.Client;
 
@@ -16,11 +17,6 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     weaponLoaderWindow = new GUIWeaponLoader();
     actionSetWindow = new ActionSetView();
   }
-
-  /**
-   * reference to the controller
-   */
-  /*ControllerFacadeImplementation controller;*/
 
   /**
    *
@@ -49,24 +45,6 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     loginFrame.add(confirmButton);
     loginFrame.setVisible(true);
   }
-
-  /**
-   * Take turn
-   */
-  /*public void playTurn(Integer availableActions){
-    for(int i = 0; i<availableActions; i++){
-      String chosenAction = chooseAction();
-      if(chosenAction.equals("run")){
-        controller.runFacade(this);
-      }
-      else if(chosenAction.equals("grab")){
-        controller.grabFacade(this);
-      }
-      else if(chosenAction.equals("shoot")){
-        controller.shootFacade(this);
-      }
-    }
-  }*/
 
   /**
    *
@@ -189,12 +167,16 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     return 0;
   }
 
-  /**
-   * @return which firing mode to use : 0 = basic, 1 = powered up
-   */
-  //!revisit this one
   @Override
-  public boolean chooseFiringMode(){
+  public String chooseRoom(List<String> rooms){
+
+  }
+
+  /**
+   * @return which firing mode to use
+   */
+  @Override
+  public Boolean chooseFiringMode(String description){
     //TO DO: FORM
     return false;
   }
@@ -213,9 +195,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return 0 for north, 1 for east, 2 for south or 3 for west
    */
   @Override
-  public Integer chooseMoveDirection(){
+  public Integer chooseDirection(List<Integer> possibleDirections){
     //TO DO: FORM
     return 0;
   }
-
 }

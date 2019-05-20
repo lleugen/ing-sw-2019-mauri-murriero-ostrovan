@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PlayerController {
 
-  private GameBoardController gameBoardController;
+//  private GameBoardController gameBoardController;
   private PlayerView client;
   private Player player;
   private PlayerStateController state;
@@ -25,8 +25,8 @@ public class PlayerController {
   /**
    *
    */
-  public PlayerController(GameBoardController g, Player p, PlayerView c) {
-    gameBoardController = g;
+  public PlayerController(/*GameBoardController g*/, Player p, PlayerView c) {
+//    gameBoardController = g;
     client = c;
     player = p;
     stateControllerList.add(new NormalStateController());
@@ -39,6 +39,31 @@ public class PlayerController {
 
   public PlayerStateController getState(){
     return state;
+  }
+
+  /**
+   * Take turn
+   */
+  public void playTurn(Integer availableActions){
+    for(int i = 0; i<availableActions; i++){
+      String chosenAction = client.chooseAction();
+      if(chosenAction.equals("run")){
+        state.runAround();
+        /*
+        Integer direction;
+        for(int j = 0; j<2; j++){
+          direction = client.chooseDirection();
+          player.move(player.getPosition().getAdjacencies().get(direction));
+        }
+        */
+      }
+      else if(chosenAction.equals("grab")){
+        state.grabStuff();
+      }
+      else if(chosenAction.equals("shoot")){
+        state.shootPeople();
+      }
+    }
   }
 
   public PlayerView getClient(){

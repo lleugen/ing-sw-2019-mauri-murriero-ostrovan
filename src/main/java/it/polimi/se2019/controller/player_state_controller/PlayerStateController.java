@@ -37,7 +37,7 @@ public abstract class PlayerStateController {
      *                  3 = west
      */
     public void move() {
-        int direction = client.chooseMoveDirection();
+        int direction = client.chooseDirection();
         //move the player
         if(!player.getPosition().getAdjacencies().get(direction).isBlocked()){
             player.move(player.getPosition().getAdjacencies().get(direction));

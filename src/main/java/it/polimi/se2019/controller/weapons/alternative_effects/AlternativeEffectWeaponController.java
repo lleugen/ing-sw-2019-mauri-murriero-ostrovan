@@ -5,6 +5,7 @@ import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,4 +20,22 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
    */
   @Override
   public abstract List<Player> findTargets(Player shooter);
+
+  @Override
+  public List<Boolean> selectFiringMode(PlayerView client){
+    List<Boolean> firingMode = new ArrayList<>();
+    Boolean clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for bbq");
+    if(clientChoice){
+      firingMode.add(false);
+      firingMode.add(true);
+    }
+    else{
+      firingMode.add(true);
+      firingMode.add(false);
+    }
+    return firingMode;
+  }
+
+  @Override
+  public abstract void shootTargets(Player shooter, List<Player> targets);
 }

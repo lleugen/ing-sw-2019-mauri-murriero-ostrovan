@@ -1,14 +1,11 @@
 package it.polimi.se2019.RMI;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.List;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 
 public interface ViewFacadeInterfaceRMI extends Remote {
-    /**
-     * make a player take his turn
-     */
-    /*void playTurn(Integer availableActions);*/
 
     /**
      * @return index of the power up card to discard
@@ -53,10 +50,14 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     int chooseItemToGrab();
 
     /**
-     * @return which firing mode to use : 0 = basic, 1 = powered up
+     * choose whether to use a firing mode
      */
-    //!revisit this one
-    boolean chooseFiringMode();
+    Boolean chooseFiringMode(String description);
+
+    /**
+     * choose a room from those proposed
+     */
+    String chooseRoom(List<String> rooms);
 
     /**
      * @param targettableSquareCoordinates the coordinates of all targettable squares
@@ -67,5 +68,5 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return 0 for north, 1 for east, 2 for south or 3 for west
      */
-    Integer chooseMoveDirection();
+    Integer chooseDirection(List<Integer> possibleDirections);
 }
