@@ -43,7 +43,7 @@ public abstract class GUIGenericWindow {
      *
      * @param confirmButtons buttons who has to be clicked to unlock the function
      */
-    protected abstract void waitForButtonPress(List<JButton> confirmButtons) throws InterruptedException;
+    protected abstract void waitForButtonPress(List<JButton> confirmButtons);
 
     public boolean isVisible(){
         return frame.isVisible();
@@ -61,8 +61,13 @@ public abstract class GUIGenericWindow {
         mutex.unlock();
     }
 
-    protected void waitMutex() throws InterruptedException{
-        mutex.wait();
+    protected void waitMutex(){
+        try {
+            mutex.wait();
+        }catch(InterruptedException e){
+            System.out.print("Mutex interrupt: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
     }
 
     public void dispose(){

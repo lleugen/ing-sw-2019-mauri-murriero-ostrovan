@@ -18,17 +18,16 @@ public class ActionSetView extends GUIGenericWindow{
 
   @Override
   public void populate(List<String> itemsToShow) {
-    //TO DO
     String[] btnsNames;
-    if(itemsToShow.get(0).equals("NormalStateController")){
+    if(itemsToShow.get(0).equals("NormalState")){
       btnsNames = new String[] {"shoot1", "grab1", "run1"};
-    }else if(itemsToShow.get(0).equals("Adrenaline1StateController")){
+    }else if(itemsToShow.get(0).equals("Adrenaline1State")){
       btnsNames = new String[] {"shoot1", "grab2", "run1"};
-    }else if(itemsToShow.get(0).equals("Adrenaline2StateController")){
+    }else if(itemsToShow.get(0).equals("Adrenaline2State")){
       btnsNames = new String[] {"shoot3", "grab2", "run1"};
-    }else if(itemsToShow.get(0).equals("FirstFreneticStateController")){
+    }else if(itemsToShow.get(0).equals("FirstFreneticState")){
       btnsNames = new String[] {"shoot4", "grab4", "run4"};
-    }else{  /* if(itemsToShow.get(0).equals("SecondFreneticStateController"))*/
+    }else{  /* if(itemsToShow.get(0).equals("SecondFreneticState"))*/
       btnsNames = new String[] {"shoot5", "grab5"};
     }
 
@@ -42,9 +41,9 @@ public class ActionSetView extends GUIGenericWindow{
   @Override
   public synchronized List<String> askAndRequest(List<String> choices) {
     populate(choices);
-    do{
-      waitForButtonPress(actionButtons);
-    }while(result.equals(""));
+    //do{
+    waitForButtonPress(actionButtons);
+    //}while(result.equals(""));
     List<String> temp = new ArrayList<>();
     temp.add(result);
     return temp;
@@ -64,12 +63,7 @@ public class ActionSetView extends GUIGenericWindow{
       });
     }
 
-    try {
-      waitMutex();
-    }catch(InterruptedException e){
-      System.out.print("Mutex interrupt: " + e.getMessage());
-      Thread.currentThread().interrupt();
-    }
+    waitMutex();
 
     return;
   }
