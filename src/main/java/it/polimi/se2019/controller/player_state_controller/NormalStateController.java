@@ -1,11 +1,20 @@
 package it.polimi.se2019.controller.player_state_controller;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
+import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerView;
 
 public class NormalStateController extends PlayerStateController {
-  public NormalStateController() {
+  public NormalStateController(GameBoardController g, Player p, PlayerView c) {
+    super(g, p, c);
     availableActions = 2;
+  }
+
+  @Override
+  public String toString(){
+    return "NormalState";
   }
 
   /**

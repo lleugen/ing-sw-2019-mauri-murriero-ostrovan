@@ -38,6 +38,8 @@ public class GameBoard {
    */
   private Integer currentPlayer;
 
+  private boolean playersAdded;
+
   private boolean killScoreBoardCreated;
   public boolean isKillScoreBoardCreated(){
     return killScoreBoardCreated;
@@ -52,6 +54,7 @@ public class GameBoard {
    * @throws NullPointerException if players contains a null player
    */
   public GameBoard(int mapType, List<Player> players){
+    playersAdded = false;
     killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
     this.map = new Map(mapType, this);
@@ -63,6 +66,15 @@ public class GameBoard {
       tmp = players.get(i);
       this.players.add(tmp);
     }
+  }
+
+
+  public boolean getPlayersAdded(){
+    return playersAdded;
+  }
+  public void addPlayers(List<Player> p){
+    players = p;
+    playersAdded = true;
   }
 
   public List<Player> getPlayers(){

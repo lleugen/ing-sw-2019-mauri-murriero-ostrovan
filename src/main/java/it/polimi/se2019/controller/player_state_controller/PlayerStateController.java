@@ -2,9 +2,11 @@ package it.polimi.se2019.controller.player_state_controller;
 
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.WeaponController;
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -19,6 +21,14 @@ public abstract class PlayerStateController {
     protected PlayerView client;
     protected GameBoardController gameBoardController;
     protected Integer availableActions;
+    protected Map map;
+
+    public PlayerStateController(GameBoardController g, Player p, PlayerView c){
+        gameBoardController = g;
+        player = p;
+        client = c;
+        map = gameBoardController.getGameBoard().getMap();
+    }
 
     public Integer getAvailableActions(){
         return  availableActions;
@@ -37,7 +47,7 @@ public abstract class PlayerStateController {
      *                  3 = west
      */
     public void move() {
-        int direction = client.chooseDirection();
+        int direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
         //move the player
         if(!player.getPosition().getAdjacencies().get(direction).isBlocked()){
             player.move(player.getPosition().getAdjacencies().get(direction));

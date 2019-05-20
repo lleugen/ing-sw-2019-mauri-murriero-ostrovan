@@ -29,7 +29,8 @@ public class HeatSeekerController extends SimpleWeaponController {
         targettablePlayers.add(p);
       }
     }
-    return targettablePlayers;
+    //incompatible type error will be solved by change to the viewinterface
+    return gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(targettablePlayers)));
   }
 
   @Override

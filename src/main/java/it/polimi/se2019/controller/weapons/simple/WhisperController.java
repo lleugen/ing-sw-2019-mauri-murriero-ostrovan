@@ -20,7 +20,7 @@ public class WhisperController extends SimpleWeaponController {
   }
 
   @Override
-  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
+  public List<Player> findTargets(Player shooter){
     Map map = getGameBoardController().getGameBoard().getMap();
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Integer> positionCoordinates = map.getSquareCoordinates(shooter.getPosition());
@@ -32,7 +32,8 @@ public class WhisperController extends SimpleWeaponController {
         visiblePlayers.remove(p);
       }
     }
-    return visiblePlayers;
+    //incompatible type error will be solved by change to the viewinterface
+    return gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(visiblePlayers)));
   }
 
   @Override
