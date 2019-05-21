@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
 
@@ -18,6 +17,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     mapChooserWindow = new GUIMapChooser();
     playersNumberWindow = new GUIPlayersNumber();
     spawnLocationWindow = new GUISpawnLocation();
+    weaponChooserWindow = new GUIWeaponChooser();
   }
 
   /**
@@ -88,6 +88,11 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   */
   private GUISpawnLocation spawnLocationWindow;
 
+    /**
+     *
+     */
+    private GUIWeaponChooser weaponChooserWindow;
+
   /**
    *
    */
@@ -136,9 +141,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return chosen weapon name
    */
   @Override
-  public String chooseWeapon(){
-    //TO DO: FORM
-    return "";
+  public String chooseWeapon(List<String> weapons){
+    return weaponChooserWindow.askAndRequest(weapons).get(0);
   }
 
   /**
@@ -186,6 +190,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
 
   /**
    * @return which firing mode to use
+   *
+   * @param description:
    */
   @Override
   public Boolean chooseFiringMode(String description){

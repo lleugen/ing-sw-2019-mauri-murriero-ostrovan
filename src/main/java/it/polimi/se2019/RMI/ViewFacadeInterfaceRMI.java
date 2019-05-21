@@ -25,7 +25,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return chosen weapon name
      */
-    String chooseWeapon();
+    String chooseWeapon(List<String> weapons);
 
     /**
      * @param possibleTargets is a list of the players who can be targeted(their names)
