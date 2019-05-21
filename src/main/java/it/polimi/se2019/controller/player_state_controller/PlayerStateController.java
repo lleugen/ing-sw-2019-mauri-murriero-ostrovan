@@ -88,6 +88,10 @@ public abstract class PlayerStateController {
      * choose targets and fire.
      */
     public void shoot() {
+        List<String> weapons = new ArrayList<>();
+        while(player.getInventory().getWeapons().iterator().hasNext()){
+
+        }
         String weapon = client.chooseWeapon();
         WeaponController weaponController = null;
 
