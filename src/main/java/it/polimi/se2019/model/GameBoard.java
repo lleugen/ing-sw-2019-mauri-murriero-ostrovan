@@ -1,10 +1,14 @@
 package it.polimi.se2019.model;
 
 import it.polimi.se2019.model.deck.Decks;
+import it.polimi.se2019.model.grabbable.AmmoTile;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
+import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +70,13 @@ public class GameBoard {
       tmp = players.get(i);
       this.players.add(tmp);
     }
+
+    //create decks
+    List<Weapon> weapons = new ArrayList<>();
+    List<AmmoTile> ammoTiles = new ArrayList<>();
+    List<PowerUpCard> powerUpCards = new ArrayList<>();
+    weapons.add(new Weapon())
+    decks = new Decks();
   }
 
 
