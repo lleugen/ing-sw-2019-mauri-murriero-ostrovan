@@ -42,7 +42,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return a list of integers indicating which cards from the player's inventory to use when reloading
      */
-    List<Integer> choosePowerUpCardsForReload();
+    List<Integer> choosePowerUpCardsForReload(List<String> powerUps);
 
     /**
      * @return int indicating which item to pick up from those available

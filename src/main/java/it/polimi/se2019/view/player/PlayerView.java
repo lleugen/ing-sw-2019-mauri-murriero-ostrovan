@@ -19,6 +19,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     spawnLocationWindow = new GUISpawnLocation();
     weaponChooserWindow = new GUIWeaponChooser();
     targetChooseWindow = new GUITargetChoose();
+    powerUpsChooserWindow = new GUIPowerUpsChooser();
   }
 
   /**
@@ -99,6 +100,11 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
      */
     private GUITargetChoose targetChooseWindow;
 
+    /**
+     *
+     */
+    private GUIPowerUpsChooser powerUpsChooserWindow;
+
   /**
    *
    */
@@ -173,9 +179,12 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return a list of integers indicating which cards from the player's inventory to use when reloading
    */
   @Override
-  public List<Integer> choosePowerUpCardsForReload(){
-    //TO DO: FORM
-    return null;
+  public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
+    List<String> temp = powerUpsChooserWindow.askAndRequest(powerUps);
+    List<Integer> tempInt = new ArrayList<>();
+    for(String s: temp)
+        tempInt.add(Integer.getInteger(s));
+    return tempInt;
   }
 
   /**
