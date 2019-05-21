@@ -241,18 +241,16 @@ public class Weapon extends Grabbable {
   /**
    * Inits a new Weapon
    *
-   * @param grabCost   Cost to be paid for grabbing the weapon from a square
-   * @param reloadCost Cost to pay for reloading the weapon
+   * @param gCost   Cost to be paid for grabbing the weapon from a square
+   * @param rCost Cost to pay for reloading the weapon
    *                   <p>
    *                   __WARN__ A weapon is ALWAYS initialized as loaded
    */
-  public Weapon(
-          Ammo grabCost, Ammo reloadCost
-  ) {
-    super();
-    this.grabCost = grabCost;
-    this.reloadCost = reloadCost;
+  public Weapon(String n, Ammo gCost, Ammo rCost) {
+    this.grabCost = gCost;
+    this.reloadCost = rCost;
     this.loaded = true;
+    name = n;
   }
 
   /**
