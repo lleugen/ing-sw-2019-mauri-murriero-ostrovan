@@ -19,6 +19,11 @@ public abstract class GUIGenericWindow {
      */
     private Mutex mutex;
 
+    /**
+     * useful variable containing the answer from this window
+     */
+    protected String result;
+
     public GUIGenericWindow(){
         frame = new JFrame();
         mutex = new Mutex();
@@ -40,10 +45,25 @@ public abstract class GUIGenericWindow {
 
     /**
      * puts an ActionHandler to the selected button and waits to that button to be clicked to unlock
+     * saves the name of the clicked button in the "result" variable
      *
      * @param confirmButtons buttons who has to be clicked to unlock the function
      */
-    protected abstract void waitForButtonPress(List<JButton> confirmButtons);
+    protected void waitForButtonPress(List<JButton> confirmButtons){
+        lockMutex();
+        Integer i;
+        for(i = 0; i < confirmButtons.size(); i++){
+            JButton currentBtn = confirmButtons.get(i);
+            currentBtn.addActionListener(e -> {
+                result = currentBtn.getName();
+                unlockMutex();
+            });
+        }
+
+        waitMutex();
+
+        return;
+    }
 
     public boolean isVisible(){
         return frame.isVisible();

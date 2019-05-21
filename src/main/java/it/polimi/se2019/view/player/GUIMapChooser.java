@@ -20,6 +20,7 @@ public class GUIMapChooser extends GUIGenericWindow {
         //show to the client each map he can choose
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS FOR EACH MAP
+            //i.toString
         }
         setVisible(true);
     }
@@ -33,7 +34,7 @@ public class GUIMapChooser extends GUIGenericWindow {
         return temp;
     }
 
-    @Override
+    /*@Override
     protected void waitForButtonPress(List<JButton> confirmButtons) {
         lockMutex();
         Integer i;
@@ -50,5 +51,5 @@ public class GUIMapChooser extends GUIGenericWindow {
         waitMutex();
 
         return;
-    }
+    }*/
 }

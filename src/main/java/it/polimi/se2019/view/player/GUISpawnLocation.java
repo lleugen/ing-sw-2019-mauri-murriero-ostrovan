@@ -20,6 +20,7 @@ public class GUISpawnLocation extends GUIGenericWindow {
         //show to the client the powerups he can discard to spawn on the same colour spawn square.
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS
+            //currentBtn.setName(i.toString());
         }
         setVisible(true);
     }
@@ -35,14 +36,13 @@ public class GUISpawnLocation extends GUIGenericWindow {
         return temp;
     }
 
-    @Override
+    /*@Override
     protected void waitForButtonPress(List<JButton> confirmButtons) {
         lockMutex();
         Integer i;
         for(i = 0; i < confirmButtons.size(); i++){
             //Associate button to his action by name, when clicked it unlocks the mutex and submit the answer
             JButton currentBtn = confirmButtons.get(i);
-            currentBtn.setName(i.toString());
             currentBtn.addActionListener(e -> {
                 result = currentBtn.getName();
                 unlockMutex();
@@ -51,5 +51,5 @@ public class GUISpawnLocation extends GUIGenericWindow {
         waitMutex();
 
         return;
-    }
+    }*/
 }

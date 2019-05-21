@@ -22,6 +22,7 @@ public class GUIPlayersNumber extends GUIGenericWindow {
         //show to the client combobox which contains the possible number of players
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH COMBOBOX
+            //no need to rename
         }
         //TO DO: CREATE SUBMIT BUTTON
         setVisible(true);
@@ -42,7 +43,7 @@ public class GUIPlayersNumber extends GUIGenericWindow {
         return temp;
     }
 
-    @Override
+    /*@Override
     protected void waitForButtonPress(List<JButton> confirmButtons) {
         lockMutex();
         Integer i;
@@ -58,5 +59,5 @@ public class GUIPlayersNumber extends GUIGenericWindow {
         waitMutex();
 
         return;
-    }
+    }*/
 }

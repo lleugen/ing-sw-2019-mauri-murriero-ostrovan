@@ -18,6 +18,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     playersNumberWindow = new GUIPlayersNumber();
     spawnLocationWindow = new GUISpawnLocation();
     weaponChooserWindow = new GUIWeaponChooser();
+    targetChooseWindow = new GUITargetChoose();
   }
 
   /**
@@ -93,6 +94,11 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
      */
     private GUIWeaponChooser weaponChooserWindow;
 
+    /**
+     *
+     */
+    private GUITargetChoose targetChooseWindow;
+
   /**
    *
    */
@@ -151,8 +157,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseTargets(List<String> possibleTargets){
-    //TO DO: FORM
-    return "";
+    return targetChooseWindow.askAndRequest(possibleTargets).get(0);
   }
 
   /**
@@ -161,7 +166,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseWeaponToReload(List<String> weapons){
-    return weaponLoaderWindow.askAndRequest(weapons).get(0);
+      return weaponLoaderWindow.askAndRequest(weapons).get(0);
   }
 
   /**

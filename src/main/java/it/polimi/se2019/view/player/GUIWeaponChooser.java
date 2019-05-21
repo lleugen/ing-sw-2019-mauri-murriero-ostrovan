@@ -19,7 +19,7 @@ public class GUIWeaponChooser extends GUIGenericWindow {
         //show to the client each weapon he can choose
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS FOR EACH WEAPON
-            //TO DO: NAME EACH BUTTON WITH THE NAME EQUAL TO THE ITEMSTOSHOW VALUE [I]
+            //itemsToShow(i)
         }
         setVisible(true);
     }
@@ -33,7 +33,7 @@ public class GUIWeaponChooser extends GUIGenericWindow {
         return temp;
     }
 
-    @Override
+    /*@Override
     protected void waitForButtonPress(List<JButton> confirmButtons) {
         lockMutex();
         Integer i;
@@ -50,5 +50,5 @@ public class GUIWeaponChooser extends GUIGenericWindow {
         waitMutex();
 
         return;
-    }
+    }*/
 }
