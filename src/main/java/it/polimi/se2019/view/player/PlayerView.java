@@ -2,7 +2,6 @@ package it.polimi.se2019.view.player;
 
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 
-import it.polimi.se2019.controller.ControllerFacadeImplementation;
 import it.polimi.se2019.view.Client;
 
 import javax.swing.*;
@@ -18,6 +17,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     actionSetWindow = new ActionSetView();
     mapChooserWindow = new GUIMapChooser();
     playersNumberWindow = new GUIPlayersNumber();
+    spawnLocationWindow = new GUISpawnLocation();
   }
 
   /**
@@ -84,6 +84,11 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   private GUIPlayersNumber playersNumberWindow;
 
   /**
+  *
+  */
+  private GUISpawnLocation spawnLocationWindow;
+
+  /**
    *
    */
   private String name;
@@ -123,10 +128,8 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    * @return red, blue or yellow
    */
   @Override
-  public int chooseSpawnLocation(){
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Choose a power up card to discard to respawn");
-    return scanner.nextInt();
+  public int chooseSpawnLocation(List<String> powerUps){
+    return Integer.getInteger(spawnLocationWindow.askAndRequest(powerUps).get(0));
   }
 
   /**

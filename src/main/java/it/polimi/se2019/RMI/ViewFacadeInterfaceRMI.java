@@ -10,7 +10,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return index of the power up card to discard
      */
-    int chooseSpawnLocation();
+    int chooseSpawnLocation(List<String> powerUps);
 
     /**
      * Choose map type for the match
