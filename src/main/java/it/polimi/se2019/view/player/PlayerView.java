@@ -17,6 +17,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     weaponLoaderWindow = new GUIWeaponLoader();
     actionSetWindow = new ActionSetView();
     mapChooserWindow = new GUIMapChooser();
+    playersNumberWindow = new GUIPlayersNumber();
   }
 
   /**
@@ -80,6 +81,11 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    *
    */
+  private GUIPlayersNumber playersNumberWindow;
+
+  /**
+   *
+   */
   private String name;
 
   private String character;
@@ -103,19 +109,14 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public int chooseMap(){
-    //ask
-    //return
-    //TO DO: FORM
     List<String> temp = new ArrayList<>(); temp.add("0"); temp.add("1"); temp.add("2"); temp.add("3");
     return Integer.getInteger(mapChooserWindow.askAndRequest(temp).get(0));
   }
 
   @Override
   public int chooseNumberOfPlayers(){
-    //ask
-    //return
-    //TO DO: FORM
-    return 4;
+    List<String> args = new ArrayList<>(); args.add("1"); args.add("2"); args.add("3"); args.add("4"); args.add("5");
+    return Integer.getInteger(playersNumberWindow.askAndRequest(args).get(0));
   }
 
   /**
