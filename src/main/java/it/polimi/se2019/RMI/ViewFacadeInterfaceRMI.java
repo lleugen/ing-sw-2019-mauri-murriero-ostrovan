@@ -55,6 +55,11 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     Boolean chooseFiringMode(String description);
 
     /**
+     *
+     */
+    Boolean chooseBoolean(String description);
+
+    /**
      * choose a room from those proposed
      */
     String chooseRoom(List<String> rooms);

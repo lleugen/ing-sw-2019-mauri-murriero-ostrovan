@@ -213,6 +213,12 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     return false;
   }
 
+  @Override
+  public Boolean chooseBoolean(String description){
+    //TO DO: JDIALOG HERE
+    return false;
+  }
+
   /**
    * @param targettableSquareCoordinates the coordinates of all targettable squares
    * @return the coordinates of one chosen square
