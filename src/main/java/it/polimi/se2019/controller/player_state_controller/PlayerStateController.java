@@ -90,11 +90,11 @@ public abstract class PlayerStateController {
     public void shoot() {
         List<String> weapons = new ArrayList<>();
         while(player.getInventory().getWeapons().iterator().hasNext()){
-
+            weapons.add(player.getInventory().getWeapons().iterator().next().getName());
         }
-        String weapon = client.chooseWeapon();
-        WeaponController weaponController = null;
+        String weapon = client.chooseWeapon(weapons);
 
+        WeaponController weaponController = null;
         for(WeaponController w : gameBoardController.getWeaponControllers()){
             if(w.getName().equals(weapon)){
                 weaponController = w;
