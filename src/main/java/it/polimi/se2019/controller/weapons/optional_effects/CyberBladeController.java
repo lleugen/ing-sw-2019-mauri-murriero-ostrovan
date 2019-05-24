@@ -11,7 +11,7 @@ public class CyberBladeController extends OptionalEffectWeaponController {
 
   @Override
   public List<Player> findTargets(Player shooter){
-
+    return null;
   }
 
   @Override

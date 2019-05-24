@@ -1,6 +1,9 @@
 package it.polimi.se2019.controller.weapons.ordered_effects;
 
 import it.polimi.se2019.controller.weapons.WeaponController;
+import it.polimi.se2019.view.player.PlayerView;
+
+import java.util.List;
 
 /**
  * This is an abstract marker class, it doesn't have its own methods or
@@ -11,5 +14,10 @@ import it.polimi.se2019.controller.weapons.WeaponController;
  */
 public abstract class OrderedEffectsWeaponController extends WeaponController {
   public OrderedEffectsWeaponController() {
+
+  }
+
+  public List<Boolean> selectFiringMode(PlayerView client){
+    return null;
   }
 }
