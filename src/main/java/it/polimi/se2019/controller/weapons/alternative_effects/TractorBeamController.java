@@ -1,7 +1,9 @@
-package it.polimi.se2019.controller.weapons.optional_effects;
+package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.weapons.optional_effects.OptionalEffectWeaponController;
 import it.polimi.se2019.model.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TractorBeamController extends OptionalEffectWeaponController {
