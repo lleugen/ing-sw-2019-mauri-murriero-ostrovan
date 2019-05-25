@@ -8,6 +8,7 @@ import java.util.List;
 public class MachineGunController extends OptionalEffectWeaponController {
   public MachineGunController() {
     name = "MachineGunController";
+    numberOfOptionalEffects = 3;
   }
 
   @Override

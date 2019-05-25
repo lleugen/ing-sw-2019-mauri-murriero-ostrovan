@@ -8,6 +8,7 @@ import java.util.List;
 public class LockRifleController extends OptionalEffectWeaponController {
   public LockRifleController() {
     name = "LockRifleController";
+    numberOfOptionalEffects = 2;
   }
 
   @Override

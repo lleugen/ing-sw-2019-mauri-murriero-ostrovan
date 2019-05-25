@@ -8,6 +8,7 @@ import java.util.List;
 public class CyberBladeController extends OptionalEffectWeaponController {
   public CyberBladeController() {
     name = "CyberBladeController";
+    numberOfOptionalEffects = 3;
   }
 
   @Override
