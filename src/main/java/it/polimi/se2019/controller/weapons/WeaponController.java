@@ -56,6 +56,13 @@ public abstract class WeaponController {
     shootTargets(player, chosenTargets);
   }
 
+  protected Player chooseOneVisiblePlayer(Player shooter){
+      List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
+      return gameBoardController.identifyPlayer
+              (identifyClient(shooter).chooseTargets
+                      (gameBoardController.getPlayerNames(possibleTargets)));
+  }
+
   public abstract List<Boolean> selectFiringMode(PlayerView client);
 
   /**
