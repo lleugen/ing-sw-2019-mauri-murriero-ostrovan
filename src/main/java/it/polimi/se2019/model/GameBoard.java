@@ -53,11 +53,10 @@ public class GameBoard {
    * Inits the gameBoard
    *
    * @param mapType Type of the map to generate
-   * @param players A list of already initialized players
    *
    * @throws NullPointerException if players contains a null player
    */
-  public GameBoard(int mapType, List<Player> players){
+  public GameBoard(int mapType){
     playersAdded = false;
     killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;

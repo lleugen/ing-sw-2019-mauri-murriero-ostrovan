@@ -19,9 +19,7 @@ import java.util.List;
  * ends the game.
  */
 public class GameBoardController{
-  public GameBoardController(List<Player> p, List<PlayerView> v, GameBoard g) {
-    players = p;
-    clients = v;
+  public GameBoardController(GameBoard g) {
     gameBoard = g;
     isReady = false;
     weaponControllers.add(new CyberBladeController());

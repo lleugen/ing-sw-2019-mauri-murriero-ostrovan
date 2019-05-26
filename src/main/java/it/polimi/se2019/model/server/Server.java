@@ -78,8 +78,7 @@ public class Server implements Remote {
             id,
             new ServerLobby(
                     5,
-                    1,
-                    5
+                    1
             )
     );
 
