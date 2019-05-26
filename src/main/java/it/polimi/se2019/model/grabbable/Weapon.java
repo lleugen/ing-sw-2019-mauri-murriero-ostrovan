@@ -241,6 +241,7 @@ public class Weapon extends Grabbable {
   /**
    * Inits a new Weapon
    *
+   * @param n
    * @param gCost   Cost to be paid for grabbing the weapon from a square
    * @param rCost Cost to pay for reloading the weapon
    *                   <p>

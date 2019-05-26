@@ -1,6 +1,7 @@
 package it.polimi.se2019.model;
 
 import it.polimi.se2019.model.deck.Decks;
+import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
@@ -71,13 +72,231 @@ public class GameBoard {
     }
 
     //create decks
-    List<Weapon> weapons = new ArrayList<>();
-    List<AmmoTile> ammoTiles = new ArrayList<>();
-    List<PowerUpCard> powerUpCards = new ArrayList<>();
-    weapons.add(new Weapon())
-    decks = new Decks();
+    decks = new Decks(
+            this.genWeaponDeck(),
+            this.genPowerUpDeck(),
+            this.genAmmoDeck()
+    );
   }
 
+  private List<AmmoTile> genAmmoDeck(){
+    List<AmmoTile> deck = new ArrayList<>();
+
+    deck.add(new AmmoTile("0201",0, 2, 0, true));
+    deck.add(new AmmoTile("0111",0, 1, 1, true));
+    deck.add(new AmmoTile("0210",0, 2, 1, false));
+    deck.add(new AmmoTile("0021",0, 0, 2, true));
+    deck.add(new AmmoTile("0120",0, 1, 2, false));
+    deck.add(new AmmoTile("1101",1, 1, 0, true));
+    deck.add(new AmmoTile("1200",1, 2, 0, false));
+    deck.add(new AmmoTile("1011",1, 0, 1, true));
+    deck.add(new AmmoTile("1020",1, 0, 2, false));
+    deck.add(new AmmoTile("2001",2, 0, 0, true));
+    deck.add(new AmmoTile("2100",2, 1, 0, false));
+    deck.add(new AmmoTile("2010",2, 0, 1, false));
+
+    deck.add(new AmmoTile("0201",0, 2, 0, true));
+    deck.add(new AmmoTile("0111",0, 1, 1, true));
+    deck.add(new AmmoTile("0210",0, 2, 1, false));
+    deck.add(new AmmoTile("0021",0, 0, 2, true));
+    deck.add(new AmmoTile("0120",0, 1, 2, false));
+    deck.add(new AmmoTile("1101",1, 1, 0, true));
+    deck.add(new AmmoTile("1200",1, 2, 0, false));
+    deck.add(new AmmoTile("1011",1, 0, 1, true));
+    deck.add(new AmmoTile("1020",1, 0, 2, false));
+    deck.add(new AmmoTile("2001",2, 0, 0, true));
+    deck.add(new AmmoTile("2100",2, 1, 0, false));
+    deck.add(new AmmoTile("2010",2, 0, 1, false));
+
+    deck.add(new AmmoTile("0201",0, 2, 0, true));
+    deck.add(new AmmoTile("0111",0, 1, 1, true));
+    deck.add(new AmmoTile("0210",0, 2, 1, false));
+    deck.add(new AmmoTile("0021",0, 0, 2, true));
+    deck.add(new AmmoTile("0120",0, 1, 2, false));
+    deck.add(new AmmoTile("1101",1, 1, 0, true));
+    deck.add(new AmmoTile("1200",1, 2, 0, false));
+    deck.add(new AmmoTile("1011",1, 0, 1, true));
+    deck.add(new AmmoTile("1020",1, 0, 2, false));
+    deck.add(new AmmoTile("2001",2, 0, 0, true));
+    deck.add(new AmmoTile("2100",2, 1, 0, false));
+    deck.add(new AmmoTile("2010",2, 0, 1, false));
+
+    return deck;
+  }
+
+  private List<PowerUpCard> genPowerUpDeck(){
+    List<PowerUpCard> deck = new ArrayList<>();
+
+    deck.add(new PowerUpCard(new Ammo(1, 0, 0), "NewtonRed"));
+    deck.add(new PowerUpCard(new Ammo(0, 1, 0), "NewtonBlue"));
+    deck.add(new PowerUpCard(new Ammo(0, 0, 1), "NewtonYellow"));
+    deck.add(new PowerUpCard(new Ammo(1, 0, 0), "TeleporterRed"));
+    deck.add(new PowerUpCard(new Ammo(0, 1, 0), "TeleporterBlue"));
+    deck.add(new PowerUpCard(new Ammo(0, 0, 1), "TeleporterYellow"));
+    deck.add(new PowerUpCard(new Ammo(1, 0, 0), "TagbackGrenadeRed"));
+    deck.add(new PowerUpCard(new Ammo(0, 1, 0), "TagbackGrenadeBlue"));
+    deck.add(new PowerUpCard(new Ammo(0, 0, 1), "TagbackGrenadeYellow"));
+    deck.add(new PowerUpCard(new Ammo(1, 0, 0), "TargetingScopeRed"));
+    deck.add(new PowerUpCard(new Ammo(0, 1, 0), "TargetingScopeBlue"));
+    deck.add(new PowerUpCard(new Ammo(0, 0, 1), "TargetingScopeYellow"));
+
+    return deck;
+  }
+
+  private List<Weapon> genWeaponDeck(){
+    List<Weapon> deck = new ArrayList<Weapon>();
+
+    deck.add(
+            new Weapon(
+                    "CyberBlade",
+                    new Ammo(1, 0, 0),
+                    new Ammo(1, 0, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Electroscythe",
+                    new Ammo(0, 0, 0),
+                    new Ammo(0, 1, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "PlasmaGun",
+                    new Ammo(0, 0, 1),
+                    new Ammo(0, 1, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "GrenadeLauncher",
+                    new Ammo(0, 0, 0),
+                    new Ammo(1, 0, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "RocketLauncher",
+                    new Ammo(1, 0, 0),
+                    new Ammo(2, 0, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Hellion",
+                    new Ammo(0, 0, 1),
+                    new Ammo(1, 0, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "TractorBeam",
+                    new Ammo(0, 0, 0),
+                    new Ammo(0, 1, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "LockRifle",
+                    new Ammo(0, 1, 0),
+                    new Ammo(0, 2, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "VortexCannon",
+                    new Ammo(0, 1, 0),
+                    new Ammo(1, 1, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "MachineGun",
+                    new Ammo(1, 0, 0),
+                    new Ammo(1, 1, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Thor",
+                    new Ammo(1, 0, 0),
+                    new Ammo(1, 1, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "HeatSeeker",
+                    new Ammo(1, 0, 1),
+                    new Ammo(2, 0, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Whisper",
+                    new Ammo(0, 1, 1),
+                    new Ammo(0, 2, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Furnace",
+                    new Ammo(0, 1, 0),
+                    new Ammo(1, 1, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "RailGun",
+                    new Ammo(0, 1, 1),
+                    new Ammo(0, 1, 2)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Shotgun",
+                    new Ammo(0, 0, 1),
+                    new Ammo(0, 0, 2)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "ZX2",
+                    new Ammo(1, 0, 0),
+                    new Ammo(1, 0, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "FlameThrower",
+                    new Ammo(0, 0, 0),
+                    new Ammo(1, 0, 0)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "PowerGlove",
+                    new Ammo(0, 1, 0),
+                    new Ammo(0, 1, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "Shockwave",
+                    new Ammo(0, 0, 0),
+                    new Ammo(0, 0, 1)
+            )
+    );
+    deck.add(
+            new Weapon(
+                    "SledgeHammer",
+                    new Ammo(0, 0, 0),
+                    new Ammo(0, 0, 1)
+            )
+    );
+
+
+    return deck;
+  }
 
   public boolean getPlayersAdded(){
     return playersAdded;
