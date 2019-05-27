@@ -8,6 +8,8 @@ public abstract class PowerUpController {
   public PowerUpController() {
   }
 
+
+
   /**
    * Method prototype, it will be implemented by its subclasses.
    */
