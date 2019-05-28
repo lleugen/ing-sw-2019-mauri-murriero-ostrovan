@@ -12,7 +12,7 @@ public class Direction {
    * @param square  The next square in this direction
    * @param blocked True if the next square is not accessible, false otherwise
    */
-  Direction(Square square, boolean blocked) {
+  public Direction(Square square, boolean blocked) {
   }
 
   /**

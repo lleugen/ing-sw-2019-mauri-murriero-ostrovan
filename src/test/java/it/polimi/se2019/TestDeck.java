@@ -15,7 +15,7 @@ public class TestDeck {
 
   @Test
   public void testDrawShouldFailEmptyDeck() {
-    List<List<Grabbable>> list = new ArrayList<>();
+    List<Grabbable> list = new ArrayList<>();
 
     Deck<Grabbable> testDeck = new Deck<Grabbable>(list);
 
@@ -30,12 +30,12 @@ public class TestDeck {
 
   @Test
   public void testDrawShouldReturnItem() {
-    List<List<Grabbable>> list = new ArrayList<>();
-    List<Grabbable> elements = new ArrayList<>();
+    List<Grabbable> list = new ArrayList<>();
+    Grabbable elements;
     Ammo element = new Ammo(1,2,3);
-    List<Grabbable> returnedElement;
+    Grabbable returnedElement;
 
-    elements.add(element);
+    elements = element;
     list.add(elements);
 
     Deck<Grabbable> testDeck = new Deck<Grabbable>(list);
@@ -61,15 +61,15 @@ public class TestDeck {
    */
   @Test
   public void testDiscardNoShuffle() {
-    List<List<Grabbable>> list = new ArrayList<>();
-    List<Grabbable> els1 = new ArrayList<>();
-    List<Grabbable> els2 = new ArrayList<>();
+    List<Grabbable> list = new ArrayList<>();
+    Grabbable els1;
+    Grabbable els2;
     Ammo element = new Ammo(1,2,3);
 
-    List<Grabbable> returnedElement;
+    Grabbable returnedElement;
 
-    els1.add(element);
-    els2.add(element);
+    els1 = element;
+    els2 = element;
 
     list.add(els1);
     list.add(els2);
@@ -111,14 +111,14 @@ public class TestDeck {
    */
   @Test
   public void testDiscardWithShuffle() {
-    List<List<Grabbable>> list = new ArrayList<>();
-    List<Grabbable> elements = new ArrayList<>();
+    List<Grabbable> list = new ArrayList<>();
+    Grabbable elements;
     Ammo element = new Ammo(1,2,3);
 
-    List<Grabbable> returnedElement1;
-    List<Grabbable> returnedElement2;
+    Grabbable returnedElement1 = null;
+    Grabbable returnedElement2 = null;
 
-    elements.add(element);
+    elements = element;
 
     list.add(elements);
 
