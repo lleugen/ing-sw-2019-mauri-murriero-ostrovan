@@ -45,6 +45,11 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     List<Integer> choosePowerUpCardsForReload(List<String> powerUps);
 
     /**
+     * @return the integer relative to the availableEffects list
+     */
+    Integer chooseIndex(String weaponName, List<String> availableEffects);
+
+    /**
      * @return int indicating which item to pick up from those available
      */
     int chooseItemToGrab();

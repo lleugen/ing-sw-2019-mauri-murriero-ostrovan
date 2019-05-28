@@ -188,6 +188,15 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   }
 
   /**
+   * @return the integer relative to the availableEffects list
+   */
+  @Override
+  public Integer chooseIndex(String weaponName, List<String> availableEffects){
+    //TO DO: FORM
+    return 0;
+  }
+
+  /**
    * @return int indicating which item to pick up from those available
    */
   @Override
