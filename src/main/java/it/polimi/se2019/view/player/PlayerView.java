@@ -2,20 +2,24 @@ package it.polimi.se2019.view.player;
 
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 
-import it.polimi.se2019.controller.ControllerFacadeImplementation;
 import it.polimi.se2019.view.Client;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PlayerView implements ViewFacadeInterfaceRMI {
 
   public PlayerView(){
     weaponLoaderWindow = new GUIWeaponLoader();
     actionSetWindow = new ActionSetView();
+    mapChooserWindow = new GUIMapChooser();
+    playersNumberWindow = new GUIPlayersNumber();
+    spawnLocationWindow = new GUISpawnLocation();
+    weaponChooserWindow = new GUIWeaponChooser();
+    targetChooseWindow = new GUITargetChoose();
+    powerUpsChooserWindow = new GUIPowerUpsChooser();
   }
 
   /**
@@ -74,6 +78,36 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
   /**
    *
    */
+  private GUIMapChooser mapChooserWindow;
+
+  /**
+   *
+   */
+  private GUIPlayersNumber playersNumberWindow;
+
+  /**
+  *
+  */
+  private GUISpawnLocation spawnLocationWindow;
+
+    /**
+     *
+     */
+    private GUIWeaponChooser weaponChooserWindow;
+
+    /**
+     *
+     */
+    private GUITargetChoose targetChooseWindow;
+
+    /**
+     *
+     */
+    private GUIPowerUpsChooser powerUpsChooserWindow;
+
+  /**
+   *
+   */
   private String name;
 
   private String character;
@@ -97,37 +131,30 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public int chooseMap(){
-    //ask
-    //return
-    //TO DO: FORM
-    return 1;
+    List<String> temp = new ArrayList<>(); temp.add("0"); temp.add("1"); temp.add("2"); temp.add("3");
+    return Integer.getInteger(mapChooserWindow.askAndRequest(temp).get(0));
   }
 
   @Override
   public int chooseNumberOfPlayers(){
-    //ask
-    //return
-    //TO DO: FORM
-    return 4;
+    List<String> args = new ArrayList<>(); args.add("1"); args.add("2"); args.add("3"); args.add("4"); args.add("5");
+    return Integer.getInteger(playersNumberWindow.askAndRequest(args).get(0));
   }
 
   /**
    * @return red, blue or yellow
    */
   @Override
-  public int chooseSpawnLocation(){
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Choose a power up card to discard to respawn");
-    return scanner.nextInt();
+  public int chooseSpawnLocation(List<String> powerUps){
+    return Integer.getInteger(spawnLocationWindow.askAndRequest(powerUps).get(0));
   }
 
   /**
    * @return chosen weapon name
    */
   @Override
-  public String chooseWeapon(){
-    //TO DO: FORM
-    return "";
+  public String chooseWeapon(List<String> weapons){
+    return weaponChooserWindow.askAndRequest(weapons).get(0);
   }
 
   /**
@@ -136,8 +163,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseTargets(List<String> possibleTargets){
-    //TO DO: FORM
-    return "";
+    return targetChooseWindow.askAndRequest(possibleTargets).get(0);
   }
 
   /**
@@ -146,16 +172,28 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
    */
   @Override
   public String chooseWeaponToReload(List<String> weapons){
-    return weaponLoaderWindow.askAndRequest(weapons).get(0);
+      return weaponLoaderWindow.askAndRequest(weapons).get(0);
   }
 
   /**
    * @return a list of integers indicating which cards from the player's inventory to use when reloading
    */
   @Override
-  public List<Integer> choosePowerUpCardsForReload(){
+  public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
+    List<String> temp = powerUpsChooserWindow.askAndRequest(powerUps);
+    List<Integer> tempInt = new ArrayList<>();
+    for(String s: temp)
+        tempInt.add(Integer.getInteger(s));
+    return tempInt;
+  }
+
+  /**
+   * @return the integer relative to the availableEffects list
+   */
+  @Override
+  public Integer chooseIndex(String weaponName, List<String> availableEffects){
     //TO DO: FORM
-    return null;
+    return 0;
   }
 
   /**
@@ -169,15 +207,24 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
 
   @Override
   public String chooseRoom(List<String> rooms){
-
+    //TO DO: FORM
+    return rooms.get(0);
   }
 
   /**
    * @return which firing mode to use
+   *
+   * @param description:
    */
   @Override
   public Boolean chooseFiringMode(String description){
     //TO DO: FORM
+    return false;
+  }
+
+  @Override
+  public Boolean chooseBoolean(String description){
+    //TO DO: JDIALOG HERE
     return false;
   }
 
