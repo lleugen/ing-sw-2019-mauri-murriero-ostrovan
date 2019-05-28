@@ -79,9 +79,4 @@ public interface ViewFacadeInterfaceRMI extends Remote {
      * @return 0 for north, 1 for east, 2 for south or 3 for west
      */
     Integer chooseDirection(List<Integer> possibleDirections);
-
-    /**
-     * @return integer indicating the index of the chosen element
-     */
-    Integer chooseIndex(List<String> options);
 }
