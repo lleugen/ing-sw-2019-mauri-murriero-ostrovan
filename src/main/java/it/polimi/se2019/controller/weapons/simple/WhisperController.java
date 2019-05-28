@@ -33,7 +33,10 @@ public class WhisperController extends SimpleWeaponController {
       }
     }
     //incompatible type error will be solved by change to the viewinterface
-    return gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(visiblePlayers)));
+    List<Player> targets = new ArrayList<>();
+    targets.add(gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets
+            (gameBoardController.getPlayerNames(visiblePlayers))));
+    return targets;
   }
 
   @Override

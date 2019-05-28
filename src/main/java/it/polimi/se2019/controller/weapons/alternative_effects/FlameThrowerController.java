@@ -63,8 +63,10 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
         possibleSecondaryTargetsNames.add(p.getName());
       }
       //incompatible type error will be solved by change to the viewinterface
-      primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets(possiblePrimaryTargetsNames)));
-      secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets(possibleSecondaryTargetsNames)));
+      primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
+              (possiblePrimaryTargetsNames)));
+      secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
+              (possibleSecondaryTargetsNames)));
 
     }
     targets.addAll(primaryTargets);
