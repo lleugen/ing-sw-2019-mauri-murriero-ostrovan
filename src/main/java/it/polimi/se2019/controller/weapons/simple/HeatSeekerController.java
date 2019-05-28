@@ -21,7 +21,7 @@ public class HeatSeekerController extends SimpleWeaponController {
     return firingMode;
   }
   @Override
-  public List<Player> findTargets(Player shooter, List<Boolean> firingMode){
+  public List<Player> findTargets(Player shooter){
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Player> targettablePlayers = new ArrayList<>();
     for(Player p : getGameBoardController().getGameBoard().getPlayers()){
@@ -30,7 +30,10 @@ public class HeatSeekerController extends SimpleWeaponController {
       }
     }
     //incompatible type error will be solved by change to the viewinterface
-    return gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(targettablePlayers)));
+    List<Player> targets = new ArrayList<>();
+    targets.add(gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets
+            (gameBoardController.getPlayerNames(targettablePlayers))));
+    return targets;
   }
 
   @Override

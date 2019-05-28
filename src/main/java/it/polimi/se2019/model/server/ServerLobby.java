@@ -7,58 +7,149 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
 import java.rmi.Remote;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerLobby implements Remote {
-  private List<PlayerView> playerViewList;
-  private List<Player> playerList;
-  private List<PlayerController> playerControllerList;
+  private Map<String, PlayerData> playersData;
   private Integer maxPlayers;
-  private Integer registeredPlayers;
-  private Integer mapType;
+  private GameBoardController gameBoardController;
 
   ServerLobby(Integer playerCount, Integer mapType){
     this.maxPlayers = playerCount;
-    this.registeredPlayers = 0;
-    this.mapType = mapType;
-
-    this.playerViewList = Collections.synchronizedList(new ArrayList<>());
-    this.playerList = Collections.synchronizedList(new ArrayList<>());
-    this.playerControllerList = Collections.synchronizedList(new ArrayList<>());
+    this.gameBoardController = new GameBoardController(new GameBoard(mapType));
+    this.playersData = Collections.synchronizedMap(new HashMap<>());
   }
 
-  private synchronized boolean reservePlace() {
-    if (this.registeredPlayers < this.maxPlayers){
-      this.registeredPlayers++;
-      return true;
+  /**
+   * Add a new player to the game, only if the nickname doesn't exists in the
+   * current game
+   *
+   * @param name nickname of the player
+   *
+   * @return a reference to the created player, to be initialized
+   *         null if the player already exists
+   *
+   * @throws RoomFullException if the player can't be added cause the room
+   *                           is full
+   */
+  private synchronized PlayerData addPlayer(String name)
+          throws RoomFullException {
+    if (this.checkRoomFull() && this.checkPlayerNotExists(name)){
+      if (this.checkPlayerNotExists(name)){
+        PlayerData toReturn = new PlayerData();
+        this.playersData.put(name, toReturn);
+        return toReturn;
+      }
+      else {
+        return null;
+      }
     }
     else {
-      return false;
+      throw new RoomFullException();
     }
   }
 
-  private synchronized boolean checkLobbyFull(){
-    return this.registeredPlayers >= this.maxPlayers;
+  /**
+   * Check if a room is full
+   *
+   * @return true if the room is full, false otherwise
+   */
+  private boolean checkRoomFull(){
+    return (this.playersData.size() >= this.maxPlayers);
   }
 
-  public void connect(PlayerView client, String name, String character){
-    if (this.reservePlace()) {
-      Player tmp = new Player(name, character);
-      this.playerViewList.add(client);
-      this.playerList.add(tmp);
-      this.playerControllerList.add(new PlayerController(tmp, client));
-      if (this.checkLobbyFull()){
-        new GameBoardController(
-                this.playerList,
-                this.playerViewList,
-                new GameBoard(
-                        this.mapType,
-                        this.playerList
+  /**
+   * Check if a player is already registered to the lobby
+   *
+   * @param name name of the player to check
+   *
+   * @return true if the player is already registered, false otherwise
+   */
+  private boolean checkPlayerNotExists(String name){
+    return this.playersData.containsKey(name);
+  }
+
+  /**
+   * Handle connections of players.
+   * A player must call this method to connect to to the server
+   *
+   * @param client player's view
+   * @param name name of the player
+   * @param character id of the player's character
+   */
+  public void connect(PlayerView client, String name, String character) {
+    PlayerData player;
+
+    try {
+      player = this.addPlayer(name);
+
+      if (player != null) {
+        player.setModel(new Player(name, character));
+        player.setView(client);
+        player.setController(
+                new PlayerController(
+                        this.gameBoardController,
+                        player.getModel(),
+                        player.getView()
                 )
-        ).startGame();
+        );
+
+        if (this.checkRoomFull()){
+          this.gameBoardController.startGame();
+        }
       }
+      else {
+        // Player is already registered to the game
+      }
+    }
+    catch (RoomFullException e){
+      // Nothing to do, the room is full
+      // TODO (if necesary)
+    }
+  }
+
+  private static class PlayerData {
+    private PlayerView view;
+    private Player model;
+    private PlayerController controller;
+
+    PlayerData() {
+      this.view = null;
+      this.model = null;
+      this.controller = null;
+    }
+
+    public PlayerView getView() {
+      return view;
+    }
+
+    public void setView(PlayerView view) {
+      this.view = view;
+    }
+
+    public Player getModel() {
+      return model;
+    }
+
+    public void setModel(Player model) {
+      this.model = model;
+    }
+
+    public PlayerController getController() {
+      return controller;
+    }
+
+    public void setController(PlayerController controller) {
+      this.controller = controller;
+    }
+  }
+
+  public static class RoomFullException extends Exception {
+    @Override
+    public String toString() {
+      return "Room is full, please start the game";
     }
   }
 }

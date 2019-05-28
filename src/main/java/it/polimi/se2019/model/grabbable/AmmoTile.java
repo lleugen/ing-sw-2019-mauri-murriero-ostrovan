@@ -9,6 +9,8 @@ public class AmmoTile extends Grabbable{
    */
   private Ammo ammo;
 
+  private String name;
+
   /**
    * The boolean has value 1 if the ammo tile contains a power up card, 0 otherwise
    */
@@ -23,9 +25,10 @@ public class AmmoTile extends Grabbable{
     return hasPowerUpCopy;
   }
 
-  public AmmoTile(int redAmount, int blueAmount, int yellowAmount, boolean containsPowerup) {
-    ammo = new Ammo(redAmount, blueAmount, yellowAmount);
-    hasPowerUp = containsPowerup;
+  public AmmoTile(String name, int redAmount, int blueAmount, int yellowAmount, boolean containsPowerup) {
+    this.name = name;
+    this.ammo = new Ammo(redAmount, blueAmount, yellowAmount);
+    this.hasPowerUp = containsPowerup;
   }
 
 

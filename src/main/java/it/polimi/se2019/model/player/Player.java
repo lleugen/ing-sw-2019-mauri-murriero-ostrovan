@@ -99,6 +99,9 @@ public class Player {
     this.position = direction.getSquare();
   }
 
+  public void moveToSquare(Square destination){
+    position = destination;
+  }
   /**
    * Give points to the players who dealt damage to the player
    */

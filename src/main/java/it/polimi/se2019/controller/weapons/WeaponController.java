@@ -47,25 +47,20 @@ public abstract class WeaponController {
    * Create a list of valid targets, choose targets and shoot them.
    */
   public void fire(Player player, PlayerView client) {
-    List<String> possibleTargetNames = new ArrayList<>();
-    List<Player> possibleTargets = new ArrayList<>();
-    List<String> chosenTargetNames = new ArrayList<>();
     List<Player> chosenTargets = new ArrayList<>();
-    List<Boolean> firingMode = new ArrayList<>();
-    firingMode = selectFiringMode(client);
-    possibleTargets = findTargets(player);
-    for(Player p : possibleTargets){
-      possibleTargetNames.add(p.getName());
-    }
 
-    chosenTargetNames = client.chooseTargets(possibleTargetNames);
-    for(Player p : gameBoardController.getPlayers()){
-      if(chosenTargetNames.contains(p.getName())){
-        chosenTargets.add(p);
-      }
-    }
+    firingMode = selectFiringMode(client);
+
+    chosenTargets = findTargets(player);
 
     shootTargets(player, chosenTargets);
+  }
+
+  protected Player chooseOneVisiblePlayer(Player shooter){
+      List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
+      return gameBoardController.identifyPlayer
+              (identifyClient(shooter).chooseTargets
+                      (gameBoardController.getPlayerNames(possibleTargets)));
   }
 
   public abstract List<Boolean> selectFiringMode(PlayerView client);

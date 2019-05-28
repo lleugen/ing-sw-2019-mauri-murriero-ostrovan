@@ -4,6 +4,7 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -313,5 +314,54 @@ public class Map {
       }
     }
     return adjacentSquares;
+  }
+
+  /**
+   * get all players who are at most two moves away from position
+   */
+  public List<Player> getTwoMovesAway(Square position){
+    List<Square> twoMovesAway = new ArrayList<>();
+    List<Square> oneMoveAway = new ArrayList<>();
+    List<Player> twoMovesAwayPlayers = new ArrayList<>();
+    for(Direction d : position.getAdjacencies()){
+      if(!d.isBlocked()){
+        oneMoveAway.add(d.getSquare());
+      }
+    }
+    for(Square q : oneMoveAway){
+      for(Direction d : q.getAdjacencies()){
+        if((!d.isBlocked())&(!twoMovesAway.contains(d.getSquare()))){
+          twoMovesAway.add(d.getSquare());
+        }
+      }
+    }
+    for(Player p : gameBoard.getPlayers()){
+      if(twoMovesAway.contains(p.getPosition())){
+        twoMovesAwayPlayers.add(p);
+      }
+    }
+    return twoMovesAwayPlayers;
+  }
+
+  /**
+   * get all squares that are at most two moves away from position
+   */
+  public List<Square> getTwoMovesAwaySquares(Square position){
+    List<Square> twoMovesAway = new ArrayList<>();
+    List<Square> oneMoveAway = new ArrayList<>();
+    List<Player> twoMovesAwayPlayers = new ArrayList<>();
+    for(Direction d : position.getAdjacencies()){
+      if(!d.isBlocked()){
+        oneMoveAway.add(d.getSquare());
+      }
+    }
+    for(Square q : oneMoveAway){
+      for(Direction d : q.getAdjacencies()){
+        if((!d.isBlocked())&(!twoMovesAway.contains(d.getSquare()))){
+          twoMovesAway.add(d.getSquare());
+        }
+      }
+    }
+    return twoMovesAway;
   }
 }
