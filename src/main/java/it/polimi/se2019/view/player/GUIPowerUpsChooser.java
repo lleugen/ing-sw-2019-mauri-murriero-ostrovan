@@ -1,6 +1,6 @@
 package it.polimi.se2019.view.player;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
+//import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
 
 import javax.swing.*;
 import java.util.ArrayList;
