@@ -66,7 +66,11 @@ public abstract class PlayerStateController {
         player.getInventory().addPowerUpToInventory(gameBoardController.getGameBoard().getDecks().drawPowerUp());
         //ask player to choose a power up card to discard, return a colour
         //client will have to be the PlayerView stub
-        int discardedCard = client.chooseSpawnLocation();
+        List<String> powerUps = new ArrayList<>();
+        for(PowerUpCard p : player.getInventory().getPowerUps()){
+            powerUps.add(p.getDescription());
+        }
+        int discardedCard = client.chooseSpawnLocation(powerUps);
         if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
             //spawn on the red spawnpoint
             player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
@@ -126,7 +130,11 @@ public abstract class PlayerStateController {
         for(Weapon w : player.getInventory().getWeapons()){
             if(w.getName().equals(weaponToReloadName)){
                 //choose which power up cards to use for reloading
-                cardsToUseIndexes = client.choosePowerUpCardsForReload();
+                List<String> powerUps = new ArrayList<>();
+                for(PowerUpCard p : player.getInventory().getPowerUps()){
+                    powerUps.add(p.getDescription());
+                }
+                cardsToUseIndexes = client.choosePowerUpCardsForReload(powerUps);
                 //get the chosen cards
                 for(int i : cardsToUseIndexes){
                     cardsToUse.add(player.getInventory().getPowerUps().get(i));

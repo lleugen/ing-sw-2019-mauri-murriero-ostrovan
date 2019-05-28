@@ -39,7 +39,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
     Integer chosenEffect;
     while(firingMode.contains(true)){
       //choose which effect to apply
-      chosenEffect = identifyClient(shooter).chooseIndex(availableEffects);
+      chosenEffect = identifyClient(shooter).chooseIndex("RocketLauncher", availableEffects);
       firingMode.set(chosenEffect, false);
       if(chosenEffect == 0){
         //basic effect

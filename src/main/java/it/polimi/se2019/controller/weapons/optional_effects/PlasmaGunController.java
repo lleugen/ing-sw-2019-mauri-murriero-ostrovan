@@ -34,7 +34,7 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
     while(firingMode.contains(true)){
       //choose which effect to apply
       Player target = null;
-      chosenEffect = client.chooseIndex(availableEffects);
+      chosenEffect = identifyClient(shooter).chooseIndex("PlasmaGun", availableEffects);
       firingMode.set(chosenEffect, false);
       if(chosenEffect == 0){
         targets = findTargets(shooter);
