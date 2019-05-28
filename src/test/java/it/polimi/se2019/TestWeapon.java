@@ -12,7 +12,7 @@ import java.util.List;
 public class TestWeapon {
     @Test(expected = Weapon.WeaponAlreadyLoadedException.class)
     public void testReloadLoadedWeapon(){
-        Weapon weapon = new Weapon(null, null);
+        Weapon weapon = new Weapon(null, null, null);
         weapon.reload(null, null);
     }
     @Test
@@ -21,7 +21,7 @@ public class TestWeapon {
         player.getInventory().addPowerUpToInventory(new PowerUpCard(new Ammo(1,0,0), null));
         player.getInventory().addPowerUpToInventory(new PowerUpCard(new Ammo(0,1,0), null));
         player.getInventory().addPowerUpToInventory(new PowerUpCard(new Ammo(0,0,1), null));
-        Weapon weapon = new Weapon(null, null);
+        Weapon weapon = new Weapon(null, null, null);
         weapon.setOwner(player);
         weapon.unload();
         weapon.reload(player.getInventory().getPowerUps(), new Ammo(0,0,0));
@@ -31,7 +31,7 @@ public class TestWeapon {
     public void testReloadWithPowerUpCardsShouldFail(){
         Player player = new Player(null,null);
         player.getInventory().addPowerUpToInventory(new PowerUpCard(new Ammo(0,0,1), null));
-        Weapon weapon = new Weapon(null, null);
+        Weapon weapon = new Weapon(null, null, null);
         weapon.setOwner(player);
         weapon.unload();
         weapon.reload(player.getInventory().getPowerUps(), new Ammo(0,0,0));
@@ -39,7 +39,7 @@ public class TestWeapon {
     @Test
     public void testReloadWithAmmoShouldSucceed(){
         Player player = new Player(null,null);
-        Weapon weapon = new Weapon(null, null);
+        Weapon weapon = new Weapon(null, null, null);
         weapon.setOwner(player);
         weapon.unload();
         weapon.reload(player.getInventory().getPowerUps(), new Ammo(1,1,1));
@@ -48,7 +48,7 @@ public class TestWeapon {
     @Test(expected = Weapon.UnableToReloadException.class)
     public void testReloadWithAmmoShouldFail(){
         Player player = new Player(null,null);
-        Weapon weapon = new Weapon(null, null);
+        Weapon weapon = new Weapon(null, null, null);
         weapon.setOwner(player);
         weapon.unload();
         weapon.reload(player.getInventory().getPowerUps(), new Ammo(0,1,1));
