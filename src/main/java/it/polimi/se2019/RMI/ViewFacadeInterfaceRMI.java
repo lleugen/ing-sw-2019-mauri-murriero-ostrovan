@@ -1,7 +1,5 @@
 package it.polimi.se2019.RMI;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.util.List;
 import java.rmi.Remote;
 

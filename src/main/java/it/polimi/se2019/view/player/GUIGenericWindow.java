@@ -1,9 +1,11 @@
 package it.polimi.se2019.view.player;
 
-import sun.awt.Mutex;
-
+//import sun.awt.Mutex;
+//import java.util.concurrent.*;
 import javax.swing.*;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class GUIGenericWindow {
 
@@ -17,7 +19,8 @@ public abstract class GUIGenericWindow {
      * every time the user asks for a choice, the askAndRequest function display the frame and wait for the "Confirm" button to get
      * pressed, who will unlock the function and let return what the user has request
      */
-    private Mutex mutex;
+    //private Mutex mutex;
+    private Lock lock;
 
     /**
      * useful variable containing the answer from this window
@@ -26,8 +29,10 @@ public abstract class GUIGenericWindow {
 
     public GUIGenericWindow(){
         frame = new JFrame();
-        mutex = new Mutex();
-        mutex.unlock();
+        lock = new ReentrantLock();
+        lock.unlock();
+        //mutex = new Mutex();
+        //mutex.unlock();
     }
 
     /**
@@ -74,16 +79,18 @@ public abstract class GUIGenericWindow {
     }
 
     protected void lockMutex(){
-        mutex.lock();
+        //mutex.lock();
+        lock.lock();
     }
 
     protected void unlockMutex(){
-        mutex.unlock();
+        lock.unlock();
     }
 
     protected void waitMutex(){
         try {
-            mutex.wait();
+            //mutex.wait();
+            lock.wait();
         }catch(InterruptedException e){
             System.out.print("Mutex interrupt: " + e.getMessage());
             Thread.currentThread().interrupt();

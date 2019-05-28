@@ -120,7 +120,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI {
     return character;
   }
 
-  private String chooseAction(String actionSetName){
+  public String chooseAction(String actionSetName){
     List<String> temp = new ArrayList<String>();
     temp.add(actionSetName);
     return actionSetWindow.askAndRequest(temp).get(0);
