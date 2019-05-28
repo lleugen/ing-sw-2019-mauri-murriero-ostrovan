@@ -45,7 +45,9 @@ public class Ammo extends Grabbable {
    * @return 1 if set contains the same amount or more than reference, 0 if set contains less ammo cubes of any colour than reference
    */
   public static int compare(Ammo set, Ammo reference) {
-    if((set.getRed() >= reference.getRed())&(set.getBlue()>= reference.getBlue())&(set.getYellow() >= reference.getYellow())){
+    if((set.getRed() >= reference.getRed())
+            &(set.getBlue()>= reference.getBlue())
+            &(set.getYellow() >= reference.getYellow())){
       return 1;
     }
     else return 0;
