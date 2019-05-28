@@ -44,6 +44,7 @@ public class Map {
     return yellowSpawnPoint;
   }
 
+
   /**
    * Init a new map
    *
@@ -120,23 +121,26 @@ public class Map {
     redSpawnPoint = mapSquares[0][2];
     blueSpawnPoint = mapSquares[1][0];
     yellowSpawnPoint = mapSquares[2][3];
+
+    /*
     //add square adjacencies
+    List<Direction> currentAdjacencies = new ArrayList<>();
     for(int i = 0; i<4; i++){
       for(int j = 0; j<3; j++){
-        List<Direction> currentAdjacencies = new ArrayList<Direction>();
+        currentAdjacencies.clear();
         if(j!=0){
           currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
         }
         else{
           currentAdjacencies.add(new Direction(null, true));
         }
-        if(i!=3){
+        if(i!=2){
           currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
         }
         else{
           currentAdjacencies.add(new Direction(null, true));
         }
-        if(j!=2){
+        if(j!=3){
           currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
         }
         else{
@@ -178,6 +182,7 @@ public class Map {
       mapSquares[0][2].setBlocked(true, true, false, false);
       mapSquares[1][3].setBlocked(true, true, false, false);
     }
+    */
   }
 
   public Square[][]getMapSquares(){

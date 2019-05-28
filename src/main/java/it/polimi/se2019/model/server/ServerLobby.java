@@ -18,7 +18,8 @@ public class ServerLobby implements Remote {
 
   ServerLobby(Integer playerCount, Integer mapType){
     this.maxPlayers = playerCount;
-    this.gameBoardController = new GameBoardController(new GameBoard(mapType));
+    GameBoard gameBoard = new GameBoard(mapType);
+    this.gameBoardController = new GameBoardController(gameBoard);
     this.playersData = Collections.synchronizedMap(new HashMap<>());
   }
 
@@ -86,7 +87,7 @@ public class ServerLobby implements Remote {
       player = this.addPlayer(name);
 
       if (player != null) {
-        player.setModel(new Player(name, character));
+        player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
         player.setView(client);
         player.setController(
                 new PlayerController(
