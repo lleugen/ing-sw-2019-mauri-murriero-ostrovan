@@ -36,7 +36,7 @@ public class GameBoard {
   /**
    * Contains the id of the first player in the players list
    */
-  private Integer firstPlayer;
+  private Integer firstPlayer = 0;
 
   /**
    * Contains the id of the player currently playing the turn

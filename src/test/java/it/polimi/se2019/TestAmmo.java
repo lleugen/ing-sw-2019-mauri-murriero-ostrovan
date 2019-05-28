@@ -16,22 +16,22 @@ public class TestAmmo {
     }
     @Test
     public void testCompareShouldReturn0RedMissing(){
-        Ammo ammoSet = new Ammo(1,1,1);
-        Ammo ammoReference = new Ammo(0, 1, 1);
+        Ammo ammoSet = new Ammo(0,1,1);
+        Ammo ammoReference = new Ammo(1, 1, 1);
         int result = compare(ammoSet, ammoReference);
         assertEquals(0, result);
     }
     @Test
     public void testCompareShouldReturn0BlueMissing(){
-        Ammo ammoSet = new Ammo(1,1,1);
-        Ammo ammoReference = new Ammo(1,0,1);
+        Ammo ammoSet = new Ammo(1,0,1);
+        Ammo ammoReference = new Ammo(1,1,1);
         int result = compare(ammoSet, ammoReference);
         assertEquals(0, result);
     }
     @Test
     public void testCompareShouldReturn0YellowMissing(){
-        Ammo ammoSet = new Ammo(1,1,1);
-        Ammo ammoReference = new Ammo(1,1,0);
+        Ammo ammoSet = new Ammo(1,1,0);
+        Ammo ammoReference = new Ammo(1,1,1);
         int result = compare(ammoSet, ammoReference);
         assertEquals(0, result);
     }

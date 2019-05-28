@@ -51,6 +51,7 @@ public class Map {
    */
   public Map(int mapType, GameBoard g){
     gameBoard = g;
+    mapSquares = new Square[3][4];
     if(mapType == 0){
       mapSquares[0][0] = new AmmoSquare("blue", null);
       mapSquares[0][1] = new AmmoSquare("blue", null);

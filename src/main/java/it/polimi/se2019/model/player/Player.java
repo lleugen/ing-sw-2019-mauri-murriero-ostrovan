@@ -15,6 +15,8 @@ public class Player {
     this.character = character;
     this.points = 0;
     this.state = 0;
+    board = new PlayerBoard();
+    inventory = new Inventory(gameBoardReference.getDecks());
   }
 
   /**
