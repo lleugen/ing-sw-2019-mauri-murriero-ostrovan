@@ -2,7 +2,6 @@ package it.polimi.se2019;
 
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
-import javafx.print.PageLayout;
 import org.junit.Test;
 
 public class TestPlayer {
