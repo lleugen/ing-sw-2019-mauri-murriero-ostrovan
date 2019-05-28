@@ -18,12 +18,22 @@ public class SecondFreneticStateController extends PlayerStateController {
   /**
    *
    */
+  @Override
   public void grabStuff() {
   }
 
   /**
    *
    */
+  @Override
+  public void runAround(){
+
+  }
+
+  /**
+   *
+   */
+  @Override
   public void shootPeople() {
   }
 }

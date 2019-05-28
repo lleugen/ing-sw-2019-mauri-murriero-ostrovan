@@ -1,6 +1,5 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
-import com.sun.javafx.image.IntPixelGetter;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
