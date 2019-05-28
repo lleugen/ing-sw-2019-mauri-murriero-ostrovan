@@ -10,10 +10,10 @@ import org.junit.Test;
 
 public class TestInventory {
 
-    Inventory inventory;
+    static Inventory inventory;
 
     @BeforeClass
-    public void createEmptyInventory(){
+    public static void createEmptyInventory(){
         //initialize decks Decks decks = new Decks();
         inventory = new Inventory(null);
         int prova = 1;
