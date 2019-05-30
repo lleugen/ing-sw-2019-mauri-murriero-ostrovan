@@ -10,11 +10,12 @@ import java.util.List;
  * Player contains all the player data, and related collections (eg: Inventory)
  */
 public class Player {
-  public Player(String name, String character) {
+  public Player(String name, String character, GameBoard g) {
     this.name = name;
     this.character = character;
     this.points = 0;
     this.state = 0;
+    gameBoardReference = g;
     board = new PlayerBoard();
     inventory = new Inventory(gameBoardReference.getDecks());
   }
@@ -112,13 +113,13 @@ public class Player {
     List<Integer> pointsList = board.getDeathValue();
 
     //*** death to be resolved
-    if(damages.size() <= 11){
+    if(damages.size() > 11){
       int playerAlreadyPaid = 0; //how many player the routine has already paid with points
 
       //first blood avaiilable only in non-frenzy mode
-      if(!board.getIfIsFrenzy())
+      if(!board.getIfIsFrenzy()){
         damages.get(0).addPoints(1);
-
+      }
       //get the player who dealt max damage, then add points and remove those damage from the vector
       //and continue until the damages vector is empty
       while(!damages.isEmpty()){
@@ -132,12 +133,9 @@ public class Player {
         }
 
         //remove paid player from the list of points
-        Integer i = 0;
-        while(i < damages.size())
-          if(damages.get(i) == currentMostWorthyPlayer)
-            damages.remove(i);
-          else
-            i++;
+        while(damages.contains(currentMostWorthyPlayer)){
+          damages.remove(currentMostWorthyPlayer);
+        }
       }
     }
   }

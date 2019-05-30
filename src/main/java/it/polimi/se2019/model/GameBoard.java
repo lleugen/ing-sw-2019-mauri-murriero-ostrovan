@@ -63,13 +63,14 @@ public class GameBoard {
     this.currentPlayer = firstPlayer;
     this.map = new Map(mapType, this);
 
-
+    /*
     Integer i;
     Player tmp;
     for (i = 0; i < players.size(); i++){
       tmp = players.get(i);
       this.players.add(tmp);
     }
+    */
 
     //create decks
     decks = new Decks(
