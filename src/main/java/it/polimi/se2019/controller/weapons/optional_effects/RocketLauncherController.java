@@ -1,14 +1,16 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RocketLauncherController extends OptionalEffectWeaponController {
-  public RocketLauncherController() {
+  public RocketLauncherController(GameBoardController g) {
     name = "RocketLauncherController";
     numberOfOptionalEffects = 3;
+    gameBoardController = g;
   }
 
   @Override

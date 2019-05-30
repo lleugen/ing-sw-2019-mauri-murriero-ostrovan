@@ -1,14 +1,17 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CyberBladeController extends OptionalEffectWeaponController {
-  public CyberBladeController() {
+  public CyberBladeController(GameBoardController g) {
     name = "CyberBladeController";
     numberOfOptionalEffects = 3;
+    gameBoardController = g;
+
   }
 
   @Override

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.ordered_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.player.PlayerBoard;
 
@@ -8,9 +9,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class ThorController extends OrderedEffectsWeaponController {
-  public ThorController() {
+  public ThorController(GameBoardController g) {
     name = "ThorController";
     numberOfOptionalEffects = 3;
+    gameBoardController = g;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.optional_effects.OptionalEffectWeaponController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -8,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TractorBeamController extends OptionalEffectWeaponController {
-  public TractorBeamController() {
+  public TractorBeamController(GameBoardController g) {
     name = "TractorBeamController";
+    gameBoardController = g;
   }
 
   @Override

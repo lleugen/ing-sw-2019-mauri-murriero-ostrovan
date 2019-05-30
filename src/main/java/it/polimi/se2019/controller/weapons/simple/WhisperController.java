@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.simple;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
@@ -10,8 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WhisperController extends SimpleWeaponController {
-  public WhisperController() {
+  public WhisperController(GameBoardController g) {
     name = "WhisperController";
+    gameBoardController = g;
   }
   public List<Boolean> selectFiringMode(PlayerView client){
     List<Boolean> firingMode = new ArrayList<>();

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
@@ -7,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FurnaceController extends AlternativeEffectWeaponController {
-  public FurnaceController() {
+  public FurnaceController(GameBoardController g) {
     name = "FurnaceController";
+    gameBoardController = g;
   }
 
   @Override

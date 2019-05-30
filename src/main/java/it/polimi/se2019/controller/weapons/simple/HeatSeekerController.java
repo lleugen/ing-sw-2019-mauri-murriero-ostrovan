@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.simple;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -9,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HeatSeekerController extends SimpleWeaponController {
-  public HeatSeekerController() {
+  public HeatSeekerController(GameBoardController g) {
     name = "HeatSeekerController";
+    gameBoardController = g;
   }
   Map map = getGameBoardController().getGameBoard().getMap();
 

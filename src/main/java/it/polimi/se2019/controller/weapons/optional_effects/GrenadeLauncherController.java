@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import org.omg.PortableInterceptor.INACTIVE;
@@ -8,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrenadeLauncherController extends OptionalEffectWeaponController {
-  public GrenadeLauncherController() {
+  public GrenadeLauncherController(GameBoardController g) {
     name = "GrenadeLauncherController";
     numberOfOptionalEffects = 2;
+    gameBoardController = g;
   }
 
   @Override

@@ -1,13 +1,15 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ZX2Controller extends AlternativeEffectWeaponController {
-  public ZX2Controller() {
+  public ZX2Controller(GameBoardController g) {
     name = "ZX2Controller";
+    gameBoardController = g;
   }
 
   @Override
