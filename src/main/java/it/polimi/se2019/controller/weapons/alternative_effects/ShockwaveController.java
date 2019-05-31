@@ -47,6 +47,12 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
     //the effect on the targets is the same regardless of the firing mode, so there is no distinction
     for(Player p : targets){
       p.takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        p.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(p);
     }
   }
 }

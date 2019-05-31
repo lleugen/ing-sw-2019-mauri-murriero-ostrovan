@@ -45,6 +45,12 @@ public class WhisperController extends SimpleWeaponController {
   public void shootTargets(Player shooter, List<Player> targets){
     for(Player p : targets){
       p.takeDamage(shooter, 3);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        p.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(p);
       p.takeMarks(shooter, 1);
     }
   }

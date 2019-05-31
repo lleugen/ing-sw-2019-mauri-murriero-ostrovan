@@ -40,6 +40,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets){
     targets.get(0).takeDamage(shooter, 1);
+    //add one more point of damage if the player chooses to use a targeting scope
+    if(useTargetingScope(shooter)){
+      targets.get(0).takeDamage(shooter, 1);
+    }
+    //if the damaged target has a tagback gredade, he/she can use it now
+    useTagbackGrenade(targets.get(0));
     Integer direction = identifyClient(shooter).chooseDirection
             (map.getOpenDirections(shooter.getPosition()));
     if(direction != -1){
@@ -50,6 +56,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
       List<Player> playersOnSquare = map.getPlayersOnSquare(targetSquare);
       for(Player p : playersOnSquare){
         p.takeDamage(shooter, 1);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
   }

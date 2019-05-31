@@ -23,11 +23,23 @@ public class ElectroscytheController extends OptionalEffectWeaponController {
     if(firingMode.get(0)){
       for(Player p : targets){
         p.takeDamage(shooter, 1);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
     else{
       for(Player p : targets){
         p.takeDamage(shooter, 2);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
   }

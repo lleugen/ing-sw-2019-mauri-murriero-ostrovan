@@ -43,6 +43,12 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
   public void shootTargets(Player shooter, List<Player> targets){
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
       targets.get(0).takeMarks(shooter, 2);
     }
     else{

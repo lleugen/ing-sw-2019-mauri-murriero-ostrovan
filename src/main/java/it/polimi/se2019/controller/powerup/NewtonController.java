@@ -21,7 +21,8 @@ public class NewtonController extends PowerUpController {
    *
    */
   @Override
-  public void usePowerUp(Player user) {
+  public Boolean usePowerUp(Player user) {
+    Boolean used = false;
     Map map = gameBoardController.getGameBoard().getMap();
 
     //choose target
@@ -42,6 +43,8 @@ public class NewtonController extends PowerUpController {
 
     //move the target
     target.moveToSquare(map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)]);
+    used = true;
+    return used;
   }
 
 }

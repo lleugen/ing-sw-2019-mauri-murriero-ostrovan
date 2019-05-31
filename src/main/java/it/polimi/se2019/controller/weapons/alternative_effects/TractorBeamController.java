@@ -59,10 +59,22 @@ public class TractorBeamController extends OptionalEffectWeaponController {
               map.getMapSquares()[chosenDestinationSquareCoordinates.get(0)][chosenDestinationSquareCoordinates.get(1)];
       targets.get(0).moveToSquare(chosenDestinationSquare);
       targets.get(0).takeDamage(shooter,1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
     }
     else{
       targets.get(0).moveToSquare(shooter.getPosition());
       targets.get(0).takeDamage(shooter, 3);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
     }
   }
 }

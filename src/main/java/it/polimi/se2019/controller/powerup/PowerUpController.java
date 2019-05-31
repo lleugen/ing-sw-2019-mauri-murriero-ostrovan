@@ -32,7 +32,6 @@ public abstract class PowerUpController {
   /**
    * Method prototype, it will be implemented by its subclasses.
    */
-  public void usePowerUp(Player user) {
-  }
+  public abstract Boolean usePowerUp(Player user);
 
 }

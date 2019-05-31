@@ -37,7 +37,25 @@ public class ThorController extends OrderedEffectsWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets){
     targets.get(0).takeDamage(shooter, 2);
+    //add one more point of damage if the player chooses to use a targeting scope
+    if(useTargetingScope(shooter)){
+      targets.get(0).takeDamage(shooter, 1);
+    }
+    //if the damaged target has a tagback gredade, he/she can use it now
+    useTagbackGrenade(targets.get(0));
+
     targets.get(1).takeDamage(shooter, 1);
+    //add one more point of damage if the player chooses to use a targeting scope
+    if(useTargetingScope(shooter)){
+      targets.get(1).takeDamage(shooter, 1);
+    }
+    useTagbackGrenade(targets.get(1));
+
     targets.get(2).takeDamage(shooter, 2);
+    //add one more point of damage if the player chooses to use a targeting scope
+    if(useTargetingScope(shooter)){
+      targets.get(2).takeDamage(shooter, 1);
+    }
+    useTagbackGrenade(targets.get(2));
   }
 }

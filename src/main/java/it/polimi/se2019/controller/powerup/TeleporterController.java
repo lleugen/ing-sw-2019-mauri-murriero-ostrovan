@@ -18,7 +18,8 @@ public class TeleporterController extends PowerUpController {
    *
    */
   @Override
-  public void usePowerUp(Player user) {
+  public Boolean usePowerUp(Player user) {
+    Boolean used = false;
     //choose where to move
     List<List<Integer>> squares = new ArrayList<>();
     List<Integer> currentSquare = new ArrayList<>();
@@ -33,6 +34,8 @@ public class TeleporterController extends PowerUpController {
     List<Integer> targetSquare = identifyClient(user).chooseTargetSquare(squares);
     //move to the chosen square
     user.moveToSquare(gameBoardController.getGameBoard().getMap().getMapSquares()[targetSquare.get(0)][targetSquare.get(1)]);
+    used = true;
+    return used;
   }
 
 }

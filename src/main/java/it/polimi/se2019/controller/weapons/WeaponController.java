@@ -1,6 +1,7 @@
 package it.polimi.se2019.controller.weapons;
 
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
@@ -31,6 +32,28 @@ public abstract class WeaponController {
           }
       }
       return client;
+  }
+
+  protected void useTagbackGrenade(Player p){
+      for(PowerUpCard card : p.getInventory().getPowerUps()){
+          if(card.getDescription().equals("TagbackGrenadeRed")
+                  | card.getDescription().equals("TagbackGrenadeBlue")
+                  | card.getDescription().equals("TagbackGrenadeYellow")){
+              gameBoardController.getPowerUpControllers().get(1).usePowerUp(p);
+          }
+      }
+  }
+
+  protected boolean useTargetingScope(Player p){
+      Boolean used = false;
+      for(PowerUpCard card : p.getInventory().getPowerUps()){
+          if((card.getDescription().equals("TargetingScopeRed"))
+                  | (card.getDescription().equals("TargetingScopeBlue"))
+                  | (card.getDescription().equals("TargetingScopeYellow"))){
+              used = gameBoardController.getPowerUpControllers().get(2).usePowerUp(p);
+          }
+      }
+      return used;
   }
 
   public String getName(){
