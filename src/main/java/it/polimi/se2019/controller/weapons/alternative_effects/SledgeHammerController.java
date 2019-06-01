@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
@@ -7,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SledgeHammerController extends AlternativeEffectWeaponController {
-  public SledgeHammerController() {
+  public SledgeHammerController(GameBoardController g) {
     name = "SledgeHammerController";
+    gameBoardController = g;
   }
 
   @Override
@@ -25,9 +27,21 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
   public void shootTargets(Player shooter, List<Player> targets){
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 2);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
     }
     else{
       targets.get(0).takeDamage(shooter, 3);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
       //optionally move the target 0, 1 or 2 squares in one direction
       List<Square> possibleSquares = new ArrayList<>();
       List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();

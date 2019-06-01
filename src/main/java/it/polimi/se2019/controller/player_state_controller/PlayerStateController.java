@@ -1,6 +1,7 @@
 package it.polimi.se2019.controller.player_state_controller;
 
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.controller.powerup.PowerUpController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.grabbable.AmmoTile;
@@ -158,6 +159,30 @@ public abstract class PlayerStateController {
         }
         else{
             player.getInventory().addAmmoTileToInventory((AmmoTile) position.grab(index));
+        }
+    }
+
+    /**
+     * Use a power up from the inventory
+     */
+    public void usePowerUp(){
+        List<String> powerUpCardsInInventory = new ArrayList<>();
+        for(PowerUpCard p : player.getInventory().getPowerUps()){
+            powerUpCardsInInventory.add(p.getDescription());
+        }
+        List<Integer> powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
+        for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
+            //identify power up controller
+            PowerUpController powerUpController = null;
+            for(PowerUpController p : gameBoardController.getPowerUpControllers()){
+                if(p.getName().equals(powerUpCardsInInventory.get(i))){
+                    powerUpController = p;
+                }
+            }
+            if(powerUpController != null){
+                powerUpController.usePowerUp(player);
+            }
+
         }
     }
 

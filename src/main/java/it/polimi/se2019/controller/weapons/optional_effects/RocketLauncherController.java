@@ -1,14 +1,16 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RocketLauncherController extends OptionalEffectWeaponController {
-  public RocketLauncherController() {
+  public RocketLauncherController(GameBoardController g) {
     name = "RocketLauncherController";
     numberOfOptionalEffects = 3;
+    gameBoardController = g;
   }
 
   @Override
@@ -45,11 +47,23 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
         //basic effect
         targets = findTargets(shooter);
         targets.get(0).takeDamage(shooter, 2);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          targets.get(0).takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(targets.get(0));
         if(firingMode.get(2)){
           //fragmenting warhead, has to take place during the first action and before moving the target(cfr:game rules)
           List<Player> t = map.getPlayersOnSquare(targets.get(0).getPosition());
           for(Player p : t){
             p.takeDamage(shooter, 1);
+            //add one more point of damage if the player chooses to use a targeting scope
+            if(useTargetingScope(shooter)){
+              p.takeDamage(shooter, 1);
+            }
+            //if the damaged target has a tagback gredade, he/she can use it now
+            useTagbackGrenade(p);
           }
         }
         Integer direction = identifyClient(shooter).chooseDirection

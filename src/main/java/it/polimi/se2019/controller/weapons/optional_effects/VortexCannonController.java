@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
@@ -7,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VortexCannonController extends OptionalEffectWeaponController {
-  public VortexCannonController() {
+  public VortexCannonController(GameBoardController g) {
     name = "VortexCannonController";
     numberOfOptionalEffects = 2;
+    gameBoardController = g;
   }
 
   Square vortex = null;
@@ -40,12 +42,24 @@ public class VortexCannonController extends OptionalEffectWeaponController {
   public void shootTargets(Player shooter, List<Player> targets){
     targets.get(0).moveToSquare(vortex);
     targets.get(0).takeDamage(shooter, 2);
+    //add one more point of damage if the player chooses to use a targeting scope
+    if(useTargetingScope(shooter)){
+      targets.get(0).takeDamage(shooter, 1);
+    }
+    //if the damaged target has a tagback gredade, he/she can use it now
+    useTagbackGrenade(targets.get(0));
     if(firingMode.get(1)){
       Player target1 = gameBoardController.identifyPlayer
               (identifyClient(shooter).chooseTargets
                       (gameBoardController.getPlayerNames(oneMoveAwayFromvortex)));
       target1.moveToSquare(vortex);
       target1.takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        target1.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(target1);
       oneMoveAwayFromvortex.remove(target1);
 
       Player target2 = gameBoardController.identifyPlayer
@@ -53,6 +67,12 @@ public class VortexCannonController extends OptionalEffectWeaponController {
                       (gameBoardController.getPlayerNames(oneMoveAwayFromvortex)));
       target2.moveToSquare(vortex);
       target2.takeDamage(shooter, 2);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        target2.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(target2);
     }
   }
 }

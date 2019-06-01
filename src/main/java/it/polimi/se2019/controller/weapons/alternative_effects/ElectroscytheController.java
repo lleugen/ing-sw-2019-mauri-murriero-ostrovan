@@ -1,13 +1,15 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.optional_effects.OptionalEffectWeaponController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.List;
 
 public class ElectroscytheController extends OptionalEffectWeaponController {
-  public ElectroscytheController() {
+  public ElectroscytheController(GameBoardController g) {
     name = "ElectroscytheController";
+    gameBoardController = g;
   }
 
   @Override
@@ -21,11 +23,23 @@ public class ElectroscytheController extends OptionalEffectWeaponController {
     if(firingMode.get(0)){
       for(Player p : targets){
         p.takeDamage(shooter, 1);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
     else{
       for(Player p : targets){
         p.takeDamage(shooter, 2);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
   }

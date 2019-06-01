@@ -1,14 +1,17 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CyberBladeController extends OptionalEffectWeaponController {
-  public CyberBladeController() {
+  public CyberBladeController(GameBoardController g) {
     name = "CyberBladeController";
     numberOfOptionalEffects = 3;
+    gameBoardController = g;
+
   }
 
   @Override
@@ -43,6 +46,12 @@ public class CyberBladeController extends OptionalEffectWeaponController {
         targets = findTargets(shooter);
         for(Player p : targets){
           p.takeDamage(shooter, 2);
+          //add one more point of damage if the player chooses to use a targeting scope
+          if(useTargetingScope(shooter)){
+            p.takeDamage(shooter, 1);
+          }
+          //if the damaged target has a tagback gredade, he/she can use it now
+          useTagbackGrenade(p);
         }
       }
       else if(chosenEffect == 1){

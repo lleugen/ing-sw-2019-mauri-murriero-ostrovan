@@ -11,7 +11,9 @@ import java.util.List;
 
 public class FlameThrowerController extends AlternativeEffectWeaponController {
 
-  public FlameThrowerController() {
+  public FlameThrowerController(GameBoardController g) {
+    name = "FlameThrowerController";
+    gameBoardController = g;
   }
   Map map = getGameBoardController().getGameBoard().getMap();
 
@@ -81,15 +83,33 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
         //basic
         for(Player a : targets){
           a.takeDamage(shooter, 1);
+          //add one more point of damage if the player chooses to use a targeting scope
+          if(useTargetingScope(shooter)){
+            a.takeDamage(shooter, 1);
+          }
+          //if the damaged target has a tagback gredade, he/she can use it now
+          useTagbackGrenade(a);
         }
       }
       else if(firingMode.get(1)){
         //bbq
         for(Player q : primaryTargets){
           q.takeDamage(shooter, 2);
+          //add one more point of damage if the player chooses to use a targeting scope
+          if(useTargetingScope(shooter)){
+            q.takeDamage(shooter, 1);
+          }
+          //if the damaged target has a tagback gredade, he/she can use it now
+          useTagbackGrenade(q);
         }
         for(Player r : secondaryTargets){
           r.takeDamage(shooter, 1);
+          //add one more point of damage if the player chooses to use a targeting scope
+          if(useTargetingScope(shooter)){
+            r.takeDamage(shooter, 1);
+          }
+          //if the damaged target has a tagback gredade, he/she can use it now
+          useTagbackGrenade(r);
         }
       }
     }

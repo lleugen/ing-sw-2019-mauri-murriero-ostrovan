@@ -1,14 +1,16 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MachineGunController extends OptionalEffectWeaponController {
-  public MachineGunController() {
+  public MachineGunController(GameBoardController g) {
     name = "MachineGunController";
     numberOfOptionalEffects = 3;
+    gameBoardController = g;
   }
 
   @Override
@@ -33,6 +35,12 @@ public class MachineGunController extends OptionalEffectWeaponController {
     List<String> targetNames = gameBoardController.getPlayerNames(targets);
     for(Player p : targets){
       p.takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        p.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(p);
     }
     if(firingMode.get(1) || firingMode.get(2)){
 
@@ -44,12 +52,30 @@ public class MachineGunController extends OptionalEffectWeaponController {
     }
     if(firingMode.get(1)){
       gameBoardController.identifyPlayer(firstTarget).takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        gameBoardController.identifyPlayer(firstTarget).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(gameBoardController.identifyPlayer(firstTarget));
     }
     if(firingMode.get(2)){
       gameBoardController.identifyPlayer(secondTarget).takeDamage(shooter, 1);
-      gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(visiblePlayers)))
-              .takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        gameBoardController.identifyPlayer(secondTarget).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(gameBoardController.identifyPlayer(secondTarget));
+      Player thirdTargetPlayer = gameBoardController.identifyPlayer
+              (identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(visiblePlayers)));
+      thirdTargetPlayer.takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        thirdTargetPlayer.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(thirdTargetPlayer);
     }
   }
 }

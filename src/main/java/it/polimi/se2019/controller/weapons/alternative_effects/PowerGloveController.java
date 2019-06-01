@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
@@ -7,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PowerGloveController extends AlternativeEffectWeaponController {
-  public PowerGloveController() {
+  public PowerGloveController(GameBoardController g) {
     name = "PowerGloveController";
+    gameBoardController = g;
   }
 
   @Override
@@ -70,11 +72,23 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p : targets){
         p.takeMarks(shooter, 2);
         p.takeDamage(shooter, 1);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
     else{
       for(Player p : targets){
         p.takeDamage(shooter, 2);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
   }

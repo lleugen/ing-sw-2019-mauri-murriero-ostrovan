@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import org.omg.PortableInterceptor.INACTIVE;
@@ -8,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrenadeLauncherController extends OptionalEffectWeaponController {
-  public GrenadeLauncherController() {
+  public GrenadeLauncherController(GameBoardController g) {
     name = "GrenadeLauncherController";
     numberOfOptionalEffects = 2;
+    gameBoardController = g;
   }
 
   @Override
@@ -38,6 +40,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets){
     targets.get(0).takeDamage(shooter, 1);
+    //add one more point of damage if the player chooses to use a targeting scope
+    if(useTargetingScope(shooter)){
+      targets.get(0).takeDamage(shooter, 1);
+    }
+    //if the damaged target has a tagback gredade, he/she can use it now
+    useTagbackGrenade(targets.get(0));
     Integer direction = identifyClient(shooter).chooseDirection
             (map.getOpenDirections(shooter.getPosition()));
     if(direction != -1){
@@ -48,6 +56,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
       List<Player> playersOnSquare = map.getPlayersOnSquare(targetSquare);
       for(Player p : playersOnSquare){
         p.takeDamage(shooter, 1);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          p.takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(p);
       }
     }
   }
