@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
@@ -7,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShockwaveController extends AlternativeEffectWeaponController {
-  public ShockwaveController() {
+  public ShockwaveController(GameBoardController g) {
     name = "ShockwaveController";
+    gameBoardController = g;
   }
 
   @Override
@@ -45,6 +47,12 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
     //the effect on the targets is the same regardless of the firing mode, so there is no distinction
     for(Player p : targets){
       p.takeDamage(shooter, 1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        p.takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(p);
     }
   }
 }

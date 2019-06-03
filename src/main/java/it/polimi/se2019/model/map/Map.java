@@ -370,4 +370,19 @@ public class Map {
     }
     return twoMovesAway;
   }
+
+  /**
+   * get all squares that are at most three moves away from position
+   */
+  public List<Square> getThreeMovesAwaySquares(Square position){
+    List<Square> threeMovesAway = getTwoMovesAwaySquares(position);
+    for(Square q : threeMovesAway){
+      for(Direction d : q.getAdjacencies()){
+        if((!d.isBlocked()) & (!threeMovesAway.contains(d.getSquare()))){
+          threeMovesAway.add(d.getSquare());
+        }
+      }
+    }
+    return threeMovesAway;
+  }
 }

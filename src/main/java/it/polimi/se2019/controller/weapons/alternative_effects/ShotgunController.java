@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 
@@ -7,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShotgunController extends AlternativeEffectWeaponController {
-  public ShotgunController() {
+  public ShotgunController(GameBoardController g) {
     name = "ShotgunController";
+    gameBoardController = g;
   }
 
   @Override
@@ -41,6 +43,12 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   public void shootTargets(Player shooter, List<Player> targets){
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 3);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
       //optionally move the target by one square
       List<Square> possibleSquares = new ArrayList<>();
       List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();
@@ -55,6 +63,12 @@ public class ShotgunController extends AlternativeEffectWeaponController {
     }
     else{
       targets.get(0).takeDamage(shooter, 2);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
     }
   }
 }
