@@ -1,6 +1,7 @@
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
+import it.polimi.se2019.view.Client;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class App {
   private static void initMapping(){
     typeMapping = new HashMap<>();
     typeMapping.put("server", App::spawnServer);
+    typeMapping.put("client", App::spawnClient);
   }
 
   /**
@@ -40,7 +42,7 @@ public class App {
     params = Arrays.stream(args)
             .map((String param) -> param.split("="))
             .collect(Collectors.toMap(
-                    (String[] item) -> item[0],
+                    (String[] item) -> item[0].replace("-", ""),
                     (String[] item) -> item[1]
                     )
             );
@@ -54,6 +56,15 @@ public class App {
   private static void spawnServer(Map<String, String> args){
     Server server = new Server();
     server.publishToRMI("server", 0);
+  }
+
+  /**
+   * Spawn a new client
+   *
+   * @param args Args array received from the command line
+   */
+  private static void spawnClient(Map<String, String> args){
+    new Client();
   }
 
   /**
@@ -72,7 +83,9 @@ public class App {
       throw e;
     }
 
-    if (params.containsKey(params.get("type"))){
+    System.out.println(params.toString());
+    System.out.println(typeMapping.toString());
+    if (typeMapping.containsKey(params.get("type"))){
       typeMapping.get(params.get("type")).accept(params);
     }
     else {

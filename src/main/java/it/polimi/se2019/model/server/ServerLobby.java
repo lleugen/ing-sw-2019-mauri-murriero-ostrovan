@@ -7,9 +7,11 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
 import java.rmi.Remote;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ServerLobby implements Remote {
   private Map<String, PlayerData> playersData;
@@ -98,7 +100,14 @@ public class ServerLobby implements Remote {
         );
 
         if (this.checkRoomFull()){
-          this.gameBoardController.startGame();
+
+          this.gameBoardController.startGame(
+                  this.playersData.values().stream()
+                  .map(
+                          PlayerData::getController
+                  )
+                  .collect(Collectors.toList())
+          );
         }
       }
       else {
