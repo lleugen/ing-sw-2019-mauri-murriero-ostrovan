@@ -45,6 +45,8 @@ public class GameBoard {
 
   private boolean playersAdded;
 
+  private boolean isFrenzy;
+
   private boolean killScoreBoardCreated;
   public boolean isKillScoreBoardCreated(){
     return killScoreBoardCreated;
@@ -58,6 +60,7 @@ public class GameBoard {
    * @throws NullPointerException if players contains a null player
    */
   public GameBoard(int mapType){
+    isFrenzy = false;
     playersAdded = false;
     killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
@@ -78,6 +81,14 @@ public class GameBoard {
             this.genPowerUpDeck(),
             this.genAmmoDeck()
     );
+  }
+
+  public boolean isFrenzy(){
+    return isFrenzy;
+  }
+
+  public void setFrenzy(){
+    isFrenzy = true;
   }
 
   private List<AmmoTile> genAmmoDeck(){
