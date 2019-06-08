@@ -7,9 +7,7 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
 import java.rmi.Remote;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ServerLobby implements Remote {
   private Map<String, PlayerData> playersData;
@@ -82,6 +80,8 @@ public class ServerLobby implements Remote {
    */
   public void connect(PlayerView client, String name, String character) {
     PlayerData player;
+    List<PlayerController> playerControllers = new ArrayList<>();
+    PlayerController currentPlayerController = null;
 
     try {
       player = this.addPlayer(name);
@@ -89,16 +89,13 @@ public class ServerLobby implements Remote {
       if (player != null) {
         player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
         player.setView(client);
-        player.setController(
-                new PlayerController(
-                        this.gameBoardController,
-                        player.getModel(),
-                        player.getView()
-                )
-        );
+        currentPlayerController = null;
+        currentPlayerController = new PlayerController(this.gameBoardController, player.getModel(), player.getView());
+        player.setController(currentPlayerController);
+        playerControllers.add(currentPlayerController);
 
         if (this.checkRoomFull()){
-          this.gameBoardController.startGame();
+          this.gameBoardController.startGame(playerControllers);
         }
       }
       else {

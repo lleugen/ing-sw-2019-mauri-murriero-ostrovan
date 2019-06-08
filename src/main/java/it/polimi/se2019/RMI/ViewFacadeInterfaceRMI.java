@@ -6,6 +6,16 @@ import java.rmi.Remote;
 public interface ViewFacadeInterfaceRMI extends Remote {
 
     /**
+     *
+     */
+    String getName();
+
+    /**
+     *
+     */
+    String chooseAction(String state);
+
+    /**
      * @return index of the power up card to discard
      */
     int chooseSpawnLocation(List<String> powerUps);

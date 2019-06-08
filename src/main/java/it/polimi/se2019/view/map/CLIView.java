@@ -1,4 +1,4 @@
-//package it.polimi.se2019.view.map;
+package it.polimi.se2019.view.map;
 //
 //import it.polimi.se2019.model.grabbable.AmmoTile;
 //import it.polimi.se2019.model.grabbable.Grabbable;
