@@ -18,9 +18,9 @@ public class Inventory {
   public Inventory(Decks decks) {
     decksReference = decks;
     ammo = new Ammo(1, 1, 1);
-    weapons = new ArrayList<Weapon>();
-    powerUps = new ArrayList<PowerUpCard>();
-    this.addPowerUpToInventory(decks.drawPowerUp());
+    weapons = new ArrayList<>();
+    powerUps = new ArrayList<>();
+    addPowerUpToInventory(decks.drawPowerUp());
   }
 
   /**
@@ -46,25 +46,32 @@ public class Inventory {
    * @return a copy of the player's ammo box
    */
   public Ammo getAmmo() {
-    return new Ammo(getAmmo().getRed(), getAmmo().getBlue(), getAmmo().getYellow());
+    //return new Ammo(getAmmo().getRed(), getAmmo().getBlue(), getAmmo().getYellow());
+    return ammo;
   }
 
   /**
    * @return a copy of the weapons in the player's inventory
    */
   public ArrayList<Weapon> getWeapons() {
+    /*
     ArrayList<Weapon> weaponsCopy = null;
     Collections.copy(weaponsCopy, weapons);
     return weaponsCopy;
+    */
+    return weapons;
   }
 
   /**
    * @return a copy of the powerUps in the player's inventory
    */
   public ArrayList<PowerUpCard> getPowerUps() {
+    /*
     ArrayList<PowerUpCard> powerUpsCopy = null;
     Collections.copy(powerUpsCopy, powerUps);
     return powerUpsCopy;
+    */
+    return powerUps;
   }
 
   public void addItemToInventory(Grabbable item){
@@ -75,11 +82,8 @@ public class Inventory {
    * Add a new weapon to the inventory
    */
   public void addWeaponToInventory(Weapon item){
-    if(weapons.size()<4){
+    if(weapons.size()<3){
       weapons.add(item);
-    }
-    else{
-      throw new InventoryFullException();
     }
   }
 

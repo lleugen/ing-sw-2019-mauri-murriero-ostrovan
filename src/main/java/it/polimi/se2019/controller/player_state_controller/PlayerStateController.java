@@ -1,6 +1,7 @@
 package it.polimi.se2019.controller.player_state_controller;
 
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.controller.powerup.PowerUpController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.grabbable.AmmoTile;
@@ -66,7 +67,11 @@ public abstract class PlayerStateController {
         player.getInventory().addPowerUpToInventory(gameBoardController.getGameBoard().getDecks().drawPowerUp());
         //ask player to choose a power up card to discard, return a colour
         //client will have to be the PlayerView stub
-        int discardedCard = client.chooseSpawnLocation();
+        List<String> powerUps = new ArrayList<>();
+        for(PowerUpCard p : player.getInventory().getPowerUps()){
+            powerUps.add(p.getDescription());
+        }
+        int discardedCard = client.chooseSpawnLocation(powerUps);
         if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
             //spawn on the red spawnpoint
             player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
@@ -88,9 +93,13 @@ public abstract class PlayerStateController {
      * choose targets and fire.
      */
     public void shoot() {
-        String weapon = client.chooseWeapon();
-        WeaponController weaponController = null;
+        List<String> weapons = new ArrayList<>();
+        while(player.getInventory().getWeapons().iterator().hasNext()){
+            weapons.add(player.getInventory().getWeapons().iterator().next().getName());
+        }
+        String weapon = client.chooseWeapon(weapons);
 
+        WeaponController weaponController = null;
         for(WeaponController w : gameBoardController.getWeaponControllers()){
             if(w.getName().equals(weapon)){
                 weaponController = w;
@@ -122,7 +131,11 @@ public abstract class PlayerStateController {
         for(Weapon w : player.getInventory().getWeapons()){
             if(w.getName().equals(weaponToReloadName)){
                 //choose which power up cards to use for reloading
-                cardsToUseIndexes = client.choosePowerUpCardsForReload();
+                List<String> powerUps = new ArrayList<>();
+                for(PowerUpCard p : player.getInventory().getPowerUps()){
+                    powerUps.add(p.getDescription());
+                }
+                cardsToUseIndexes = client.choosePowerUpCardsForReload(powerUps);
                 //get the chosen cards
                 for(int i : cardsToUseIndexes){
                     cardsToUse.add(player.getInventory().getPowerUps().get(i));
@@ -146,6 +159,30 @@ public abstract class PlayerStateController {
         }
         else{
             player.getInventory().addAmmoTileToInventory((AmmoTile) position.grab(index));
+        }
+    }
+
+    /**
+     * Use a power up from the inventory
+     */
+    public void usePowerUp(){
+        List<String> powerUpCardsInInventory = new ArrayList<>();
+        for(PowerUpCard p : player.getInventory().getPowerUps()){
+            powerUpCardsInInventory.add(p.getDescription());
+        }
+        List<Integer> powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
+        for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
+            //identify power up controller
+            PowerUpController powerUpController = null;
+            for(PowerUpController p : gameBoardController.getPowerUpControllers()){
+                if(p.getName().equals(powerUpCardsInInventory.get(i))){
+                    powerUpController = p;
+                }
+            }
+            if(powerUpController != null){
+                powerUpController.usePowerUp(player);
+            }
+
         }
     }
 

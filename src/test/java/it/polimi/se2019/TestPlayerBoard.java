@@ -1,5 +1,6 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.player.PlayerBoard;
 import org.junit.Test;
@@ -13,7 +14,8 @@ public class TestPlayerBoard {
     public void testTurnAround()
     {
         PlayerBoard board = new PlayerBoard();
-        Player player = new Player(null,null);
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("mockName","mockChar", gameBoard);
         board.setMark(player);
         board.turnAround();
         List<Integer> expectedDeathValue = new ArrayList<Integer>();

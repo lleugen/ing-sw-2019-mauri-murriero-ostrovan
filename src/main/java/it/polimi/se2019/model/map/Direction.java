@@ -9,10 +9,12 @@ public class Direction {
   /**
    * Generate a new direction
    *
-   * @param square  The next square in this direction
-   * @param blocked True if the next square is not accessible, false otherwise
+   * @param s  The next square in this direction
+   * @param b True if the next square is not accessible, false otherwise
    */
-  Direction(Square square, boolean blocked) {
+  public Direction(Square s, boolean b) {
+    square = s;
+    blocked = b;
   }
 
   /**

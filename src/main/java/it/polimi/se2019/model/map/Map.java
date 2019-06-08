@@ -4,6 +4,7 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,6 +44,7 @@ public class Map {
     return yellowSpawnPoint;
   }
 
+
   /**
    * Init a new map
    *
@@ -50,6 +52,7 @@ public class Map {
    */
   public Map(int mapType, GameBoard g){
     gameBoard = g;
+    mapSquares = new Square[3][4];
     if(mapType == 0){
       mapSquares[0][0] = new AmmoSquare("blue", null);
       mapSquares[0][1] = new AmmoSquare("blue", null);
@@ -118,23 +121,26 @@ public class Map {
     redSpawnPoint = mapSquares[0][2];
     blueSpawnPoint = mapSquares[1][0];
     yellowSpawnPoint = mapSquares[2][3];
+
+    /*
     //add square adjacencies
+    List<Direction> currentAdjacencies = new ArrayList<>();
     for(int i = 0; i<4; i++){
       for(int j = 0; j<3; j++){
-        List<Direction> currentAdjacencies = new ArrayList<Direction>();
+        currentAdjacencies.clear();
         if(j!=0){
           currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
         }
         else{
           currentAdjacencies.add(new Direction(null, true));
         }
-        if(i!=3){
+        if(i!=2){
           currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
         }
         else{
           currentAdjacencies.add(new Direction(null, true));
         }
-        if(j!=2){
+        if(j!=3){
           currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
         }
         else{
@@ -176,6 +182,7 @@ public class Map {
       mapSquares[0][2].setBlocked(true, true, false, false);
       mapSquares[1][3].setBlocked(true, true, false, false);
     }
+    */
   }
 
   public Square[][]getMapSquares(){
@@ -313,5 +320,69 @@ public class Map {
       }
     }
     return adjacentSquares;
+  }
+
+  /**
+   * get all players who are at most two moves away from position
+   */
+  public List<Player> getTwoMovesAway(Square position){
+    List<Square> twoMovesAway = new ArrayList<>();
+    List<Square> oneMoveAway = new ArrayList<>();
+    List<Player> twoMovesAwayPlayers = new ArrayList<>();
+    for(Direction d : position.getAdjacencies()){
+      if(!d.isBlocked()){
+        oneMoveAway.add(d.getSquare());
+      }
+    }
+    for(Square q : oneMoveAway){
+      for(Direction d : q.getAdjacencies()){
+        if((!d.isBlocked())&(!twoMovesAway.contains(d.getSquare()))){
+          twoMovesAway.add(d.getSquare());
+        }
+      }
+    }
+    for(Player p : gameBoard.getPlayers()){
+      if(twoMovesAway.contains(p.getPosition())){
+        twoMovesAwayPlayers.add(p);
+      }
+    }
+    return twoMovesAwayPlayers;
+  }
+
+  /**
+   * get all squares that are at most two moves away from position
+   */
+  public List<Square> getTwoMovesAwaySquares(Square position){
+    List<Square> twoMovesAway = new ArrayList<>();
+    List<Square> oneMoveAway = new ArrayList<>();
+    List<Player> twoMovesAwayPlayers = new ArrayList<>();
+    for(Direction d : position.getAdjacencies()){
+      if(!d.isBlocked()){
+        oneMoveAway.add(d.getSquare());
+      }
+    }
+    for(Square q : oneMoveAway){
+      for(Direction d : q.getAdjacencies()){
+        if((!d.isBlocked())&(!twoMovesAway.contains(d.getSquare()))){
+          twoMovesAway.add(d.getSquare());
+        }
+      }
+    }
+    return twoMovesAway;
+  }
+
+  /**
+   * get all squares that are at most three moves away from position
+   */
+  public List<Square> getThreeMovesAwaySquares(Square position){
+    List<Square> threeMovesAway = getTwoMovesAwaySquares(position);
+    for(Square q : threeMovesAway){
+      for(Direction d : q.getAdjacencies()){
+        if((!d.isBlocked()) & (!threeMovesAway.contains(d.getSquare()))){
+          threeMovesAway.add(d.getSquare());
+        }
+      }
+    }
+    return threeMovesAway;
   }
 }

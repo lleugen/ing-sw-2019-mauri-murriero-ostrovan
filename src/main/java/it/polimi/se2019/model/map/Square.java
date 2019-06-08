@@ -4,6 +4,8 @@ import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,10 +42,10 @@ public abstract class Square {
    * Inits a new Square
    *
    * @param roomId      The id of the room this Square belongs to
-   * @param adjacencies The list of adjacents squares
+   * @param a The list of adjacents squares
    */
-  public Square(String roomId, List<Direction> adjacencies) {
-    this.adjacencies = adjacencies;
+  public Square(String roomId, List<Direction> a) {
+    this.adjacencies = a;
     this.idRoom = roomId;
   }
 
@@ -63,17 +65,32 @@ public abstract class Square {
   public abstract boolean isSpawnPoint();
 
   /**
-   *
+   * set the adjacencies of a square
    */
   protected void setAdjacencies(List<Direction> adj){
-    adjacencies = adj;
+    adjacencies = new ArrayList<>();
+    adjacencies.clear();
+    if(adj.get(0) != null){
+      adjacencies.add(0, adj.get(0));
+      if(adj.get(1) != null){
+        adjacencies.add(1, adj.get(1));
+        if(adj.get(2) != null){
+          adjacencies.add(2, adj.get(2));
+          if(adj.get(3) != null){
+            adjacencies.add(3, adj.get(3));
+          }
+        }
+      }
+    }
   }
 
   protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
-    adjacencies.get(0).setBlocked(north);
-    adjacencies.get(1).setBlocked(east);
-    adjacencies.get(2).setBlocked(south);
-    adjacencies.get(3).setBlocked(west);
+    if((adjacencies != null)&(!adjacencies.isEmpty())){
+      adjacencies.get(0).setBlocked(north);
+      adjacencies.get(1).setBlocked(east);
+      adjacencies.get(2).setBlocked(south);
+      adjacencies.get(3).setBlocked(west);
+    }
   }
 
   /**

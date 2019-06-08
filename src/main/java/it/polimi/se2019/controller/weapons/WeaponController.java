@@ -1,7 +1,7 @@
 package it.polimi.se2019.controller.weapons;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
@@ -34,6 +34,28 @@ public abstract class WeaponController {
       return client;
   }
 
+  protected void useTagbackGrenade(Player p){
+      for(PowerUpCard card : p.getInventory().getPowerUps()){
+          if(card.getDescription().equals("TagbackGrenadeRed")
+                  | card.getDescription().equals("TagbackGrenadeBlue")
+                  | card.getDescription().equals("TagbackGrenadeYellow")){
+              gameBoardController.getPowerUpControllers().get(1).usePowerUp(p);
+          }
+      }
+  }
+
+  protected boolean useTargetingScope(Player p){
+      Boolean used = false;
+      for(PowerUpCard card : p.getInventory().getPowerUps()){
+          if((card.getDescription().equals("TargetingScopeRed"))
+                  | (card.getDescription().equals("TargetingScopeBlue"))
+                  | (card.getDescription().equals("TargetingScopeYellow"))){
+              used = gameBoardController.getPowerUpControllers().get(2).usePowerUp(p);
+          }
+      }
+      return used;
+  }
+
   public String getName(){
     return name;
   }
@@ -47,25 +69,20 @@ public abstract class WeaponController {
    * Create a list of valid targets, choose targets and shoot them.
    */
   public void fire(Player player, PlayerView client) {
-    List<String> possibleTargetNames = new ArrayList<>();
-    List<Player> possibleTargets = new ArrayList<>();
-    List<String> chosenTargetNames = new ArrayList<>();
     List<Player> chosenTargets = new ArrayList<>();
-    List<Boolean> firingMode = new ArrayList<>();
-    firingMode = selectFiringMode(client);
-    possibleTargets = findTargets(player);
-    for(Player p : possibleTargets){
-      possibleTargetNames.add(p.getName());
-    }
 
-    chosenTargetNames = client.chooseTargets(possibleTargetNames);
-    for(Player p : gameBoardController.getPlayers()){
-      if(chosenTargetNames.contains(p.getName())){
-        chosenTargets.add(p);
-      }
-    }
+    firingMode = selectFiringMode(client);
+
+    chosenTargets = findTargets(player);
 
     shootTargets(player, chosenTargets);
+  }
+
+  protected Player chooseOneVisiblePlayer(Player shooter){
+      List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
+      return gameBoardController.identifyPlayer
+              (identifyClient(shooter).chooseTargets
+                      (gameBoardController.getPlayerNames(possibleTargets)));
   }
 
   public abstract List<Boolean> selectFiringMode(PlayerView client);

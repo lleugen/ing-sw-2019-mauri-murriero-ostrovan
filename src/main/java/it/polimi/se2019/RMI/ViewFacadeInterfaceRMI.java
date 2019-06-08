@@ -1,7 +1,5 @@
 package it.polimi.se2019.RMI;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.util.List;
 import java.rmi.Remote;
 
@@ -10,7 +8,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return index of the power up card to discard
      */
-    int chooseSpawnLocation();
+    int chooseSpawnLocation(List<String> powerUps);
 
     /**
      * Choose map type for the match
@@ -25,7 +23,7 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return chosen weapon name
      */
-    String chooseWeapon();
+    String chooseWeapon(List<String> weapons);
 
     /**
      * @param possibleTargets is a list of the players who can be targeted(their names)
@@ -42,7 +40,12 @@ public interface ViewFacadeInterfaceRMI extends Remote {
     /**
      * @return a list of integers indicating which cards from the player's inventory to use when reloading
      */
-    List<Integer> choosePowerUpCardsForReload();
+    List<Integer> choosePowerUpCardsForReload(List<String> powerUps);
+
+    /**
+     * @return the integer relative to the availableEffects list
+     */
+    Integer chooseIndex(String weaponName, List<String> availableEffects);
 
     /**
      * @return int indicating which item to pick up from those available
@@ -53,6 +56,11 @@ public interface ViewFacadeInterfaceRMI extends Remote {
      * choose whether to use a firing mode
      */
     Boolean chooseFiringMode(String description);
+
+    /**
+     *
+     */
+    Boolean chooseBoolean(String description);
 
     /**
      * choose a room from those proposed

@@ -25,6 +25,7 @@ public class GUIWeaponLoader extends GUIGenericWindow {
         //show to the client each weapon he can load and a button named "nothing" which means he does not want to reload anything
         for(int i = 0; i < possibleAnswers.size() - 1; i++){
             //TO DO: CREATE VIEW WITH BUTTONS FROM WEAPONS
+            //itemsToShow(i)
         }
         //TO DO: CREATE BUTTON FOR "NOTHING" WEAPON
         setVisible(true);
@@ -41,7 +42,7 @@ public class GUIWeaponLoader extends GUIGenericWindow {
         return temp;
     }
 
-    @Override
+    /*@Override
     protected void waitForButtonPress(List<JButton> confirmButtons) {
         lockMutex();
         Integer i;
@@ -58,5 +59,5 @@ public class GUIWeaponLoader extends GUIGenericWindow {
         waitMutex();
 
         return;
-    }
+    }*/
 }

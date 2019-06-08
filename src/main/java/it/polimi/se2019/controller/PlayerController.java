@@ -1,9 +1,11 @@
 package it.polimi.se2019.controller;
 
 import it.polimi.se2019.controller.player_state_controller.*;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +48,7 @@ public class PlayerController {
    * Take turn
    */
   public void playTurn(Integer availableActions){
+    //use power up
     for(int i = 0; i<availableActions; i++){
       String chosenAction = client.chooseAction(state.toString());
       if(chosenAction.equals("run")){
@@ -63,6 +66,10 @@ public class PlayerController {
       }
       else if(chosenAction.equals("shoot")){
         state.shootPeople();
+      }
+      else if(chosenAction.equals("powerUp")){
+        i--;
+        state.usePowerUp();
       }
     }
   }

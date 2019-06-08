@@ -17,7 +17,7 @@ public class TestMap {
    */
   @Test
   public void TestGetRoot() {
-    GameBoard gameBoard = new GameBoard(0, null);
+    GameBoard gameBoard = new GameBoard(0);
     Square returnedSquare;
 
     try {

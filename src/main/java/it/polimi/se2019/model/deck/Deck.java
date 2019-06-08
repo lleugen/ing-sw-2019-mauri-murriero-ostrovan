@@ -2,6 +2,7 @@ package it.polimi.se2019.model.deck;
 
 import it.polimi.se2019.model.grabbable.Grabbable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class Deck<G extends Grabbable> {
    *                              __WARN__ Elements are NOT cloned
    */
   public Deck(List<G> elements) {
+    this.discarded = new ArrayList<G>();
+    this.available = new ArrayList<G>();
+
     this.discarded.addAll(elements);
     this.available.clear();
     this.shuffle();

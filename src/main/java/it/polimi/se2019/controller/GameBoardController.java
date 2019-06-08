@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.controller.powerup.*;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.controller.weapons.alternative_effects.*;
 import it.polimi.se2019.controller.weapons.optional_effects.*;
@@ -22,27 +23,32 @@ public class GameBoardController{
   public GameBoardController(GameBoard g) {
     gameBoard = g;
     isReady = false;
-    weaponControllers.add(new CyberBladeController());
-    weaponControllers.add(new ElectroscytheController());
-    weaponControllers.add(new PlasmaGunController());
-    weaponControllers.add(new GrenadeLauncherController());
-    weaponControllers.add(new RocketLauncherController());
-    weaponControllers.add(new HellionController());
-    weaponControllers.add(new TractorBeamController());
-    weaponControllers.add(new LockRifleController());
-    weaponControllers.add(new  VortexCannonController());
-    weaponControllers.add(new MachineGunController());
-    weaponControllers.add(new ThorController());
-    weaponControllers.add(new HeatSeekerController());
-    weaponControllers.add(new WhisperController());
-    weaponControllers.add(new FurnaceController());
-    weaponControllers.add(new RailGunController());
-    weaponControllers.add(new ShotgunController());
-    weaponControllers.add(new ZX2Controller());
-    weaponControllers.add(new FlameThrowerController());
-    weaponControllers.add(new PowerGloveController());
-    weaponControllers.add(new ShockwaveController());
-    weaponControllers.add(new SledgeHammerController());
+    weaponControllers.add(new CyberBladeController(this));
+    weaponControllers.add(new ElectroscytheController(this));
+    weaponControllers.add(new PlasmaGunController(this));
+    weaponControllers.add(new GrenadeLauncherController(this));
+    weaponControllers.add(new RocketLauncherController(this));
+    weaponControllers.add(new HellionController(this));
+    weaponControllers.add(new TractorBeamController(this));
+    weaponControllers.add(new LockRifleController(this));
+    weaponControllers.add(new VortexCannonController(this));
+    weaponControllers.add(new MachineGunController(this));
+    weaponControllers.add(new ThorController(this));
+    weaponControllers.add(new HeatSeekerController(this));
+    weaponControllers.add(new WhisperController(this));
+    weaponControllers.add(new FurnaceController(this));
+    weaponControllers.add(new RailGunController(this));
+    weaponControllers.add(new ShotgunController(this));
+    weaponControllers.add(new ZX2Controller(this));
+    weaponControllers.add(new FlameThrowerController(this));
+    weaponControllers.add(new PowerGloveController(this));
+    weaponControllers.add(new ShockwaveController(this));
+    weaponControllers.add(new SledgeHammerController(this));
+
+    powerUpControllers.add(new NewtonController());
+    powerUpControllers.add(new TagbackGrenadeController());
+    powerUpControllers.add(new TargetingScopeController());
+    powerUpControllers.add(new TeleporterController());
   }
 
   private List<Player> players;
@@ -50,6 +56,7 @@ public class GameBoardController{
   private List<PlayerView> clients;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
+  private List<PowerUpController> powerUpControllers;
   private boolean isReady;
 
   /**
@@ -69,6 +76,10 @@ public class GameBoardController{
 
   public List<WeaponController> getWeaponControllers(){
     return weaponControllers;
+  }
+
+  public List<PowerUpController> getPowerUpControllers(){
+    return powerUpControllers;
   }
 
   /**
@@ -101,7 +112,8 @@ public class GameBoardController{
    * This method starts the game by generating a map, initializing players
    * and starting the main game loop
    */
-  public void startGame() {
+  public void startGame(List<PlayerController> p) {
+    addPlayerControllers(p);
     playTurns();
     playFrenzyTurn();
   }
