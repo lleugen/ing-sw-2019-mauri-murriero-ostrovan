@@ -32,7 +32,8 @@ public class App {
   /**
    * Init the params array. Parses the args array received by the main method,
    * from the command line.
-   * Each param is in the form of <key>=<value>
+   * Each param is in the form of <key>=<value>, the form -<key>=<value> is
+   * accepted, too
    *
    * @param args Array received from the command line, my the main method
    *
@@ -69,22 +70,19 @@ public class App {
 
   /**
    * Type: server
-   * @param args
+   *
+   * @param args Params to pass to the bootstrapping process
+   *
+   * @throws WrongArguments When there is an error with the params received,
+   *                        the message of the exception contains additional
+   *                        info about the error
    */
   public static void main(String[] args) {
     params = new HashMap<>();
+
     initMapping();
+    initParams(args);
 
-    try {
-      initParams(args);
-    }
-    catch (WrongArguments e){
-      // TODO: if necessary, implement additional logic here
-      throw e;
-    }
-
-    System.out.println(params.toString());
-    System.out.println(typeMapping.toString());
     if (typeMapping.containsKey(params.get("type"))){
       typeMapping.get(params.get("type")).accept(params);
     }
