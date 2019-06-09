@@ -55,8 +55,9 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    Server server = new Server();
-    server.publishToRMI("server", 0);
+    new Server();
+//    Server server = new Server();
+//    server.publishToRMI("server", 0);
   }
 
   /**
@@ -91,6 +92,8 @@ public class App {
               "Type is either missed or wrong\nSupported types are " +
               String.join(", ", typeMapping.keySet()));
     }
+
+
   }
 
   /**

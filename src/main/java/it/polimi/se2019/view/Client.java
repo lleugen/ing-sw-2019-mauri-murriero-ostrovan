@@ -23,7 +23,7 @@ public class Client {
             String name = "ServerLobby";
             Registry registry = LocateRegistry.getRegistry();
             ServerLobby lobby = (ServerLobby) registry.lookup(name);
-            lobby.connect(client, client.getName(), client.getCharacter());
+//            lobby.connect(client, client.getName(), client.getCharacter());
         } catch (Exception e) {
             System.err.println("client exception:");
             e.printStackTrace();

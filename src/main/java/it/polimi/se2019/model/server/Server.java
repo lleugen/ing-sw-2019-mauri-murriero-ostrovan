@@ -1,123 +1,145 @@
 package it.polimi.se2019.model.server;
 
 import java.rmi.Remote;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class Server implements Remote {
   /**
-   * Contains a reference to every lobby currently active
+   * Minimum number of player for starting a game
+   * Is up to you to ensure it is always less or equals to
+   * ServerLobby.MAX_PLAYERS (no checks are made by the program about this
+   * condition).
+   *
+   * Default: 2
    */
-  private Map<String, ServerLobby> lobbyMap;
+  private static final int MIN_PLAYERS_FOR_GAME = 2;
 
   /**
-   * Creates a new Server
+   * Timeout in seconds for cron job used to start new games
+   *
+   * Default: 15
    */
+  private static final int CRONJOB_TIMEOUT = 1;
+
+  private Map<String, ServerPlayer> players;
+  private Map<String, ServerMatchSettings> availableSettings;
+  private Map<String, ServerLobby> lobbies;
+
   public Server(){
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new SecurityManager());
-    }
+    this.players = Collections.synchronizedMap(new HashMap<>());
+    this.availableSettings = Collections.synchronizedMap(new HashMap<>());
+    this.lobbies = Collections.synchronizedMap(new HashMap<>());
 
-    this.lobbyMap = Collections.synchronizedMap(new HashMap<>());
+    Executors.newScheduledThreadPool(1)
+    .scheduleWithFixedDelay(
+            this::makeMatchesEverySetting,
+            0,
+            CRONJOB_TIMEOUT,
+            TimeUnit.SECONDS
+    );
   }
 
   /**
-   * Gets a lobby from the server
+   * Update the match settings for a player (AKA the type of match he is
+   * waiting for).
    *
-   * @param id Id of the lobby to get
-   *
-   * @return The searched lobby
-   *
-   * @throws LobbyNotFoundException if the id is not found
+   * @param playerId The id of the player
+   * @param settings Settings of the match searched by the player.
+   *                 Null disable matchmaking for the player
    */
-  public ServerLobby getLobby(String id){
-    if (this.lobbyMap.containsKey(id)) {
-      return this.lobbyMap.get(id);
-    }
-    else {
-      throw new LobbyNotFoundException();
-    }
-  }
-
-  /**
-   * Publish the object to the RMI registry, to the given key, at the given port
-   *
-   * @param key The key to publish the server to
-   * @param port The port to publish the server to
-   *
-   * @throws RMIInitializationException if errors occur when initialization the
-   *                                RMI registry
-   */
-  public void publishToRMI(String key, Integer port){
-    try {
-      LocateRegistry.getRegistry().rebind(
-              key,
-              UnicastRemoteObject.exportObject(
-                      this, port
-              )
-      );
-    }
-    catch (java.rmi.RemoteException e){
-      throw new RMIInitializationException(e);
-    }
-  }
-
-  /**
-   * Creates a new lobby
-   *
-   * @param id The id to assign the new lobby to
-   *
-   * @throws LobbyConflictException if the id is already registered
-   */
-  public void createLobby(String id){
-    ServerLobby result;
-    result = this.lobbyMap.putIfAbsent(
-            id,
-            new ServerLobby(
-                    5,
-                    1
-            )
+  public void updateWL(String playerId, ServerMatchSettings settings){
+    players.putIfAbsent(
+            playerId,
+            new ServerPlayer(playerId)
     );
 
-    if (result != null){
-      throw new LobbyConflictException();
+    availableSettings.putIfAbsent(
+            settings.toString(),
+            new ServerMatchSettings(settings)
+    );
+
+    players.get(playerId).setSettings(new ServerMatchSettings(settings));
+  }
+
+  /**
+   * Process the list of currently connected players to find start possible
+   * valid matches.
+   */
+  private void makeMatchesEverySetting(){
+    System.out.println("Ciao");
+    this.availableSettings.values().stream()
+            .filter(Objects::nonNull)
+            .forEach(this::makeMatchesForSetting);
+  }
+
+  /**
+   * Starts valid matches related to a given setting
+   *
+   * @param settings Setting to check the list of pending matches against
+   */
+  private void makeMatchesForSetting(ServerMatchSettings settings){
+    List<ServerPlayer> validPlayers = this.players.values().stream()
+            .filter(item ->
+                    settings.equals(item.getSettings())
+            )
+            .collect(Collectors.toList());
+
+    List<ServerPlayer> batch;
+
+    while (validPlayers.size() >= ServerLobby.MAX_PLAYERS){
+      batch = validPlayers.subList(0, (ServerLobby.MAX_PLAYERS - 1));
+      validPlayers.removeAll(batch);
+      this.createServerLobby(
+              batch,
+              new ServerMatchSettings(settings)
+      );
+    }
+
+    if (validPlayers.size() >= MIN_PLAYERS_FOR_GAME){
+      this.createServerLobby(
+              validPlayers,
+              new ServerMatchSettings(settings)
+      );
     }
   }
 
   /**
-   * Thrown when there are erros while connecting to the RMI registry
+   * Creates a new server lobby (effectively starting a new match)
+   *
+   * @param p List of players who belongs to the match
+   * @param s Settings to use for the match
    */
-  public static class RMIInitializationException extends RuntimeException{
-    RMIInitializationException(Exception e){
-      super(e);
-    }
+  private void createServerLobby(List<ServerPlayer> p, ServerMatchSettings s){
+    List<String> allowedPlayers;
+    String tmp;
+    String lobbyId;
 
-    @Override
-    public String toString() {
-      return "Unable to start RMI registry";
-    }
-  }
+    allowedPlayers = p.stream()
+            .map(ServerPlayer::getId)
+            .collect(Collectors.toList());
 
-  /**
-   * Thrown when a searched lobby is not found
-   */
-  public static class LobbyNotFoundException extends RuntimeException{
-    @Override
-    public String toString() {
-      return "The searched lobby doesn't exists";
-    }
-  }
+    ServerLobby lobby = new ServerLobby(
+            allowedPlayers,
+            s.getMapType(),
+            s.getSkulls()
+    );
 
-  /**
-   * Thrown when trying to create a lobby with an already used id
-   */
-  public static class LobbyConflictException extends RuntimeException{
-    @Override
-    public String toString() {
-      return "A lobby with this id already exists";
-    }
+    do {
+      tmp = System.currentTimeMillis() + "/" + Math.random();
+    } while (this.lobbies.containsKey(tmp));
+    lobbyId = tmp;
+
+    this.lobbies.put(lobbyId, lobby);
+
+    allowedPlayers.forEach(
+            id -> this.players.get(id).setLobbyId(lobbyId)
+    );
   }
 }
