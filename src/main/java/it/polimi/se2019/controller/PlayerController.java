@@ -32,12 +32,24 @@ public class PlayerController {
     gameBoardController = g;
     client = c;
     player = p;
-    stateControllerList.add(new NormalStateController(g, p, c));
-    stateControllerList.add(new Adrenaline1StateController(g, p, c));
-    stateControllerList.add(new Adrenaline2StateController(g, p, c));
-    stateControllerList.add(new FirstFreneticStateController(g, p, c));
-    stateControllerList.add(new SecondFreneticStateController(g, p, c));
+    stateControllerList.add(0, new NormalStateController(g, p, c));
+    stateControllerList.add(1, new Adrenaline1StateController(g, p, c));
+    stateControllerList.add(2, new Adrenaline2StateController(g, p, c));
+    stateControllerList.add(3, new FirstFreneticStateController(g, p, c));
+    stateControllerList.add(4, new SecondFreneticStateController(g, p, c));
     state = stateControllerList.get(0);
+  }
+
+  /**
+   * @param index indicates one state in the stateControllerList
+   *              0 : normal state
+   *              1 : adrenaline 1 state
+   *              2 : adrenaline 2 state
+   *              3 : first frenetic state (taking frenzy turn before player 0)
+   *              4 : second frenetic state (taking frenzy turn after player 0)
+   */
+  protected void setState(Integer index){
+    state = stateControllerList.get(index);
   }
 
   public PlayerStateController getState(){
