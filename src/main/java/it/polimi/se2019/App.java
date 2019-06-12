@@ -56,12 +56,10 @@ public class App {
    */
   private static void spawnServer(Map<String, String> args){
     new Server();
-//    Server server = new Server();
-//    server.publishToRMI("server", 0);
   }
 
   /**
-   * Spawn a new client
+   * Spawn a new old_client
    *
    * @param args Args array received from the command line
    */
@@ -99,7 +97,7 @@ public class App {
   /**
    * Thrown when there is an error in the args array received by the command
    * line.
-   * The toString method may contain additional informations about the error
+   * The toString method may contain additional information about the error
    */
   public static class WrongArguments extends RuntimeException {
     private final String message;

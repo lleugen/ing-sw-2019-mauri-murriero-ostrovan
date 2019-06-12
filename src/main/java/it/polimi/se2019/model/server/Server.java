@@ -1,16 +1,14 @@
 package it.polimi.se2019.model.server;
 
-import java.rmi.Remote;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.List;
+import it.polimi.se2019.utils.Utils;
+
+import java.io.ObjectInput;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class Server implements Remote {
+public class Server {
   /**
    * Minimum number of player for starting a game
    * Is up to you to ensure it is always less or equals to
@@ -32,7 +30,39 @@ public class Server implements Remote {
   private Map<String, ServerMatchSettings> availableSettings;
   private Map<String, ServerLobby> lobbies;
 
+//  private class testClass {
+//    String type1;
+//    String type2;
+//    String type3;
+//
+//    public testClass(String a, String b, String c){
+//      this.type1 = a;
+//      this.type2 = b;
+//      this.type3 = c;
+//    }
+//
+//    public void printOut() {
+//      StringBuilder stringBuilder = new StringBuilder();
+//      stringBuilder.append(Utils.base64Encode(this.type1));
+//      stringBuilder.append("|");
+//      stringBuilder.append(Utils.base64Encode(this.type2));
+//      stringBuilder.append("|");
+//      stringBuilder.append(Utils.base64Encode(this.type3));
+//      System.out.println(stringBuilder.toString());
+//    }
+//
+//    public void readExternal(ObjectInput in){
+//
+//    }
+//  }
+
   public Server(){
+    System.out.println("Starting");
+//    testClass tmp = new testClass("testo", "con\na\ncapi", "e caratteri unicode\uD83D\uDE00");
+//    testClass tmp2 = new testClass("class2a", "classe2b", "classe2c");
+//
+//    tmp.printOut();
+//    tmpServer = new SocketServer();
     this.players = Collections.synchronizedMap(new HashMap<>());
     this.availableSettings = Collections.synchronizedMap(new HashMap<>());
     this.lobbies = Collections.synchronizedMap(new HashMap<>());
@@ -74,6 +104,7 @@ public class Server implements Remote {
    */
   private void makeMatchesEverySetting(){
     System.out.println("Ciao");
+//    this.tmpServer.sendUpdate("namespace.prova", "view da provare", "Aggiornamento Modello");
     this.availableSettings.values().stream()
             .filter(Objects::nonNull)
             .forEach(this::makeMatchesForSetting);
@@ -111,7 +142,7 @@ public class Server implements Remote {
   }
 
   /**
-   * Creates a new server lobby (effectively starting a new match)
+   * Creates a new old_server lobby (effectively starting a new match)
    *
    * @param p List of players who belongs to the match
    * @param s Settings to use for the match
