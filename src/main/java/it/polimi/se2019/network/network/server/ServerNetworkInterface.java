@@ -3,23 +3,20 @@ package it.polimi.se2019.network.network.server;
 import it.polimi.se2019.network.encodable.FunctionCall;
 import it.polimi.se2019.network.encodable.ModelViewUpdate;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public interface ServerNetworkInterface {
   void setOnConnectHandler(ConnectionHandler h);
   void setOnRecvHandler(RecvHandler h);
-  void setUpdateSupplier(String user, UpdateSupplier s);
 
+  @FunctionalInterface
+  interface UpdateSupplier extends Supplier<ModelViewUpdate> { }
 
-  interface UpdateSupplier {
-    ModelViewUpdate get();
-  }
+  @FunctionalInterface
+  interface RecvHandler extends BiConsumer<String, FunctionCall> { }
 
-  interface RecvHandler {
-    void accept(String user, FunctionCall data);
-  }
-
-  interface ConnectionHandler {
-    void accept(String user);
-  }
+  @FunctionalInterface
+  interface ConnectionHandler extends Consumer<String> { }
 }

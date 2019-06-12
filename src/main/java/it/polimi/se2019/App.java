@@ -1,6 +1,7 @@
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
+import it.polimi.se2019.network.network.client.SocketClientNetwork;
 import it.polimi.se2019.view.Client;
 
 import java.util.Arrays;
@@ -64,6 +65,9 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnClient(Map<String, String> args){
+
+    System.out.println("Spawn Client");
+    new SocketClientNetwork();
     new Client();
   }
 

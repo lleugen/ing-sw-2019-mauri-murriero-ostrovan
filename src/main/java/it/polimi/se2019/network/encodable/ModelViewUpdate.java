@@ -13,11 +13,34 @@ public class ModelViewUpdate implements EncodableInterface {
   private static final int VIEW_POSITION = 1;
   private static final int MODEL_POSITION = 2;
   private static final int ENCODED_SIZE = 3;
-
   private String ns;
   private String view;
-  private EncodableInterface model;
+  private ModelInterface model;
   private EncoderInterface encoder;
+
+  public String getNamespace() {
+    return this.ns;
+  }
+
+  public void setNamespace(String namespace) {
+    this.ns = ns;
+  }
+
+  public String getView() {
+    return this.view;
+  }
+
+  public void setView(String view) {
+    this.view = view;
+  }
+
+  public ModelInterface getModel() {
+    return this.model;
+  }
+
+  public void setModel(ModelInterface model) {
+    this.model = model;
+  }
 
   public ModelViewUpdate(String ns, String view, ModelInterface model){
     this.ns = ns;

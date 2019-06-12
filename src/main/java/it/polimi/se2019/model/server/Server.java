@@ -1,5 +1,6 @@
 package it.polimi.se2019.model.server;
 
+import it.polimi.se2019.network.network.server.SocketServerNetwork;
 import it.polimi.se2019.utils.Utils;
 
 import java.io.ObjectInput;
@@ -58,6 +59,12 @@ public class Server {
 
   public Server(){
     System.out.println("Starting");
+    try {
+      new SocketServerNetwork();
+    }
+    catch (Exception e){
+      System.out.println(e.toString());
+    }
 //    testClass tmp = new testClass("testo", "con\na\ncapi", "e caratteri unicode\uD83D\uDE00");
 //    testClass tmp2 = new testClass("class2a", "classe2b", "classe2c");
 //
