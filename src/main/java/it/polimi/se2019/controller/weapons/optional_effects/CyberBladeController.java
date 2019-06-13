@@ -8,9 +8,9 @@ import java.util.List;
 
 public class CyberBladeController extends OptionalEffectWeaponController {
   public CyberBladeController(GameBoardController g) {
+    super(g);
     name = "CyberBladeController";
     numberOfOptionalEffects = 3;
-    gameBoardController = g;
 
   }
 

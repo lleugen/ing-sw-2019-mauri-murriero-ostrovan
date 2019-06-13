@@ -12,8 +12,8 @@ import java.util.List;
 
 public class HeatSeekerController extends SimpleWeaponController {
   public HeatSeekerController(GameBoardController g) {
+    super(g);
     name = "HeatSeekerController";
-    gameBoardController = g;
   }
   Map map = getGameBoardController().getGameBoard().getMap();
 

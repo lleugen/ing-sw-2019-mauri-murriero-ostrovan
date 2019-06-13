@@ -12,8 +12,9 @@ import java.util.List;
 
 public class WhisperController extends SimpleWeaponController {
   public WhisperController(GameBoardController g) {
+    super(g);
     name = "WhisperController";
-    gameBoardController = g;
+
   }
   public List<Boolean> selectFiringMode(PlayerView client){
     List<Boolean> firingMode = new ArrayList<>();

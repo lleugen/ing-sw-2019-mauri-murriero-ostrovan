@@ -8,9 +8,9 @@ import java.util.List;
 
 public class HellionController extends OptionalEffectWeaponController {
   public HellionController(GameBoardController g) {
+    super(g);
     name = "HellionController";
     numberOfOptionalEffects = 2;
-    gameBoardController = g;
   }
 
   @Override

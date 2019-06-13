@@ -9,8 +9,8 @@ import java.util.List;
 
 public class FurnaceController extends AlternativeEffectWeaponController {
   public FurnaceController(GameBoardController g) {
+    super(g);
     name = "FurnaceController";
-    gameBoardController = g;
   }
 
   @Override

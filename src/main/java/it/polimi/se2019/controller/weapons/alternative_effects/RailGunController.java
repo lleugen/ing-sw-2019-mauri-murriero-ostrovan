@@ -9,8 +9,8 @@ import java.util.List;
 
 public class RailGunController extends AlternativeEffectWeaponController {
   public RailGunController(GameBoardController g) {
+    super(g);
     name = "RailGunController";
-    gameBoardController = g;
   }
 
   @Override

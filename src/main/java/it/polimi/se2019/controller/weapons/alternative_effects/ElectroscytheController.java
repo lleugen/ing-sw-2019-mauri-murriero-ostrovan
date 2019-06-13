@@ -8,8 +8,8 @@ import java.util.List;
 
 public class ElectroscytheController extends OptionalEffectWeaponController {
   public ElectroscytheController(GameBoardController g) {
+    super(g);
     name = "ElectroscytheController";
-    gameBoardController = g;
   }
 
   @Override

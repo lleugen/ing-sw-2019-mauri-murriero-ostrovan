@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ThorController extends OrderedEffectsWeaponController {
   public ThorController(GameBoardController g) {
+    super(g);
     name = "ThorController";
     numberOfOptionalEffects = 3;
-    gameBoardController = g;
   }
 
   @Override
