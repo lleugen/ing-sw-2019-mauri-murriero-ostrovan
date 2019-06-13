@@ -14,13 +14,6 @@ public class ServerLobby implements Remote {
   private Integer maxPlayers;
   private GameBoardController gameBoardController;
 
-  public static void main(String [] args){
-    ServerLobby lobby = new ServerLobby(1, 0);
-    Server server = new Server();
-    server.publishToRMI("serverKey", 10);
-
-  }
-
   ServerLobby(Integer playerCount, Integer mapType){
     this.maxPlayers = playerCount;
     GameBoard gameBoard = new GameBoard(mapType);
@@ -87,8 +80,6 @@ public class ServerLobby implements Remote {
    */
   public void connect(PlayerView client, String name, String character) {
     PlayerData player;
-    List<PlayerController> playerControllers = new ArrayList<>();
-    PlayerController currentPlayerController = null;
 
     try {
       player = this.addPlayer(name);
@@ -96,12 +87,19 @@ public class ServerLobby implements Remote {
       if (player != null) {
         player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
         player.setView(client);
-        currentPlayerController = null;
-        currentPlayerController = new PlayerController(this.gameBoardController, player.getModel(), player.getView());
-        player.setController(currentPlayerController);
-        playerControllers.add(currentPlayerController);
+        player.setController(
+                new PlayerController(
+                        this.gameBoardController,
+                        player.getModel(),
+                        player.getView()
+                )
+        );
 
         if (this.checkRoomFull()){
+          List<PlayerController> playerControllers = new ArrayList<>();
+          for(int i = 0; i<playersData.size(); i++){
+            playerControllers.add(playersData.get(i).controller);
+          }
           this.gameBoardController.startGame(playerControllers);
         }
       }

@@ -87,6 +87,10 @@ public class Server implements Remote {
     }
   }
 
+  public static void main(String args[]){
+    System.out.println("ciao");
+  }
+
   /**
    * Thrown when there are erros while connecting to the RMI registry
    */

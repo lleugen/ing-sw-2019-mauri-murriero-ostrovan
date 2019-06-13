@@ -138,6 +138,9 @@ public class Player {
         }
       }
     }
+    if(gameBoardReference.isFrenzy()){
+      board.turnAround();
+    }
   }
 
   /**
