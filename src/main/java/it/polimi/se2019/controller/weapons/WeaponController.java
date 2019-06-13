@@ -2,6 +2,7 @@ package it.polimi.se2019.controller.weapons;
 
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
+import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerView;
@@ -18,11 +19,13 @@ public abstract class WeaponController {
   protected GameBoardController gameBoardController;
   protected String name;
   protected List<Boolean> firingMode;
+  protected Map map;
 
-  public WeaponController(){
+  public WeaponController(GameBoardController gbc){
+      gameBoardController = gbc;
+      map = gameBoardController.getGameBoard().getMap();
   }
 
-  protected Map map = getGameBoardController().getGameBoard().getMap();
 
   public PlayerView identifyClient(Player player){
       PlayerView client = null;

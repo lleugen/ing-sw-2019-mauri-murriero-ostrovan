@@ -23,6 +23,8 @@ public class GameBoardController{
   public GameBoardController(GameBoard g) {
     gameBoard = g;
     isReady = false;
+    weaponControllers = new ArrayList<>();
+    powerUpControllers = new ArrayList<>();
     weaponControllers.add(new CyberBladeController(this));
     weaponControllers.add(new ElectroscytheController(this));
     weaponControllers.add(new PlasmaGunController(this));

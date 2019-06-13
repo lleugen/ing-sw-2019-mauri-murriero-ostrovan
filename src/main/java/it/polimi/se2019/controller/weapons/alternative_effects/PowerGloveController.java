@@ -9,8 +9,8 @@ import java.util.List;
 
 public class PowerGloveController extends AlternativeEffectWeaponController {
   public PowerGloveController(GameBoardController g) {
+    super(g);
     name = "PowerGloveController";
-    gameBoardController = g;
   }
 
   @Override

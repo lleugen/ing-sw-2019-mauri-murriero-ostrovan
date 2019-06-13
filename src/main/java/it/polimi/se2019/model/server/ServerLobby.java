@@ -14,6 +14,13 @@ public class ServerLobby implements Remote {
   private Integer maxPlayers;
   private GameBoardController gameBoardController;
 
+  public static void main(String [] args){
+    ServerLobby lobby = new ServerLobby(1, 0);
+    Server server = new Server();
+    server.publishToRMI("serverKey", 10);
+
+  }
+
   ServerLobby(Integer playerCount, Integer mapType){
     this.maxPlayers = playerCount;
     GameBoard gameBoard = new GameBoard(mapType);

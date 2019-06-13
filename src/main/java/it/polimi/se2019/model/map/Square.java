@@ -45,7 +45,17 @@ public abstract class Square {
    * @param a The list of adjacents squares
    */
   public Square(String roomId, List<Direction> a) {
-    this.adjacencies = a;
+    adjacencies = new ArrayList<>();
+    if(a == null){
+      adjacencies.add(0, new Direction(null, true));
+      adjacencies.add(1, new Direction(null, true));
+      adjacencies.add(2, new Direction(null, true));
+      adjacencies.add(3, new Direction(null, true));
+    }
+    else{
+      adjacencies = a;
+    }
+    Direction test = adjacencies.get(0);
     this.idRoom = roomId;
   }
 
@@ -85,12 +95,10 @@ public abstract class Square {
   }
 
   protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
-    if((adjacencies != null)&(!adjacencies.isEmpty())){
-      adjacencies.get(0).setBlocked(north);
-      adjacencies.get(1).setBlocked(east);
-      adjacencies.get(2).setBlocked(south);
-      adjacencies.get(3).setBlocked(west);
-    }
+    adjacencies.get(0).setBlocked(north);
+    adjacencies.get(1).setBlocked(east);
+    adjacencies.get(2).setBlocked(south);
+    adjacencies.get(3).setBlocked(west);
   }
 
   /**

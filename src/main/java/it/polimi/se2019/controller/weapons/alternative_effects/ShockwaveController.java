@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ShockwaveController extends AlternativeEffectWeaponController {
   public ShockwaveController(GameBoardController g) {
+    super(g);
     name = "ShockwaveController";
-    gameBoardController = g;
   }
 
   @Override

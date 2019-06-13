@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.player.Player;
@@ -15,6 +16,9 @@ import java.util.List;
  * Alternative effect weapons have two mutually exclusive firing methods.
  */
 public abstract class AlternativeEffectWeaponController extends WeaponController {
+  public AlternativeEffectWeaponController(GameBoardController g){
+    super(g);
+  }
   /**
    * Make a list of all possible targets.
    */

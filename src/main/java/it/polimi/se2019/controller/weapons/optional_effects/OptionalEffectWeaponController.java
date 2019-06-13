@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.view.player.PlayerView;
 
@@ -14,7 +15,8 @@ import java.util.List;
  * effects that can be applied in no particular order.
  */
 public abstract class OptionalEffectWeaponController extends WeaponController {
-  public OptionalEffectWeaponController() {
+  public OptionalEffectWeaponController(GameBoardController g) {
+    super(g);
   }
 
   protected Integer numberOfOptionalEffects;

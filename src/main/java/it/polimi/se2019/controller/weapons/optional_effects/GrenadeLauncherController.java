@@ -10,9 +10,9 @@ import java.util.List;
 
 public class GrenadeLauncherController extends OptionalEffectWeaponController {
   public GrenadeLauncherController(GameBoardController g) {
+    super(g);
     name = "GrenadeLauncherController";
     numberOfOptionalEffects = 2;
-    gameBoardController = g;
   }
 
   @Override

@@ -8,9 +8,9 @@ import java.util.List;
 
 public class RocketLauncherController extends OptionalEffectWeaponController {
   public RocketLauncherController(GameBoardController g) {
+    super(g);
     name = "RocketLauncherController";
     numberOfOptionalEffects = 3;
-    gameBoardController = g;
   }
 
   @Override
