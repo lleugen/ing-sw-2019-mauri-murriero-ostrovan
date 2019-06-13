@@ -15,12 +15,12 @@ public class Client {
     private static JFrame loginFrame;
     private String name, character;
 
-    public static void main(String args[]){
-        Client client = new Client();
-        //client = new PlayerView();
-        //client.generateLoginInfo(this);
-        client.generateLoginInfo();
-    }
+//    public static void main(String args[]){
+//        Client client = new Client();
+//        //client = new PlayerView();
+//        //client.generateLoginInfo(this);
+//        client.generateLoginInfo();
+//    }
 
     public void generateLoginInfo(){
         JTextField playerNameField = new JTextField("min 6 chars", 20);
@@ -63,6 +63,6 @@ public class Client {
     }
 
     public Client(){
-        new SocketClientNetwork();
+        new SocketClientNetwork("localhost", 5432, "Login Name");
     }
 }

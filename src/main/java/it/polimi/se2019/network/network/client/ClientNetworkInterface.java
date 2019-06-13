@@ -22,6 +22,15 @@ public interface ClientNetworkInterface {
   String getUserId();
 
   /**
+   * Get a message from the server.
+   * Messages are guaranteed to be returned in the order they are sent by
+   * the server.
+   * If no message is available, this function blocks waiting for a message
+   * coming from the server
+   */
+//  ModelViewUpdateg get();
+
+  /**
    * You must ensure the callback is processed in the order it is called,
    * otherwise you may loose updates
    */

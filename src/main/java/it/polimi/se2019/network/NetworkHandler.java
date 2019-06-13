@@ -6,12 +6,18 @@ import it.polimi.se2019.network.encodable.model.ModelInterface;
 import it.polimi.se2019.network.network.client.ClientNetworkInterface;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedTransferQueue;
 
 public class NetworkHandler {
   /**
    * Contains the state of the model for each known namespace
    */
   private ConcurrentHashMap<String, ModelViewState> curState;
+
+  /**
+   * Contains the transfers queue for the state of each known namespace
+   */
+  private ConcurrentHashMap<String, LinkedTransferQueue<ModelViewState>> stq;
 
   /**
    * Reference to the network interface this NetworkHandler is bound to
@@ -25,6 +31,7 @@ public class NetworkHandler {
    */
   public NetworkHandler (ClientNetworkInterface ni){
     this.curState = new ConcurrentHashMap<>();
+    this.stq = new ConcurrentHashMap<>();
     this.ni = ni;
     this.ni.setOnUpdateCallback(this::processUpdate);
   }

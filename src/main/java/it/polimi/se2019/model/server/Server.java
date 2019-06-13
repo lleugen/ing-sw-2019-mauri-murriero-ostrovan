@@ -1,9 +1,11 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.network.network.server.SocketServerNetwork;
-import it.polimi.se2019.utils.Utils;
+import it.polimi.se2019.network.encodable.ModelViewUpdate;
+import it.polimi.se2019.network.encodable.model.ModelInterface;
+import it.polimi.se2019.network.network.Connection;
+import it.polimi.se2019.network.network.server.socket.SocketServerNetwork;
+import it.polimi.se2019.utils.encoder.EncoderInterface;
 
-import java.io.ObjectInput;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +62,26 @@ public class Server {
   public Server(){
     System.out.println("Starting");
     try {
-      new SocketServerNetwork();
+      new SocketServerNetwork(
+              (u, h) -> {
+                System.out.println("Got connection from lambda");
+                System.out.println("User is '" + u + "'");
+                ((Connection) h).send(new ModelViewUpdate("Namespace", "View", new ModelInterface() {
+                  @Override
+                  public char[] encode() {
+                    return new char[0];
+                  }
+
+                  @Override
+                  public void decode(char[] encoded) throws EncoderInterface.InvalidDataException {
+
+                  }
+                }));
+                },
+              (u) -> {
+                System.out.println("Client disconnected " + u);
+              },
+              5432);
     }
     catch (Exception e){
       System.out.println(e.toString());

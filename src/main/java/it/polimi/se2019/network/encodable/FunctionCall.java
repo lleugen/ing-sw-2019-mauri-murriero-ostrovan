@@ -26,8 +26,10 @@ public class FunctionCall implements EncodableInterface {
   }
 
   public char[] encode(){
-    List<char[]> toEncode = new ArrayList<>();
-
+    List<char[]> toEncode = new ArrayList<>(ENCODED_SIZE);
+    for (int i = 0; i < ENCODED_SIZE; i++){
+      toEncode.add(new char[]{});
+    }
     toEncode.set(
             NS_POSITION,
             this.encoder.encodeString(this.ns)
