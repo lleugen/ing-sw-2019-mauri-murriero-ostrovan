@@ -1,9 +1,11 @@
-package it.polimi.se2019.network.network;
+package it.polimi.se2019.communication.network;
 
 /**
  * Exception for connection initialization
  */
 public class InitializationError extends Exception {
+  private String msg = "An error occurred during connection initialization";
+
   public InitializationError(Throwable e){
     super(e);
   }
@@ -12,8 +14,13 @@ public class InitializationError extends Exception {
     super();
   }
 
+  public InitializationError(String message){
+    super();
+    this.msg = message;
+  }
+
   @Override
   public String toString() {
-    return "An error occurred during connection initialization";
+    return this.msg;
   }
 }

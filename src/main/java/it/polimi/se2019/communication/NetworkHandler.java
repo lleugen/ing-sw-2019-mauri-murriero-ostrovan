@@ -1,7 +1,7 @@
-//package it.polimi.se2019.network;
+//package it.polimi.se2019.communication;
 //
-//import it.polimi.se2019.network.encodable.FunctionCall;
-//import it.polimi.se2019.network.encodable.ModelViewUpdate;
+//import it.polimi.se2019.communication.encodable.FunctionCall;
+//import it.polimi.se2019.communication.encodable.ModelViewUpdate;
 //
 //import java.util.concurrent.ConcurrentHashMap;
 //import java.util.concurrent.LinkedTransferQueue;
@@ -18,7 +18,7 @@
 //  private ConcurrentHashMap<String, LinkedTransferQueue<ModelViewState>> stq;
 //
 //  /**
-//   * Reference to the network interface this NetworkHandler is bound to
+//   * Reference to the communication interface this NetworkHandler is bound to
 //   */
 //  ClientNetworkInterface ni;
 //
@@ -58,7 +58,7 @@
 //
 //  /**
 //   * Internal syncronized function for processing updates received from
-//   * the network.
+//   * the communication.
 //   * Updates are processed in the order they are received
 //   *
 //   * @param update Update to process

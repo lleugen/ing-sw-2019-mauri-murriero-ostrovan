@@ -1,6 +1,6 @@
-package it.polimi.se2019.network.network.socket;
+package it.polimi.se2019.communication.network.socket;
 
-import it.polimi.se2019.network.network.Handler;
+import it.polimi.se2019.communication.network.Handler;
 
 import java.io.DataInputStream;
 import java.util.concurrent.LinkedTransferQueue;

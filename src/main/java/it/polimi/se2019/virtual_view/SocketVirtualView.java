@@ -47,7 +47,7 @@ public class SocketVirtualView extends AbstractVirtualView {
    * Inits a new socket virtual view
    *
    * A socket virtual view can be used to expose a controller on a server to a
-   * remote network handler on a client, using a TCP connection
+   * remote communication handler on a client, using a TCP connection
    *
    * @param namespace Namespace of the view
    * @param port Port to which bind the socket

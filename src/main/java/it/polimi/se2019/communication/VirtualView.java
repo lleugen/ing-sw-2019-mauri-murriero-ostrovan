@@ -1,7 +1,7 @@
-package it.polimi.se2019.network;
+package it.polimi.se2019.communication;
 
-import it.polimi.se2019.network.encodable.FunctionCall;
-import it.polimi.se2019.network.encodable.ModelViewUpdate;
+import it.polimi.se2019.communication.encodable.FunctionCall;
+import it.polimi.se2019.communication.encodable.ModelViewUpdate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,7 +117,7 @@ public class VirtualView {
 //   *
 //   * @param user Id of the user that connected to the server
 //   *
-//   * @return A supplier that can be used by the network handler to retrieve
+//   * @return A supplier that can be used by the communication handler to retrieve
 //   *         updates to push down to the real view
 //   */
 //  private ServerNetworkInterface.UpdateSupplier connectionHandler(String user){

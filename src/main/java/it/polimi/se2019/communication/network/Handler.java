@@ -1,4 +1,4 @@
-package it.polimi.se2019.network.network;
+package it.polimi.se2019.communication.network;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -11,7 +11,7 @@ public interface Handler {
    */
   @FunctionalInterface
   interface Connection extends
-          BiConsumer<String, it.polimi.se2019.network.network.Connection> { }
+          BiConsumer<String, it.polimi.se2019.communication.network.Connection> { }
 
   /**
    * Defines a disconnection handler

@@ -1,8 +1,8 @@
-package it.polimi.se2019.network.network.socket;
+package it.polimi.se2019.communication.network.socket;
 
-import it.polimi.se2019.network.network.InitializationError;
-import it.polimi.se2019.network.network.Handler;
-import it.polimi.se2019.network.network.ServerNetwork;
+import it.polimi.se2019.communication.network.InitializationError;
+import it.polimi.se2019.communication.network.Handler;
+import it.polimi.se2019.communication.network.ServerNetwork;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Socket network connection for server
+ * Socket communication connection for server
  */
 public class ServerSocketNetwork extends ServerNetwork implements Runnable {
   /**
@@ -91,21 +91,21 @@ public class ServerSocketNetwork extends ServerNetwork implements Runnable {
    * Cancel the current thread and prepares it for being garbage collected
    */
   public void interrupt() {
-    this.close();
+    this.worker.stop();
   }
 
   /**
    * Cancel the current thread and prepares it for being garbage collected
    */
   public void stop(){
-    this.close();
+    this.worker.stop();
   }
 
   /**
    * Starts the server (begins listening to connections)
    */
   public void start(){
-    this.run();
+    this.worker.run();
   }
 
   /**

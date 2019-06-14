@@ -1,4 +1,4 @@
-package it.polimi.se2019.network.encodable;
+package it.polimi.se2019.communication.encodable;
 
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;

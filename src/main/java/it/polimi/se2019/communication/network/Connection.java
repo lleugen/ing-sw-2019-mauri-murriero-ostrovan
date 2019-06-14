@@ -1,6 +1,6 @@
-package it.polimi.se2019.network.network;
+package it.polimi.se2019.communication.network;
 
-import it.polimi.se2019.network.encodable.Encodable;
+import it.polimi.se2019.communication.encodable.Encodable;
 
 /**
  * Defines a new connection

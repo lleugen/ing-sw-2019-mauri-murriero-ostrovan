@@ -1,8 +1,6 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.network.encodable.ModelViewUpdate;
-import it.polimi.se2019.network.network.Connection;
-import it.polimi.se2019.network.network.socket.ServerSocketNetwork;
+import it.polimi.se2019.communication.network.socket.ServerSocketNetwork;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -61,6 +59,15 @@ public class Server {
     System.out.println("Starting");
 
     try {
+      new ServerSocketNetwork(
+              (u, h) -> {
+                System.out.println("Connected <" + u + ">");
+              },
+              (u) -> {
+                System.out.println("Disconnected <" + u + ">");
+              },
+              5432
+      ).start();
 //      new ServerSocketNetwork(
 //              (u, h) -> {
 //                System.out.println("Got connection from lambda");

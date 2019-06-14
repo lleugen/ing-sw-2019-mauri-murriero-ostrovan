@@ -1,9 +1,9 @@
-package it.polimi.se2019.network.network.socket;
+package it.polimi.se2019.communication.network.socket;
 
-import it.polimi.se2019.network.encodable.Encodable;
-import it.polimi.se2019.network.network.Connection;
-import it.polimi.se2019.network.network.InitializationError;
-import it.polimi.se2019.network.network.Handler;
+import it.polimi.se2019.communication.encodable.Encodable;
+import it.polimi.se2019.communication.network.Connection;
+import it.polimi.se2019.communication.network.InitializationError;
+import it.polimi.se2019.communication.network.Handler;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -87,13 +87,16 @@ class SocketConnection implements Connection {
   private String doLogin(Socket s) throws InitializationError {
     StringBuilder userSb = new StringBuilder();
     char c;
-
+    System.out.println("Doing Login");
     try {
       DataInputStream in = new DataInputStream(s.getInputStream());
+      DataOutputStream out = new DataOutputStream(s.getOutputStream());
 
       while ((c = in.readChar()) != '\n') {
         userSb.append(c);
       }
+
+      out.writeBoolean(true);
     }
     catch (java.io.IOException e) {
       throw new InitializationError(e);
