@@ -1,6 +1,6 @@
-package it.polimi.se2019.network.network.server;
+package it.polimi.se2019.network.network;
 
-public class ServerNetwork {
+public abstract class ServerNetwork {
   /**
    * Connection handler.
    *
@@ -16,6 +16,11 @@ public class ServerNetwork {
    * disconnects
    */
   protected Handler.Disconnection disconnectionHandler;
+
+  /**
+   * Starts the server
+   */
+  public abstract void start();
 
   /**
    * Inits a new ServerNetwork

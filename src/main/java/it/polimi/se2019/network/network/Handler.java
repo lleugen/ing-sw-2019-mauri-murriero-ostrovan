@@ -1,4 +1,4 @@
-package it.polimi.se2019.network.network.server;
+package it.polimi.se2019.network.network;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -23,4 +23,15 @@ public interface Handler {
    */
   @FunctionalInterface
   interface Disconnection extends Consumer<String> { }
+
+  /**
+   * Defines a generic notify handler.
+   *
+   * A notify handler acts like a ping. It doesn't accept any parameter, nor
+   * return any data, but it is useful to let someone know something about
+   */
+  @FunctionalInterface
+  interface Notification {
+    void ping();
+  }
 }

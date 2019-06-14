@@ -1,97 +1,51 @@
 package it.polimi.se2019.network.encodable;
 
-import it.polimi.se2019.network.encodable.model.ModelInterface;
-import it.polimi.se2019.utils.encoder.EncodableInterface;
-import it.polimi.se2019.utils.encoder.EncoderInterface;
-import it.polimi.se2019.utils.encoder.FakeBsonEncoder;
-
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelViewUpdate implements EncodableInterface {
-  private static final int NS_POSITION = 0;
-  private static final int VIEW_POSITION = 1;
-  private static final int MODEL_POSITION = 2;
-  private static final int ENCODED_SIZE = 3;
+public class ModelViewUpdate extends Encodable {
+  private static final byte[] UUID = new byte[]{
+          115,87,74,-19,-57,27,84,15,114,95,23,-34,75,1,57,7
+  };
+
   private String ns;
   private String view;
-  private ModelInterface model;
-  private EncoderInterface encoder;
+  private ByteBuffer model;
 
-  public String getNamespace() {
-    return this.ns;
-  }
+  public ModelViewUpdate(String ns, String view, ByteBuffer model) {
+    super(UUID);
+    this.setEncodingLogic(this::implementedEncode);
+    this.setDecodingLogic(this::implementedDecode);
 
-  public void setNamespace(String namespace) {
-    this.ns = ns;
-  }
-
-  public String getView() {
-    return this.view;
-  }
-
-  public void setView(String view) {
-    this.view = view;
-  }
-
-  public ModelInterface getModel() {
-    return this.model;
-  }
-
-  public void setModel(ModelInterface model) {
-    this.model = model;
-  }
-
-  public ModelViewUpdate(String ns, String view, ModelInterface model){
     this.ns = ns;
     this.view = view;
     this.model = model;
-    this.encoder = new FakeBsonEncoder();
   }
 
-  public char[] encode(){
-    List<char[]> toEncode = new ArrayList<>(ENCODED_SIZE);
+  private List<ByteBuffer> implementedEncode() {
+    List<ByteBuffer> toReturn = new ArrayList<>();
 
-    for (int i = 0; i < ENCODED_SIZE; i++){
-      toEncode.add(new char[]{});
-    }
-    toEncode.set(
-            NS_POSITION,
-            this.encoder.encodeString(this.ns)
-    );
+    toReturn.add(this.encodeString(this.ns));
+    toReturn.add(this.encodeString(this.view));
+    toReturn.add(this.encodeRaw(this.model));
 
-    toEncode.set(
-            VIEW_POSITION,
-            this.encoder.encodeString(this.view)
-    );
-
-    toEncode.set(
-            MODEL_POSITION,
-            this.model.encode()
-    );
-
-    return this.encoder.encodeList(toEncode);
+    return toReturn;
   }
 
-  public void decode(char[] encoded)
-          throws EncoderInterface.InvalidDataException {
-    List<char[]> decodedList;
+  public void implementedDecode(List<ByteBuffer> encoded)
+          throws InvalidDataException {
+    this.ns = this.decodeString(encoded.get(0));
+    encoded.remove(0);
 
-    decodedList = this.encoder.decodeList(encoded);
+    this.view = this.decodeString(encoded.get(0));
+    encoded.remove(0);
 
-    if (decodedList.size() != ENCODED_SIZE){
-      throw new EncoderInterface.InvalidDataException();
-    }
-    else {
-      this.ns = encoder.decodeString(
-              decodedList.get(NS_POSITION)
-      );
+    this.model = this.decodeRaw(encoded.get(0));
+    encoded.remove(0);
 
-      this.view = encoder.decodeString(
-              decodedList.get(VIEW_POSITION)
-      );
-
-      this.model.decode(decodedList.get(MODEL_POSITION));
+    if (!encoded.isEmpty()){
+      throw new InvalidDataException();
     }
   }
 }

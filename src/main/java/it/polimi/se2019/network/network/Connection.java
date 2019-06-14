@@ -1,6 +1,6 @@
 package it.polimi.se2019.network.network;
 
-import it.polimi.se2019.utils.encoder.EncodableInterface;
+import it.polimi.se2019.network.encodable.Encodable;
 
 /**
  * Defines a new connection
@@ -15,7 +15,7 @@ public interface Connection {
    *          silently. Please use the connection and disconnection handler to
    *          detect disconnections
    */
-  void send(EncodableInterface data);
+  void send(Encodable data);
 
   /**
    * Receive data from the connection.
@@ -27,7 +27,7 @@ public interface Connection {
    *          silently. Please use the connection and disconnection handler to
    *          detect disconnections
    */
-  char[] receive();
+  byte[] receive();
 
   /**
    * Close the currently open connection.

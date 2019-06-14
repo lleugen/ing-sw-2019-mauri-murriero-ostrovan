@@ -1,7 +1,8 @@
-package it.polimi.se2019.network.network.server.socket;
+package it.polimi.se2019.network.network.socket;
 
 import it.polimi.se2019.network.network.InitializationError;
-import it.polimi.se2019.network.network.server.Handler;
+import it.polimi.se2019.network.network.Handler;
+import it.polimi.se2019.network.network.ServerNetwork;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,19 +11,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Thread for accepting new connections
+ * Socket network connection for server
  */
-public class ConnectionListenerThread implements Runnable {
+public class ServerSocketNetwork extends ServerNetwork implements Runnable {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE =  "ServerSocketNetwork";
+
+  /**
+   * Reference to the listening socket currently running
+   */
+  private ServerSocketNetwork listener;
+
   /**
    * Working thread
    */
   private Thread worker;
-
-  /**
-   * Namespace this class logs to
-   */
-  public static final String LOG_NAMESPACE =
-          "ConnectionListenerThread";
 
   /**
    * Contains the reference to the currently open main socket
@@ -35,38 +40,34 @@ public class ConnectionListenerThread implements Runnable {
   private final AtomicBoolean running = new AtomicBoolean(true);
 
   /**
-   * Connection Handler to be used to notify on new connections
-   */
-  private Handler.Connection connectionHandler;
-
-  /**
-   * Disconnection Handler to be used to notify about disconnected clients
-   */
-  private Handler.Disconnection disconnectionHandler;
-
-  /**
-   * Create a new ConnectionListenerThread.
+   * Init a new ServerSocketNetwork
    *
-   * @param ss Main socket to listen to (already initialized)
+   * @param c     ConnectionHandler for this server
+   * @param d     DisconnectionHandler for this server
+   * @param port  Port this server should bind to
+   *
+   * @throws InitializationError If an error occurs while initializing
+   *                             the server
    */
-  public ConnectionListenerThread(
-          ServerSocket ss, Handler.Connection c, Handler.Disconnection d
-  ){
-    this.ss = ss;
-    this.connectionHandler = c;
-    this.disconnectionHandler = d;
+  public ServerSocketNetwork(
+          Handler.Connection c, Handler.Disconnection d, Integer port
+  ) throws InitializationError {
+
+    super(c, d);
+
+    try {
+      this.ss = new ServerSocket(port);
+    }
+    catch (java.io.IOException e){
+      throw new InitializationError(e);
+    }
+
     this.worker = new Thread(this);
   }
 
   /**
-   * Starts the thread
-   */
-  public void start(){
-    this.worker.start();
-  }
-
-  /**
-   * Cancel the current thread and prepares it for being garbage collected
+   * Close the SocketServerNetwork, by stopping accepting connections.
+   * Currently open connections will be left open
    */
   public void close(){
     this.running.set(false);
@@ -101,7 +102,14 @@ public class ConnectionListenerThread implements Runnable {
   }
 
   /**
-   * Run the listener.
+   * Starts the server (begins listening to connections)
+   */
+  public void start(){
+    this.run();
+  }
+
+  /**
+   * Runs the listening thread
    *
    * __WARN__ After cancelling this thread in any way, you cannot call run
    *          again. You must create a new thread
@@ -115,7 +123,7 @@ public class ConnectionListenerThread implements Runnable {
 
         SocketConnection newSocket = new SocketConnection(
                 s,
-                (user) -> this.disconnectionHandler.accept(user)
+                this.disconnectionHandler
         );
 
         this.connectionHandler.accept(

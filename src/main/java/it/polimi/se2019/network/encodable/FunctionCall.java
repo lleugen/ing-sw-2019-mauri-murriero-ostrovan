@@ -1,73 +1,51 @@
 package it.polimi.se2019.network.encodable;
 
-import it.polimi.se2019.utils.encoder.EncodableInterface;
-import it.polimi.se2019.utils.encoder.EncoderInterface;
-import it.polimi.se2019.utils.encoder.FakeBsonEncoder;
-
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionCall implements EncodableInterface {
-  private static final int NS_POSITION = 0;
-  private static final int FUNCTION_POSITION = 1;
-  private static final int DATA_POSITION = 2;
-  private static final int ENCODED_SIZE = 3;
-
+public class FunctionCall extends Encodable {
   private String ns;
   private String f;
-  private EncodableInterface data;
-  private EncoderInterface encoder;
+  private ByteBuffer data;
 
-  public FunctionCall(String ns, String f, EncodableInterface data){
+  private static final byte[] UUID = new byte[]{
+          -112,4,-13,-81,124,-12,6,90,63,-79,-115,69,10,-86,-62,-42
+  };
+
+  public FunctionCall(String ns, String f, ByteBuffer data) {
+    super(UUID);
+    this.setEncodingLogic(this::implementedEncode);
+    this.setDecodingLogic(this::implementedDecode);
+
     this.ns = ns;
     this.f = f;
     this.data = data;
-    this.encoder = new FakeBsonEncoder();
   }
 
-  public char[] encode(){
-    List<char[]> toEncode = new ArrayList<>(ENCODED_SIZE);
-    for (int i = 0; i < ENCODED_SIZE; i++){
-      toEncode.add(new char[]{});
-    }
-    toEncode.set(
-            NS_POSITION,
-            this.encoder.encodeString(this.ns)
-    );
+  private List<ByteBuffer> implementedEncode() {
+    List<ByteBuffer> toReturn = new ArrayList<>();
 
+    toReturn.add(this.encodeString(this.ns));
+    toReturn.add(this.encodeString(this.f));
+    toReturn.add(this.encodeRaw(this.data));
 
-    toEncode.set(
-            FUNCTION_POSITION,
-            this.encoder.encodeString(this.f)
-    );
-
-    toEncode.set(
-            DATA_POSITION,
-            this.data.encode()
-    );
-
-    return this.encoder.encodeList(toEncode);
+    return toReturn;
   }
 
-  public void decode(char[] encoded)
-          throws EncoderInterface.InvalidDataException {
-    List<char[]> decodedList;
+  public void implementedDecode(List<ByteBuffer> encoded)
+          throws InvalidDataException {
+    this.ns = this.decodeString(encoded.get(0));
+    encoded.remove(0);
 
-    decodedList = this.encoder.decodeList(encoded);
+    this.f = this.decodeString(encoded.get(0));
+    encoded.remove(0);
 
-    if (decodedList.size() != ENCODED_SIZE){
-      throw new EncoderInterface.InvalidDataException();
-    }
-    else {
-      this.ns = encoder.decodeString(
-              decodedList.get(NS_POSITION)
-      );
+    this.data = this.decodeRaw(encoded.get(0));
+    encoded.remove(0);
 
-      this.f = encoder.decodeString(
-              decodedList.get(FUNCTION_POSITION)
-      );
-
-      this.data.decode(decodedList.get(DATA_POSITION));
+    if (!encoded.isEmpty()){
+      throw new InvalidDataException();
     }
   }
 }

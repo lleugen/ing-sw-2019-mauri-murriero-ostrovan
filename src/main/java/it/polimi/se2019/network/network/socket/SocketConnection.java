@@ -1,9 +1,9 @@
-package it.polimi.se2019.network.network.server.socket;
+package it.polimi.se2019.network.network.socket;
 
+import it.polimi.se2019.network.encodable.Encodable;
 import it.polimi.se2019.network.network.Connection;
 import it.polimi.se2019.network.network.InitializationError;
-import it.polimi.se2019.network.network.server.Handler;
-import it.polimi.se2019.utils.encoder.EncodableInterface;
+import it.polimi.se2019.network.network.Handler;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,12 +11,12 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SocketConnection implements Connection {
+// YES - PACKAGE PRIVATE
+class SocketConnection implements Connection {
   /**
    * Namespace this class logs to
    */
-  public static final String LOG_NAMESPACE =
-          "SocketConnection";
+  public static final String LOG_NAMESPACE = "SocketConnection";
 
   /**
    * Id of the user this socket belongs to
@@ -57,12 +57,12 @@ public class SocketConnection implements Connection {
     try {
       this.sendThread = new SocketSendThread(
               new DataOutputStream(s.getOutputStream()),
-              none -> d.accept(this.user)
+              () -> d.accept(this.user)
       );
 
       this.recvThread = new SocketRecvThread(
               new DataInputStream(s.getInputStream()),
-              none -> d.accept(this.user)
+              () -> d.accept(this.user)
       );
 
       this.sendThread.start();
@@ -146,7 +146,7 @@ public class SocketConnection implements Connection {
    *          silently. Please use the connection and disconnection handler to
    *          detect disconnections
    */
-  public void send(EncodableInterface data) {
+  public void send(Encodable data) {
     this.sendThread.send(data);
   }
 
@@ -160,7 +160,7 @@ public class SocketConnection implements Connection {
    *          silently. Please use the connection and disconnection handler to
    *          detect disconnections
    */
-  public char[] receive() {
+  public byte[] receive() {
     return this.recvThread.recv();
   }
 }

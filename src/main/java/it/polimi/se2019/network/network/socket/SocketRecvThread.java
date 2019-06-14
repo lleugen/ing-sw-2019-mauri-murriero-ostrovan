@@ -1,17 +1,16 @@
-package it.polimi.se2019.network.network.server.socket;
+package it.polimi.se2019.network.network.socket;
 
-import it.polimi.se2019.network.network.server.Handler;
-import it.polimi.se2019.utils.encoder.EncodableInterface;
+import it.polimi.se2019.network.network.Handler;
 
-import java.io.DataOutputStream;
-import java.util.Arrays;
+import java.io.DataInputStream;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SocketSendThread implements Runnable {
+// YES - PACKAGE PRIVATE
+class SocketRecvThread implements Runnable {
   /**
    * Working thread
    */
@@ -20,8 +19,7 @@ public class SocketSendThread implements Runnable {
   /**
    * Namespace this class logs to
    */
-  public static final String LOG_NAMESPACE =
-          "SocketSendThread";
+  public static final String LOG_NAMESPACE = "SocketRecvThread";
 
   /**
    * Detects if the thread should be running or not
@@ -29,41 +27,43 @@ public class SocketSendThread implements Runnable {
   private final AtomicBoolean running = new AtomicBoolean(true);
 
   /**
-   * Reference to the TransferQueue this thread takes data from
+   * Reference to the TransferQueue this thread sends data to
    */
-  TransferQueue<EncodableInterface> tq;
+  TransferQueue<byte[]> tq;
 
   /**
-   * Reference to the output stream this thread shoud send data to
+   * Reference to the output stream this thread shoud receive data from
    */
-  DataOutputStream outputStream;
+  DataInputStream inputStream;
 
   /**
    * Disconnection callback
    */
-  Handler.Disconnection disconnectCb;
+  Handler.Notification disconnectCb;
 
   /**
    * Create a new ConnectionListenerThread.
    *
-   * @param ost Outputstream this thread should send data to
+   * @param ist InputStream this thread should send data to
    * @param dcb Disconnection callback (it will be called if the underlying
-   *            socket fails to close). Param will always be an empty string
+   *            socket fails to close).
    */
-  public SocketSendThread(DataOutputStream ost, Handler.Disconnection dcb){
+  public SocketRecvThread(DataInputStream ist, Handler.Notification dcb){
     this.worker = new Thread(this);
     this.tq = new LinkedTransferQueue<>();
     this.disconnectCb = dcb;
-    this.outputStream = ost;
+    this.inputStream = ist;
   }
 
   /**
-   * Sends data to the transfer queue
+   * Receive data from the transfer queue.
    *
-   * @param data Data to send to the other end
+   * __WARN__: this function blocks till new data is available
+   *
+   * @return the received data
    */
-  public void send(EncodableInterface data){
-    this.tq.offer(data);
+  public byte[] recv(){
+    return this.tq.poll();
   }
 
   /**
@@ -80,12 +80,12 @@ public class SocketSendThread implements Runnable {
     this.running.set(false);
 
     try {
-      this.outputStream.close();
+      this.inputStream.close();
     }
     catch (java.io.IOException e) {
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.WARNING,
-              "Unable to properly close output stream",
+              "Unable to properly close input stream",
               e
       );
     }
@@ -113,24 +113,24 @@ public class SocketSendThread implements Runnable {
    */
   public void run(){
     while (this.running.get()){
-      EncodableInterface data;
+      try {
+        int size = this.inputStream.readInt();
+        byte[] data = new byte[size];
 
-      data = this.tq.poll();
-      if (data != null){
-        try {
-          String encodedData = Arrays.toString(data.encode());
-          this.outputStream.writeLong(encodedData.length());
-          this.outputStream.writeChars(encodedData);
+        if (size == this.inputStream.read(data)){
+          throw new java.io.IOException();
         }
-        catch (java.io.IOException e){
-          Logger.getLogger(LOG_NAMESPACE).log(
-                  Level.WARNING,
-                  "Unable to send data to the socket",
-                  e
-          );
-          this.disconnectCb.accept("");
-          this.close();
-        }
+
+        this.tq.add(data);
+      }
+      catch (java.io.IOException | IllegalStateException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.WARNING,
+                "Unable to receive data from socket, or send data to tq",
+                e
+        );
+        this.disconnectCb.ping();
+        this.close();
       }
     }
   }

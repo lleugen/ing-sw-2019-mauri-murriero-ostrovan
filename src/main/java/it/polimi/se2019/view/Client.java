@@ -1,7 +1,7 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.model.server.ServerLobby;
-import it.polimi.se2019.network.network.client.SocketClientNetwork;
+import it.polimi.se2019.network.network.socket.ClientSocketNetwork;
 import it.polimi.se2019.view.player.PlayerView;
 
 import javax.swing.*;
@@ -63,6 +63,6 @@ public class Client {
     }
 
     public Client(){
-        new SocketClientNetwork("localhost", 5432, "Login Name");
+//        new ClientSocketNetwork("localhost", 5432, "Login Name");
     }
 }

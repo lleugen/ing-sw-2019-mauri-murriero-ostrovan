@@ -1,8 +1,6 @@
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
-import it.polimi.se2019.network.network.client.SocketClientNetwork;
-import it.polimi.se2019.network.network.server.ServerNetwork;
 import it.polimi.se2019.view.Client;
 
 import java.util.Arrays;
