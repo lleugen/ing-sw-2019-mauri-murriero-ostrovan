@@ -1,7 +1,7 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.communication.network.InitializationError;
-import it.polimi.se2019.communication.network.socket.ClientSocketNetwork;
+import it.polimi.se2019.communication.network.client.socket.SocketClientNetwork;
 import it.polimi.se2019.model.server.ServerLobby;
 import it.polimi.se2019.view.player.PlayerView;
 
@@ -66,7 +66,7 @@ public class Client {
     public Client(){
         System.out.println("Client Created");
       try {
-         new ClientSocketNetwork(() -> {}, "localhost", 5432, "Login Name");
+         new SocketClientNetwork("localhost", 5432);
       }
       catch (InitializationError e){
          System.out.println(e);

@@ -1,6 +1,7 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.communication.network.socket.ServerSocketNetwork;
+import it.polimi.se2019.communication.network.InitializationError;
+import it.polimi.se2019.communication.network.server.socket.SocketServerNetwork;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -25,71 +26,33 @@ public class Server {
    */
   private static final int CRONJOB_TIMEOUT = 1;
 
+  /**
+   * Main Listener Network Thread
+   */
+  Thread serverSocketNetworkThread;
+
   private Map<String, ServerPlayer> players;
   private Map<String, ServerMatchSettings> availableSettings;
   private Map<String, ServerLobby> lobbies;
-
-//  private class testClass {
-//    String type1;
-//    String type2;
-//    String type3;
-//
-//    public testClass(String a, String b, String c){
-//      this.type1 = a;
-//      this.type2 = b;
-//      this.type3 = c;
-//    }
-//
-//    public void printOut() {
-//      StringBuilder stringBuilder = new StringBuilder();
-//      stringBuilder.append(Utils.base64Encode(this.type1));
-//      stringBuilder.append("|");
-//      stringBuilder.append(Utils.base64Encode(this.type2));
-//      stringBuilder.append("|");
-//      stringBuilder.append(Utils.base64Encode(this.type3));
-//      System.out.println(stringBuilder.toString());
-//    }
-//
-//    public void readExternal(ObjectInput in){
-//
-//    }
-//  }
 
   public Server(){
     System.out.println("Starting");
 
     try {
-      new ServerSocketNetwork(
-              (u, h) -> {
-                System.out.println("Connected <" + u + ">");
-              },
-              (u) -> {
-                System.out.println("Disconnected <" + u + ">");
-              },
-              5432
-      ).start();
-//      new ServerSocketNetwork(
-//              (u, h) -> {
-//                System.out.println("Got connection from lambda");
-//                System.out.println("User is '" + u + "'");
-//                ((Connection) h).send(new ModelViewUpdate("Namespace", "View", new ModelInterface() {
-//                  @Override
-//                  public char[] encode() {
-//                    return new char[0];
-//                  }
-//
-//                  @Override
-//                  public void decode(char[] encoded) throws EncoderInterface.InvalidDataException {
-//
-//                  }
-//                }));
-//                },
-//              (u) -> {
-//                System.out.println("Client disconnected " + u);
-//              },
-//              5432);
+      this.serverSocketNetworkThread = new Thread(
+              null,
+              new SocketServerNetwork(
+                      (c) -> {
+                        System.out.println("Connected <" + c.toString() + ">");
+                      },
+                      5432
+              ),
+              "Listening Thread"
+      );
+
+      this.serverSocketNetworkThread.start();
     }
-    catch (Exception e){
+    catch (InitializationError e){
       System.out.println(e.toString());
     }
 //    testClass tmp = new testClass("testo", "con\na\ncapi", "e caratteri unicode\uD83D\uDE00");
