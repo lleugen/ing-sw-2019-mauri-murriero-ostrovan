@@ -29,14 +29,21 @@ public class Connection {
   private DataOutputStream outputStream;
 
   /**
+   * Reference to che closing handler
+   */
+  private CloseHandler closeHandler;
+
+  /**
    * Create a new connection
    *
    * @param in  InputStream this socket should receive data from
    * @param out OutputStream this socket should send data to
+   * @param ch  Handler for closing the connection
    */
-  public Connection (InputStream in, OutputStream out){
+  public Connection (InputStream in, OutputStream out, CloseHandler ch){
     this.inputStream = new DataInputStream(in);
     this.outputStream = new DataOutputStream(out);
+    this.closeHandler = ch;
   }
 
   /**
@@ -100,6 +107,8 @@ public class Connection {
               e
       );
     }
+
+    this.closeHandler.call();
   }
 
   /**
@@ -116,5 +125,17 @@ public class Connection {
     DisconnectedError(Throwable e){
       super("The underlying connection is broken", e);
     }
+  }
+
+  /**
+   * This handler will be called to close the current connection.
+   * It is not guaranteed that this caller will be called when a connection is
+   * closed.
+   * The purpose of this handler is to forcibly close the connection, not to
+   * be notified when a connection is closed
+   */
+  @FunctionalInterface
+  public interface CloseHandler {
+    void call();
   }
 }

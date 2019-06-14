@@ -17,11 +17,18 @@ public class ServerNetwork {
   protected ConnectionHandler connectionHandler;
 
   /**
-   * Inits a new ServerNetwork
+   * Init a new ServerNetwork
+   */
+  protected ServerNetwork(){
+    this.connectionHandler = ((Connection connection) -> {});
+  }
+
+  /**
+   * Sets the connectionHandler for this ServerNetwork
    *
    * @param c ConnectionHandler to use for accepting new connection
    */
-  protected ServerNetwork (ConnectionHandler c){
+  public void setConnectionHandler(ConnectionHandler c){
     this.connectionHandler = c;
   }
 

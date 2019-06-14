@@ -34,14 +34,12 @@ public class SocketServerNetwork extends ServerNetwork implements Runnable {
    * Inits a new socket server.
    * Remember to call the start method to start listening for new connections
    *
-   * @param ch    ConnectionHandler to use for notify about new connections
    * @param port  Port the server should bind to
    *
    * @throws InitializationError if there is an error creating the main socket
    */
-  public SocketServerNetwork(ConnectionHandler ch, int port)
-          throws InitializationError {
-    super(ch);
+  public SocketServerNetwork(int port) throws InitializationError {
+    super();
 
     try {
       this.ss = new ServerSocket(port);
@@ -70,7 +68,19 @@ public class SocketServerNetwork extends ServerNetwork implements Runnable {
         this.connectionHandler.accept(
                 new Connection(
                         s.getInputStream(),
-                        s.getOutputStream()
+                        s.getOutputStream(),
+                        () -> {
+                          try {
+                            s.close();
+                          }
+                          catch (IOException e){
+                            Logger.getLogger(LOG_NAMESPACE).log(
+                                    Level.WARNING,
+                                    "Unable to properly close socket",
+                                    e
+                            );
+                          }
+                        }
                 )
         );
       }

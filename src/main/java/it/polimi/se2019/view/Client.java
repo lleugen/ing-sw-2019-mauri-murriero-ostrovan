@@ -1,5 +1,7 @@
 package it.polimi.se2019.view;
 
+import it.polimi.se2019.communication.encodable.LoginData;
+import it.polimi.se2019.communication.network.Connection;
 import it.polimi.se2019.communication.network.InitializationError;
 import it.polimi.se2019.communication.network.client.socket.SocketClientNetwork;
 import it.polimi.se2019.model.server.ServerLobby;
@@ -66,7 +68,17 @@ public class Client {
     public Client(){
         System.out.println("Client Created");
       try {
-         new SocketClientNetwork("localhost", 5432);
+         SocketClientNetwork tmp = new SocketClientNetwork("localhost", 5432);
+         try {
+             tmp.getConnection().send(
+                     new LoginData(
+                             "Hello World"
+                     ).encode()
+             );
+         }
+         catch (Connection.DisconnectedError e){
+          System.out.println(e.toString());
+         }
       }
       catch (InitializationError e){
          System.out.println(e);

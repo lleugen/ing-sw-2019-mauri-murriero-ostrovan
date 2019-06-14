@@ -31,7 +31,9 @@ public class ClientNetwork {
               public void write(int b) throws IOException {
                 throw new IOException("Connection not initialized");
               }
-            });
+            },
+            () -> {}
+    );
   }
 
   /**

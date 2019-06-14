@@ -1,15 +1,92 @@
 package it.polimi.se2019.communication;
 
+import it.polimi.se2019.communication.encodable.Encodable;
 import it.polimi.se2019.communication.encodable.FunctionCall;
+import it.polimi.se2019.communication.encodable.LoginData;
 import it.polimi.se2019.communication.encodable.ModelViewUpdate;
+import it.polimi.se2019.communication.network.Connection;
+import it.polimi.se2019.communication.network.server.ServerNetwork;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VirtualView {
+  /**
+   * Reference to the currently opened network interface
+   */
+  private ServerNetwork ni;
+
+  public VirtualView(ServerNetwork ni){
+    this.ni = ni;
+    this.ni.setConnectionHandler(this::connectionHandler);
+  }
+
+  /**
+   * Connection Handler for the network interface
+   */
+  private void connectionHandler(Connection connection){
+    System.out.println("Got Connection from VV");
+    new Thread(
+            new ConnectionHandlerThread(
+                    connection
+            )
+    ).start();
+  }
+
+  private class ConnectionHandlerThread implements Runnable {
+    /**
+     * Namespace this class logs to
+     */
+    private static final String LOG_NAMESPACE =
+            "VirtualView.connectionHandlerThread";
+
+    /**
+     * Reference to the connection to handle
+     */
+    private Connection connection;
+
+    /**
+     * Timeout for login in seconds.
+     * On expiration, the connection is closed
+     */
+    private static final int CONNECTION_TIMEOUT = 5;
+
+    /**
+     * Init a new connection handler (the callback is called in a sync ways,
+     * so a client could prevent new users from logging in by just connecting
+     * and not sending data
+     *
+     * @param connection connection to handle
+     */
+    public ConnectionHandlerThread(Connection connection){
+      this.connection = connection;
+    }
+
+    /**
+     * Handles login, and, on success, adds the client to the known
+     * clients map.
+     */
+    public void run(){
+      try {
+        LoginData loginData = new LoginData("");
+        loginData.decode(this.connection.receive());
+        System.out.println("Got User <" + loginData.getUser() + ">");
+      }
+      catch (Connection.DisconnectedError | Encodable.InvalidDataException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.WARNING,
+                "Unable to log the user in",
+                e
+        );
+      }
+    }
+  }
+
 //  /**
 //   * Contains every connected user, indexed by his name
 //   */
@@ -147,65 +224,65 @@ public class VirtualView {
 //    }
 //  }
 //
-  public class ConnectedUser {
-    private String id;
-    private List<ModelViewUpdate> log;
-    private TransferQueue<ModelViewUpdate> tq;
-
-    ConnectedUser(String id){
-      this.id = id;
-      this.log = Collections.synchronizedList(new ArrayList<>());
-      this.tq = new LinkedTransferQueue<>();
-    }
-
-    public String getId(){
-      return this.id;
-    }
-
-    public ModelViewUpdate waitForTq(){
-      return this.tq.poll();
-    }
-
-    public synchronized void offer(ModelViewUpdate data){
-      this.log.add(data);
-      this.tq.offer(data);
-    }
-
-    public synchronized void reconnect(){
-      this.log.forEach(this.tq::offer);
-    }
-  }
-
-  public class CallRequest {
-    private String user;
-    private FunctionCall call;
-
-    CallRequest(String user, FunctionCall call) {
-      this.user = user;
-      this.call = call;
-    }
-
-    public String getUser() {
-      return this.user;
-    }
-
-    public FunctionCall getCall() {
-      return this.call;
-    }
-  }
-
-  public static class TimeoutException extends Exception {
-    TimeoutException(Throwable e){
-      super(e);
-    }
-
-    TimeoutException(){
-      super();
-    }
-
-    @Override
-    public String toString() {
-      return "Client did not respond on time";
-    }
-  }
+//  public class ConnectedUser {
+//    private String id;
+//    private List<ModelViewUpdate> log;
+//    private TransferQueue<ModelViewUpdate> tq;
+//
+//    ConnectedUser(String id){
+//      this.id = id;
+//      this.log = Collections.synchronizedList(new ArrayList<>());
+//      this.tq = new LinkedTransferQueue<>();
+//    }
+//
+//    public String getId(){
+//      return this.id;
+//    }
+//
+//    public ModelViewUpdate waitForTq(){
+//      return this.tq.poll();
+//    }
+//
+//    public synchronized void offer(ModelViewUpdate data){
+//      this.log.add(data);
+//      this.tq.offer(data);
+//    }
+//
+//    public synchronized void reconnect(){
+//      this.log.forEach(this.tq::offer);
+//    }
+//  }
+//
+//  public class CallRequest {
+//    private String user;
+//    private FunctionCall call;
+//
+//    CallRequest(String user, FunctionCall call) {
+//      this.user = user;
+//      this.call = call;
+//    }
+//
+//    public String getUser() {
+//      return this.user;
+//    }
+//
+//    public FunctionCall getCall() {
+//      return this.call;
+//    }
+//  }
+//
+//  public static class TimeoutException extends Exception {
+//    TimeoutException(Throwable e){
+//      super(e);
+//    }
+//
+//    TimeoutException(){
+//      super();
+//    }
+//
+//    @Override
+//    public String toString() {
+//      return "Client did not respond on time";
+//    }
+//  }
 }

@@ -33,7 +33,7 @@ public class ModelViewUpdate extends Encodable {
     return toReturn;
   }
 
-  public void implementedDecode(List<ByteBuffer> encoded)
+  private void implementedDecode(List<ByteBuffer> encoded)
           throws InvalidDataException {
     this.ns = this.decodeString(encoded.get(0));
     encoded.remove(0);

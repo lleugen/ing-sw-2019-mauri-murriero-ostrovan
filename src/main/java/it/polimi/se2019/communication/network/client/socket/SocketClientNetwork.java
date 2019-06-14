@@ -28,7 +28,8 @@ public class SocketClientNetwork extends ClientNetwork {
       this.setConnection(
               new Connection(
                       s.getInputStream(),
-                      s.getOutputStream()
+                      s.getOutputStream(),
+                      () -> {}
               )
       );
     }

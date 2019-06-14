@@ -1,5 +1,6 @@
 package it.polimi.se2019.model.server;
 
+import it.polimi.se2019.communication.VirtualView;
 import it.polimi.se2019.communication.network.InitializationError;
 import it.polimi.se2019.communication.network.server.socket.SocketServerNetwork;
 
@@ -38,19 +39,20 @@ public class Server {
   public Server(){
     System.out.println("Starting");
 
+
     try {
+      SocketServerNetwork srv = new SocketServerNetwork(
+              5432
+      );
       this.serverSocketNetworkThread = new Thread(
               null,
-              new SocketServerNetwork(
-                      (c) -> {
-                        System.out.println("Connected <" + c.toString() + ">");
-                      },
-                      5432
-              ),
+              srv,
               "Listening Thread"
       );
 
       this.serverSocketNetworkThread.start();
+
+      new VirtualView(srv);
     }
     catch (InitializationError e){
       System.out.println(e.toString());
