@@ -4,6 +4,9 @@ import it.polimi.se2019.communication.network.Connection;
 
 import java.util.function.Consumer;
 
+/**
+ * General definition of a Server Network interface
+ */
 public class ServerNetwork {
   /**
    * Connection handler.
@@ -24,7 +27,7 @@ public class ServerNetwork {
 
   /**
    * Defines a connection handler
-   * The parameter contains the, already inited, connection accepted
+   * The parameter contains the, already init, connection accepted
    */
   @FunctionalInterface
   public interface ConnectionHandler extends Consumer<Connection> { }

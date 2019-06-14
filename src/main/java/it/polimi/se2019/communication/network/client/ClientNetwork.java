@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * General definition of a Client Network interface
+ */
 public class ClientNetwork {
   /**
    * Reference to the currently active connection

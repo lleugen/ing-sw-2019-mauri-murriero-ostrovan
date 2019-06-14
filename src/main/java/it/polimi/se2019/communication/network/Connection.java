@@ -1,12 +1,16 @@
 package it.polimi.se2019.communication.network;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Defines a new connection
+ * Defines a connection to a remote endpoint
  */
 public class Connection {
   /**
@@ -105,11 +109,11 @@ public class Connection {
    * If necessary, you must create a completely new connection
    */
   public static class DisconnectedError extends Exception {
-    public DisconnectedError(){
+    DisconnectedError(){
       super("The underlying connection is broken");
     }
 
-    public DisconnectedError(Throwable e){
+    DisconnectedError(Throwable e){
       super("The underlying connection is broken", e);
     }
   }

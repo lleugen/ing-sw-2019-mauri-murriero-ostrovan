@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Socket communication connection for server
+ * Implementation of the Socket Network for a server
  */
 public class SocketServerNetwork extends ServerNetwork implements Runnable {
   /**

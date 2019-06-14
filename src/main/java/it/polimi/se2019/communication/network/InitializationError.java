@@ -10,12 +10,4 @@ public class InitializationError extends Exception {
             e
     );
   }
-
-  public InitializationError(){
-    super("An error occurred during connection initialization");
-  }
-
-  public InitializationError(String message){
-    super(message);
-  }
 }
