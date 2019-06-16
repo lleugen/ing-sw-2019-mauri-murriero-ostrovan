@@ -1,6 +1,7 @@
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
+import it.polimi.se2019.view.Client;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,12 +26,14 @@ public class App {
   private static void initMapping(){
     typeMapping = new HashMap<>();
     typeMapping.put("server", App::spawnServer);
+    typeMapping.put("client", App::spawnClient);
   }
 
   /**
    * Init the params array. Parses the args array received by the main method,
    * from the command line.
-   * Each param is in the form of <key>=<value>
+   * Each param is in the form of <key>=<value>, the form -<key>=<value> is
+   * accepted, too
    *
    * @param args Array received from the command line, my the main method
    *
@@ -40,7 +43,7 @@ public class App {
     params = Arrays.stream(args)
             .map((String param) -> param.split("="))
             .collect(Collectors.toMap(
-                    (String[] item) -> item[0],
+                    (String[] item) -> item[0].replace("-", ""),
                     (String[] item) -> item[1]
                     )
             );
@@ -52,27 +55,34 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    Server server = new Server();
-    server.publishToRMI("server", 0);
+    new Server();
+  }
+
+  /**
+   * Spawn a new old_client
+   *
+   * @param args Args array received from the command line
+   */
+  private static void spawnClient(Map<String, String> args){
+    new Client(args);
   }
 
   /**
    * Type: server
-   * @param args
+   *
+   * @param args Params to pass to the bootstrapping process
+   *
+   * @throws WrongArguments When there is an error with the params received,
+   *                        the message of the exception contains additional
+   *                        info about the error
    */
   public static void main(String[] args) {
     params = new HashMap<>();
+
     initMapping();
+    initParams(args);
 
-    try {
-      initParams(args);
-    }
-    catch (WrongArguments e){
-      // TODO: if necessary, implement additional logic here
-      throw e;
-    }
-
-    if (params.containsKey(params.get("type"))){
+    if (typeMapping.containsKey(params.get("type"))){
       typeMapping.get(params.get("type")).accept(params);
     }
     else {
@@ -80,12 +90,14 @@ public class App {
               "Type is either missed or wrong\nSupported types are " +
               String.join(", ", typeMapping.keySet()));
     }
+
+
   }
 
   /**
    * Thrown when there is an error in the args array received by the command
    * line.
-   * The toString method may contain additional informations about the error
+   * The toString method may contain additional information about the error
    */
   public static class WrongArguments extends RuntimeException {
     private final String message;
