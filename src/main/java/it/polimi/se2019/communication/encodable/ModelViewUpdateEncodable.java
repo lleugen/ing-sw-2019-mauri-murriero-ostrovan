@@ -57,4 +57,16 @@ public class ModelViewUpdateEncodable extends AbstractEncodable {
       throw new InvalidDataException();
     }
   }
+
+  public String getNs() {
+    return ns;
+  }
+
+  public String getView() {
+    return view;
+  }
+
+  public ByteBuffer getModel() {
+    return model;
+  }
 }

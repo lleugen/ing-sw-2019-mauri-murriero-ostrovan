@@ -41,7 +41,7 @@ class ConnectionHandler implements Runnable {
   /**
    * Handler for successfully logged in connections
    */
-  ConnectedHandler ch;
+  private ConnectedHandler ch;
 
   /**
    * Init a new connection handler (the callback is called in a sync ways,

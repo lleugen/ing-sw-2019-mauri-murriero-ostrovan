@@ -1,5 +1,6 @@
 package it.polimi.se2019.communication.virtual_view;
 
+import it.polimi.se2019.communication.encodable.ModelViewUpdateEncodable;
 import it.polimi.se2019.communication.network.Connection;
 import it.polimi.se2019.communication.network.server.ServerNetwork;
 import it.polimi.se2019.communication.virtual_view.connections_manager.ConnectionsManager;
@@ -35,6 +36,41 @@ public class VirtualView {
    */
   public List<String> getConnectedPlayer(){
     return this.cm.getConnected();
+  }
+
+  /**
+   * Get a function call from the inbound Transfer Queue
+   * This function blocks till a valid function call is received, or till
+   * timeout is reached.
+   *
+   * __WARN__ Timeout may be approximate.
+   *
+   * @param timeout   Timeout in second to wait before raising exception
+   *
+   * @param validUser List of valid users id for this call
+   * @param validNs   List of valid namespaces for this call
+   * @param validF    List of valid function names for this call
+   *
+   * @return The first received call
+   *
+   * @throws NoResponseError if no valid function call can be retrived in time
+   */
+  public AssociatedFunctionCall receive(
+          int timeout, List<String> validUser,
+          List<String> validNs, List<String> validF
+  ) throws NoResponseError {
+    return this.cm.receive(timeout, validUser, validNs, validF);
+  }
+
+  /**
+   * Sends an update downto the client
+   * Updates are sent in order they are received.
+   *
+   * @param user    User Id to send the update to
+   * @param update  Update to send to the user
+   */
+  public synchronized void send(String user, ModelViewUpdateEncodable update){
+    this.cm.send(user, update);
   }
 
   /**

@@ -4,6 +4,8 @@ import it.polimi.se2019.communication.encodable.AbstractEncodable;
 import it.polimi.se2019.communication.encodable.FunctionCallEncodable;
 import it.polimi.se2019.communication.encodable.ModelViewUpdateEncodable;
 import it.polimi.se2019.communication.network.Connection;
+import it.polimi.se2019.communication.virtual_view.AssociatedFunctionCall;
+import it.polimi.se2019.communication.virtual_view.NoResponseError;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -174,7 +176,6 @@ public class ConnectionsManager {
           List<String> validNs, List<String> validF
   ) throws NoResponseError {
 
-    boolean valid = false;
     Predicate<AssociatedFunctionCall> filter = this.genFcFilter(
             validUser, validNs, validF
     );
@@ -182,12 +183,13 @@ public class ConnectionsManager {
 
     do {
       try {
-         receivedAfc = this.inboundTq.poll(
+        receivedAfc = this.inboundTq.poll(
           timeout,
           TimeUnit.SECONDS
         );
       }
       catch (InterruptedException e){
+        Thread.currentThread().interrupt();
         throw new NoResponseError(e);
       }
     } while (filter.test(receivedAfc));
@@ -210,15 +212,15 @@ public class ConnectionsManager {
     return (AssociatedFunctionCall f) -> {
       boolean ok;
 
-      ok = this.fcFilterTester(
+      ok = fcFilterTester(
               f.getUser(), validUser
       );
 
-      ok = ok && this.fcFilterTester(
+      ok = ok && fcFilterTester(
               f.getFc().getNs(), validNs
       );
 
-      ok = ok && this.fcFilterTester(
+      ok = ok && fcFilterTester(
               f.getFc().getF(), validF
       );
 
@@ -237,7 +239,7 @@ public class ConnectionsManager {
    *
    * @return true if the test is valid, false otherwise
    */
-  private boolean fcFilterTester(String test, List<String> valid){
+  private static boolean fcFilterTester(String test, List<String> valid){
     boolean ok = false;
 
     if (valid == null){
@@ -252,64 +254,5 @@ public class ConnectionsManager {
     }
 
     return ok;
-  }
-
-  /**
-   * Function call with user id associated to it
-   */
-  private static class AssociatedFunctionCall {
-    /**
-     * Reference to the function call
-     */
-    private FunctionCallEncodable fc;
-
-    /**
-     * User this function call is associated to
-     */
-    private String user;
-
-    /**
-     * Create a new AssociatedFunctionCall
-     *
-     * @param fc    FunctionCall
-     * @param user  User the FunctionCall is associated to
-     */
-    public AssociatedFunctionCall(FunctionCallEncodable fc, String user){
-      this.fc = fc;
-      this.user = user;
-    }
-
-    /**
-     * Get the associated FunctionCall
-     *
-     * @return the associated FunctionCall
-     */
-    public FunctionCallEncodable getFc() {
-      return this.fc;
-    }
-
-    /**
-     * Get the user the FunctionCall is associated to
-     *
-     * @return the user the FunctionCall is associated to
-     */
-    public String getUser() {
-      return this.user;
-    }
-  }
-
-  public static class NoResponseError extends Exception {
-    public NoResponseError(Exception e){
-      super(
-              "User did not responded in time",
-              e
-      );
-    }
-
-    public NoResponseError(){
-      super(
-              "User did not responded in time"
-      );
-    }
   }
 }

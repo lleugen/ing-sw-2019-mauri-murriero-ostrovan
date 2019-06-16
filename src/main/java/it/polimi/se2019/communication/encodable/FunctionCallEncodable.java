@@ -30,6 +30,7 @@ public class FunctionCallEncodable extends AbstractEncodable {
     this.f = "";
     this.data = ByteBuffer.allocate(0);
   }
+
   protected Iterable<ByteBuffer> implementedEncode() {
     List<ByteBuffer> toReturn = new LinkedList<>();
 

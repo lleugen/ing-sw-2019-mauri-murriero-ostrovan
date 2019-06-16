@@ -64,9 +64,7 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnClient(Map<String, String> args){
-
-    System.out.println("Spawn Client");
-    new Client();
+    new Client(args);
   }
 
   /**

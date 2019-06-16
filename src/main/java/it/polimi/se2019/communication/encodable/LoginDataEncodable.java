@@ -24,9 +24,6 @@ public class LoginDataEncodable extends AbstractEncodable {
 
     this.user = "";
   }
-  public String getUser() {
-    return this.user;
-  }
 
   protected Iterable<ByteBuffer> implementedEncode() {
     List<ByteBuffer> toReturn = new LinkedList<>();
@@ -50,5 +47,9 @@ public class LoginDataEncodable extends AbstractEncodable {
     if (it.hasNext()){
       throw new InvalidDataException();
     }
+  }
+
+  public String getUser() {
+    return this.user;
   }
 }

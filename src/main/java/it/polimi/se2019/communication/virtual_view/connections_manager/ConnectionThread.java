@@ -31,6 +31,17 @@ class ConnectionThread implements Runnable {
   private RecvCallback recvCallback;
 
   /**
+   * Init a new ConnectionThread
+   *
+   * @param conn Connection this thread must handle
+   * @param cb   Receiving callback for new data
+   */
+  ConnectionThread(Connection conn, RecvCallback cb){
+    this.connection = conn;
+    this.recvCallback = cb;
+  }
+
+  /**
    * Stop the ConnectionThread, by stopping sending data to the
    * receiveCallback, and closing the currently opened connection
    */
@@ -45,17 +56,6 @@ class ConnectionThread implements Runnable {
    */
   public boolean isRunning(){
     return this.running.get();
-  }
-
-  /**
-   * Init a new ConnectionThread
-   *
-   * @param conn Connection this thread must handle
-   * @param cb   Receiving callback for new data
-   */
-  ConnectionThread(Connection conn, RecvCallback cb){
-    this.connection = conn;
-    this.recvCallback = cb;
   }
 
   /**
