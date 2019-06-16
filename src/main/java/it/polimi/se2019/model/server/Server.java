@@ -1,6 +1,6 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.communication.VirtualView;
+import it.polimi.se2019.communication.virtual_view.VirtualView;
 import it.polimi.se2019.communication.network.InitializationError;
 import it.polimi.se2019.communication.network.server.socket.SocketServerNetwork;
 

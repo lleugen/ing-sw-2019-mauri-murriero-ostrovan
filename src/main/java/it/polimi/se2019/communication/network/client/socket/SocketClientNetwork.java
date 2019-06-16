@@ -23,7 +23,6 @@ public class SocketClientNetwork extends ClientNetwork {
           throws InitializationError {
     super();
     Socket s = initSocket(host, port);
-
     try {
       this.setConnection(
               new Connection(
@@ -51,7 +50,9 @@ public class SocketClientNetwork extends ClientNetwork {
   private static Socket initSocket(String host, int port)
           throws InitializationError {
     try {
-      return new Socket(host, port);
+      Socket socket = new Socket(host, port);
+      socket.setKeepAlive(true);
+      return socket;
     }
     catch (IOException e) {
       throw new InitializationError(e);

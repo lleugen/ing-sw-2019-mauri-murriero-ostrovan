@@ -1,6 +1,6 @@
 package it.polimi.se2019.view;
 
-import it.polimi.se2019.communication.encodable.LoginData;
+import it.polimi.se2019.communication.encodable.LoginDataEncodable;
 import it.polimi.se2019.communication.network.Connection;
 import it.polimi.se2019.communication.network.InitializationError;
 import it.polimi.se2019.communication.network.client.socket.SocketClientNetwork;
@@ -9,6 +9,7 @@ import it.polimi.se2019.view.player.PlayerView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -71,10 +72,11 @@ public class Client {
          SocketClientNetwork tmp = new SocketClientNetwork("localhost", 5432);
          try {
              tmp.getConnection().send(
-                     new LoginData(
+                     new LoginDataEncodable(
                              "Hello World"
                      ).encode()
              );
+             tmp.getConnection().receive();
          }
          catch (Connection.DisconnectedError e){
           System.out.println(e.toString());

@@ -1,9 +1,9 @@
 package it.polimi.se2019.communication.network;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
@@ -19,12 +19,12 @@ public class Connection {
   private static final String LOG_NAMESPACE = "Connection";
 
   /**
-   * Reference to the InputStream this connection is bound to
+   * Reference to the DataInputStream this connection is bound to
    */
   private DataInputStream inputStream;
 
   /**
-   * Reference to the OutputStream this connection is bound to
+   * Reference to the DataOutputStream this connection is bound to
    */
   private DataOutputStream outputStream;
 
@@ -43,6 +43,7 @@ public class Connection {
   public Connection (InputStream in, OutputStream out, CloseHandler ch){
     this.inputStream = new DataInputStream(in);
     this.outputStream = new DataOutputStream(out);
+
     this.closeHandler = ch;
   }
 
@@ -53,10 +54,15 @@ public class Connection {
    *
    * @throws DisconnectedError if the underlying connection is broken
    */
-  public void send(ByteBuffer data) throws DisconnectedError {
+  public synchronized void send(ByteBuffer data) throws DisconnectedError {
     try {
-      this.outputStream.writeInt(data.capacity());
-      this.outputStream.write(data.array());
+      byte[] byteData = new byte[data.capacity()];
+      data.get(byteData);
+
+      this.outputStream.writeInt(byteData.length);
+      this.outputStream.write(byteData);
+
+      this.outputStream.flush();
     }
     catch (IOException e){
       throw new DisconnectedError(e);
@@ -71,7 +77,8 @@ public class Connection {
    *
    * @throws DisconnectedError if the underlying connection is broken
    */
-  public ByteBuffer receive() throws DisconnectedError {
+  public synchronized ByteBuffer receive() throws DisconnectedError {
+    ByteBuffer toReturn;
     try {
       int length = this.inputStream.readInt();
       byte[] data = new byte[length];
@@ -80,7 +87,9 @@ public class Connection {
         throw new DisconnectedError();
       }
 
-      return ByteBuffer.allocate(length).put(data);
+      toReturn =  ByteBuffer.allocate(length).put(data);
+      toReturn.clear();
+      return toReturn;
     }
     catch (IOException e){
       throw new DisconnectedError(e);
@@ -95,7 +104,7 @@ public class Connection {
    * After calling this function, you must remove any reference to this
    * connection, cause every method stop to work properly.
    */
-  public void close(){
+  public synchronized void close(){
     try {
       this.inputStream.close();
       this.outputStream.close();

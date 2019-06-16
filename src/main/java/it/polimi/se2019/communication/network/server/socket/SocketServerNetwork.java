@@ -65,6 +65,7 @@ public class SocketServerNetwork extends ServerNetwork implements Runnable {
     while (this.running.get()){
       try {
         Socket s = this.ss.accept();
+        s.setKeepAlive(true);
         this.connectionHandler.accept(
                 new Connection(
                         s.getInputStream(),
