@@ -19,7 +19,7 @@ public class GUIPowerUpsChooser extends GUIGenericWindow {
     @Override
     public void populate(List<String> itemsToShow) {
         submitButton = new JButton();
-        //show to the client each powerUp he held
+        //show to the view each powerUp he held
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH CHECKBOX
         }

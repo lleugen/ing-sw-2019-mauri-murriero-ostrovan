@@ -13,7 +13,7 @@ package it.polimi.se2019.view.map;
 //    private ViewData data;
 //
 //    public CLIView(){
-//        //TO DO: parameter is what returns server when the game starts
+//        //TO DO: parameter is what returns controller when the game starts
 //        data = new ViewData("1");
 //    }
 //

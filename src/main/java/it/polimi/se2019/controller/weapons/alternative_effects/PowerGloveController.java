@@ -26,7 +26,7 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p : possibleTargets){
         possibleTargetNames.add(p.getName());
       }
-      //make the client choose one target
+      //make the view choose one target
       //incompatible type error will be solved by change to the viewinterface
       targets.add(gameBoardController.identifyPlayer
               (identifyClient(shooter).chooseTargets(possibleTargetNames)));

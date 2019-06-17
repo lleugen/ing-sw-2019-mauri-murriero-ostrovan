@@ -9,7 +9,6 @@ import it.polimi.se2019.communication.virtual_view.NoResponseError;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedTransferQueue;
@@ -27,16 +26,14 @@ public class ConnectionsManager {
   private static final String LOG_NAMESPACE = "ConnectionsManager";
 
   /**
-   * Contains the association between every connected client and its connection
+   * Contains the association between every connected view and its connection
    */
   private Map<String, ConnectionThread> connections;
 
   /**
-   * Contains the log of data sent to each user.
-   * Each time a user logs in, all its history is resent down, to let him
-   * resync again to the state he left
+   * Contains the last update sent for each user for each namespace
    */
-  private Map<String, List<ByteBuffer>> history;
+  private Map<String, Map<String, ByteBuffer>> history;
 
   /**
    * TransferQueue for incoming data
@@ -78,20 +75,25 @@ public class ConnectionsManager {
               conn,
               this.genRecvCallbackForUser(user)
       );
+
+      new Thread(
+              connectionThread
+      ).start();
+
       this.connections.put(
               user,
               connectionThread
       );
 
-      this.history.putIfAbsent(user, new LinkedList<>());
-      this.history.get(user).forEach(
-            connectionThread::send
+      this.history.putIfAbsent(user, new HashMap<>());
+      this.history.get(user).values().forEach(
+              connectionThread::send
       );
     }
   }
 
   /**
-   * Sends an update downto the client
+   * Sends an update downto the view
    * Updates are sent in order they are received.
    *
    * @param user    User Id to send the update to
@@ -100,8 +102,11 @@ public class ConnectionsManager {
   public synchronized void send(String user, ModelViewUpdateEncodable update){
     ByteBuffer encodedUpdate = update.encode();
 
-    this.history.putIfAbsent(user, new LinkedList<>());
-    this.history.get(user).add(encodedUpdate);
+    this.history.putIfAbsent(user, new HashMap<>());
+    this.history.get(user).put(
+            update.getNs(),
+            update.encode()
+    );
 
     ConnectionThread conn = this.connections.get(user);
     if (conn != null){
@@ -175,8 +180,7 @@ public class ConnectionsManager {
           int timeout, List<String> validUser,
           List<String> validNs, List<String> validF
   ) throws NoResponseError {
-
-    Predicate<AssociatedFunctionCall> filter = this.genFcFilter(
+    Predicate<AssociatedFunctionCall> filter = genFcFilter(
             validUser, validNs, validF
     );
     AssociatedFunctionCall receivedAfc;
@@ -192,7 +196,7 @@ public class ConnectionsManager {
         Thread.currentThread().interrupt();
         throw new NoResponseError(e);
       }
-    } while (filter.test(receivedAfc));
+    } while (!filter.test(receivedAfc));
 
     return receivedAfc;
   }
@@ -206,7 +210,7 @@ public class ConnectionsManager {
    *
    * @return true if the call is valid, false otherwise
    */
-  private Predicate<AssociatedFunctionCall> genFcFilter(
+  private static Predicate<AssociatedFunctionCall> genFcFilter(
           List<String> validUser, List<String> validNs, List<String> validF
   ){
     return (AssociatedFunctionCall f) -> {

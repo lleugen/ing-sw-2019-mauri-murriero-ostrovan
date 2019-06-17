@@ -66,7 +66,7 @@ public abstract class PlayerStateController {
     public void spawn() {
         player.getInventory().addPowerUpToInventory(gameBoardController.getGameBoard().getDecks().drawPowerUp());
         //ask player to choose a power up card to discard, return a colour
-        //client will have to be the PlayerView stub
+        //view will have to be the PlayerView stub
         List<String> powerUps = new ArrayList<>();
         for(PowerUpCard p : player.getInventory().getPowerUps()){
             powerUps.add(p.getDescription());

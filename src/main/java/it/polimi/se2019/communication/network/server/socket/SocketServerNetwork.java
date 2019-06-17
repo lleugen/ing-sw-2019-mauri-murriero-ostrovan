@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Implementation of the Socket Network for a server
+ * Implementation of the Socket Network for a controller
  */
 public class SocketServerNetwork extends ServerNetwork implements Runnable {
   /**
@@ -31,10 +31,10 @@ public class SocketServerNetwork extends ServerNetwork implements Runnable {
   private ServerSocket ss;
 
   /**
-   * Inits a new socket server.
+   * Inits a new socket controller.
    * Remember to call the start method to start listening for new connections
    *
-   * @param port  Port the server should bind to
+   * @param port  Port the controller should bind to
    *
    * @throws InitializationError if there is an error creating the main socket
    */
@@ -114,7 +114,7 @@ public class SocketServerNetwork extends ServerNetwork implements Runnable {
   }
 
   /**
-   * Stops the server from listening to new connections.
+   * Stops the controller from listening to new connections.
    * __WARN__: After stopping the thread in any way, you must create a new
    * ServerSocketNetwork. The old one cannot start listening to connection again
    */

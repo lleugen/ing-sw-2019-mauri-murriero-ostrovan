@@ -68,7 +68,7 @@ public class PlayerController {
         /*
         Integer direction;
         for(int j = 0; j<2; j++){
-          direction = client.chooseDirection();
+          direction = view.chooseDirection();
           player.move(player.getPosition().getAdjacencies().get(direction));
         }
         */

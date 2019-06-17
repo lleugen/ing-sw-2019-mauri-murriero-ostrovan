@@ -21,17 +21,17 @@ public class Connection {
   /**
    * Reference to the DataInputStream this connection is bound to
    */
-  private DataInputStream inputStream;
+  private final DataInputStream inputStream;
 
   /**
    * Reference to the DataOutputStream this connection is bound to
    */
-  private DataOutputStream outputStream;
+  private final DataOutputStream outputStream;
 
   /**
    * Reference to che closing handler
    */
-  private CloseHandler closeHandler;
+  private final CloseHandler closeHandler;
 
   /**
    * Create a new connection
@@ -54,18 +54,20 @@ public class Connection {
    *
    * @throws DisconnectedError if the underlying connection is broken
    */
-  public synchronized void send(ByteBuffer data) throws DisconnectedError {
-    try {
-      byte[] byteData = new byte[data.capacity()];
-      data.get(byteData);
+  public void send(ByteBuffer data) throws DisconnectedError {
+    synchronized (this.outputStream) {
+      try {
+        byte[] byteData = new byte[data.capacity()];
+        data.get(byteData);
 
-      this.outputStream.writeInt(byteData.length);
-      this.outputStream.write(byteData);
+        this.outputStream.writeInt(byteData.length);
+        this.outputStream.write(byteData);
 
-      this.outputStream.flush();
-    }
-    catch (IOException e){
-      throw new DisconnectedError(e);
+        this.outputStream.flush();
+      }
+      catch (IOException e) {
+        throw new DisconnectedError(e);
+      }
     }
   }
 
@@ -77,22 +79,24 @@ public class Connection {
    *
    * @throws DisconnectedError if the underlying connection is broken
    */
-  public synchronized ByteBuffer receive() throws DisconnectedError {
-    ByteBuffer toReturn;
-    try {
-      int length = this.inputStream.readInt();
-      byte[] data = new byte[length];
+  public ByteBuffer receive() throws DisconnectedError {
+    synchronized (this.inputStream) {
+      ByteBuffer toReturn;
+      try {
+        int length = this.inputStream.readInt();
+        byte[] data = new byte[length];
 
-      if (length != this.inputStream.read(data)){
-        throw new DisconnectedError();
+        if (length != this.inputStream.read(data)) {
+          throw new DisconnectedError();
+        }
+
+        toReturn = ByteBuffer.allocate(length).put(data);
+        toReturn.clear();
+        return toReturn;
       }
-
-      toReturn =  ByteBuffer.allocate(length).put(data);
-      toReturn.clear();
-      return toReturn;
-    }
-    catch (IOException e){
-      throw new DisconnectedError(e);
+      catch (IOException e) {
+        throw new DisconnectedError(e);
+      }
     }
   }
 
@@ -104,7 +108,11 @@ public class Connection {
    * After calling this function, you must remove any reference to this
    * connection, cause every method stop to work properly.
    */
-  public synchronized void close(){
+  public void close(){
+    // synchronized not required.
+    // We are killing the connection, it doesn't matter if something goes wrong
+    // while sending or receiving data
+
     try {
       this.inputStream.close();
       this.outputStream.close();

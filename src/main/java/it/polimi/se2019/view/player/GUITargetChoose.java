@@ -16,7 +16,7 @@ public class GUITargetChoose extends GUIGenericWindow {
     @Override
     public void populate(List<String> itemsToShow) {
         actionButtons = new ArrayList<>();
-        //show to the client each enemy he can choose
+        //show to the view each enemy he can choose
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS FOR EACH ENEMY
             //itemsToShow(i)

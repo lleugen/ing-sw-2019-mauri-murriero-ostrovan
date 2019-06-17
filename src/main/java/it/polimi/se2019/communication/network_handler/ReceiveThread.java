@@ -38,7 +38,7 @@ class ReceiveThread implements Runnable {
 
   /**
    * Init a new receiving thread.
-   * A receiving thread listens for updates from the server, and delivers them
+   * A receiving thread listens for updates from the controller, and delivers them
    * through rcb
    * @param conn
    * @param dcb

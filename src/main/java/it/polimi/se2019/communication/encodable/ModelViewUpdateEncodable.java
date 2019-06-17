@@ -7,9 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ModelViewUpdateEncodable extends AbstractEncodable {
-  private static final byte[] UUID = new byte[]{
-          115,87,74,-19,-57,27,84,15,114,95,23,-34,75,1,57,7
-  };
+  private static final String UUID = "MovelViewUpdateEncodable.v1";
 
   private String ns;
   private String view;

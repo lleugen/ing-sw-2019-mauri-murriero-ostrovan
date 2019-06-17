@@ -41,9 +41,9 @@ public abstract class GUIGenericWindow {
     public abstract void populate(List<String> itemsToShow);
 
     /**
-     * shows the frame to the client and waits until the client has selected what he has to select
+     * shows the frame to the view and waits until the view has selected what he has to select
      *
-     * @param choices list of possible selection asked by the server
+     * @param choices list of possible selection asked by the controller
      * @return sublist of choices
      */
     public abstract List<String> askAndRequest(List<String> choices);

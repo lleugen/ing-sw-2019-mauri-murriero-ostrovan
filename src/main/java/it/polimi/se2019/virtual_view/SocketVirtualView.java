@@ -24,30 +24,30 @@ import java.util.logging.Logger;
  *
  * A message is formed by three pieces of data, separated by the character `~`:
  * - An action identifier, chosen between:
- * -- MODEL_UPDATE  (server -> client)
- * -- EXCEPTION     (server -> client)
- * -- VIEW_SELECT   (server -> client)
- * -- METHOD_INVOC  (client -> server)
+ * -- MODEL_UPDATE  (controller -> view)
+ * -- EXCEPTION     (controller -> view)
+ * -- VIEW_SELECT   (controller -> view)
+ * -- METHOD_INVOC  (view -> controller)
  * - The path of the generator
  * - The real message
  * An example of a message not encoded is:
- * ```MODEL_UPDATE~server.map.cells~data to pass```
+ * ```MODEL_UPDATE~controller.map.cells~data to pass```
  * An example of a message encoded (the same as above) is:
  * ```TU9ERUxfVVBEQVRFfnNlcnZlci5tYXAuY2VsbHN+ZGF0YSB0byBwYXNz~```.
  * Please note the `~` at the end of the message
  */
 public class SocketVirtualView extends AbstractVirtualView {
   /**
-   * Sequence of updates sent down to the client.
-   * Useful to handle client disconnection and reconnection
+   * Sequence of updates sent down to the view.
+   * Useful to handle view disconnection and reconnection
    */
   private ObservableList<byte[]> downstreamLog;
 
   /**
    * Inits a new socket virtual view
    *
-   * A socket virtual view can be used to expose a controller on a server to a
-   * remote communication handler on a client, using a TCP connection
+   * A socket virtual view can be used to expose a controller on a controller to a
+   * remote communication handler on a view, using a TCP connection
    *
    * @param namespace Namespace of the view
    * @param port Port to which bind the socket
@@ -94,7 +94,7 @@ public class SocketVirtualView extends AbstractVirtualView {
   }
 
   /**
-   * Broadcast a message to all connected client
+   * Broadcast a message to all connected view
    * @param action
    * @param path  Path relative, namespace is added automatically
    * @param data

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ServerLobby implements Remote {
   /**
    * Timeout in seconds between the creation of the lobby and the start of the
-   * games, to allow players to close connection to the server and connect to
+   * games, to allow players to close connection to the controller and connect to
    * the lobby.
    * If a player doesn't connect to the lobby before the expiration of this
    * timeout, the game will start without him.
@@ -123,13 +123,13 @@ public class ServerLobby implements Remote {
 //
 //  /**
 //   * Handle connections of players.
-//   * A player must call this method to connect to to the server
+//   * A player must call this method to connect to to the controller
 //   *
-//   * @param client player's view
+//   * @param view player's view
 //   * @param name name of the player
 //   * @param character id of the player's character
 //   */
-//  public void connect(PlayerView client, String name, String character) {
+//  public void connect(PlayerView view, String name, String character) {
 //    PlayerData player;
 //
 //    try {
@@ -137,7 +137,7 @@ public class ServerLobby implements Remote {
 //
 //      if (player != null) {
 //        player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
-//        player.setView(client);
+//        player.setView(view);
 //        player.setController(
 //                new PlayerController(
 //                        this.gameBoardController,

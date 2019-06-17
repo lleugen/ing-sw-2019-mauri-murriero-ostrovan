@@ -15,10 +15,10 @@ public abstract class AbstractEncodable {
    * You must change it each time you makes a change to the encoded
    * representation of the object.
    *
-   * A good way to generate this UUID may be:
-   * https://firebase.googleblog.com/2015/02/the-2120-ways-to-ensure-unique_68.html
+   * A good way to generate this UUID may be the name of the class concatenated
+   * to the version of the class
    */
-  private ByteBuffer encodableUUID;
+  private String encodableUUID;
 
   /**
    * Creates a new encodable.
@@ -27,12 +27,8 @@ public abstract class AbstractEncodable {
    *
    * @param uuid UUID for the encodable {@link #encodableUUID}
    */
-  AbstractEncodable(byte[] uuid){
-    this.encodableUUID = clearBuffer(
-            ByteBuffer
-            .allocate(uuid.length)
-            .put(uuid)
-    );
+  public AbstractEncodable(String uuid){
+    this.encodableUUID = uuid;
   }
 
   /**
@@ -113,7 +109,9 @@ public abstract class AbstractEncodable {
   public ByteBuffer encode() {
     List<ByteBuffer> toEncodeList = new LinkedList<>();
 
-    toEncodeList.add(this.encodableUUID);
+    toEncodeList.add(
+            encodeString(this.encodableUUID)
+    );
     toEncodeList.add(
             encodeIterable(
                     this.implementedEncode()
@@ -138,21 +136,7 @@ public abstract class AbstractEncodable {
    *                              class with another class)
    */
   public void decode(ByteBuffer encoded) throws InvalidDataException {
-    byte[] uuid = new byte[encodableUUID.capacity()];
-
-    try {
-      encoded.get(uuid);
-    }
-    catch (BufferUnderflowException e){
-      throw new InvalidDataException(e);
-    }
-
-    ByteBuffer uuidByteBuffer;
-    uuidByteBuffer = ByteBuffer.allocate(uuid.length).put(uuid);
-    uuidByteBuffer.clear();
-    this.encodableUUID.clear();
-
-    if (!this.encodableUUID.equals(uuidByteBuffer)){
+    if (!this.encodableUUID.equals(decodeString(encoded))){
       throw new InvalidDataException();
     }
 
@@ -192,6 +176,43 @@ public abstract class AbstractEncodable {
           throws InvalidDataException {
     try {
       return encoded.getInt();
+    }
+    catch (BufferUnderflowException e){
+      throw new InvalidDataException(e);
+    }
+  }
+
+  /**
+   * Encodes a Long Int
+   *
+   * @param data The long to encode
+   *
+   * @return the encoded representation of the long
+   */
+  protected static ByteBuffer encodeLong(Long data){
+    List<ByteBuffer> toEncodeList = new LinkedList<>();
+
+    toEncodeList.add(
+            ByteBuffer.allocate(Long.BYTES).putLong(data)
+    );
+
+    return mergeBuffer(toEncodeList);
+  }
+
+  /**
+   * Decodes a Long from an encoded ByteBuffer
+   *
+   * __WARN__ Encoded data are removed from the ByteBuffer
+   *
+   * @param encoded ByteBuffer containing encoded data. The first byte of the
+   *                buffer MUST be the first byte of the encoded data to decode
+   *
+   * @return the decoded data
+   */
+  protected static Long decodeLong(ByteBuffer encoded)
+          throws InvalidDataException {
+    try {
+      return encoded.getLong();
     }
     catch (BufferUnderflowException e){
       throw new InvalidDataException(e);

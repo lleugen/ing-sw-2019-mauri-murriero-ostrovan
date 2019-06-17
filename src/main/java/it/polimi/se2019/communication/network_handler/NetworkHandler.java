@@ -43,7 +43,7 @@ public class NetworkHandler {
   /**
    * Init a new NetworkHandler.
    *
-   * Remember to call the start method for receive data from the server
+   * Remember to call the start method for receive data from the controller
    *
    * @param conn NetworkInterface this NetworkHandler should bind to
    * @param dcb  DisconnectCallback for this NetworkHandler
@@ -65,7 +65,7 @@ public class NetworkHandler {
   }
 
   /**
-   * Starts the network handler for receiving data from the server
+   * Starts the network handler for receiving data from the controller
    */
   public void start(){
     new Thread(
@@ -99,9 +99,9 @@ public class NetworkHandler {
   }
 
   /**
-   * Sends a FunctionCall up to the server
+   * Sends a FunctionCall up to the controller
    *
-   * @param call Call to send to the server
+   * @param call Call to send to the controller
    */
   public void send(FunctionCallEncodable call){
     try {

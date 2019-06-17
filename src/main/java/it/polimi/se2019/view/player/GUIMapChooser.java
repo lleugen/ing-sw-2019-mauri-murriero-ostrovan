@@ -17,7 +17,7 @@ public class GUIMapChooser extends GUIGenericWindow {
     @Override
     public void populate(List<String> itemsToShow) {
         actionButtons = new ArrayList<>();
-        //show to the client each map he can choose
+        //show to the view each map he can choose
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS FOR EACH MAP
             //i.toString

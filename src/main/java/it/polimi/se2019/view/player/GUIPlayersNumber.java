@@ -19,7 +19,7 @@ public class GUIPlayersNumber extends GUIGenericWindow {
     public void populate(List<String> itemsToShow) {
         submitButton = new JButton();
         combo = new JComboBox(itemsToShow.toArray());
-        //show to the client combobox which contains the possible number of players
+        //show to the view combobox which contains the possible number of players
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH COMBOBOX
             //no need to rename

@@ -22,7 +22,7 @@ public class GUIWeaponLoader extends GUIGenericWindow {
         actionButtons = new ArrayList<>();
         possibleAnswers = itemsToShow;
         possibleAnswers.add("");
-        //show to the client each weapon he can load and a button named "nothing" which means he does not want to reload anything
+        //show to the view each weapon he can load and a button named "nothing" which means he does not want to reload anything
         for(int i = 0; i < possibleAnswers.size() - 1; i++){
             //TO DO: CREATE VIEW WITH BUTTONS FROM WEAPONS
             //itemsToShow(i)

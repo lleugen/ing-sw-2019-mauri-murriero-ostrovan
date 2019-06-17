@@ -63,7 +63,7 @@ public class VirtualView {
   }
 
   /**
-   * Sends an update downto the client
+   * Sends an update downto the view
    * Updates are sent in order they are received.
    *
    * @param user    User Id to send the update to

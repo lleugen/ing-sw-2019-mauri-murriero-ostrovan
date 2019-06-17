@@ -45,7 +45,7 @@ class ConnectionHandler implements Runnable {
 
   /**
    * Init a new connection handler (the callback is called in a sync ways,
-   * so a client could prevent new users from logging in by just connecting
+   * so a view could prevent new users from logging in by just connecting
    * and not sending data
    *
    * @param connection connection to handle
@@ -66,13 +66,14 @@ class ConnectionHandler implements Runnable {
   }
 
   /**
-   * Handles login, and, on success, adds the client to the known
+   * Handles login, and, on success, adds the view to the known
    * clients map.
    */
   public void run(){
     try {
       LoginDataEncodable loginData = new LoginDataEncodable("");
       loginData.decode(this.connection.receive());
+      this.connection.send(loginData.encode());
       this.successfullyLoggedIn.set(true);
       this.ch.accept(loginData.getUser(), connection);
     }

@@ -16,7 +16,7 @@ public class GUIWeaponChooser extends GUIGenericWindow {
     @Override
     public void populate(List<String> itemsToShow) {
         actionButtons = new ArrayList<>();
-        //show to the client each weapon he can choose
+        //show to the view each weapon he can choose
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS FOR EACH WEAPON
             //itemsToShow(i)

@@ -17,7 +17,7 @@ public class GUISpawnLocation extends GUIGenericWindow {
     @Override
     public void populate(List<String> itemsToShow) {
         actionButtons = new ArrayList<>();
-        //show to the client the powerups he can discard to spawn on the same colour spawn square.
+        //show to the view the powerups he can discard to spawn on the same colour spawn square.
         for(int i = 0; i < itemsToShow.size(); i++){
             //TO DO: CREATE VIEW WITH BUTTONS
             //currentBtn.setName(i.toString());

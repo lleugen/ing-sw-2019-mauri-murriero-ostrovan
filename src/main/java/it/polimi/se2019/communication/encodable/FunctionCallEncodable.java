@@ -11,9 +11,7 @@ public class FunctionCallEncodable extends AbstractEncodable {
   private String f;
   private ByteBuffer data;
 
-  private static final byte[] UUID = new byte[]{
-          -112,4,-13,-81,124,-12,6,90,63,-79,-115,69,10,-86,-62,-42
-  };
+  private static final String UUID = "FunctionCallEncodable.v1";
 
   public FunctionCallEncodable(String ns, String f, ByteBuffer data) {
     super(UUID);

@@ -9,9 +9,7 @@ import java.util.NoSuchElementException;
 public class LoginDataEncodable extends AbstractEncodable {
   private String user;
 
-  private static final byte[] UUID = new byte[]{
-          -40,-61,-123,-116,83,35,-11,127,123,-66,-126,72,89,-42,-45,-69
-  };
+  private static final String UUID = "LoginDataEncodable.v1";
 
   public LoginDataEncodable(String user) {
     super(UUID);
