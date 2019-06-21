@@ -1,15 +1,19 @@
 package it.polimi.se2019.entrypoint.lobby;
 
-import it.polimi.se2019.communication.encodable.AbstractEncodable;
-import it.polimi.se2019.communication.encodable.LoginDataEncodable;
-import it.polimi.se2019.communication.network.Connection;
-import it.polimi.se2019.communication.network.InitializationError;
-import it.polimi.se2019.communication.network.client.ClientNetwork;
-import it.polimi.se2019.communication.network.client.socket.SocketClientNetwork;
-import it.polimi.se2019.communication.network_handler.NetworkHandler;
-import it.polimi.se2019.entrypoint.lobby.view.ClientLobby;
+import it.polimi.se2019.entrypoint.lobby.view.cli.dashboard.chat.ChatDashboardCliView;
+import it.polimi.se2019.utils.model.LoginDataModel;
+import it.polimi.se2019.utils.network.Connection;
+import it.polimi.se2019.utils.InitializationError;
+import it.polimi.se2019.utils.network.client.ClientNetwork;
+import it.polimi.se2019.utils.network.client.socket.SocketClientNetwork;
+import it.polimi.se2019.utils.network.network_handler.NetworkHandler;
+import it.polimi.se2019.entrypoint.lobby.view.cli.RootCliView;
+import it.polimi.se2019.entrypoint.lobby.view.cli.dashboard.DashboardCliView;
+import it.polimi.se2019.utils.view.AbstractView;
+import it.polimi.se2019.utils.view.CliIO;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,27 +79,25 @@ public class Client {
     }
 
     if (ni != null){
-      try {
-        doLogin(ni.getConnection(), argMap.get("login"));
+      Connection connection = ni.getConnection();
+      connection.setDisconnectionCb(
+              (Connection conn) -> System.out.println("DISCONNECTED!")
+      );
+      connection.send(
+              new LoginDataModel(
+                      argMap.get("login")
+              ).encode()
+      );
 
-        NetworkHandler nh = new NetworkHandler(
-                ni.getConnection(),
-                () -> {
-                  System.out.println("DISCONNECTED!");
-                }
-        );
-        nh.start();
+      Map<String, AbstractView> tmp = new HashMap<>();
 
-        System.out.println("Type a message, then press enter");
-        new ClientLobby(nh, argMap.get("login"));
-      }
-      catch (InitializationError e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                Level.SEVERE,
-                "Login Failed",
-                e
-        );
-      }
+      tmp.put(".", new RootCliView());
+      tmp.put(".dashboard", new DashboardCliView());
+      tmp.put(".dashboard.chat", new ChatDashboardCliView());
+
+      NetworkHandler.init(connection, tmp);
+
+      CliIO.init();
     }
   }
 
@@ -105,16 +107,12 @@ public class Client {
     if (argMap.containsKey("port")) {
       if (argMap.containsKey("host")) {
         try {
-          SocketClientNetwork ni = new SocketClientNetwork(
+          return new SocketClientNetwork(
                   argMap.get("host"),
                   Integer.parseInt(
                           argMap.get("port")
                   )
           );
-
-          ni.start();
-
-          return ni;
         }
         catch (NumberFormatException e) {
           throw new InitializationError(
@@ -141,39 +139,5 @@ public class Client {
     throw new InitializationError(
             "This method is not supported yet"
     );
-  }
-
-  /**
-   * Does login on the controller on the connection passed as parameter
-   *
-   * @param conn  Connection to login on
-   * @param login Data to user for login
-   *
-   * @throws InitializationError is an error occurs while logging in
-   */
-  private static void doLogin(Connection conn, String login)
-          throws InitializationError {
-    try {
-      LoginDataEncodable loginData = new LoginDataEncodable(
-              login
-      );
-
-      conn.send(loginData.encode());
-      loginData.decode(conn.receive());
-      if (!login.equals(loginData.getUser())){
-        throw new InitializationError(
-                "Login Failed: Wrong login or already logged in"
-        );
-      }
-      else {
-        System.out.println("Login Done: "+ loginData.getUser());
-      }
-    }
-    catch (
-            Connection.DisconnectedError |
-                    AbstractEncodable.InvalidDataException e
-    ){
-      throw new InitializationError(e);
-    }
   }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * A Square is an abstract representation of a tile in the map.
  * Using this abstraction allow us to skip dealing with specific square
  * implementation when generating the map or moving the player.
- * Few funcitons are exposed, which allows for base operations on squares and
+ * Few funcitons are exposed, which allows for abs operations on squares and
  * are implemented in specific extensions of this class
  */
 public abstract class Square {

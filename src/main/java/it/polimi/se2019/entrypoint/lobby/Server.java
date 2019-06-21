@@ -1,10 +1,10 @@
 package it.polimi.se2019.entrypoint.lobby;
 
-import it.polimi.se2019.communication.network.InitializationError;
-import it.polimi.se2019.communication.network.server.ServerNetwork;
-import it.polimi.se2019.communication.network.server.socket.SocketServerNetwork;
-import it.polimi.se2019.communication.virtual_view.VirtualView;
-import it.polimi.se2019.entrypoint.lobby.controller.ServerLobby;
+import it.polimi.se2019.utils.InitializationError;
+import it.polimi.se2019.utils.network.server.ServerNetwork;
+import it.polimi.se2019.utils.network.server.socket.SocketServerNetwork;
+import it.polimi.se2019.utils.network.virtual_view.VirtualView;
+import it.polimi.se2019.entrypoint.lobby.controller.RootController;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -68,14 +68,8 @@ public class Server {
       );
       ni = null;
     }
-
-    if (ni != null){
-      new Thread(
-              new ServerLobby(
-                      new VirtualView(ni)
-              )
-      ).start();
-    }
+    VirtualView.init(ni);
+    new RootController();
   }
 
   private static ServerNetwork startSocketNetwork(Map<String, String> argMap)
