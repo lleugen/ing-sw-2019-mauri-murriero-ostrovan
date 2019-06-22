@@ -8,7 +8,7 @@ import it.polimi.se2019.utils.network.virtual_view.FunctionCallCallback;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatDashboardController extends Controller<ChatDashboardModel> {
+public final class ChatDashboardController extends Controller<ChatDashboardModel> {
   /**
    * Init the Dashboard Chat controller
    */
@@ -17,6 +17,8 @@ public class ChatDashboardController extends Controller<ChatDashboardModel> {
     this.init(this.getCbs());
 
     this.notifyModelUpdate(null);
+
+    this.showView(null, ".dashboard.chat");
   }
 
   /**

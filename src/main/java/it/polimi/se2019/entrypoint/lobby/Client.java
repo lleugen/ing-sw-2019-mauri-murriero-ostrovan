@@ -1,6 +1,8 @@
 package it.polimi.se2019.entrypoint.lobby;
 
 import it.polimi.se2019.entrypoint.lobby.view.cli.dashboard.chat.ChatDashboardCliView;
+import it.polimi.se2019.entrypoint.lobby.view.cli.dashboard.match.MatchDashboardCliView;
+import it.polimi.se2019.utils.model.AbstractModel;
 import it.polimi.se2019.utils.model.LoginDataModel;
 import it.polimi.se2019.utils.network.Connection;
 import it.polimi.se2019.utils.InitializationError;
@@ -10,7 +12,7 @@ import it.polimi.se2019.utils.network.network_handler.NetworkHandler;
 import it.polimi.se2019.entrypoint.lobby.view.cli.RootCliView;
 import it.polimi.se2019.entrypoint.lobby.view.cli.dashboard.DashboardCliView;
 import it.polimi.se2019.utils.view.AbstractView;
-import it.polimi.se2019.utils.view.CliIO;
+import it.polimi.se2019.utils.io.CliIO;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,13 +82,12 @@ public class Client {
 
     if (ni != null){
       Connection connection = ni.getConnection();
-      connection.setDisconnectionCb(
-              (Connection conn) -> System.out.println("DISCONNECTED!")
-      );
       connection.send(
-              new LoginDataModel(
-                      argMap.get("login")
-              ).encode()
+              AbstractModel.bufToArray(
+                      new LoginDataModel(
+                              argMap.get("login")
+                      ).encode()
+              )
       );
 
       Map<String, AbstractView> tmp = new HashMap<>();
@@ -94,10 +95,14 @@ public class Client {
       tmp.put(".", new RootCliView());
       tmp.put(".dashboard", new DashboardCliView());
       tmp.put(".dashboard.chat", new ChatDashboardCliView());
+      tmp.put(".dashboard.match", new MatchDashboardCliView());
 
-      NetworkHandler.init(connection, tmp);
+      NetworkHandler.init(
+              connection,
+              tmp,
+              CliIO.getIO()
+      );
 
-      CliIO.init();
     }
   }
 

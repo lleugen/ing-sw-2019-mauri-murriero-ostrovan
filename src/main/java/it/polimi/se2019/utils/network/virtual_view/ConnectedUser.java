@@ -5,7 +5,6 @@ import it.polimi.se2019.utils.model.ModelUpdateModel;
 import it.polimi.se2019.utils.model.ViewRequestModel;
 import it.polimi.se2019.utils.network.Connection;
 
-import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Collections;
@@ -20,21 +19,21 @@ class ConnectedUser {
   private List<Connection> connections;
 
   /**
-   * Last selected view on this user
+   * List of opened views on the client
    */
-  private ByteBuffer view;
+  private ViewRequestModel openedViews;
 
   /**
    * Last update sent indexed by namespace for this user
    */
-  private Map<String, ByteBuffer> lastUpdate;
+  private Map<String, byte[]> lastUpdate;
 
   /**
    * Create a new connected client
    */
   ConnectedUser(){
     this.connections = Collections.synchronizedList(new LinkedList<>());
-    this.view = new ViewRequestModel("").encode();
+    this.openedViews = new ViewRequestModel(new LinkedList<>());
     this.lastUpdate = Collections.synchronizedMap(new HashMap<>());
   }
 
@@ -45,28 +44,25 @@ class ConnectedUser {
    *          not duplicated
    */
   ConnectedUser(ConnectedUser base){
+    this.openedViews = new ViewRequestModel(base.openedViews);
     this.connections = Collections.synchronizedList(new LinkedList<>());
 
-    this.view = ByteBuffer.allocate(base.view.capacity()).put(base.view);
-
     this.lastUpdate = Collections.synchronizedMap(new HashMap<>());
-    base.lastUpdate.forEach((String key, ByteBuffer data) ->
+    base.lastUpdate.forEach((String key, byte[] data) ->
       this.lastUpdate.put(
               key,
-              ByteBuffer
-                      .allocate(data.capacity())
-                      .put(data)
+              AbstractModel.copyArr(data)
       )
     );
   }
+
   /**
    * Change the selected view on the client
    *
    * @param view Name of the view to select on the client
    */
   synchronized void changeView(String view){
-    this.view = new ViewRequestModel(view).encode();
-
+    this.openedViews.addView(view);
     this.connections.forEach(this::refreshView);
   }
 
@@ -76,7 +72,11 @@ class ConnectedUser {
    * @param conn Connection to send the last update to
    */
   private synchronized void refreshView(Connection conn){
-    conn.send(this.view);
+    conn.send(
+            AbstractModel.bufToArray(
+                    this.openedViews.encode()
+            )
+    );
   }
 
   /**
@@ -88,10 +88,14 @@ class ConnectedUser {
   synchronized void updateModel(String ns, AbstractModel model){
     this.lastUpdate.put(
             ns,
-            new ModelUpdateModel(
-                    ns,
-                    model.encode()
-            ).encode()
+            AbstractModel.bufToArray(
+                          new ModelUpdateModel(
+                            ns,
+                            AbstractModel.bufToArray(
+                                    model.encode()
+                            )
+                    ).encode()
+            )
     );
 
     this.connections.forEach(
@@ -123,10 +127,12 @@ class ConnectedUser {
 
     conn.setDisconnectionCb(this::deregister);
 
-    this.refreshView(conn);
     this.lastUpdate.keySet().forEach(
             (String ns) -> this.refreshModel(ns, conn)
     );
+
+    // Showing view only AFTER model has been sent down
+    this.refreshView(conn);
   }
 
   /**

@@ -1,24 +1,27 @@
 package it.polimi.se2019.utils.model;
 
 import java.nio.ByteBuffer;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class ModelUpdateModel extends AbstractModel {
+  /**
+   * UUID for this model
+   */
+  private static final long UUID = 316_713_123L;
   private String ns;
-  private ByteBuffer model;
+  private byte[] model;
 
-  public ModelUpdateModel(String ns, ByteBuffer model) {
+  public ModelUpdateModel(String ns, byte[] model) {
     this.ns = ns;
-    this.model = model;
+    this.model = model.clone();
   }
 
   @Override
   public ByteBuffer encode() {
     List<ByteBuffer> toReturn = new LinkedList<>();
 
+    toReturn.add(encodeLong(UUID));
     toReturn.add(encodeString(this.ns));
     toReturn.add(encodeRaw(this.model));
 
@@ -29,18 +32,27 @@ public class ModelUpdateModel extends AbstractModel {
           throws InvalidDataException {
     inputData.clear();
 
-    String ns = decodeString(inputData);
-    ByteBuffer model = decodeRaw(inputData);
+    if (UUID != decodeLong(inputData)){
+      throw new InvalidDataException();
+    }
 
-    return new ModelUpdateModel(ns, model);
+    String ns = decodeString(inputData);
+    byte[] model = decodeRaw(inputData);
+
+    if (inputData.hasRemaining()) {
+      throw new InvalidDataException();
+    }
+    else {
+      return new ModelUpdateModel(ns, model);
+    }
   }
 
   public String getNs() {
-    return ns;
+    return this.ns;
   }
 
-  public ByteBuffer getModel() {
-    return model;
+  public byte[] getModel() {
+    return this.model.clone();
   }
 
 }

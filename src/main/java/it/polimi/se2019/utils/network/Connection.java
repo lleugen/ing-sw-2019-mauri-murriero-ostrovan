@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,17 +37,17 @@ public final class Connection {
   /**
    * Transfer queue for data to send
    */
-  private final TransferQueue<ByteBuffer> downstreamTq;
+  private final TransferQueue<byte[]> downstreamTq;
 
   /**
    * Contains buffered data. See receive callback null
    */
-  private final List<ByteBuffer> recvBuffer;
+  private final List<byte[]> recvBuffer;
 
   /**
    * Callback for received data
    */
-  private Consumer<ByteBuffer> receiveCb;
+  private Consumer<byte[]> receiveCb;
 
   /**
    * Callback for disconnection
@@ -90,8 +89,7 @@ public final class Connection {
    *
    * @param data data to send to the other end. Data are sent async
    */
-  public void send(ByteBuffer data) {
-    data.clear();
+  public void send(byte[] data) {
     if (!this.downstreamTq.offer(data)){
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.WARNING,
@@ -122,7 +120,7 @@ public final class Connection {
    *           new callback before sending new data.
    *           To discard data, set a callback that does no processing
    */
-  public synchronized void setReceiveCallback(Consumer<ByteBuffer> cb){
+  public synchronized void setReceiveCallback(Consumer<byte[]> cb){
     this.receiveCb = cb;
     this.dispatchReceivedData();
   }
@@ -134,7 +132,7 @@ public final class Connection {
   private synchronized void dispatchReceivedData(){
     if (this.receiveCb != null){
       while (!this.recvBuffer.isEmpty()){
-        ByteBuffer data = this.recvBuffer.get(0);
+        byte[] data = this.recvBuffer.get(0);
         this.recvBuffer.remove(0);
 
         // Remove before dispatch to avoid loop (the called function register a
@@ -174,24 +172,22 @@ public final class Connection {
    */
   private void receiveThread(){
     while (this.ok.get()){
-      ByteBuffer toReturn;
+      byte[] toReturn;
       try {
         int length = this.inputStream.readInt();
 
-        byte[] data = new byte[length];
+        toReturn = new byte[length];
 
         int received = 0;
 
         while (received < length) {
           received += this.inputStream.read(
-                  data,
+                  toReturn,
                   received,
                   (length - received)
           );
         }
 
-        toReturn = ByteBuffer.allocate(length).put(data);
-        toReturn.clear();
         this.recvBuffer.add(toReturn);
         this.dispatchReceivedData();
       }
@@ -227,13 +223,11 @@ public final class Connection {
   private void sendThread(){
     while (this.ok.get()){
       try {
-        ByteBuffer data = this.downstreamTq.poll();
+        byte[] data = this.downstreamTq.poll();
 
         if (data != null) {
-          byte[] byteData = new byte[data.capacity()];
-          data.get(byteData);
-          this.outputStream.writeInt(byteData.length);
-          this.outputStream.write(byteData);
+          this.outputStream.writeInt(data.length);
+          this.outputStream.write(data);
 
           this.outputStream.flush();
         }

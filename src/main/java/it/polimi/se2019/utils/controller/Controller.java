@@ -78,7 +78,7 @@ public class Controller<T extends AbstractModel> {
    *             changed view is relative to the namespace controlled by this
    *             controller
    */
-  protected void selectView(String user, String view){
+  protected void showView(String user, String view){
     if (!view.contains(".")){
       view = this.ns.concat("." + view);
     }

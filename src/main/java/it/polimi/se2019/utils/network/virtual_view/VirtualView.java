@@ -6,13 +6,14 @@ import it.polimi.se2019.utils.model.LoginDataModel;
 import it.polimi.se2019.utils.network.Connection;
 import it.polimi.se2019.utils.network.server.ServerNetwork;
 
-import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +40,7 @@ public final class VirtualView {
   /**
    * Contains every connection currently active, indexed by user id.
    */
-  private static ConcurrentHashMap<String, ConnectedUser> connections =
-          new ConcurrentHashMap<>();
+  private static final Map<String, ConnectedUser> connections = new HashMap<>();
 
   /**
    * Contains the virtual broadcast user.
@@ -48,13 +48,12 @@ public final class VirtualView {
    * data.
    * New ConnectedUser for unknown user will be initialized using those data
    */
-  private static ConnectedUser broadcast = new ConnectedUser();
+  private static final ConnectedUser broadcast = new ConnectedUser();
 
   /**
    * Contains the list of callbacks associated to each function and namespace
    */
-  private static ConcurrentHashMap<String, ConcurrentHashMap<String, FunctionCallCallback>> cbs =
-          new ConcurrentHashMap<>();
+  private static final Map<String, Map<String, FunctionCallCallback>> cbs = new HashMap<>();
 
   /**
    * Hides public constructor
@@ -88,19 +87,7 @@ public final class VirtualView {
    * @param m  Updated Model
    */
   public static void updateModel(String u, String ns, AbstractModel m){
-    List<String> users = new LinkedList<>();
-
-    if (u == null) {
-      broadcast.updateModel(ns, m);
-      users = java.util.Collections.list(connections.keys());
-    }
-    else {
-      users.add(u);
-    }
-
-    users.forEach((String user) ->
-      connections.getOrDefault(user, new ConnectedUser()).updateModel(ns, m)
-    );
+    sendToUser(u, (ConnectedUser cu) -> cu.updateModel(ns, m));
   }
 
   /**
@@ -111,21 +98,33 @@ public final class VirtualView {
    * @param v  Requested View
    */
   public static void changeView(String u, String v){
+    sendToUser(u, (ConnectedUser cu) -> cu.changeView(v));
+  }
 
-    List<String> users = new LinkedList<>();
+  /**
+   * Contains logic for sending data to users.
+   *
+   * @param u User to send data to. Null to send to all users
+   * @param f Function which send data.
+   */
+  private static void sendToUser(String u, Consumer<ConnectedUser> f){
+    synchronized (connections) {
+      List<String> users = new LinkedList<>();
 
-    if (u == null) {
-      broadcast.changeView(v);
-      users = java.util.Collections.list(connections.keys());
+      if (u == null) {
+        f.accept(broadcast);
+        users = new LinkedList<>(connections.keySet());
+      }
+      else {
+        if (connections.containsKey(u)) {
+          users.add(u);
+        }
+      }
+
+      users.forEach((String user) ->
+              f.accept(connections.get(user))
+      );
     }
-    else {
-      users.add(u);
-    }
-
-    users.forEach((String user) ->
-      connections.getOrDefault(u, new ConnectedUser()).changeView(v)
-    );
-
   }
 
   /**
@@ -153,11 +152,13 @@ public final class VirtualView {
    * @param f  Function to subscribe to
    * @param cb Callback to subscribe.
    */
-  public static void subscribeCall(
-          String ns, String f, FunctionCallCallback cb
-  ) {
-    cbs.putIfAbsent(ns, new ConcurrentHashMap<>());
-    cbs.get(ns).put(f, cb);
+  public static void subscribeCall(String ns, String f, FunctionCallCallback cb) {
+    synchronized (cbs) {
+      if (!cbs.containsKey(ns)) {
+        cbs.put(ns, new HashMap<>());
+      }
+      cbs.get(ns).put(f, cb);
+    }
   }
 
   /**
@@ -167,30 +168,39 @@ public final class VirtualView {
    * @param f   Function to unsubscribe from
    */
   public static void unsubscribeCall(String ns, String f){
-    cbs.getOrDefault(ns, new ConcurrentHashMap<>()).remove(f);
+    synchronized (cbs) {
+      if (cbs.containsKey(ns)){
+        cbs.get(ns).remove(f);
+      }
+    }
   }
 
   /**
    * Dispatch a call through all listeners
    */
-  private static synchronized void dispatchCall(String user, ByteBuffer data){
+  private static void dispatchCall(String user, byte[] data){
     // Syncronized to expose a single-thread like environment
-    data.clear();
-    FunctionCallModel call;
-    try {
-      call = FunctionCallModel.decode(data);
+    synchronized (cbs) {
+      FunctionCallModel call;
+      try {
+        call = FunctionCallModel.decode(
+                AbstractModel.arrayToBuf(data)
+        );
 
-      cbs
-              .getOrDefault(call.getNs(), new ConcurrentHashMap<>())
-              .getOrDefault(call.getF(), (String u, String d) -> {})
-              .accept(user, call.getData());
-    }
-    catch (AbstractModel.InvalidDataException e){
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.WARNING,
-              "Unable to decode function call",
-              e
-      );
+        if (
+                cbs.containsKey(call.getNs()) &&
+                cbs.get(call.getNs()).containsKey(call.getF())
+        ){
+          cbs.get(call.getNs()).get(call.getF()).accept(user, call.getData());
+        }
+      }
+      catch (AbstractModel.InvalidDataException e) {
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.WARNING,
+                "Unable to decode function call",
+                e
+        );
+      }
     }
   }
 
@@ -209,17 +219,18 @@ public final class VirtualView {
                     TimeUnit.SECONDS
             );
 
-    connection.setReceiveCallback((ByteBuffer data) -> {
+    connection.setReceiveCallback((byte[] data) -> {
       String user = checkLogin(data);
       if (user != null) {
         kickingExecutor.cancel(false);
 
-        connection.setReceiveCallback((ByteBuffer call) ->
+        connection.setReceiveCallback((byte[] call) ->
                 dispatchCall(user, call)
         );
-
-        connections.putIfAbsent(user, new ConnectedUser(broadcast));
-        connections.get(user).register(connection);
+        synchronized (connections) {
+          connections.putIfAbsent(user, new ConnectedUser(broadcast));
+          connections.get(user).register(connection);
+        }
       }
     });
   }
@@ -231,10 +242,12 @@ public final class VirtualView {
    *
    * @return The id of the user logged in on success, null on failure
    */
-  private static String checkLogin(ByteBuffer data){
+  private static String checkLogin(byte[] data){
     LoginDataModel loginInfo;
     try {
-      loginInfo = LoginDataModel.decode(data);
+      loginInfo = LoginDataModel.decode(
+              AbstractModel.arrayToBuf(data)
+      );
       return loginInfo.getUser();
     }
     catch (AbstractModel.InvalidDataException e){

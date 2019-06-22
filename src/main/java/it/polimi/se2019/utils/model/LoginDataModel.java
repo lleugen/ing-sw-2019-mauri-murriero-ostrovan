@@ -3,10 +3,12 @@ package it.polimi.se2019.utils.model;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class LoginDataModel extends AbstractModel {
+  /**
+   * UUID for this model
+   */
+  private static final long UUID = 548_949_605L;
   private String user;
 
   public LoginDataModel(String user) {
@@ -17,6 +19,7 @@ public class LoginDataModel extends AbstractModel {
   public ByteBuffer encode() {
     List<ByteBuffer> toReturn = new LinkedList<>();
 
+    toReturn.add(encodeLong(UUID));
     toReturn.add(encodeString(this.user));
 
     return mergeBuffer(toReturn);
@@ -26,9 +29,17 @@ public class LoginDataModel extends AbstractModel {
           throws InvalidDataException {
     inputData.clear();
 
-    String user = decodeString(inputData);
+    if (UUID != decodeLong(inputData)){
+      throw new InvalidDataException();
+    }
 
-    return new LoginDataModel(user);
+    String user = decodeString(inputData);
+    if (inputData.hasRemaining()) {
+      throw new InvalidDataException();
+    }
+    else {
+      return new LoginDataModel(user);
+    }
   }
 
   public String getUser() {

@@ -1,5 +1,6 @@
 package it.polimi.se2019.utils.network.network_handler;
 
+import it.polimi.se2019.utils.io.IOInterface;
 import it.polimi.se2019.utils.model.FunctionCallModel;
 import it.polimi.se2019.utils.view.AbstractView;
 import it.polimi.se2019.utils.model.AbstractModel;
@@ -7,13 +8,12 @@ import it.polimi.se2019.utils.model.ModelUpdateModel;
 import it.polimi.se2019.utils.model.ViewRequestModel;
 import it.polimi.se2019.utils.network.Connection;
 
-import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * __WARN__ This class is a singleton.
@@ -35,15 +35,14 @@ public final class NetworkHandler {
   private static Map<String, AbstractView> views;
 
   /**
-   * Contains the last update sent to each view
+   * Contains the list of currently opened views
    */
-  private static Map<String, ByteBuffer> lastUpdate;
+  private static List<String> openedViews;
 
   /**
-   * Currently selected view.
-   * For performance, only view changes that produces a result are accepted.
+   * IO Interface to use for rendering views
    */
-  private static String currentView;
+  private static IOInterface ioInterface;
 
   /**
    * Hides public constructor
@@ -60,20 +59,20 @@ public final class NetworkHandler {
    * If this function is called twice, the second call is ignored
    *
    * @param conn  Connection to the server (already opened)
-   * @param vs Map of available views, indexed by namespace
+   * @param vs    Map of available views, indexed by namespace
+   * @param io    Io Interface to use for rendering views
    */
-  public static synchronized void init(
-          Connection conn, Map<String, AbstractView> vs
+  public static synchronized void init(Connection conn,
+          Map<String, AbstractView> vs, IOInterface io
   ){
     if (connection == null){
       views = new HashMap<>(vs);
-      lastUpdate = new HashMap<>();
-      currentView = "";
+      openedViews = new LinkedList<>();
+      ioInterface = io;
 
       connection = conn;
       connection.setDisconnectionCb(NetworkHandler::disconnectCallback);
       connection.setReceiveCallback(NetworkHandler::receiveCallback);
-
     }
   }
 
@@ -83,7 +82,7 @@ public final class NetworkHandler {
    * @param call Call to send to the controller
    */
   public static void send(FunctionCallModel call){
-    connection.send(call.encode());
+    connection.send(AbstractModel.bufToArray(call.encode()));
   }
 
   /**
@@ -91,30 +90,36 @@ public final class NetworkHandler {
    *
    * @param data  Update to send to the namespace
    */
-  private static synchronized void receiveCallback(ByteBuffer data){
+  private static synchronized void receiveCallback(byte[] data){
     ModelUpdateModel model;
     try {
-      model = ModelUpdateModel.decode(data);
-      renderView(model.getNs(), model.getModel());
+      model = ModelUpdateModel.decode(
+              AbstractModel.arrayToBuf(data)
+      );
+
+      if (views.containsKey(model.getNs())){
+        views.get(model.getNs()).updateState(model.getModel());
+        refreshViews();
+      }
     }
     catch (AbstractModel.InvalidDataException e){
       Logger.getLogger(LOG_NAMESPACE).log(
-              Level.FINE,
+              Level.FINEST,
               "Received data is not a model",
               e
       );
     }
 
-    data.clear();
-
-    ViewRequestModel view;
     try {
-      view = ViewRequestModel.decode(data);
-      changeView(view.getView());
+      openedViews = ViewRequestModel.decode(
+                      AbstractModel.arrayToBuf(data)
+              ).getViews();
+
+      refreshViews();
     }
     catch (AbstractModel.InvalidDataException e){
       Logger.getLogger(LOG_NAMESPACE).log(
-              Level.FINE,
+              Level.FINEST,
               "Received data is not a view",
               e
       );
@@ -122,59 +127,22 @@ public final class NetworkHandler {
   }
 
   /**
-   * Change the current rendered view.
-   * When the rendered view is changed, all subviews of the new rendered view
-   * are re-rendered, too
-   *
-   * @param view Namespace of the new view to show
+   * Refresh all opened views. (rerender them with the last received model)
    */
-  private static synchronized void changeView(String view){
-    if (!(currentView.equals(view))){
-      currentView = view;
-
-      List<String> viewsToRender = views.keySet().stream()
-              .filter((String key) ->
-                      key.startsWith(view)
-              )
-              .collect(Collectors.toList());
-
-      viewsToRender.add(view);
-
-      viewsToRender.forEach(
-              (String v) -> {
-                if (lastUpdate.containsKey(v)) {
-                  renderView(v, lastUpdate.get(v));
-                }
-              }
-      );
-    }
-    else {
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.FINE,
-              "Discarding duplicate view change request"
-      );
-    }
-  }
-
-  /**
-   * Render a single view.
-   * Only the selected view is rendered (not all subviews)
-   *
-   * @param view Namespace of the view to render.
-   * @param data Model data to render the view with
-   */
-  private static synchronized void renderView(String view, ByteBuffer data){
-    lastUpdate.put(view, data);
-    if (views.containsKey(view)){
-      views.get(view).accept(data);
-    }
-    else {
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.WARNING,
-              "Selected view <{0}> does not exist",
-              view
-      );
-    }
+  private static synchronized void refreshViews(){
+    openedViews.forEach((String v) -> {
+      if (views.containsKey(v)){
+        views.get(v).refresh(ioInterface);
+      }
+      else {
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.WARNING,
+                "Attempting to open a non-existing view {0}",
+                v
+        );
+      }
+    });
+    ioInterface.render();
   }
 
   /**
@@ -185,9 +153,6 @@ public final class NetworkHandler {
    * @param c Is ignored
    */
   private static void disconnectCallback(Connection c){
-    Logger.getLogger(LOG_NAMESPACE).log(
-            Level.SEVERE,
-            "Disconnected from server. You can safely kill this application"
-    );
+    ioInterface.close();
   }
 }

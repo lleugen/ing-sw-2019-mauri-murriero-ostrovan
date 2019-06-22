@@ -5,13 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class FunctionCallModel extends AbstractModel {
-//  private String user;
+  /**
+   * UUID for this model
+   */
+  private static final long UUID = 882_417_897L;
   private String ns;
   private String f;
   private String data;
 
   public FunctionCallModel(String ns, String f, String data) {
-//    this.user = user;
     this.ns = ns;
     this.f = f;
     this.data = data;
@@ -21,7 +23,7 @@ public class FunctionCallModel extends AbstractModel {
   public ByteBuffer encode() {
     List<ByteBuffer> toReturn = new LinkedList<>();
 
-//    toReturn.add(encodeString(this.user));
+    toReturn.add(encodeLong(UUID));
     toReturn.add(encodeString(this.ns));
     toReturn.add(encodeString(this.f));
     toReturn.add(encodeString(this.data));
@@ -32,18 +34,22 @@ public class FunctionCallModel extends AbstractModel {
   public static FunctionCallModel decode(ByteBuffer inputData)
           throws InvalidDataException {
     inputData.clear();
-//    String user = decodeString(inputData);
+
+    if (UUID != decodeLong(inputData)){
+      throw new InvalidDataException();
+    }
+
     String ns = decodeString(inputData);
     String f = decodeString(inputData);
     String data = decodeString(inputData);
 
-//    return new FunctionCallModel(user, ns, f, data);
-    return new FunctionCallModel(ns, f, data);
+    if (inputData.hasRemaining()) {
+      throw new InvalidDataException();
+    }
+    else {
+      return new FunctionCallModel(ns, f, data);
+    }
   }
-//
-//  public String getUser() {
-//    return this.user;
-//  }
 
   public String getNs() {
     return this.ns;

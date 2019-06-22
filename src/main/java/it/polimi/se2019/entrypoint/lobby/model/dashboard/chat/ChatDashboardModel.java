@@ -9,18 +9,19 @@ import java.util.stream.Collectors;
 
 public class ChatDashboardModel extends AbstractModel {
   /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "DashboardChatModel";
-
-  /**
    * Maximum number of chat messages saved in the controller
    *
    * Default: 5
    */
   private static final int MAX_CHAT_MESSAGES = 5;
 
+  /**
+   * UUID for this model
+   */
+  private static final long UUID = 944_171_328L;
+
   private List<String> messages;
+
 
   /**
    * Create a new chat model
@@ -59,9 +60,11 @@ public class ChatDashboardModel extends AbstractModel {
   public ByteBuffer encode() {
     List<ByteBuffer> toReturn = new LinkedList<>();
 
+    toReturn.add(encodeLong(UUID));
     toReturn.add(encodeIterable(
             this.messages.stream()
                     .map(AbstractModel::encodeString)
+                    .map(AbstractModel::bufToArray)
                     .collect(Collectors.toList())
     ));
 
@@ -72,9 +75,19 @@ public class ChatDashboardModel extends AbstractModel {
           throws InvalidDataException {
     inputData.clear();
 
+    if (UUID != decodeLong(inputData)){
+      throw new InvalidDataException();
+    }
+
     List<String> messages = new LinkedList<>();
-    for (ByteBuffer item : decodeIterable(inputData)) {
-      messages.add(decodeString(item));
+    for (byte[] item : decodeIterable(inputData)) {
+      messages.add(
+              decodeString(
+                      AbstractModel.arrayToBuf(
+                              item
+                      )
+              )
+      );
     }
 
     return new ChatDashboardModel(messages);

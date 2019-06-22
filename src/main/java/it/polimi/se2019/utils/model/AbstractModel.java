@@ -5,7 +5,11 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public abstract class AbstractModel {
   /**
@@ -71,6 +75,46 @@ public abstract class AbstractModel {
     return clearBuffer(toReturn);
   }
 
+  /**
+   * Return an array of bytes from a ByteBuffer
+   *
+   * @param input ByteBuffer to convert to array
+   *
+   * @return the converted array
+   */
+  public static byte[] bufToArray(ByteBuffer input){
+    byte[] toReturn = new byte[input.capacity()];
+    input.clear();
+    input.get(toReturn);
+    return toReturn;
+  }
+
+  /**
+   * Return a ByteBuffer from a byte array.
+   * The returned ByteBuffer is already cleared (ready for reading)
+   *
+   * @param input Array to converted
+   *
+   * @return the converted ByteBuffer
+   */
+  public static ByteBuffer arrayToBuf(byte[] input){
+    ByteBuffer toReturn = ByteBuffer.allocate(input.length).put(input);
+    toReturn.clear();
+    return toReturn;
+  }
+
+  /**
+   * Makes a copy of the byte array passed as param and return the new copy
+   *
+   * @param input Array to copy
+   *
+   * @return a copy of the array
+   */
+  public static byte[] copyArr(byte[] input){
+    byte[] toReturn = new byte[input.length];
+    System.arraycopy(input, 0, toReturn, 0, toReturn.length);
+    return toReturn;
+  }
   /**
    * Encodes an Integer
    *
@@ -150,9 +194,9 @@ public abstract class AbstractModel {
    *
    * @param data Data to encode
    */
-  protected static ByteBuffer encodeIterable(Iterable<ByteBuffer> data) {
+  protected static ByteBuffer encodeIterable(Iterable<byte[]> data) {
     List<ByteBuffer> toEncode = new LinkedList<>();
-    Iterator<ByteBuffer> it = data.iterator();
+    Iterator<byte[]> it = data.iterator();
 
     toEncode.add(ByteBuffer.allocate(0));
     while (it.hasNext()){
@@ -181,10 +225,10 @@ public abstract class AbstractModel {
    * @return the decoded data
    *
    */
-  protected static Iterable<ByteBuffer> decodeIterable(ByteBuffer encoded)
+  protected static Iterable<byte[]> decodeIterable(ByteBuffer encoded)
           throws InvalidDataException {
 
-    List<ByteBuffer> toReturn = new LinkedList<>();
+    List<byte[]> toReturn = new LinkedList<>();
     Integer length = decodeInt(encoded);
 
     for (int i = 0; i < length; i++){
@@ -201,14 +245,14 @@ public abstract class AbstractModel {
    *
    * @param data Data to encode
    */
-  protected static ByteBuffer encodeRaw(ByteBuffer data){
+  protected static ByteBuffer encodeRaw(byte[] data){
     List<ByteBuffer> toEncodeList = new LinkedList<>();
 
     toEncodeList.add(
-            encodeInt(data.capacity())
+            encodeInt(data.length)
     );
     toEncodeList.add(
-            data
+            ByteBuffer.allocate(data.length).put(data)
     );
 
     return mergeBuffer(toEncodeList);
@@ -225,20 +269,82 @@ public abstract class AbstractModel {
    * @return the decoded data
    *
    */
-  protected static ByteBuffer decodeRaw(ByteBuffer encoded)
+  protected static byte[] decodeRaw(ByteBuffer encoded)
           throws InvalidDataException {
 
-    Integer size = decodeInt(encoded);
+    byte[] toReturn = new byte[decodeInt(encoded)];
 
-    ByteBuffer toReturn = ByteBuffer.allocate(size);
-    byte[] readBytes = new byte[size];
+    encoded.get(toReturn);
 
-    encoded.get(readBytes);
-    toReturn.put(readBytes);
-
-    return clearBuffer(toReturn);
+    return toReturn;
   }
 
+  /**
+   * Encode a Map of Raw Data
+   *
+   * @param data Map to encode
+   *
+   * @return the encoded representation of the map
+   */
+  protected static ByteBuffer encodeMap(Map<String, byte[]> data){
+    List<ByteBuffer> toEncodeList = new LinkedList<>();
+
+    data.forEach((String key, byte[] el) -> {
+      List<byte[]> tmp = new LinkedList<>();
+
+      tmp.add(bufToArray(encodeString(key)));
+      tmp.add(el);
+
+      toEncodeList.add(encodeIterable(tmp));
+    });
+
+    return encodeIterable(
+            toEncodeList.stream()
+                    .map(AbstractModel::bufToArray)
+                    .collect(Collectors.toList())
+            );
+  }
+
+  /**
+   * Decode a map of Raw Data
+   *
+   * __WARN__ Encoded data are removed from the ByteBuffer
+   *
+   * @param encoded ByteBuffer containing encoded data. The first byte of the
+   *                buffer MUST be the first byte of the encoded data to decode
+   *
+   *  @return the decoded data
+   */
+  protected static Map<String, byte[]> decodeMap(ByteBuffer encoded)
+          throws InvalidDataException {
+
+    Map<String, byte[]> toReturn = new HashMap<>();
+    Iterator<byte[]> decodedIterator = decodeIterable(encoded).iterator();
+
+    while (decodedIterator.hasNext()){
+      Iterator<byte[]> dataIterator = decodeIterable(
+              AbstractModel.arrayToBuf(
+                      decodedIterator.next()
+              )
+      ).iterator();
+
+      try {
+        toReturn.put(
+                decodeString(
+                        arrayToBuf(
+                                dataIterator.next()
+                        )
+                ),
+                dataIterator.next()
+        );
+      }
+      catch (NoSuchElementException e){
+        throw new InvalidDataException(e);
+      }
+    }
+
+    return toReturn;
+  }
   /**
    * Encodes a string
    *
