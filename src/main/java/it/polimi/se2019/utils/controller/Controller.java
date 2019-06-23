@@ -18,9 +18,9 @@ public class Controller<T extends AbstractModel> {
   private String ns;
 
   /**
-   * Reference to the model for this controller.
+   * Model this controller is in charge for
    */
-  private Supplier<T> model;
+  private T model;
 
   /**
    * Callback for received call from the view
@@ -32,11 +32,11 @@ public class Controller<T extends AbstractModel> {
    * Remember to call init to initialize callbacks
    *
    * @param ns  Namespace controlled by this controller
-   * @param m   Reference to the model controlled by this controller
+   * @param m   Supplier for a model this controller is in charge of
    */
   protected Controller(String ns, Supplier<T> m){
     this.ns = ns;
-    this.model = m;
+    this.model = m.get();
   }
 
   /**
@@ -62,12 +62,51 @@ public class Controller<T extends AbstractModel> {
   }
 
   /**
-   * Send a notification about the new updated model to the clients.
-   *
-   * @param user  User to notify the update about. Null to notify all users
+   * Send a notification about the new updated model to all clients
    */
-  protected void notifyModelUpdate(String user){
-    VirtualView.updateModel(user, this.ns, this.model.get());
+  protected void notifyModelUpdateAll(){
+    this.notifyModelUpdate(null);
+  }
+
+  /**
+   * Send a notification about a new updated model to a single user
+   *
+   * @param user User to notify about
+   */
+  protected void notifyModelUpdateUser(String user){
+    this.notifyModelUpdate(user);
+  }
+
+  /**
+   * Send a notification about the new updated model users.
+   *
+   * @param user  User to notify the update about, null to notify all users
+   */
+  private void notifyModelUpdate(String user){
+    VirtualView.updateModel(user, this.ns, this.model);
+  }
+
+  /**
+   * Change the currently selected view for a single user
+   *
+   * @param user User to ask to change view
+   * @param view View to change. If this string doesn't contains any '.', the
+   *             changed view is relative to the namespace controlled by this
+   *             controller
+   */
+  protected void showViewUser(String user, String view){
+    this.showView(user, view);
+  }
+
+  /**
+   * Change the currently selected view for all users
+   *
+   * @param view View to change. If this string doesn't contains any '.', the
+   *             changed view is relative to the namespace controlled by this
+   *             controller
+   */
+  protected void showViewAll(String view){
+    this.showView(null, view);
   }
 
   /**
@@ -76,11 +115,17 @@ public class Controller<T extends AbstractModel> {
    * @param user User to ask to change view, Null to ask all users
    * @param view View to change. If this string doesn't contains any '.', the
    *             changed view is relative to the namespace controlled by this
-   *             controller
+   *             controller. If the view is an empty string, it is the namespace
+   *             of the controller
    */
-  protected void showView(String user, String view){
+  private void showView(String user, String view){
     if (!view.contains(".")){
-      view = this.ns.concat("." + view);
+      if ("".equals(view)){
+        view = this.ns;
+      }
+      else {
+        view = this.ns.concat("." + view);
+      }
     }
 
     VirtualView.changeView(user, view);
@@ -92,7 +137,7 @@ public class Controller<T extends AbstractModel> {
    * @return a reference to the model for this controller
    */
   protected T getModel(){
-    return this.model.get();
+    return this.model;
   }
 
   /**

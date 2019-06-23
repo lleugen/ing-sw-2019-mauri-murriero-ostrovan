@@ -1,0 +1,16 @@
+package it.polimi.se2019.game.view.cli;
+
+import it.polimi.se2019.game.model.RootModel;
+import it.polimi.se2019.utils.io.CliIO;
+import it.polimi.se2019.utils.view.AbstractView;
+
+public class RootCliView extends AbstractView<RootModel, CliIO> {
+  public RootCliView(){
+    super(RootModel::decode);
+  }
+
+  @Override
+  protected void render(RootModel data, CliIO io) {
+    // Root doesn't render enything in this view
+  }
+}

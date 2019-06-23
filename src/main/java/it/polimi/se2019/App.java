@@ -1,7 +1,7 @@
 package it.polimi.se2019;
 
-import it.polimi.se2019.entrypoint.lobby.Client;
-import it.polimi.se2019.entrypoint.lobby.Server;
+import it.polimi.se2019.game.Client;
+import it.polimi.se2019.game.Server;
 
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -25,10 +25,10 @@ public class App {
 
     switch (module) {
       case "ServerLobby":
-        it.polimi.se2019.entrypoint.lobby.Server.main(argv);
+        Server.main(argv);
         break;
       case "ClientLobby":
-        it.polimi.se2019.entrypoint.lobby.Client.main(argv);
+        Client.main(argv);
         break;
       default:
         Logger.getLogger(LOG_NAMESPACE).log(

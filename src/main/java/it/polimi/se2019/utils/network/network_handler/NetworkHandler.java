@@ -113,7 +113,7 @@ public final class NetworkHandler {
     try {
       openedViews = ViewRequestModel.decode(
                       AbstractModel.arrayToBuf(data)
-              ).getViews();
+              ).getViewsToRender();
 
       refreshViews();
     }
