@@ -1,4 +1,4 @@
-//package it.polimi.se2019.model.server;
+//package it.polimi.se2019.model.controller;
 //
 //public class ServerPlayer {
 //  private String id;
