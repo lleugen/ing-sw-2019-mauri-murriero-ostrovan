@@ -1,3 +1,9 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.game.view.cli.match;
 
 import it.polimi.se2019.utils.io.CliIO;
@@ -23,6 +29,6 @@ public class MatchCliView
    */
   @Override
   protected void render(MatchModel data, CliIO io) {
-    // Match doesn't render enything in this view
+    io.markSection("MATCH");
   }
 }

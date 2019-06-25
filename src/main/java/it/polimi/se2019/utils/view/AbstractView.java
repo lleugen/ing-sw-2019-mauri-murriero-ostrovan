@@ -1,17 +1,23 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.utils.view;
 
-import it.polimi.se2019.utils.io.IOInterface;
+import it.polimi.se2019.utils.io.AbstractIO;
 import it.polimi.se2019.utils.model.AbstractModel;
 import it.polimi.se2019.utils.model.ModelDecodingFunction;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class AbstractView<T extends AbstractModel, I extends IOInterface> {
+public abstract class AbstractView<T extends AbstractModel, I extends AbstractIO> {
   /**
    * Namespace this class logs to
    */
-  private static final String LOG_NAMESPACE = "NetworkHandler";
+  private static final String LOG_NAMESPACE = "AbstractView";
 
   /**
    * Decoding function for received data
@@ -58,7 +64,7 @@ public abstract class AbstractView<T extends AbstractModel, I extends IOInterfac
   /**
    * Refresh the view (tries to rerender if the model is valid)
    *
-   * @param io IOInterface to use for rendering data
+   * @param io Io interface to use for rendering the view
    */
   public void refresh(I io){
     if (this.state != null){

@@ -1,3 +1,9 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.game.model.lobby;
 
 import it.polimi.se2019.utils.model.AbstractModel;
@@ -22,7 +28,9 @@ public class LobbyModel
   /**
    * Create a new LobbyModel
    */
-  public LobbyModel() {}
+  public LobbyModel() {
+    // Standard Constructor
+  }
 
   /**
    * Encode data.

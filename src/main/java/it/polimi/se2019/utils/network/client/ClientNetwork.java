@@ -1,3 +1,9 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.utils.network.client;
 
 import it.polimi.se2019.utils.network.Connection;

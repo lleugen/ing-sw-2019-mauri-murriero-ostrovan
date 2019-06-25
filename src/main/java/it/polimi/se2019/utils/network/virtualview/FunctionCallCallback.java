@@ -1,4 +1,10 @@
-package it.polimi.se2019.utils.network.virtual_view;
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
+package it.polimi.se2019.utils.network.virtualview;
 
 import java.util.function.BiConsumer;
 

@@ -1,3 +1,9 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.utils.model;
 
 import java.nio.BufferUnderflowException;
@@ -9,7 +15,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class AbstractModel {

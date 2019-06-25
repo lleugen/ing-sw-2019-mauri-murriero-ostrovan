@@ -1,9 +1,15 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.game;
 
 import it.polimi.se2019.utils.InitializationError;
 import it.polimi.se2019.utils.network.server.ServerNetwork;
 import it.polimi.se2019.utils.network.server.socket.SocketServerNetwork;
-import it.polimi.se2019.utils.network.virtual_view.VirtualView;
+import it.polimi.se2019.utils.network.virtualview.VirtualView;
 import it.polimi.se2019.game.controller.RootController;
 
 import java.util.Arrays;
@@ -68,8 +74,11 @@ public class Server {
       );
       ni = null;
     }
-    VirtualView.init(ni);
-    new RootController();
+    new RootController(
+            new VirtualView(
+                    ni
+            )
+    );
   }
 
   private static ServerNetwork startSocketNetwork(Map<String, String> argMap)

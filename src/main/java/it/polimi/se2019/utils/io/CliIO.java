@@ -1,29 +1,64 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.utils.io;
 
-import it.polimi.se2019.utils.model.FunctionCallModel;
-import it.polimi.se2019.utils.network.network_handler.NetworkHandler;
+import it.polimi.se2019.game.view.cli.RootCliView;
+import it.polimi.se2019.game.view.cli.lobby.LobbyCliView;
+import it.polimi.se2019.game.view.cli.lobby.chat.ChatLobbyCliView;
+import it.polimi.se2019.game.view.cli.lobby.piazza.PiazzaLobbyCliView;
+import it.polimi.se2019.game.view.cli.match.MatchCliView;
+import it.polimi.se2019.utils.view.AbstractView;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class CliIO implements IOInterface {
+public final class CliIO extends AbstractIO {
   /**
    * Namespace this class logs to
    */
   private static final String LOG_NAMESPACE = "CliIO";
 
   /**
-   * Reference to the CliIO (it is a singleton)
+   * Length in elements of a command parsed from the command line.
+   * Commands are in the form <namespace> <function> <data>. so this costant
+   * assumes the value of 3
    */
-  private static CliIO me;
+  private static final int PARSED_COMMAND_LENGTH = 3;
+
+  /**
+   * Position of the namespace in the parsed command
+   *
+   * Default: 0
+   */
+  private static final int NS_POSITION_IN_PARSED_COMMAND = 0;
+
+  /**
+   * Position of the call in the parsed command
+   *
+   * Default: 1
+   */
+  private static final int CALL_POSITION_IN_PARSED_COMMAND = 1;
+
+  /**
+   * Position of the data in the parsed command
+   *
+   * Default: 2
+   */
+  private static final int DATA_POSITION_IN_PARSED_COMMAND = 2;
 
   /**
    * True if we should accept input from the user, false otherwise
    */
-  private static AtomicBoolean running;
+  private AtomicBoolean running = new AtomicBoolean(true);
 
   /**
    * Contains data to print to screen on render
@@ -36,30 +71,29 @@ public final class CliIO implements IOInterface {
   private StringBuilder pendingCommands = new StringBuilder();
 
   /**
-   * Singleton. Hides public constructor
+   * Create a new CliIO
    */
-  private CliIO(){
-    super();
-    // Hides public constructor
+  public CliIO(){
+    super(getAvailableViews());
+
+    new Thread(
+            this::readingThread
+    ).start();
   }
 
   /**
-   * Get a reference to the CliIO.
-   *
-   * @return a reference to the CliIO
+   * @return The list of renderizable views for the CliIO
    */
-  public static synchronized IOInterface getIO(){
-    if (me == null){
-      me = new CliIO();
+  private static Map<String, AbstractView> getAvailableViews(){
+    Map<String, AbstractView> toReturn = new HashMap<>();
 
-      running = new AtomicBoolean(true);
+    toReturn.put(".", new RootCliView());
+    toReturn.put(".lobby", new LobbyCliView());
+    toReturn.put(".lobby.chat", new ChatLobbyCliView());
+    toReturn.put(".lobby.piazza", new PiazzaLobbyCliView());
+    toReturn.put(".match", new MatchCliView());
 
-      new Thread(
-              CliIO::readingThread
-      ).start();
-    }
-
-    return me;
+    return toReturn;
   }
 
   /**
@@ -83,6 +117,21 @@ public final class CliIO implements IOInterface {
     this.pendingCommands.append("\n");
   }
 
+  @Override
+  protected void displayRender() {
+    System.console().writer().println("\033[H\033[2J");
+
+    System.console().writer().write(this.pendingUpdate.toString());
+    System.console().writer().write("\n");
+    System.console().writer().write(this.pendingCommands.toString());
+    System.console().writer().write("> ");
+
+    this.pendingCommands.delete(0, this.pendingCommands.length());
+    this.pendingUpdate.delete(0, this.pendingUpdate.length());
+
+    System.console().writer().flush();
+  }
+
   /**
    * Buffers data to print to screen.
    * Data will be printed on render
@@ -95,33 +144,13 @@ public final class CliIO implements IOInterface {
   }
 
   /**
-   * Render to screen buffered data
-   */
-  @Override
-  public synchronized void render(){
-    if (
-            (this.pendingUpdate.length() > 0) ||
-            (this.pendingCommands.length() > 0)
-    ) {
-      System.console().writer().print(this.pendingUpdate.toString());
-      System.console().writer().print("\n");
-      System.console().writer().print(this.pendingCommands.toString());
-      System.console().writer().print("> ");
-      this.pendingUpdate.delete(0, this.pendingUpdate.length());
-      this.pendingCommands.delete(0, this.pendingCommands.length());
-
-      this.pendingUpdate.append("\033[H\033[2J");
-      System.console().writer().flush();
-    }
-  }
-
-  /**
    * Close the handler, stopping listening for input from the keyboard
    */
+  @Override
   public void close() {
     running.set(false);
     System.console().writer().println(
-            "[!!!] Disconnected from server\n" +
+            "\033[H\033[2J[!!!] Disconnected from server\n" +
             "Press ENTER to close this app"
     );
   }
@@ -132,33 +161,33 @@ public final class CliIO implements IOInterface {
    * @param title Title of the section
    */
   public void markSection(String title) {
-    pendingUpdate.append("_");
+    this.pendingUpdate.append("_");
     for (int i = 0; i < (title.length()); i++){
-      pendingUpdate.append("_");
+      this.pendingUpdate.append("_");
     }
-    pendingUpdate.append("_");
+    this.pendingUpdate.append("_");
 
-    pendingUpdate.append("\n");
+    this.pendingUpdate.append("\n");
 
-    pendingUpdate.append("|");
-    pendingUpdate.append(title);
-    pendingUpdate.append("|");
+    this.pendingUpdate.append("|");
+    this.pendingUpdate.append(title);
+    this.pendingUpdate.append("|");
 
-    pendingUpdate.append("\n");
+    this.pendingUpdate.append("\n");
 
-    pendingUpdate.append("|");
+    this.pendingUpdate.append("|");
     for (int i = 0; i < (title.length()); i++){
-      pendingUpdate.append("_");
+      this.pendingUpdate.append("_");
     }
-    pendingUpdate.append("|");
+    this.pendingUpdate.append("|");
 
-    pendingUpdate.append("\n");
+    this.pendingUpdate.append("\n");
   }
 
-  private static void readingThread() {
+  private void readingThread() {
     try {
-      while (running.get()) {
-        processCommand(readLine());
+      while (this.running.get()) {
+        this.processCommand(readLine());
       }
     }
     catch (IOException e){
@@ -171,38 +200,44 @@ public final class CliIO implements IOInterface {
   }
 
   private static String readLine() throws IOException {
-    StringBuilder toReturn = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     int c;
 
     while ((c = System.in.read()) != '\n'){
-      toReturn.append((char) c);
+      sb.append((char) c);
     }
 
-    return toReturn.toString();
+    return sb.toString();
   }
 
-  private static void processCommand(String input){
+  private void processCommand(String input){
     if (running.get()){
       String[] parsedInput;
 
       parsedInput = input.split(" ");
 
-      if (parsedInput.length >= 3) {
-        String ns = parsedInput[0];
-        String f = parsedInput[1];
-        String[] data = Arrays.copyOfRange(parsedInput, 2, parsedInput.length);
+      if (parsedInput.length >= PARSED_COMMAND_LENGTH) {
+        String ns = parsedInput[NS_POSITION_IN_PARSED_COMMAND];
+        String f = parsedInput[CALL_POSITION_IN_PARSED_COMMAND];
+        String[] data = Arrays.copyOfRange(
+                parsedInput,
+                DATA_POSITION_IN_PARSED_COMMAND,
+                parsedInput.length
+        );
 
         if (!ns.startsWith(".")) {
           ns = "." + ns;
         }
 
-        NetworkHandler.send(
-                new FunctionCallModel(
-                        ns,
-                        f,
-                        String.join(" ", data)
-                )
+        System.console().writer().write("" +
+                "Sending...\n" +
+                "Nothing is happening? Double-check your command ;)\n" +
+                "\n" +
+                "> "
         );
+        System.console().flush();
+
+        this.call(ns, f , String.join(" ", data));
       }
       else {
         System.console().writer().println(

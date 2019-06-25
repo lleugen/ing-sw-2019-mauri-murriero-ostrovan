@@ -1,11 +1,17 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.utils.controller;
 
 import it.polimi.se2019.utils.model.AbstractModel;
-import it.polimi.se2019.utils.network.virtual_view.FunctionCallCallback;
-import it.polimi.se2019.utils.network.virtual_view.VirtualView;
+import it.polimi.se2019.utils.network.virtualview.FunctionCallCallback;
+import it.polimi.se2019.utils.network.virtualview.VirtualView;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -23,9 +29,14 @@ public class Controller<T extends AbstractModel> {
   private T model;
 
   /**
-   * Callback for received call from the view
+   * Registered callbacks on the VirtualView
    */
-  private Map<String, FunctionCallCallback> cbs;
+  private List<String> cbs;
+
+  /**
+   * VirtualView the controller is bound to
+   */
+  private VirtualView virtualView;
 
   /**
    * Create a new controller.
@@ -33,102 +44,103 @@ public class Controller<T extends AbstractModel> {
    *
    * @param ns  Namespace controlled by this controller
    * @param m   Supplier for a model this controller is in charge of
+   * @param vv  VirtualView to bind the controller to
    */
-  protected Controller(String ns, Supplier<T> m){
+  protected Controller(String ns, Supplier<T> m, VirtualView vv){
     this.ns = ns;
     this.model = m.get();
+    this.virtualView = vv;
+    this.cbs = new LinkedList<>();
   }
 
   /**
-   * Init the Controller, registering all the callbacks.
-   * It is the opposite of close
+   * Register a new callback on the VirtualView.
    *
-   * @param cbs Callback for received call from the view. Null if no callback
-   *            should be registered for this controller
-   */
-  protected synchronized void init(Map<String, FunctionCallCallback> cbs){
-    this.cbs = new ConcurrentHashMap<>();
-
-    if (cbs != null) {
-      this.cbs.putAll(cbs);
-      this.cbs.forEach((String f, FunctionCallCallback call) ->
-              VirtualView.subscribeCall(
-                      this.ns,
-                      f,
-                      call
-              )
-      );
-    }
-  }
-
-  /**
-   * Send a notification about the new updated model to all clients
-   */
-  protected void notifyModelUpdateAll(){
-    this.notifyModelUpdate(null);
-  }
-
-  /**
-   * Send a notification about a new updated model to a single user
+   * __NOTE__ Extension should avoid to register callbacks directly to the
+   *          virtual view and use instead this function as it guarantees that
+   *          registered callbacks are properly deregistered when the
+   *          controller is closed
    *
-   * @param user User to notify about
+   * @param f  Function to subscribe to
+   * @param cb Callback to subscribe.
    */
-  protected void notifyModelUpdateUser(String user){
-    this.notifyModelUpdate(user);
+  protected synchronized void subscribeCall(String f, FunctionCallCallback cb){
+    this.cbs.add(f);
+    this.virtualView.subscribeCall(this.ns, f, cb);
   }
 
   /**
-   * Send a notification about the new updated model users.
+   * Deregister a callback on the VirtualView.
    *
-   * @param user  User to notify the update about, null to notify all users
+   * __NOTE__ Extension should avoid to deregister callbacks directly to the
+   *          virtual view and use instead this function as it guarantees that
+   *          registered callbacks are properly deregistered when the
+   *          controller is closed
+   *
+   * @param f  Function to unsubscribe from
    */
-  private void notifyModelUpdate(String user){
-    VirtualView.updateModel(user, this.ns, this.model);
+  protected synchronized void unsubscribeCall(String f){
+    this.virtualView.unsubscribeCall(this.ns, f);
   }
 
   /**
-   * Change the currently selected view for a single user
+   * See docs for ViewModelUpdate.replaceView
+   * Apply to all user
    *
-   * @param user User to ask to change view
-   * @param view View to change. If this string doesn't contains any '.', the
-   *             changed view is relative to the namespace controlled by this
-   *             controller
+   * @param v Namespace of the view
    */
-  protected void showViewUser(String user, String view){
-    this.showView(user, view);
+  protected void replaceViewAllUsers(String v){
+    this.virtualView.replaceViewAllUsers(v);
   }
 
   /**
-   * Change the currently selected view for all users
+   * See docs for ViewModelUpdate.replaceView
+   * Apply to single user
    *
-   * @param view View to change. If this string doesn't contains any '.', the
-   *             changed view is relative to the namespace controlled by this
-   *             controller
+   * @param v    Namespace of the view
+   * @param user User to replace view to
    */
-  protected void showViewAll(String view){
-    this.showView(null, view);
+  protected void replaceViewSingleUser(String v, String user){
+    this.virtualView.replaceViewSingleUser(v, user);
   }
 
   /**
-   * Change the currently selected view
+   * See docs for ViewModelUpdate.addView
+   * Apply to all user
    *
-   * @param user User to ask to change view, Null to ask all users
-   * @param view View to change. If this string doesn't contains any '.', the
-   *             changed view is relative to the namespace controlled by this
-   *             controller. If the view is an empty string, it is the namespace
-   *             of the controller
+   * @param v Namespace of the view
    */
-  private void showView(String user, String view){
-    if (!view.contains(".")){
-      if ("".equals(view)){
-        view = this.ns;
-      }
-      else {
-        view = this.ns.concat("." + view);
-      }
-    }
+  protected void addViewAllUsers(String v){
+    this.virtualView.addViewAllUsers(v);
+  }
 
-    VirtualView.changeView(user, view);
+  /**
+   * See docs for ViewModelUpdate.addView
+   * Apply to single user
+   *
+   * @param v    Namespace of the view
+   * @param user User to add view to
+   */
+  protected void addViewSingleUser(String v, String user){
+    this.virtualView.addViewSingleUser(v, user);
+  }
+
+  /**
+   * See docs for ViewModelUpdate.updateModel
+   * Apply to all user
+   */
+  protected void notifyModelAllUsers(){
+    this.virtualView.updateModelAllUsers(this.ns, this.model);
+  }
+
+  /**
+   * See docs for ViewModelUpdate.updateModel
+   * Apply to single user
+   *
+   * @param user User to update model to
+   */
+  protected void notifyModelSingleUsers(String user){
+    this.virtualView.updateModelSingleUser(this.ns, this.model, user);
   }
 
   /**
@@ -141,11 +153,21 @@ public class Controller<T extends AbstractModel> {
   }
 
   /**
+   * Get a reference to the VirtualView this controller is bound to
+   *
+   * __WARN__ Extension should avoid direct access to the VirtualView and use
+   *          this reference only to create sub-controllers
+   *
+   * @return a reference to the model for this controller
+   */
+  protected VirtualView getVirtualView(){
+    return this.virtualView;
+  }
+
+  /**
    * Close the model, de-registering all registered callbacks
    */
   public void close(){
-    this.cbs.keySet().forEach((String f) ->
-            VirtualView.unsubscribeCall(this.ns, f)
-    );
+    this.cbs.forEach(this::unsubscribeCall);
   }
 }

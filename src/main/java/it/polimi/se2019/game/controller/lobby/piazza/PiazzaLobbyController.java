@@ -1,43 +1,49 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.game.controller.lobby.piazza;
 
-import it.polimi.se2019.utils.controller.Controller;
 import it.polimi.se2019.game.model.lobby.piazza.PiazzaLobbyModel;
-import it.polimi.se2019.utils.network.virtual_view.FunctionCallCallback;
+import it.polimi.se2019.utils.controller.Controller;
+import it.polimi.se2019.utils.network.virtualview.VirtualView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.BiConsumer;
 
 public final class PiazzaLobbyController extends
         Controller<PiazzaLobbyModel> {
   /**
-   * Initialize a new PiazzaLobbyController.
-   * See description for this method in Controller
+   * Callback to fire when a new match is found.
+   *
+   * The first parameter is the list of players of the match
+   * The second parameter are the settings for the game, in the form <mapId>-<skulls>
    */
-  public PiazzaLobbyController(){
-    super(".lobby.piazza", PiazzaLobbyModel::new);
-    this.init(this.getCbs());
-
-    this.notifyModelUpdateAll();
-
-    this.showViewAll("");
-  }
+  private BiConsumer<List<String>, String> matchFoundCb;
 
   /**
-   * Gets all subscription callbacks for a 
-   * PiazzaLobbyController.
+   * Initialize a new PiazzaLobbyController.
+   * See description for this method in Controller
    *
-   * @return All subscription callbacks for a 
-   *         PiazzaLobbyController
+   * @param matchFoundCb Callback to fire when a new match is found.
+   *                     The first parameter is the list of players of the match
+   *                     The second parameter are the settings for the game, in
+   *                     the form <mapId>-<skulls>
    */
-  private Map<String, FunctionCallCallback> getCbs() {
-    Map<String, FunctionCallCallback> toReturn = new HashMap<>();
+  public PiazzaLobbyController(
+          VirtualView vv,
+          BiConsumer<List<String>, String> matchFoundCb
+  ){
+    super(".lobby.piazza", PiazzaLobbyModel::new, vv);
 
-    toReturn.put("joinMatch", this::join);
+    this.matchFoundCb = matchFoundCb;
 
-    return toReturn;
+    this.subscribeCall("join", this::joinMatch);
+
+    this.notifyModelAllUsers();
   }
-
 
   /**
    * Add the player to the selected match. If the player was registered to 
@@ -46,15 +52,15 @@ public final class PiazzaLobbyController extends
    * @param user User who made the call 
    * @param room Room to add the player to (<mapId>-<skulls>) 
    */
-  private void join(String user, String room){
+  private void joinMatch(String user, String room){
     PiazzaLobbyModel model = this.getModel();
 
     List<String> players = model.addPlayer(user, room);
     
-    this.notifyModelUpdateAll();
+    this.notifyModelAllUsers();
 
     if (players != null){
-      players.forEach((String u) -> this.showViewUser(u, ".lobby"));
+      this.matchFoundCb.accept(players, room);
     }
   }
 

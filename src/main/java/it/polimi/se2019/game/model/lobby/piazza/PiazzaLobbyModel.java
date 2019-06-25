@@ -1,9 +1,19 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.game.model.lobby.piazza;
 
 import it.polimi.se2019.utils.model.AbstractModel;
 
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
@@ -127,5 +137,56 @@ public class PiazzaLobbyModel
     }
 
     return new PiazzaLobbyModel(toReturn);
+  }
+
+  /**
+   * Get the map of available matches (not yet full)
+   * @return The map of available matches (not yet full)
+   */
+  public Map<String, List<String>> getMatches() {
+    Map<String, List<String>> toReturn = new HashMap<>();
+
+    matches.forEach((String key, List<String> item) ->
+            toReturn.put(key, new LinkedList<>(item))
+    );
+
+    return toReturn;
+  }
+
+  /**
+   * Add a new player to the selected room.
+   * If the player was registered to another room, it is deregistered from the
+   * old room
+   *
+   * @param user User to add to the room
+   * @param room Id of the room to add the player to (<mapId>-<skulls>)
+   *
+   * @return a list of players id removed from the room. An empty list if the
+   *         room is not full yet
+   */
+  public synchronized List<String> addPlayer(String user, String room){
+    // See ConcurrentModificationException
+    List<String> toRemove = new LinkedList<>();
+
+    for (Map.Entry<String, List<String>> entry : this.matches.entrySet()) {
+      entry.getValue().remove(user);
+      if (entry.getValue().isEmpty()){
+        toRemove.add(entry.getKey());
+      }
+    }
+
+    toRemove.forEach(this.matches::remove);
+
+    this.matches.putIfAbsent(room, new LinkedList<>());
+    this.matches.get(room).add(user);
+
+    if (this.matches.get(room).size() == PLAYERS_IN_ROOM){
+      List<String> toReturn = this.matches.get(room);
+      this.matches.remove(room);
+      return toReturn;
+    }
+    else {
+      return new LinkedList<>();
+    }
   }
 }

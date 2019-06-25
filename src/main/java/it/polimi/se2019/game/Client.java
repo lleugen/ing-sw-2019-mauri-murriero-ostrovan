@@ -1,21 +1,21 @@
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
 package it.polimi.se2019.game;
 
-import it.polimi.se2019.entrypoint.lobby.view.cli.lobby.chat.ChatLobbyCliView;
-import it.polimi.se2019.entrypoint.lobby.view.cli.lobby.piazza.PiazzaLobbyCliView;
-import it.polimi.se2019.entrypoint.lobby.view.cli.lobby.LobbyCliView;
+import it.polimi.se2019.utils.InitializationError;
+import it.polimi.se2019.utils.io.CliIO;
 import it.polimi.se2019.utils.model.AbstractModel;
 import it.polimi.se2019.utils.model.LoginDataModel;
 import it.polimi.se2019.utils.network.Connection;
-import it.polimi.se2019.utils.InitializationError;
 import it.polimi.se2019.utils.network.client.ClientNetwork;
 import it.polimi.se2019.utils.network.client.socket.SocketClientNetwork;
-import it.polimi.se2019.utils.network.network_handler.NetworkHandler;
-import it.polimi.se2019.game.view.cli.RootCliView;
-import it.polimi.se2019.utils.view.AbstractView;
-import it.polimi.se2019.utils.io.CliIO;
+import it.polimi.se2019.utils.network.networkhandler.NetworkHandler;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +74,7 @@ public class Client {
     catch (InitializationError e) {
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.SEVERE,
-              "Error while starting the ServerLobby",
+              "Error while starting the Client",
               e
       );
       ni = null;
@@ -90,20 +90,7 @@ public class Client {
               )
       );
 
-      Map<String, AbstractView> tmp = new HashMap<>();
-
-      tmp.put(".", new RootCliView());
-      tmp.put(".lobby", new LobbyCliView());
-      tmp.put(".lobby.chat", new ChatLobbyCliView());
-      tmp.put(".lobby.piazza", new PiazzaLobbyCliView());
-      tmp.put(".match", new MatchCliView());
-
-      NetworkHandler.init(
-              connection,
-              tmp,
-              CliIO.getIO()
-      );
-
+      new NetworkHandler(connection, new CliIO());
     }
   }
 

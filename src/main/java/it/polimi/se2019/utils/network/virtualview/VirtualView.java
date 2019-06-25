@@ -1,4 +1,10 @@
-package it.polimi.se2019.utils.network.virtual_view;
+/*
+ * Adrenalina: Milano Politecnico - 2019
+ * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
+ * (c) All Rights Reserved
+ */
+
+package it.polimi.se2019.utils.network.virtualview;
 
 import it.polimi.se2019.utils.model.AbstractModel;
 import it.polimi.se2019.utils.model.FunctionCallModel;
@@ -17,9 +23,6 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * __WARN__ This class is a singleton.
- */
 public final class VirtualView {
   /**
    * Namespace this class logs to
@@ -35,12 +38,12 @@ public final class VirtualView {
   /**
    * Reference to the currently opened network interface
    */
-  private static ServerNetwork ni;
+  private ServerNetwork ni;
 
   /**
    * Contains every connection currently active, indexed by user id.
    */
-  private static final Map<String, ConnectedUser> connections = new HashMap<>();
+  private final Map<String, ConnectedUser> connections = new HashMap<>();
 
   /**
    * Contains the virtual broadcast user.
@@ -48,57 +51,105 @@ public final class VirtualView {
    * data.
    * New ConnectedUser for unknown user will be initialized using those data
    */
-  private static final ConnectedUser broadcast = new ConnectedUser();
+  private final ConnectedUser broadcast = new ConnectedUser();
 
   /**
    * Contains the list of callbacks associated to each function and namespace
    */
-  private static final Map<String, Map<String, FunctionCallCallback>> cbs = new HashMap<>();
+  private final Map<String, Map<String, FunctionCallCallback>> cbs = new HashMap<>();
 
   /**
-   * Hides public constructor
+   * Create a new VirtualView
+   *
+   * @param ni NetworkInterface this VirtualView should bind to.
+   *           It is up to you to ensure this ni is dedicated to this VV only
    */
-  private VirtualView(){
-    // Hides public constructor
+  public VirtualView(ServerNetwork ni){
+    this.ni = ni;
+    this.ni.setConnectionHandler(this::connectionHandler);
   }
 
   /**
-   * Init the Virtual View.
-   * It is up to you to ensure that this function will be called only once in
-   * your program.
+   * See docs for ViewModelUpdate.replaceView
+   * Apply to all user
    *
-   * If this function is called twice, the second call is ignored
-   *
-   * @param networkInterface Network
+   * @param v Namespace of the view
    */
-  public static synchronized void init(ServerNetwork networkInterface){
-    if (ni == null){
-      ni = networkInterface;
-      ni.setConnectionHandler(VirtualView::connectionHandler);
-    }
+  public void replaceViewAllUsers(String v){
+    this.sendToUser(
+            null,
+            (ConnectedUser c) -> c.replaceView(v)
+    );
   }
 
   /**
-   * Sends a model update downto the view
-   * Updates are sent in order they are received.
+   * See docs for ViewModelUpdate.replaceView
+   * Apply to single user
    *
-   * @param u  User to send the update to. Null for a broadcast update
-   * @param ns Namespace to send the update to
-   * @param m  Updated Model
+   * @param v    Namespace of the view
+   * @param user User to replace view to
    */
-  public static void updateModel(String u, String ns, AbstractModel m){
-    sendToUser(u, (ConnectedUser cu) -> cu.updateModel(ns, m));
+  public void replaceViewSingleUser(String v, String user){
+    this.sendToUser(
+            user,
+            (ConnectedUser c) -> c.replaceView(v)
+    );
   }
 
   /**
-   * Sends a view change downto the view
-   * Requests are sent in order they are received.
+   * See docs for ViewModelUpdate.addView
+   * Apply to all user
    *
-   * @param u  User to send the request to. Null for a broadcast update
-   * @param v  Requested View
+   * @param v Namespace of the view
    */
-  public static void changeView(String u, String v){
-    sendToUser(u, (ConnectedUser cu) -> cu.changeView(v));
+  public void addViewAllUsers(String v){
+    this.sendToUser(
+            null,
+            (ConnectedUser c) -> c.addView(v)
+    );
+  }
+
+  /**
+   * See docs for ViewModelUpdate.addView
+   * Apply to single user
+   *
+   * @param v    Namespace of the view
+   * @param user User to add view to
+   */
+  public void addViewSingleUser(String v, String user){
+    this.sendToUser(
+            user,
+            (ConnectedUser c) -> c.addView(v)
+    );
+  }
+
+  /**
+   * See docs for ViewModelUpdate.updateModel
+   * Apply to all user
+   *
+   * @param ns    Namespace of the model
+   * @param model Update to send to the user
+   */
+  public void updateModelAllUsers(String ns, AbstractModel model){
+    this.sendToUser(
+            null,
+            (ConnectedUser c) -> c.updateModel(ns, model)
+    );
+  }
+
+  /**
+   * See docs for ViewModelUpdate.updateModel
+   * Apply to single user
+   *
+   * @param user User to update model to
+   * @param ns    Namespace of the model
+   * @param model Update to send to the user
+   */
+  public void updateModelSingleUser(String ns, AbstractModel model, String user){
+    this.sendToUser(
+            user,
+            (ConnectedUser c) -> c.updateModel(ns, model)
+    );
   }
 
   /**
@@ -107,7 +158,7 @@ public final class VirtualView {
    * @param u User to send data to. Null to send to all users
    * @param f Function which send data.
    */
-  private static void sendToUser(String u, Consumer<ConnectedUser> f){
+  private void sendToUser(String u, Consumer<ConnectedUser> f){
     synchronized (connections) {
       List<String> users = new LinkedList<>();
 
@@ -152,12 +203,12 @@ public final class VirtualView {
    * @param f  Function to subscribe to
    * @param cb Callback to subscribe.
    */
-  public static void subscribeCall(String ns, String f, FunctionCallCallback cb) {
-    synchronized (cbs) {
-      if (!cbs.containsKey(ns)) {
-        cbs.put(ns, new HashMap<>());
+  public void subscribeCall(String ns, String f, FunctionCallCallback cb) {
+    synchronized (this.cbs) {
+      if (!(this.cbs.containsKey(ns))) {
+        this.cbs.put(ns, new HashMap<>());
       }
-      cbs.get(ns).put(f, cb);
+      this.cbs.get(ns).put(f, cb);
     }
   }
 
@@ -167,10 +218,10 @@ public final class VirtualView {
    * @param ns  Namespace to unsubscribe from
    * @param f   Function to unsubscribe from
    */
-  public static void unsubscribeCall(String ns, String f){
-    synchronized (cbs) {
-      if (cbs.containsKey(ns)){
-        cbs.get(ns).remove(f);
+  public void unsubscribeCall(String ns, String f){
+    synchronized (this.cbs) {
+      if (this.cbs.containsKey(ns)){
+        this.cbs.get(ns).remove(f);
       }
     }
   }
@@ -178,9 +229,9 @@ public final class VirtualView {
   /**
    * Dispatch a call through all listeners
    */
-  private static void dispatchCall(String user, byte[] data){
-    // Syncronized to expose a single-thread like environment
-    synchronized (cbs) {
+  private void dispatchCall(String user, byte[] data){
+    synchronized (this.cbs) {
+      // Syncronized to expose a single-thread like environment
       FunctionCallModel call;
       try {
         call = FunctionCallModel.decode(
@@ -188,10 +239,10 @@ public final class VirtualView {
         );
 
         if (
-                cbs.containsKey(call.getNs()) &&
-                cbs.get(call.getNs()).containsKey(call.getF())
+                this.cbs.containsKey(call.getNs()) &&
+                this.cbs.get(call.getNs()).containsKey(call.getF())
         ){
-          cbs.get(call.getNs()).get(call.getF()).accept(user, call.getData());
+          this.cbs.get(call.getNs()).get(call.getF()).accept(user, call.getData());
         }
       }
       catch (AbstractModel.InvalidDataException e) {
@@ -211,7 +262,7 @@ public final class VirtualView {
    * If a login cannot be completed before LOGIN_TIMEOUT expires, the connection
    * is closed
    */
-  private static void connectionHandler(Connection connection){
+  private void connectionHandler(Connection connection){
     ScheduledFuture<?> kickingExecutor =
             Executors.newScheduledThreadPool(1).schedule(
                     connection::close,
@@ -227,9 +278,9 @@ public final class VirtualView {
         connection.setReceiveCallback((byte[] call) ->
                 dispatchCall(user, call)
         );
-        synchronized (connections) {
-          connections.putIfAbsent(user, new ConnectedUser(broadcast));
-          connections.get(user).register(connection);
+        synchronized (this.connections) {
+          this.connections.putIfAbsent(user, new ConnectedUser(broadcast));
+          this.connections.get(user).register(connection);
         }
       }
     });
