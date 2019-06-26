@@ -55,7 +55,7 @@ public class ServerLobby implements Remote {
    *
    * @return true if the room is full, false otherwise
    */
-  private boolean checkRoomFull(){
+  public synchronized boolean checkRoomFull(){
     return (this.playersData.size() >= this.maxPlayers);
   }
 
@@ -77,34 +77,30 @@ public class ServerLobby implements Remote {
    * @param client player's view
    * @param name name of the player
    * @param character id of the player's character
+   *
+   * @throws RoomFullException if the room is full
    */
-  public void connect(PlayerViewOnServer client, String name, String character) {
+  public void connect(PlayerViewOnServer client, String name, String character) throws RoomFullException{
     PlayerData player;
     List<PlayerController> playerControllers = new ArrayList<>();
     PlayerController currentPlayerController = null;
 
-    try {
-      player = this.addPlayer(name);
+    player = this.addPlayer(name);
 
-      if (player != null) {
-        player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
-        player.setView(client);
-        currentPlayerController = null;
-        currentPlayerController = new PlayerController(this.gameBoardController, player.getModel(), player.getView());
-        player.setController(currentPlayerController);
-        playerControllers.add(currentPlayerController);
+    if (player != null) {
+      player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
+      player.setView(client);
+      currentPlayerController = null;
+      currentPlayerController = new PlayerController(this.gameBoardController, player.getModel(), player.getView());
+      player.setController(currentPlayerController);
+      playerControllers.add(currentPlayerController);
 
-        if (this.checkRoomFull()){
-          this.gameBoardController.startGame(playerControllers);
-        }
-      }
-      else {
-        // Player is already registered to the game
+      if (this.checkRoomFull()){
+        this.gameBoardController.startGame(playerControllers);
       }
     }
-    catch (RoomFullException e){
-      // Nothing to do, the room is full
-      // TODO (if necesary)
+    else {
+      // Player is already registered to the game
     }
   }
 

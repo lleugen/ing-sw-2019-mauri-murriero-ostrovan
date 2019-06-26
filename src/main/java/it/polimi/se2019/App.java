@@ -1,7 +1,10 @@
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
+import it.polimi.se2019.view.Client;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +28,7 @@ public class App {
   private static void initMapping(){
     typeMapping = new HashMap<>();
     typeMapping.put("server", App::spawnServer);
+    typeMapping.put("client", App::spawnClient);
   }
 
   /**
@@ -44,8 +48,6 @@ public class App {
                     (String[] item) -> item[1]
                     )
             );
-
-    params.keySet().forEach(System.out::println);
   }
 
   /**
@@ -54,12 +56,36 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    Server server = new Server();
-    server.publishToRMI("server", 5432);
+    if (args.containsKey("host")) {
+      try {
+        Server server = new Server(args.get("host"));
+      }
+      catch (RemoteException | MalformedURLException e){
+        e.printStackTrace();
+        throw new WrongArguments("Unable to start RMI server");
+      }
+    }
+    else {
+      System.out.println("Host param is required");
+    }
   }
 
   /**
-   * Type: server
+   * Spawn a new client
+   *
+   * @param args Args array received from the command line
+   */
+  private static void spawnClient(Map<String, String> args){
+    if (args.containsKey("host")) {
+      Client client = new Client(args.get("host"));
+    }
+    else {
+      System.out.println("Host param is required");
+    }
+  }
+
+  /**
+   * Type: server, client
    * @param args
    */
   public static void main(String[] args) {
@@ -75,7 +101,6 @@ public class App {
     }
 
     if (params.containsKey("type")){
-      System.out.println(params.get("type"));
       typeMapping.get(params.get("type")).accept(params);
     }
     else {
@@ -91,15 +116,8 @@ public class App {
    * The toString method may contain additional informations about the error
    */
   public static class WrongArguments extends RuntimeException {
-    private final String message;
-
     WrongArguments(String message){
-      this.message = message;
-    }
-
-    @Override
-    public String toString(){
-      return message;
+      super(message);
     }
   }
 }
