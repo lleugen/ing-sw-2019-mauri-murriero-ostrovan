@@ -2,7 +2,7 @@ package it.polimi.se2019.controller.powerup;
 
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 /**
  * Powerups are cards that can be used to produce an effect
@@ -19,9 +19,9 @@ public abstract class PowerUpController {
     return name;
   }
 
-  public PlayerView identifyClient(Player player){
-    PlayerView client = null;
-    for(PlayerView c : gameBoardController.getClients()){
+  public PlayerViewOnServer identifyClient(Player player){
+    PlayerViewOnServer client = null;
+    for(PlayerViewOnServer c : gameBoardController.getClients()){
       if(c.getName().equals(player.getName())){
         client = c;
       }

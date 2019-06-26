@@ -1,11 +1,9 @@
 package it.polimi.se2019.controller.weapons.simple;
 
 import it.polimi.se2019.controller.GameBoardController;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.map.Map;
-import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ public class HeatSeekerController extends SimpleWeaponController {
   Map map = getGameBoardController().getGameBoard().getMap();
 
   @Override
-  public List<Boolean> selectFiringMode(PlayerView client){
+  public List<Boolean> selectFiringMode(PlayerViewOnServer client){
     List<Boolean> firingMode = new ArrayList<>();
     firingMode.add(true);
     return firingMode;

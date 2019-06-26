@@ -6,13 +6,13 @@ import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SecondFreneticStateController extends PlayerStateController {
-  public SecondFreneticStateController(GameBoardController g, Player p, PlayerView c) {
+  public SecondFreneticStateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);
     availableActions = 1;
   }

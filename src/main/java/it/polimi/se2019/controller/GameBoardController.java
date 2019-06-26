@@ -8,7 +8,7 @@ import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class GameBoardController{
 
   private List<Player> players;
   private List<PlayerController> playerControllers;
-  private List<PlayerView> clients;
+  private List<PlayerViewOnServer> clients;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
@@ -68,7 +68,7 @@ public class GameBoardController{
     return players;
   }
 
-  public List<PlayerView> getClients(){
+  public List<PlayerViewOnServer> getClients(){
     return clients;
   }
 

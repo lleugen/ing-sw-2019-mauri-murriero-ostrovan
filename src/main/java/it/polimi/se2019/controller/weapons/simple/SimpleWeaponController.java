@@ -3,7 +3,7 @@ package it.polimi.se2019.controller.weapons.simple;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public abstract class SimpleWeaponController extends WeaponController {
     @Override
     public abstract List<Player> findTargets(Player shooter);
 
-    public abstract List<Boolean> selectFiringMode(PlayerView client);
+    public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client);
 
     /**
      * Apply the weapon's effects on selected targets.

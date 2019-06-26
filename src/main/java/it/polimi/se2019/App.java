@@ -1,47 +1,105 @@
-/*
- * Adrenalina: Milano Politecnico - 2019
- * author: Eugenio Ostrovan, Fabio Mauri, Riccardo Murriero
- * (c) All Rights Reserved
- */
-
 package it.polimi.se2019;
 
-import it.polimi.se2019.game.Client;
-import it.polimi.se2019.game.Server;
+import it.polimi.se2019.model.server.Server;
 
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class App {
   /**
-   * Namespace this class logs to
+   * Contains actions for param type (what type of program should be spawned)
    */
-  private static final String LOG_NAMESPACE = "App";
+  private static Map<String, Consumer<Map<String, String>>> typeMapping;
 
   /**
-   * @param args Params to pass to the bootstrapping process
-   *             First param is the name of the module to spawn, then comes
-   *             args specific of the module
-   *             e.g. java -jar ./adrenalina.jar ServerLobby -network=socket
+   * Contains params parsed by the command line, on app bootstrapping
+   */
+  private static Map<String, String> params;
+
+  /**
+   * Init the mapping array
+   */
+  private static void initMapping(){
+    typeMapping = new HashMap<>();
+    typeMapping.put("server", App::spawnServer);
+  }
+
+  /**
+   * Init the params array. Parses the args array received by the main method,
+   * from the command line.
+   * Each param is in the form of <key>=<value>
+   *
+   * @param args Array received from the command line, my the main method
+   *
+   * @throws WrongArguments if cmd arguments are wrong
+   */
+  private static void initParams(String[] args){
+    params = Arrays.stream(args)
+            .map((String param) -> param.split("="))
+            .collect(Collectors.toMap(
+                    (String[] item) -> item[0],
+                    (String[] item) -> item[1]
+                    )
+            );
+
+    params.keySet().forEach(System.out::println);
+  }
+
+  /**
+   * Spawn a new server
+   *
+   * @param args Args array received from the command line
+   */
+  private static void spawnServer(Map<String, String> args){
+    Server server = new Server();
+    server.publishToRMI("server", 5432);
+  }
+
+  /**
+   * Type: server
+   * @param args
    */
   public static void main(String[] args) {
-    String module = args[0];
-    String[] argv = Arrays.copyOfRange(args, 1, args.length);
+    params = new HashMap<>();
+    initMapping();
 
-    switch (module) {
-      case "ServerLobby":
-        Server.main(argv);
-        break;
-      case "ClientLobby":
-        Client.main(argv);
-        break;
-      default:
-        Logger.getLogger(LOG_NAMESPACE).log(
-                Level.SEVERE,
-                "Wrong module name: Supported are:\n" +
-                        "ServerLobby | ClientLobby"
-        );
+    try {
+      initParams(args);
+    }
+    catch (WrongArguments e){
+      // TODO: if necessary, implement additional logic here
+      throw e;
+    }
+
+    if (params.containsKey("type")){
+      System.out.println(params.get("type"));
+      typeMapping.get(params.get("type")).accept(params);
+    }
+    else {
+      throw new WrongArguments("" +
+              "Type is either missed or wrong\nSupported types are " +
+              String.join(", ", typeMapping.keySet()));
+    }
+  }
+
+  /**
+   * Thrown when there is an error in the args array received by the command
+   * line.
+   * The toString method may contain additional informations about the error
+   */
+  public static class WrongArguments extends RuntimeException {
+    private final String message;
+
+    WrongArguments(String message){
+      this.message = message;
+    }
+
+    @Override
+    public String toString(){
+      return message;
     }
   }
 }
