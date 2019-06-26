@@ -1,7 +1,7 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
 import it.polimi.se2019.controller.weapons.WeaponController;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public abstract class OptionalEffectWeaponController extends WeaponController {
 
   protected Integer numberOfOptionalEffects;
 
-  public List<Boolean> selectFiringMode(PlayerView client){
+  public List<Boolean> selectFiringMode(PlayerViewOnServer client){
     List<Boolean> optionalEffectFlags = new ArrayList<>();
     for(int i = 0; i<numberOfOptionalEffects; i++){
       optionalEffectFlags.add

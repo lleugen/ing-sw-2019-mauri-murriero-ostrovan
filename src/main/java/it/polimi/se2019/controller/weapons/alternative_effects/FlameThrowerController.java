@@ -4,7 +4,7 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter){
     primaryTargets.clear();
     secondaryTargets.clear();
-    PlayerView client = identifyClient(shooter);
+    PlayerViewOnServer client = identifyClient(shooter);
     List<Integer> possibleDirections = new ArrayList<>();
     for(int i = 0; i<3; i++){
       if(!shooter.getPosition().getAdjacencies().get(i).isBlocked()){

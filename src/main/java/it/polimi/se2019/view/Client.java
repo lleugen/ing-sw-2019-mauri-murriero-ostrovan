@@ -1,7 +1,7 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.model.server.ServerLobby;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Client {
 
     public static void main(String [] args){
-        PlayerView client = new PlayerView();
+        PlayerViewOnServer client = new PlayerViewOnServer();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choose name.");
         client.setName(scanner.nextLine());
@@ -20,7 +20,7 @@ public class Client {
         findLobby(client);
     }
 
-    public static void findLobby(PlayerView client){
+    public static void findLobby(PlayerViewOnServer client){
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }

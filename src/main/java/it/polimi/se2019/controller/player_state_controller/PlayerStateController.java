@@ -3,7 +3,6 @@ package it.polimi.se2019.controller.player_state_controller;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.powerup.PowerUpController;
 import it.polimi.se2019.controller.weapons.WeaponController;
-import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
@@ -11,7 +10,7 @@ import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +18,12 @@ import java.util.List;
 public abstract class PlayerStateController {
 
     protected Player player;
-    protected PlayerView client;
+    protected PlayerViewOnServer client;
     protected GameBoardController gameBoardController;
     protected Integer availableActions;
     protected Map map;
 
-    public PlayerStateController(GameBoardController g, Player p, PlayerView c){
+    public PlayerStateController(GameBoardController g, Player p, PlayerViewOnServer c){
         gameBoardController = g;
         player = p;
         client = c;

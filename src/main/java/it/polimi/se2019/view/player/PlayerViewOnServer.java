@@ -250,29 +250,30 @@
 
 package it.polimi.se2019.view.player;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PlayerView implements ViewFacadeInterfaceRMI{
+public class PlayerViewOnServer implements ViewFacadeInterfaceRMI{
   private String name;
   private String character;
   /**
    *
    */
-  public String getName(){
+  public String getName() throws UserTimeoutException {
     return name;
   }
-  public String getCharacter(){
+  public String getCharacter() throws UserTimeoutException {
     return character;
   }
 
   /**
    *
    */
-  public void setCharacter(String character) {
+  public void setCharacter(String character) throws UserTimeoutException {
     this.character = character;
   }
   public void setName(String n){
@@ -283,7 +284,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    *
    */
   @Override
-  public String chooseAction(String state) {
+  public String chooseAction(String state) throws UserTimeoutException {
     System.out.println("Choose action.");
     Scanner scanner = new Scanner(System.in);
     return scanner.nextLine();
@@ -293,7 +294,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return index of the power up card to discard
    */
   @Override
-  public int chooseSpawnLocation(List<String> powerUps){
+  public int chooseSpawnLocation(List<String> powerUps) throws UserTimeoutException {
     for(int i = 0; i<powerUps.size(); i++){
       System.out.println(powerUps.get(i));
     }
@@ -305,7 +306,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * Choose map type for the match
    */
   @Override
-  public int chooseMap(){
+  public int chooseMap() throws UserTimeoutException {
     System.out.println("Choose map type: 0, 1, 2, 3.");
     Scanner scanner = new Scanner(System.in);
     return scanner.nextInt();
@@ -315,7 +316,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * choose how many players will be in the game
    */
   @Override
-  public int chooseNumberOfPlayers(){
+  public int chooseNumberOfPlayers() throws UserTimeoutException {
     System.out.println("Choose number of players for the game.");
     Scanner scanner = new Scanner(System.in);
     return scanner.nextInt();
@@ -325,7 +326,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return chosen weapon name
    */
   @Override
-  public String chooseWeapon(List<String> weapons){
+  public String chooseWeapon(List<String> weapons) throws UserTimeoutException {
     for(int i = 0; i<weapons.size(); i++){
       System.out.println(weapons.get(i));
     }
@@ -338,7 +339,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return a list of chosen targets(names)
    */
   @Override
-  public String chooseTargets(List<String> possibleTargets){
+  public String chooseTargets(List<String> possibleTargets) throws UserTimeoutException {
     for(int i = 0; i<possibleTargets.size(); i++){
       System.out.println(possibleTargets.get(i));
     }
@@ -351,7 +352,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return the name of the weapon to reload
    */
   @Override
-  public String chooseWeaponToReload(List<String> weapons){
+  public String chooseWeaponToReload(List<String> weapons) throws UserTimeoutException {
     for(int i = 0; i<weapons.size(); i++){
       System.out.println(weapons.get(i));
     }
@@ -363,7 +364,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return a list of integers indicating which cards from the player's inventory to use when reloading
    */
   @Override
-  public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
+  public List<Integer> choosePowerUpCardsForReload(List<String> powerUps) throws UserTimeoutException {
     for(int i = 0; i<powerUps.size(); i++){
       System.out.println(powerUps.get(i));
     }
@@ -380,7 +381,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return the integer relative to the availableEffects list
    */
   @Override
-  public Integer chooseIndex(String weaponName, List<String> availableEffects){
+  public Integer chooseIndex(String weaponName, List<String> availableEffects) throws UserTimeoutException {
     System.out.println(weaponName);
     for(int i = 0; i<availableEffects.size(); i++){
       System.out.println(availableEffects.get(i));
@@ -394,7 +395,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return int indicating which item to pick up from those available
    */
   @Override
-  public int chooseItemToGrab(){
+  public int chooseItemToGrab() throws UserTimeoutException {
     System.out.println("Choose item to grab.");
     Scanner scanner = new Scanner(System.in);
     return scanner.nextInt();
@@ -404,7 +405,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * choose whether to use a firing mode
    */
   @Override
-  public Boolean chooseFiringMode(String description){
+  public Boolean chooseFiringMode(String description) throws UserTimeoutException {
     System.out.println(description);
     System.out.println("Choose firing mode.");
     Scanner scanner = new Scanner(System.in);
@@ -415,7 +416,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    *
    */
   @Override
-  public Boolean chooseBoolean(String description){
+  public Boolean chooseBoolean(String description) throws UserTimeoutException {
     System.out.println(description);
     System.out.println("Choose.");
     Scanner scanner = new Scanner(System.in);
@@ -426,7 +427,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * choose a room from those proposed
    */
   @Override
-  public String chooseRoom(List<String> rooms){
+  public String chooseRoom(List<String> rooms) throws UserTimeoutException {
     for(int i = 0; i<rooms.size(); i++){
       System.out.println(rooms.get(i));
     }
@@ -440,7 +441,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return the coordinates of one chosen square
    */
   @Override
-  public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
+  public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates) throws UserTimeoutException {
     for(int i = 0; i<targettableSquareCoordinates.size(); i++){
       for(int k = 0; k<targettableSquareCoordinates.get(0).size(); k++){
         System.out.println(i + k);
@@ -459,7 +460,7 @@ public class PlayerView implements ViewFacadeInterfaceRMI{
    * @return 0 for north, 1 for east, 2 for south or 3 for west
    */
   @Override
-  public Integer chooseDirection(List<Integer> possibleDirections){
+  public Integer chooseDirection(List<Integer> possibleDirections) throws UserTimeoutException {
     for(int i = 0; i<possibleDirections.size(); i++){
       System.out.println(possibleDirections.get(i));
     }

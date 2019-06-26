@@ -4,7 +4,7 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.rmi.Remote;
 import java.util.*;
@@ -78,7 +78,7 @@ public class ServerLobby implements Remote {
    * @param name name of the player
    * @param character id of the player's character
    */
-  public void connect(PlayerView client, String name, String character) {
+  public void connect(PlayerViewOnServer client, String name, String character) {
     PlayerData player;
     List<PlayerController> playerControllers = new ArrayList<>();
     PlayerController currentPlayerController = null;
@@ -109,7 +109,7 @@ public class ServerLobby implements Remote {
   }
 
   private static class PlayerData {
-    private PlayerView view;
+    private PlayerViewOnServer view;
     private Player model;
     private PlayerController controller;
 
@@ -119,11 +119,11 @@ public class ServerLobby implements Remote {
       this.controller = null;
     }
 
-    public PlayerView getView() {
+    public PlayerViewOnServer getView() {
       return view;
     }
 
-    public void setView(PlayerView view) {
+    public void setView(PlayerViewOnServer view) {
       this.view = view;
     }
 

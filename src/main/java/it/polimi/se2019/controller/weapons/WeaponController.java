@@ -4,7 +4,7 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ public abstract class WeaponController {
 
   protected Map map = getGameBoardController().getGameBoard().getMap();
 
-  public PlayerView identifyClient(Player player){
-      PlayerView client = null;
-      for(PlayerView c : gameBoardController.getClients()){
+  public PlayerViewOnServer identifyClient(Player player){
+      PlayerViewOnServer client = null;
+      for(PlayerViewOnServer c : gameBoardController.getClients()){
           if(c.getName().equals(player.getName())){
               client = c;
           }
@@ -68,7 +68,7 @@ public abstract class WeaponController {
   /**
    * Create a list of valid targets, choose targets and shoot them.
    */
-  public void fire(Player player, PlayerView client) {
+  public void fire(Player player, PlayerViewOnServer client) {
     List<Player> chosenTargets = new ArrayList<>();
 
     firingMode = selectFiringMode(client);
@@ -85,7 +85,7 @@ public abstract class WeaponController {
                       (gameBoardController.getPlayerNames(possibleTargets)));
   }
 
-  public abstract List<Boolean> selectFiringMode(PlayerView client);
+  public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client);
 
   /**
    * Find all possible targets

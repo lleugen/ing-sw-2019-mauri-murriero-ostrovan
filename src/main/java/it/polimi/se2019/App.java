@@ -44,6 +44,8 @@ public class App {
                     (String[] item) -> item[1]
                     )
             );
+
+    params.keySet().forEach(System.out::println);
   }
 
   /**
@@ -53,7 +55,7 @@ public class App {
    */
   private static void spawnServer(Map<String, String> args){
     Server server = new Server();
-    server.publishToRMI("server", 0);
+    server.publishToRMI("server", 5432);
   }
 
   /**
@@ -72,7 +74,8 @@ public class App {
       throw e;
     }
 
-    if (params.containsKey(params.get("type"))){
+    if (params.containsKey("type")){
+      System.out.println(params.get("type"));
       typeMapping.get(params.get("type")).accept(params);
     }
     else {

@@ -88,7 +88,7 @@ public class Server implements Remote {
   }
 
   /**
-   * Thrown when there are erros while connecting to the RMI registry
+   * Thrown when there are errors while connecting to the RMI registry
    */
   public static class RMIInitializationException extends RuntimeException{
     RMIInitializationException(Exception e){
