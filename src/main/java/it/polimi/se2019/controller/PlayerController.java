@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.player_state_controller.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -60,9 +61,12 @@ public class PlayerController {
   public void playTurn(Integer availableActions){
     //use power up
     for(int i = 0; i<availableActions; i++){
-      String chosenAction = client.chooseAction(state.toString());
-      if(chosenAction.equals("run")){
-        state.runAround();
+      String chosenAction;
+      try{
+        chosenAction = client.chooseAction(state.toString());
+
+        if(chosenAction.equals("run")){
+          state.runAround();
         /*
         Integer direction;
         for(int j = 0; j<2; j++){
@@ -70,16 +74,21 @@ public class PlayerController {
           player.move(player.getPosition().getAdjacencies().get(direction));
         }
         */
+        }
+        else if(chosenAction.equals("grab")){
+          state.grabStuff();
+        }
+        else if(chosenAction.equals("shoot")){
+          state.shootPeople();
+        }
+        else if(chosenAction.equals("powerUp")){
+          i--;
+          state.usePowerUp();
+        }
       }
-      else if(chosenAction.equals("grab")){
-        state.grabStuff();
-      }
-      else if(chosenAction.equals("shoot")){
-        state.shootPeople();
-      }
-      else if(chosenAction.equals("powerUp")){
-        i--;
-        state.usePowerUp();
+      catch(UserTimeoutException e){
+        //remove player from game
+        client.setConnected(false);
       }
     }
   }

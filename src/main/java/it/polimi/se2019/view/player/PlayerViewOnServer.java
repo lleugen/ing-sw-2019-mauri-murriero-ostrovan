@@ -260,6 +260,11 @@ import java.util.Scanner;
 public class PlayerViewOnServer implements ViewFacadeInterfaceRMI{
   private String name;
   private String character;
+  private boolean connected = true;
+
+  public void setConnected(boolean c){
+    connected = c;
+  }
   /**
    *
    */

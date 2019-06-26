@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.simple;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
@@ -35,8 +36,16 @@ public class WhisperController extends SimpleWeaponController {
     }
     //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
-    targets.add(gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets
-            (gameBoardController.getPlayerNames(visiblePlayers))));
+    PlayerViewOnServer client = identifyClient(shooter);
+    try{
+      targets.add(gameBoardController.identifyPlayer(client.chooseTargets
+              (gameBoardController.getPlayerNames(visiblePlayers))));
+    }
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
+    }
+
     return targets;
   }
 

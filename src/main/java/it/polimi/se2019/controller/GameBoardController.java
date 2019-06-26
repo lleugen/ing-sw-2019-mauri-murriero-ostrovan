@@ -56,6 +56,8 @@ public class GameBoardController{
   private List<Player> players;
   private List<PlayerController> playerControllers;
   private List<PlayerViewOnServer> clients;
+  public List<String> clientNames;
+  public List<String> disconnectedClientNames;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
@@ -118,6 +120,7 @@ public class GameBoardController{
     addPlayerControllers(p);
     playTurns();
     playFrenzyTurn();
+
   }
 
   /**

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
@@ -31,7 +32,15 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
         possibleDirections.add(i);
       }
     }
-    Integer direction = client.chooseDirection(possibleDirections);
+    Integer direction = 0;
+    try{
+      direction = client.chooseDirection(possibleDirections);
+    }
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
+    }
+
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
     targetSquares.add(targetSquares.get(0).getAdjacencies().get(direction).getSquare());
@@ -64,11 +73,17 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
-      //incompatible type error will be solved by change to the viewinterface
-      primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
-              (possiblePrimaryTargetsNames)));
-      secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
-              (possibleSecondaryTargetsNames)));
+      try{
+        primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
+                (possiblePrimaryTargetsNames)));
+        secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
+                (possibleSecondaryTargetsNames)));
+      }
+      catch(UserTimeoutException e){
+        //remove player from game
+        client.setConnected(false);
+      }
+
 
     }
     targets.addAll(primaryTargets);

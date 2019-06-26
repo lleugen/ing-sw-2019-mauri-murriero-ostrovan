@@ -3,6 +3,7 @@ package it.polimi.se2019.controller.weapons.ordered_effects;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.player.PlayerBoard;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,7 @@ public class ThorController extends OrderedEffectsWeaponController {
   public List<Player> findTargets(Player shooter){
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
+    PlayerViewOnServer client = identifyClient(shooter);
 
     Integer chainLength = 0;
     for(int i = 0; i<numberOfOptionalEffects; i++){
@@ -27,9 +29,16 @@ public class ThorController extends OrderedEffectsWeaponController {
       }
     }
     for(int k = 1; k<chainLength; k++){
-      targets.add(k, gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames
-                      (map.getVisiblePlayers(targets.get(k-1).getPosition())))));
+      try{
+        targets.add(k, gameBoardController.identifyPlayer
+                (client.chooseTargets(gameBoardController.getPlayerNames
+                        (map.getVisiblePlayers(targets.get(k-1).getPosition())))));
+      }
+      catch(Exception e){
+        //remove player from game
+        client.setConnected(false);
+      }
+
     }
     return targets;
   }

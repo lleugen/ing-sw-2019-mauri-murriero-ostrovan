@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.map.Direction;
@@ -30,8 +31,14 @@ public abstract class WeaponController {
   public PlayerViewOnServer identifyClient(Player player){
       PlayerViewOnServer client = null;
       for(PlayerViewOnServer c : gameBoardController.getClients()){
-          if(c.getName().equals(player.getName())){
-              client = c;
+          try{
+              if(c.getName().equals(player.getName())){
+                  client = c;
+              }
+          }
+          catch(UserTimeoutException e){
+              //remove player from game
+              client.setConnected(false);
           }
       }
       return client;
@@ -83,9 +90,17 @@ public abstract class WeaponController {
 
   protected Player chooseOneVisiblePlayer(Player shooter){
       List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
-      return gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets
-                      (gameBoardController.getPlayerNames(possibleTargets)));
+      Player p = null;
+      PlayerViewOnServer client = identifyClient(shooter);
+      try{
+          p = gameBoardController.identifyPlayer
+                  (client.chooseTargets(gameBoardController.getPlayerNames(possibleTargets)));
+      }
+      catch(UserTimeoutException e){
+          //remove player from game
+          client.setConnected(false);
+      }
+      return p;
   }
 
   public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client);

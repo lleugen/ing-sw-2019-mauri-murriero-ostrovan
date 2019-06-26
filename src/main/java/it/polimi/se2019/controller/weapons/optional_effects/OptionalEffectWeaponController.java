@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -24,8 +25,15 @@ public abstract class OptionalEffectWeaponController extends WeaponController {
   public List<Boolean> selectFiringMode(PlayerViewOnServer client){
     List<Boolean> optionalEffectFlags = new ArrayList<>();
     for(int i = 0; i<numberOfOptionalEffects; i++){
-      optionalEffectFlags.add
-              (client.chooseFiringMode("select effect" + i));
+      try{
+        optionalEffectFlags.add
+                (client.chooseFiringMode("select effect" + i));
+      }
+      catch(UserTimeoutException e){
+        //remove player from game
+        client.setConnected(false);
+      }
+
     }
     return optionalEffectFlags;
   }
