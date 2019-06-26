@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.player_state_controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.powerup.PowerUpController;
 import it.polimi.se2019.controller.weapons.WeaponController;
@@ -47,7 +48,15 @@ public abstract class PlayerStateController {
      *                  3 = west
      */
     public void move() {
-        int direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
+        int direction = 0;
+        try{
+            direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
+        }
+        catch(UserTimeoutException e){
+            //remove player from game
+            client.setConnected(false);
+        }
+
         //move the player
         if(!player.getPosition().getAdjacencies().get(direction).isBlocked()){
             player.move(player.getPosition().getAdjacencies().get(direction));
@@ -70,20 +79,29 @@ public abstract class PlayerStateController {
         for(PowerUpCard p : player.getInventory().getPowerUps()){
             powerUps.add(p.getDescription());
         }
-        int discardedCard = client.chooseSpawnLocation(powerUps);
-        if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
-            //spawn on the red spawnpoint
-            player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
+        int discardedCard;
+        try{
+            discardedCard = client.chooseSpawnLocation(powerUps);
+            if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
+                //spawn on the red spawnpoint
+                player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
+            }
+            else if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getBlue() == 1){
+                //spawn on the blue spawnpoint
+                player.respawn(gameBoardController.getGameBoard().getMap().getBlueSpawnPoint());
+            }
+            else{
+                //spawn on the yellow spawnpoint
+                player.respawn(gameBoardController.getGameBoard().getMap().getYellowSpawnPoint());
+            }
+            player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(discardedCard));
         }
-        else if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getBlue() == 1){
-            //spawn on the blue spawnpoint
-            player.respawn(gameBoardController.getGameBoard().getMap().getBlueSpawnPoint());
+        catch(UserTimeoutException e){
+            //remove player from game
+            client.setConnected(false);
         }
-        else{
-            //spawn on the yellow spawnpoint
-            player.respawn(gameBoardController.getGameBoard().getMap().getYellowSpawnPoint());
-        }
-        player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(discardedCard));
+
+
     }
 
     /**
@@ -96,7 +114,15 @@ public abstract class PlayerStateController {
         while(player.getInventory().getWeapons().iterator().hasNext()){
             weapons.add(player.getInventory().getWeapons().iterator().next().getName());
         }
-        String weapon = client.chooseWeapon(weapons);
+        String weapon = null;
+        try{
+            weapon = client.chooseWeapon(weapons);
+        }
+        catch(UserTimeoutException e){
+            //remove player from game
+            client.setConnected(false);
+        }
+
 
         WeaponController weaponController = null;
         for(WeaponController w : gameBoardController.getWeaponControllers()){
@@ -124,25 +150,32 @@ public abstract class PlayerStateController {
             playersWeapons.add(w.getName());
         }
         //choose which one to reload
-        weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
+        try{
+            weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
 
-        //get the weapon given its name
-        for(Weapon w : player.getInventory().getWeapons()){
-            if(w.getName().equals(weaponToReloadName)){
-                //choose which power up cards to use for reloading
-                List<String> powerUps = new ArrayList<>();
-                for(PowerUpCard p : player.getInventory().getPowerUps()){
-                    powerUps.add(p.getDescription());
+            //get the weapon given its name
+            for(Weapon w : player.getInventory().getWeapons()){
+                if(w.getName().equals(weaponToReloadName)){
+                    //choose which power up cards to use for reloading
+                    List<String> powerUps = new ArrayList<>();
+                    for(PowerUpCard p : player.getInventory().getPowerUps()){
+                        powerUps.add(p.getDescription());
+                    }
+                    cardsToUseIndexes = client.choosePowerUpCardsForReload(powerUps);
+                    //get the chosen cards
+                    for(int i : cardsToUseIndexes){
+                        cardsToUse.add(player.getInventory().getPowerUps().get(i));
+                    }
+                    //reload the weapon
+                    w.reload(cardsToUse, player.getInventory().getAmmo());
                 }
-                cardsToUseIndexes = client.choosePowerUpCardsForReload(powerUps);
-                //get the chosen cards
-                for(int i : cardsToUseIndexes){
-                    cardsToUse.add(player.getInventory().getPowerUps().get(i));
-                }
-                //reload the weapon
-                w.reload(cardsToUse, player.getInventory().getAmmo());
             }
         }
+        catch(UserTimeoutException e){
+            //remove player from game
+            client.setConnected(false);
+        }
+
     }
 
     /**
@@ -151,7 +184,15 @@ public abstract class PlayerStateController {
      */
     public void grab() {
         Square position = player.getPosition();
-        int index = client.chooseItemToGrab();
+        int index = 0;
+        try {
+            index = client.chooseItemToGrab();
+        }
+        catch(UserTimeoutException e){
+            //remove player from game
+            client.setConnected(false);
+        }
+
         if(position instanceof SpawnSquare){
             //return here when add to inventory method is finished
             player.getInventory().addWeaponToInventory((Weapon)position.grab(index));
@@ -169,20 +210,29 @@ public abstract class PlayerStateController {
         for(PowerUpCard p : player.getInventory().getPowerUps()){
             powerUpCardsInInventory.add(p.getDescription());
         }
-        List<Integer> powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
-        for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
-            //identify power up controller
-            PowerUpController powerUpController = null;
-            for(PowerUpController p : gameBoardController.getPowerUpControllers()){
-                if(p.getName().equals(powerUpCardsInInventory.get(i))){
-                    powerUpController = p;
+        List<Integer> powerUpCardsToUseIndex;
+        try{
+            powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
+            for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
+                //identify power up controller
+                PowerUpController powerUpController = null;
+                for(PowerUpController p : gameBoardController.getPowerUpControllers()){
+                    if(p.getName().equals(powerUpCardsInInventory.get(i))){
+                        powerUpController = p;
+                    }
                 }
-            }
-            if(powerUpController != null){
-                powerUpController.usePowerUp(player);
-            }
+                if(powerUpController != null){
+                    powerUpController.usePowerUp(player);
+                }
 
+            }
         }
+        catch(UserTimeoutException e){
+            //remove player from game
+            client.setConnected(false);
+        }
+
+
     }
 
     public static class InvalidMovementException extends RuntimeException{

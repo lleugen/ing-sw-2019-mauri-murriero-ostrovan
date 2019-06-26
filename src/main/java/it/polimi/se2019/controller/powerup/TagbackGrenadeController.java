@@ -1,7 +1,9 @@
 package it.polimi.se2019.controller.powerup;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,44 +16,54 @@ public class TagbackGrenadeController extends PowerUpController {
   public TagbackGrenadeController() {
   }
 
+  PlayerViewOnServer client;
+
   /**
    *
    */
   @Override
   public Boolean usePowerUp(Player user) {
+    client = identifyClient(user);
     Boolean used = false;
-
-    if(identifyClient(user).chooseBoolean("Do you want to use a tagback grenade?")){
-      List<String> tagbackGrenadesAvailable = new ArrayList<>();
-      for(PowerUpCard p : user.getInventory().getPowerUps()){
-        if(p.getDescription().equals("TagbackGrenadeRed")
-                | p.getDescription().equals("TagbackGrenadeBlue")
-                | p.getDescription().equals("TagbackGrenadeYellow")){
-          tagbackGrenadesAvailable.add(p.getDescription());
+    try{
+      if(client.chooseBoolean("Do you want to use a tagback grenade?")){
+        List<String> tagbackGrenadesAvailable = new ArrayList<>();
+        for(PowerUpCard p : user.getInventory().getPowerUps()){
+          if(p.getDescription().equals("TagbackGrenadeRed")
+                  | p.getDescription().equals("TagbackGrenadeBlue")
+                  | p.getDescription().equals("TagbackGrenadeYellow")){
+            tagbackGrenadesAvailable.add(p.getDescription());
+          }
         }
-      }
-      Integer chosenCardIndex;
-      PowerUpCard chosenCard = null;
-      if(tagbackGrenadesAvailable.size() > 1){
-        //choose which one to use if more than one is available
-        chosenCardIndex = identifyClient(user).chooseSpawnLocation(tagbackGrenadesAvailable);
+        Integer chosenCardIndex;
+        PowerUpCard chosenCard = null;
+        if(tagbackGrenadesAvailable.size() > 1){
+          //choose which one to use if more than one is available
+          chosenCardIndex = client.chooseSpawnLocation(tagbackGrenadesAvailable);
+        }
+        else{
+          chosenCardIndex = 0;
+        }
+        for(PowerUpCard p : user.getInventory().getPowerUps()){
+          if(p.getDescription().equals(tagbackGrenadesAvailable.get(chosenCardIndex))){
+            chosenCard = p;
+          }
+        }
+        user.getBoard().getDamageReceived().get
+                (user.getBoard().getDamageReceived().size()-1).takeMarks(user, 1);
+        user.getInventory().discardPowerUp(chosenCard);
+        used = true;
       }
       else{
-        chosenCardIndex = 0;
+        used = false;
       }
-      for(PowerUpCard p : user.getInventory().getPowerUps()){
-        if(p.getDescription().equals(tagbackGrenadesAvailable.get(chosenCardIndex))){
-          chosenCard = p;
-        }
-      }
-      user.getBoard().getDamageReceived().get
-              (user.getBoard().getDamageReceived().size()-1).takeMarks(user, 1);
-      user.getInventory().discardPowerUp(chosenCard);
-      used = true;
     }
-    else{
-      used = false;
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
     }
+
+
 
     return used;
   }
