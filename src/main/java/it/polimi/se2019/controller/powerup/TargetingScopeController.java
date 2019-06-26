@@ -1,7 +1,9 @@
 package it.polimi.se2019.controller.powerup;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,40 +16,50 @@ public class TargetingScopeController extends PowerUpController {
   public TargetingScopeController() {
   }
 
+  PlayerViewOnServer client;
+
   /**
    *
    */
   @Override
   public Boolean usePowerUp(Player user) {
+    client = identifyClient(user);
     Boolean used = false;
-    if(identifyClient(user).chooseBoolean("Do you want to use a targeting scope?")){
-      List<String> availableTargetingScopes = new ArrayList<>();
-      for(PowerUpCard card : user.getInventory().getPowerUps()){
-        if((card.getDescription().equals("TargetingScopeRed"))
-                | (card.getDescription().equals("TargetingScopeBlue"))
-                | (card.getDescription().equals("TargetingScopeYellow"))){
-          availableTargetingScopes.add(card.getDescription());
+    try{
+      if(client.chooseBoolean("Do you want to use a targeting scope?")){
+        List<String> availableTargetingScopes = new ArrayList<>();
+        for(PowerUpCard card : user.getInventory().getPowerUps()){
+          if((card.getDescription().equals("TargetingScopeRed"))
+                  | (card.getDescription().equals("TargetingScopeBlue"))
+                  | (card.getDescription().equals("TargetingScopeYellow"))){
+            availableTargetingScopes.add(card.getDescription());
+          }
         }
-      }
-      Integer chosenCardIndex;
-      PowerUpCard chosenCard = null;
-      if(availableTargetingScopes.size() > 1){
-        chosenCardIndex = identifyClient(user).chooseSpawnLocation(availableTargetingScopes);
+        Integer chosenCardIndex;
+        PowerUpCard chosenCard = null;
+        if(availableTargetingScopes.size() > 1){
+          chosenCardIndex = client.chooseSpawnLocation(availableTargetingScopes);
+        }
+        else{
+          chosenCardIndex = 0;
+        }
+        for(PowerUpCard p : user.getInventory().getPowerUps()){
+          if(p.getDescription().equals(availableTargetingScopes.get(chosenCardIndex))){
+            chosenCard = p;
+          }
+        }
+        user.getInventory().discardPowerUp(chosenCard);
+        used = true;
       }
       else{
-        chosenCardIndex = 0;
+        used = false;
       }
-      for(PowerUpCard p : user.getInventory().getPowerUps()){
-        if(p.getDescription().equals(availableTargetingScopes.get(chosenCardIndex))){
-          chosenCard = p;
-        }
-      }
-      user.getInventory().discardPowerUp(chosenCard);
-      used = true;
     }
-    else{
-      used = false;
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
     }
+
 
     return used;
   }

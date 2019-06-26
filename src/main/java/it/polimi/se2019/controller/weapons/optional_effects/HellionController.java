@@ -1,20 +1,25 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HellionController extends OptionalEffectWeaponController {
   public HellionController(GameBoardController g) {
+    super(g);
     name = "HellionController";
     numberOfOptionalEffects = 2;
-    gameBoardController = g;
   }
+
+  PlayerViewOnServer client;
 
   @Override
   public List<Player> findTargets(Player shooter){
+    client = identifyClient(shooter);
     //choose one target player at least one move away
     List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
     for(Player p : possibleTargets){
@@ -23,9 +28,16 @@ public class HellionController extends OptionalEffectWeaponController {
       }
     }
     List<Player> targets = new ArrayList<>();
-    targets.add(gameBoardController.identifyPlayer
-            (identifyClient(shooter).chooseTargets
-                    (gameBoardController.getPlayerNames(possibleTargets))));
+    try{
+      targets.add(gameBoardController.identifyPlayer
+              (identifyClient(shooter).chooseTargets
+                      (gameBoardController.getPlayerNames(possibleTargets))));
+    }
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
+    }
+
     return targets;
   }
 

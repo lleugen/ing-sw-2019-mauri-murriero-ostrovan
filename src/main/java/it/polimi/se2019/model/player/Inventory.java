@@ -26,7 +26,7 @@ public class Inventory {
   /**
    * Reference to the decks
    */
-  private Decks decksReference;
+  public Decks decksReference;
   /**
    * The player's ammo box
    */

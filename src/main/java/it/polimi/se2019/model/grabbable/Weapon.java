@@ -2,6 +2,8 @@ package it.polimi.se2019.model.grabbable;
 
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.player.Player;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -270,6 +272,7 @@ public class Weapon extends Grabbable {
       int redPowerUpCards = 0;
       int bluePowerUpCards = 0;
       int yellowPowerUpCards = 0;
+      List<PowerUpCard> powerUpCardsToDiscard = new ArrayList<>();
       for(PowerUpCard powerUp : powerUpCards){
         if((powerUp.getAmmoEquivalent().getRed() == 1)&(powerUp.getAmmoEquivalent().getBlue() == 0)&(powerUp.getAmmoEquivalent().getYellow() == 0)){
           redPowerUpCards ++;
@@ -280,7 +283,10 @@ public class Weapon extends Grabbable {
         else if((powerUp.getAmmoEquivalent().getYellow() == 1)&(powerUp.getAmmoEquivalent().getRed() == 0)&(powerUp.getAmmoEquivalent().getBlue() == 0)){
           yellowPowerUpCards ++;
         }
-        this.owner.getInventory().discardPowerUp(powerUp);
+        powerUpCardsToDiscard.add(powerUp);
+      }
+      for(PowerUpCard p : powerUpCardsToDiscard){
+        this.owner.getInventory().discardPowerUp(p);
       }
       try{
         playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);

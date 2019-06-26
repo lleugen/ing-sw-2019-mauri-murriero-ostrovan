@@ -1,7 +1,9 @@
 package it.polimi.se2019.controller.weapons;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
+import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -18,17 +20,25 @@ public abstract class WeaponController {
   protected GameBoardController gameBoardController;
   protected String name;
   protected List<Boolean> firingMode;
+  protected Map map;
 
-  public WeaponController(){
+  public WeaponController(GameBoardController gbc){
+      gameBoardController = gbc;
+      map = gameBoardController.getGameBoard().getMap();
   }
 
-  protected Map map = getGameBoardController().getGameBoard().getMap();
 
   public PlayerViewOnServer identifyClient(Player player){
       PlayerViewOnServer client = null;
       for(PlayerViewOnServer c : gameBoardController.getClients()){
-          if(c.getName().equals(player.getName())){
-              client = c;
+          try{
+              if(c.getName().equals(player.getName())){
+                  client = c;
+              }
+          }
+          catch(UserTimeoutException e){
+              //remove player from game
+              client.setConnected(false);
           }
       }
       return client;
@@ -80,9 +90,17 @@ public abstract class WeaponController {
 
   protected Player chooseOneVisiblePlayer(Player shooter){
       List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
-      return gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets
-                      (gameBoardController.getPlayerNames(possibleTargets)));
+      Player p = null;
+      PlayerViewOnServer client = identifyClient(shooter);
+      try{
+          p = gameBoardController.identifyPlayer
+                  (client.chooseTargets(gameBoardController.getPlayerNames(possibleTargets)));
+      }
+      catch(UserTimeoutException e){
+          //remove player from game
+          client.setConnected(false);
+      }
+      return p;
   }
 
   public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client);

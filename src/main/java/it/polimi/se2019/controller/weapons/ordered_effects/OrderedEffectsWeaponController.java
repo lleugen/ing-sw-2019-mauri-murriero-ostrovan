@@ -1,5 +1,7 @@
 package it.polimi.se2019.controller.weapons.ordered_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
@@ -14,7 +16,8 @@ import java.util.List;
  * can be applied only if they satisfy particular conditions.
  */
 public abstract class OrderedEffectsWeaponController extends WeaponController {
-  public OrderedEffectsWeaponController() {
+  public OrderedEffectsWeaponController(GameBoardController g) {
+    super(g);
 
   }
   protected Integer numberOfOptionalEffects;
@@ -24,15 +27,24 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
     for(int i = 0; i<numberOfOptionalEffects; i++){
       effects.add("effect"+i);
     }
-    Integer chosenEffect = client.chooseIndex(effects);
-    for(int k = 0; k<numberOfOptionalEffects; k++){
-      if(k<=chosenEffect){
-        firingModeFlags.add(k, true);
-      }
-      else{
-        firingModeFlags.add(k, false);
+
+    Integer chosenEffect;
+    try{
+      chosenEffect = client.chooseIndex("Thor", effects);
+      for(int k = 0; k<numberOfOptionalEffects; k++){
+        if(k<=chosenEffect){
+          firingModeFlags.add(k, true);
+        }
+        else{
+          firingModeFlags.add(k, false);
+        }
       }
     }
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
+    }
+
     return firingModeFlags;
   }
 }

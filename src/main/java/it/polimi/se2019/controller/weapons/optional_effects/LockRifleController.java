@@ -8,9 +8,9 @@ import java.util.List;
 
 public class LockRifleController extends OptionalEffectWeaponController {
   public LockRifleController(GameBoardController g) {
+    super(g);
     name = "LockRifleController";
     numberOfOptionalEffects = 2;
-    gameBoardController = g;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.player_state_controller.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -30,12 +31,24 @@ public class PlayerController {
     gameBoardController = g;
     client = c;
     player = p;
-    stateControllerList.add(new NormalStateController(g, p, c));
-    stateControllerList.add(new Adrenaline1StateController(g, p, c));
-    stateControllerList.add(new Adrenaline2StateController(g, p, c));
-    stateControllerList.add(new FirstFreneticStateController(g, p, c));
-    stateControllerList.add(new SecondFreneticStateController(g, p, c));
+    stateControllerList.add(0, new NormalStateController(g, p, c));
+    stateControllerList.add(1, new Adrenaline1StateController(g, p, c));
+    stateControllerList.add(2, new Adrenaline2StateController(g, p, c));
+    stateControllerList.add(3, new FirstFreneticStateController(g, p, c));
+    stateControllerList.add(4, new SecondFreneticStateController(g, p, c));
     state = stateControllerList.get(0);
+  }
+
+  /**
+   * @param index indicates one state in the stateControllerList
+   *              0 : normal state
+   *              1 : adrenaline 1 state
+   *              2 : adrenaline 2 state
+   *              3 : first frenetic state (taking frenzy turn before player 0)
+   *              4 : second frenetic state (taking frenzy turn after player 0)
+   */
+  public void setState(Integer index){
+    state = stateControllerList.get(index);
   }
 
   public PlayerStateController getState(){
@@ -48,26 +61,34 @@ public class PlayerController {
   public void playTurn(Integer availableActions){
     //use power up
     for(int i = 0; i<availableActions; i++){
-      String chosenAction = client.chooseAction(state.toString());
-      if(chosenAction.equals("run")){
-        state.runAround();
+      String chosenAction;
+      try{
+        chosenAction = client.chooseAction(state.toString());
+
+        if(chosenAction.equals("run")){
+          state.runAround();
         /*
         Integer direction;
         for(int j = 0; j<2; j++){
-          direction = client.chooseDirection();
+          direction = view.chooseDirection();
           player.move(player.getPosition().getAdjacencies().get(direction));
         }
         */
+        }
+        else if(chosenAction.equals("grab")){
+          state.grabStuff();
+        }
+        else if(chosenAction.equals("shoot")){
+          state.shootPeople();
+        }
+        else if(chosenAction.equals("powerUp")){
+          i--;
+          state.usePowerUp();
+        }
       }
-      else if(chosenAction.equals("grab")){
-        state.grabStuff();
-      }
-      else if(chosenAction.equals("shoot")){
-        state.shootPeople();
-      }
-      else if(chosenAction.equals("powerUp")){
-        i--;
-        state.usePowerUp();
+      catch(UserTimeoutException e){
+        //remove player from game
+        client.setConnected(false);
       }
     }
   }

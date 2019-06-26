@@ -21,6 +21,12 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   private String name;
   private String character;
 
+  private boolean connected = true;
+
+  public void setConnected(boolean c){
+    connected = c;
+  }
+
   /**
    * RMI Reference to the connected player
    */

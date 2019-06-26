@@ -1,5 +1,7 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -14,6 +16,9 @@ import java.util.List;
  * Alternative effect weapons have two mutually exclusive firing methods.
  */
 public abstract class AlternativeEffectWeaponController extends WeaponController {
+  public AlternativeEffectWeaponController(GameBoardController g) {
+    super(g);
+  }
   /**
    * Make a list of all possible targets.
    */
@@ -23,7 +28,15 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
   @Override
   public List<Boolean> selectFiringMode(PlayerViewOnServer client){
     List<Boolean> firingMode = new ArrayList<>();
-    Boolean clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for powered");
+    Boolean clientChoice = false;
+    try{
+      clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for powered");
+    }
+    catch(UserTimeoutException e){
+      //remove player from game
+      client.setConnected(false);
+    }
+
     if(clientChoice){
       firingMode.add(false);
       firingMode.add(true);

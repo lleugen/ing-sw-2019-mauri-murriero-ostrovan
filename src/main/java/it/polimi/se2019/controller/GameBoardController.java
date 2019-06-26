@@ -23,6 +23,8 @@ public class GameBoardController{
   public GameBoardController(GameBoard g) {
     gameBoard = g;
     isReady = false;
+    weaponControllers = new ArrayList<>();
+    powerUpControllers = new ArrayList<>();
     weaponControllers.add(new CyberBladeController(this));
     weaponControllers.add(new ElectroscytheController(this));
     weaponControllers.add(new PlasmaGunController(this));
@@ -54,6 +56,8 @@ public class GameBoardController{
   private List<Player> players;
   private List<PlayerController> playerControllers;
   private List<PlayerViewOnServer> clients;
+  public List<String> clientNames;
+  public List<String> disconnectedClientNames;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
@@ -116,6 +120,7 @@ public class GameBoardController{
     addPlayerControllers(p);
     playTurns();
     playFrenzyTurn();
+
   }
 
   /**
@@ -123,8 +128,9 @@ public class GameBoardController{
    * turn, replaces resources that have been picked up during a turn and
    * resolves player deaths.
    */
+  int currentPlayer = 0;
   public void playTurns() {
-    int currentPlayer = 0;
+    currentPlayer = 0;
     while(gameBoard.getKillScoreBoard().gameRunning()){
       playerControllers.get(currentPlayer).
               playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
@@ -142,5 +148,25 @@ public class GameBoardController{
    */
   public void playFrenzyTurn() {
     //player the last turn and end the game
+    gameBoard.setFrenzy();
+    for(Player p : players){
+      if(p.getBoard().getDamageReceived().isEmpty()){
+        p.getBoard().turnAround();
+      }
+    }
+    for(int i = currentPlayer; i<players.size(); i++){
+      playerControllers.get(i).setState(3);
+    }
+    for(int i = 0; i<currentPlayer; i++){
+      playerControllers.get(i).setState(4);
+    }
+    for(int i = 0; i<players.size(); i++){
+      playerControllers.get(currentPlayer).playTurn
+              (playerControllers.get(currentPlayer).getState().getAvailableActions());
+      currentPlayer++;
+      if(currentPlayer == players.size()){
+        currentPlayer = 0;
+      }
+    }
   }
 }

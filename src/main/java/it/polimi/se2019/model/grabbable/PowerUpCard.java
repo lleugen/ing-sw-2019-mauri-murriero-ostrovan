@@ -27,7 +27,7 @@ public class PowerUpCard extends Grabbable {
    * The description of the power-up
    */
   private String description;
-  
+
   /**
    * @return The value of the power-up in Ammos
    */

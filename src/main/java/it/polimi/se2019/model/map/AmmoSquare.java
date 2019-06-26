@@ -5,6 +5,7 @@ import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.Grabbable;
 import it.polimi.se2019.model.player.Inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,13 @@ public class AmmoSquare extends Square {
    * The list of Ammos of PowerUps placed on this square
    */
   private AmmoTile ammos;
+
+  @Override
+  public List<Grabbable> getItem(){
+    List content = new ArrayList();
+    content.add(ammos);
+    return content;
+  }
 
   /**
    * Grab items from the square

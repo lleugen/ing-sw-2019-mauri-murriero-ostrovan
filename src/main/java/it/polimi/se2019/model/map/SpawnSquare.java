@@ -27,6 +27,12 @@ public class SpawnSquare extends Square {
    */
   private List<Weapon> weaponList;
 
+  @Override
+  public List<Grabbable> getItem(){
+    List content = weaponList;
+    return content;
+  }
+
   /**
    * @return The list of weapons available in this square
    */
