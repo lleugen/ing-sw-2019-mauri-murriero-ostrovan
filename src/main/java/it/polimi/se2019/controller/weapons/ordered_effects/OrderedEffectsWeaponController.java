@@ -30,7 +30,7 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
 
     Integer chosenEffect;
     try{
-      chosenEffect = client.chooseIndex("Thor", effects);
+      chosenEffect = client.chooseIndex(effects);
       for(int k = 0; k<numberOfOptionalEffects; k++){
         if(k<=chosenEffect){
           firingModeFlags.add(k, true);

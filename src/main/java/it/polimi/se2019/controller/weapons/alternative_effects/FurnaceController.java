@@ -5,7 +5,6 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
-import sun.plugin2.jvm.ProcessLauncher;
 
 import java.util.ArrayList;
 import java.util.List;

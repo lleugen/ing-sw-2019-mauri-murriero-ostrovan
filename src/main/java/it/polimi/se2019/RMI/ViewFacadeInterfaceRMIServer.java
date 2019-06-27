@@ -3,7 +3,7 @@ package it.polimi.se2019.RMI;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface ViewFacadeInterfaceRMIServer extends ViewFacadeInterfaceRMI{
+public interface ViewFacadeInterfaceRMIServer {
     /**
      *
      */

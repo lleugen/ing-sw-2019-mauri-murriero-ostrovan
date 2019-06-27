@@ -4,7 +4,6 @@ import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIServer;
-import it.polimi.se2019.view.PlayerOnClient;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -14,8 +13,6 @@ import java.util.List;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TransferQueue;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   private String name;
@@ -30,7 +27,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   /**
    * RMI Reference to the connected player
    */
-  private ViewFacadeInterfaceRMI connectedPlayer;
+  private ViewFacadeInterfaceRMIClient connectedPlayer;
 
   /**
    *
@@ -41,7 +38,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
    */
   public PlayerViewOnServer(String user, String host) throws InitializationError {
     try {
-      this.connectedPlayer = (ViewFacadeInterfaceRMI) Naming.lookup(
+      this.connectedPlayer = (ViewFacadeInterfaceRMIClient) Naming.lookup(
               "//" + host + "/players/" + user
       );
     }

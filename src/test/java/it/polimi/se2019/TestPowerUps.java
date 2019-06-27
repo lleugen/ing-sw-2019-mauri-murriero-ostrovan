@@ -4,7 +4,7 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerView;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TestPowerUps {
     @Mock
-    PlayerView client;
+    PlayerViewOnServer client;
 
     GameBoard gameBoard = new GameBoard(0);
     Player player = new Player("playerName", "playerCharacter", gameBoard);

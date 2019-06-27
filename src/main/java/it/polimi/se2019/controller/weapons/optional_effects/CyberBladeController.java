@@ -55,7 +55,7 @@ public class CyberBladeController extends OptionalEffectWeaponController {
     try{
       while(firingMode.contains(true)){
         //choose which effect to apply
-        chosenEffect = client.chooseIndex("CyberBlade", availableEffects);
+        chosenEffect = client.chooseIndex(availableEffects);
         firingMode.set(chosenEffect, false);
         if(chosenEffect == 0 || chosenEffect == 2){
           targets = findTargets(shooter);

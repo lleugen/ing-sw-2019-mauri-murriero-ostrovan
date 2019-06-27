@@ -31,15 +31,9 @@ public abstract class WeaponController {
   public PlayerViewOnServer identifyClient(Player player){
       PlayerViewOnServer client = null;
       for(PlayerViewOnServer c : gameBoardController.getClients()){
-          try{
-              if(c.getName().equals(player.getName())){
-                  client = c;
-              }
-          }
-          catch(UserTimeoutException e){
-              //remove player from game
-              client.setConnected(false);
-          }
+        if(c.getName().equals(player.getName())){
+          client = c;
+        }
       }
       return client;
   }

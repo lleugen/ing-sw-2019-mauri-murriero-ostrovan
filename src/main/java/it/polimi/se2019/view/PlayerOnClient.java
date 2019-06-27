@@ -30,7 +30,7 @@ public class PlayerOnClient extends UnicastRemoteObject
    */
   public PlayerOnClient(String user, String host)
           throws RemoteException, MalformedURLException {
-    ViewFacadeInterfaceRMI test = this;
+    ViewFacadeInterfaceRMIClient test = this;
     Naming.rebind("//" + host + "/players/" + user, test);
   }
 
