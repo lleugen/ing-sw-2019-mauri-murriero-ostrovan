@@ -64,6 +64,20 @@ public class PlayerController {
   }
 
   /**
+   * @return the name of the player linked to this controller
+   */
+  public String getName(){
+    return this.player.getName();
+  }
+
+  /**
+   * @return A reference to the player linked to this controller
+   */
+  public Player getPlayer(){
+    return this.player;
+  }
+
+  /**
    * Take turn
    */
   public void playTurn(Integer availableActions){

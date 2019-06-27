@@ -1,18 +1,20 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.RMI.ServerLobbyInterface;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
-import it.polimi.se2019.model.server.ServerLobby;
-import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "App";
 
   public Client(String host){
     System.out.println("Hi");
@@ -20,11 +22,15 @@ public class Client {
       Scanner scanner = new Scanner(System.in);
       System.out.println("Choose name.");
       String name = scanner.nextLine();
-      PlayerOnClient client = new PlayerOnClient(name, host);
+      new PlayerOnClient(name, host);
       this.findLobby(host, name);
     }
     catch (RemoteException | MalformedURLException e){
-      e.printStackTrace();
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.SEVERE,
+              "Error while connecting to server",
+              e
+      );
     }
   }
 
@@ -40,8 +46,11 @@ public class Client {
       lobby.connect(client);
     }
     catch (Exception e) {
-      System.err.println("client exception:");
-      e.printStackTrace();
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.SEVERE,
+              "Error while starting RMI server",
+              e
+      );
     }
   }
 }

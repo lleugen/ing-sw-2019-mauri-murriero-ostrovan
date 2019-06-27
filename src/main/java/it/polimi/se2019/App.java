@@ -11,9 +11,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class App {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "App";
+
   /**
    * Contains actions for param type (what type of program should be spawned)
    */
@@ -63,7 +70,11 @@ public class App {
         Server server = new Server(args.get("host"));
       }
       catch (RemoteException | MalformedURLException e){
-        e.printStackTrace();
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while starting RMI server",
+                e
+        );
         throw new WrongArguments("Unable to start RMI server");
       }
     }
@@ -89,18 +100,14 @@ public class App {
   /**
    * Type: server, client
    * @param args
+   *
+   * @throws WrongArguments If passed args are invalid
    */
   public static void main(String[] args) {
     params = new HashMap<>();
     initMapping();
 
-    try {
-      initParams(args);
-    }
-    catch (WrongArguments e){
-      // TODO: if necessary, implement additional logic here
-      throw e;
-    }
+    initParams(args);
 
     if (params.containsKey("type")){
       typeMapping.get(params.get("type")).accept(params);

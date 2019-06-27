@@ -11,7 +11,9 @@ import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The game board controller is the game manager, it initializes a game by
@@ -23,8 +25,10 @@ public class GameBoardController{
   public GameBoardController(GameBoard g) {
     gameBoard = g;
     isReady = false;
-    weaponControllers = new ArrayList<>();
-    powerUpControllers = new ArrayList<>();
+    weaponControllers = new LinkedList<>();
+    powerUpControllers = new LinkedList<>();
+    players = new LinkedList<>();
+
     weaponControllers.add(new CyberBladeController(this));
     weaponControllers.add(new ElectroscytheController(this));
     weaponControllers.add(new PlasmaGunController(this));
@@ -56,8 +60,8 @@ public class GameBoardController{
   private List<Player> players;
   private List<PlayerController> playerControllers;
   private List<PlayerViewOnServer> clients;
-  public List<String> clientNames;
-  public List<String> disconnectedClientNames;
+  private List<String> clientNames;
+  private List<String> disconnectedClientNames;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
@@ -90,7 +94,14 @@ public class GameBoardController{
    * add the player controllers to the game and set isReady to true so that the game can start
    */
   public void addPlayerControllers(List<PlayerController> c){
-    playerControllers = c;
+
+    playerControllers = new LinkedList<>(c);
+    players = c.stream()
+            .map(PlayerController::getPlayer)
+            .collect(Collectors.toList());
+    clientNames = c.stream()
+            .map(PlayerController::getName)
+            .collect(Collectors.toList());
     isReady = true;
   }
 
@@ -105,11 +116,7 @@ public class GameBoardController{
   }
 
   public List<String> getPlayerNames(List<Player> players){
-      List<String> names = new ArrayList<>();
-      for(Player p : players){
-          names.add(p.getName());
-      }
-      return names;
+      return new LinkedList<>(this.clientNames);
   }
 
   /**
