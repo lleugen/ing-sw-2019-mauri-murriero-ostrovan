@@ -57,4 +57,24 @@ public class TestMap {
       }
     }
   }
+
+  @Test
+  public void testDecks(){
+    GameBoard gameBoard = new GameBoard(0);
+    Map map = gameBoard.getMap();
+    assert(map.getGameBoard().getDecks() != null);
+  }
+
+  @Test
+  public void testRefill(){
+    GameBoard gameBoard = new GameBoard(0);
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<4; j++){
+        if(gameBoard.getMap().getMapSquares()[i][j] != null){
+          assert(gameBoard.getMap().getMapSquares()[i][j].getItem().get(0) != null);
+        }
+      }
+    }
+  }
+
 }

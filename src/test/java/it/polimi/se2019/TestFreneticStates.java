@@ -25,9 +25,8 @@ import static org.mockito.Matchers.any;
 public class TestFreneticStates {
     @Mock
     PlayerViewOnServer client;
-    @Mock
-    Decks decksReference;
     GameBoard gameBoard = new GameBoard(0);
+    Decks decksReference = gameBoard.getDecks();
     Player player = new Player("playerName", "playerCharacter", gameBoard);
     Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
     GameBoardController gameBoardController = new GameBoardController(gameBoard);
@@ -45,10 +44,9 @@ public class TestFreneticStates {
 
             Mockito.when(client.chooseTargetSquare(twoMovesAwayCoordinates)).thenReturn(twoMovesAwayCoordinates.get(0));
             Mockito.when(client.chooseItemToGrab()).thenReturn(0);
-            PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
-            Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
 
             playerController.setState(3);
+            twoMovesAway.get(0).refill();
             Grabbable item = twoMovesAway.get(0).getItem().get(0);
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
@@ -59,7 +57,7 @@ public class TestFreneticStates {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(!player.getInventory().getPowerUps().isEmpty());
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));

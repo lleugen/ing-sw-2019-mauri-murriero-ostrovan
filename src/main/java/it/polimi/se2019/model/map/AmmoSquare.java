@@ -20,6 +20,7 @@ public class AmmoSquare extends Square {
    */
   public AmmoSquare(Map m, String roomId, List<Direction> adjacencies) {
     super(m, roomId, adjacencies);
+    ammos = null;
   }
 
   /**
@@ -32,6 +33,10 @@ public class AmmoSquare extends Square {
     List content = new ArrayList();
     content.add(ammos);
     return content;
+  }
+
+  public AmmoTile getAmmos(){
+    return ammos;
   }
 
   /**
@@ -54,7 +59,12 @@ public class AmmoSquare extends Square {
   public void refill(){
     //draw an ammo tile from the ammo tile deck
     if(ammos == null){
-      ammos = getDecks().drawAmmoTile();
+      if(map.getGameBoard().getDecks() != null){
+        ammos = map.getGameBoard().getDecks().drawAmmoTile();
+      }
+      else{
+        System.err.println("decks is null");
+      }
     }
   }
 }
