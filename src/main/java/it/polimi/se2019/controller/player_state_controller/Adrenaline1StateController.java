@@ -9,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Adrenaline1StateController extends PlayerStateController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "Adrenaline1StateController" +
-          "";
   public Adrenaline1StateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);
     availableActions = 2;

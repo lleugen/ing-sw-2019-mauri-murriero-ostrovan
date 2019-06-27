@@ -330,6 +330,12 @@ public class Weapon extends Grabbable {
   }
 
   /**
+   * @return true if the weapon is unloaded, false if it is loaded
+   */
+  public boolean isUnloaded() {
+    return !(this.loaded);
+  }
+  /**
    * @return The current owner of the WeaponController
    */
   public Player getOwner() {

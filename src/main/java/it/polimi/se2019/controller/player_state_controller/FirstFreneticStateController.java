@@ -12,16 +12,9 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class FirstFreneticStateController extends PlayerStateController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
-
   public FirstFreneticStateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g,p,c);
     availableActions = 2;
@@ -81,35 +74,16 @@ public class FirstFreneticStateController extends PlayerStateController {
    *
    */
   public void shootPeople() throws UserTimeoutException {
-      Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
-      if(direction != -1){
-        player.move(player.getPosition().getAdjacencies().get(direction));
-      }
-      //reload
-      if(client.chooseBoolean("Do you want to reload a weapon?")){
-        List<String> weaponsToReload = new ArrayList<>();
-        List<Integer> powerUpsForReloadIndex = new ArrayList<>();
-        List<PowerUpCard> powerUpsForReload = new ArrayList<>();
-        List<String> availablePowerUps = new ArrayList<>();
-        for(Weapon w : player.getInventory().getWeapons()){
-          if(!w.isLoaded()){
-            weaponsToReload.add(w.getName());
-          }
-        }
-        String weaponToReload = client.chooseWeaponToReload(weaponsToReload);
-        for(Weapon w : player.getInventory().getWeapons()){
-          if(w.getName().equals(weaponToReload)){
-            for(PowerUpCard p : player.getInventory().getPowerUps()){
-              availablePowerUps.add(p.getDescription());
-            }
-            powerUpsForReloadIndex = client.choosePowerUpCardsForReload(availablePowerUps);
-            for(int i = 0; i<powerUpsForReloadIndex.size(); i++){
-              powerUpsForReload.add(player.getInventory().getPowerUps().get(powerUpsForReloadIndex.get(i)));
-            }
-            w.reload(powerUpsForReload, player.getInventory().getAmmo());
-          }
-        }
-      }
+    Integer direction = client.chooseDirection(
+            map.getOpenDirections(
+                    player.getPosition()
+            )
+    );
+    if(direction != -1){
+      player.move(player.getPosition().getAdjacencies().get(direction));
+    }
+
+    player.reloadWeapon(client);
 
     shoot();
   }

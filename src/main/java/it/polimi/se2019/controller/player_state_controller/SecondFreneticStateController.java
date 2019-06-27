@@ -2,8 +2,6 @@ package it.polimi.se2019.controller.player_state_controller;
 
 import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -11,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SecondFreneticStateController extends PlayerStateController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public SecondFreneticStateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);
     availableActions = 1;
@@ -58,7 +49,7 @@ public class SecondFreneticStateController extends PlayerStateController {
    */
   @Override
   public void runAround(){
-
+    // Not implemented in game
   }
 
   /**
@@ -73,32 +64,13 @@ public class SecondFreneticStateController extends PlayerStateController {
     }
     List<Integer> moveToCoordinates;
     moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
-    player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
-    //reload
-    if(client.chooseBoolean("Do you want to reload a weapon?")){
-      List<String> weaponsToReload = new ArrayList<>();
-      List<Integer> powerUpsForReloadIndex = new ArrayList<>();
-      List<PowerUpCard> powerUpsForReload = new ArrayList<>();
-      List<String> availablePowerUps = new ArrayList<>();
-      for(Weapon w : player.getInventory().getWeapons()){
-        if(!w.isLoaded()){
-          weaponsToReload.add(w.getName());
-        }
-      }
-      String weaponToReload = client.chooseWeaponToReload(weaponsToReload);
-      for(Weapon w : player.getInventory().getWeapons()){
-        if(w.getName().equals(weaponToReload)){
-          for(PowerUpCard p : player.getInventory().getPowerUps()){
-            availablePowerUps.add(p.getDescription());
-          }
-          powerUpsForReloadIndex = client.choosePowerUpCardsForReload(availablePowerUps);
-          for(int i = 0; i<powerUpsForReloadIndex.size(); i++){
-            powerUpsForReload.add(player.getInventory().getPowerUps().get(powerUpsForReloadIndex.get(i)));
-          }
-          w.reload(powerUpsForReload, player.getInventory().getAmmo());
-        }
-      }
-    }
+    player.moveToSquare(
+            map.getMapSquares()
+                    [moveToCoordinates.get(0)]
+                    [moveToCoordinates.get(1)]
+    );
+
+    player.reloadWeapon(client);
 
     shoot();
   }
