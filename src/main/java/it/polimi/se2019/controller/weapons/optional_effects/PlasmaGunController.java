@@ -7,8 +7,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PlasmaGunController extends OptionalEffectWeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public PlasmaGunController(GameBoardController g) {
     super(g);
     name = "PlasmaGunController";
@@ -46,15 +53,15 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
         chosenEffect = identifyClient(shooter).chooseIndex(availableEffects);
         firingMode.set(chosenEffect, false);
         if(chosenEffect == 0){
-          targets = findTargets(shooter);
-          targets.get(0).takeDamage(shooter, 2);
+          List<Player> foundTargets = findTargets(shooter);
+          foundTargets.get(0).takeDamage(shooter, 2);
           //add one more point of damage if the player chooses to use a targeting scope
           if(useTargetingScope(shooter)){
-            targets.get(0).takeDamage(shooter, 1);
+            foundTargets.get(0).takeDamage(shooter, 1);
           }
           //if the damaged target has a tagback gredade, he/she can use it now
           useTagbackGrenade(targets.get(0));
-          target = targets.get(0);
+          target = foundTargets.get(0);
         }
         else if(chosenEffect == 1){
           for(int i = 0; i<2; i++){
@@ -74,8 +81,12 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
 
   }

@@ -10,12 +10,18 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * WeaponController is an abstract class with a template "fire" method
  * and non implemented findTargets and shootTargets
  */
 public abstract class WeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
 
   protected GameBoardController gameBoardController;
   protected String name;
@@ -91,8 +97,11 @@ public abstract class WeaponController {
                   (client.chooseTargets(gameBoardController.getPlayerNames(possibleTargets)));
       }
       catch(UserTimeoutException e){
-          //remove player from game
-          client.setConnected(false);
+          Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
       }
       return p;
   }

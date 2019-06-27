@@ -7,8 +7,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CyberBladeController extends OptionalEffectWeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public CyberBladeController(GameBoardController g) {
     super(g);
     name = "CyberBladeController";
@@ -30,8 +37,12 @@ public class CyberBladeController extends OptionalEffectWeaponController {
                       (gameBoardController.getPlayerNames(playersOnSquare))));
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
 
     return targets;
@@ -58,8 +69,8 @@ public class CyberBladeController extends OptionalEffectWeaponController {
         chosenEffect = client.chooseIndex(availableEffects);
         firingMode.set(chosenEffect, false);
         if(chosenEffect == 0 || chosenEffect == 2){
-          targets = findTargets(shooter);
-          for(Player p : targets){
+          List<Player> foundTargets = findTargets(shooter);
+          for(Player p : foundTargets){
             p.takeDamage(shooter, 2);
             //add one more point of damage if the player chooses to use a targeting scope
             if(useTargetingScope(shooter)){
@@ -77,8 +88,12 @@ public class CyberBladeController extends OptionalEffectWeaponController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
 
   }

@@ -8,8 +8,16 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ShotgunController extends AlternativeEffectWeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ShotgunController";
+
+
   public ShotgunController(GameBoardController g) {
     super(g);
     name = "ShotgunController";
@@ -44,8 +52,12 @@ public class ShotgunController extends AlternativeEffectWeaponController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
 
     return targets;
@@ -77,8 +89,11 @@ public class ShotgunController extends AlternativeEffectWeaponController {
         targets.get(0).moveToSquare(targetSquare);
       }
       catch(UserTimeoutException e){
-        //remove player from game
-        client.setConnected(false);
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
       }
 
     }

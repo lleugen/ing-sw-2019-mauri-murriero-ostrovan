@@ -7,12 +7,19 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The targeting scope allows a player to spend one ammo of any kind to
  * add one damage to an attack.
  */
 public class TargetingScopeController extends PowerUpController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public TargetingScopeController() {
   }
 
@@ -56,8 +63,12 @@ public class TargetingScopeController extends PowerUpController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+            Level.WARNING,
+            "Client Disconnected",
+            e
+        );
     }
 
 

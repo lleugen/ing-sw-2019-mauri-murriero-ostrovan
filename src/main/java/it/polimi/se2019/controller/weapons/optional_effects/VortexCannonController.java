@@ -8,8 +8,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VortexCannonController extends OptionalEffectWeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public VortexCannonController(GameBoardController g) {
     super(g);
     name = "VortexCannonController";
@@ -42,8 +49,12 @@ public class VortexCannonController extends OptionalEffectWeaponController {
       oneMoveAwayFromvortex.remove(targets.get(0));
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
     return targets;
   }
@@ -88,8 +99,12 @@ public class VortexCannonController extends OptionalEffectWeaponController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
 
   }

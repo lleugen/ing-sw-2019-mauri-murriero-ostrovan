@@ -7,8 +7,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TagbackGrenadeController extends PowerUpController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   /**
    * The tagback grenade can be used when taking damage to assign a mark
    * to the offender.
@@ -59,8 +66,12 @@ public class TagbackGrenadeController extends PowerUpController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+      Logger.getLogger(LOG_NAMESPACE).log(
+          Level.WARNING,
+          "Client Disconnected",
+          e
+      );
     }
 
 

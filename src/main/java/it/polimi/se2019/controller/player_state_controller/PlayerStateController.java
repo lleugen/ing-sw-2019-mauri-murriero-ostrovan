@@ -15,8 +15,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public abstract class PlayerStateController {
+    /**
+     * Namespace this class logs to
+     */
+    private static final String LOG_NAMESPACE = "PlayerStateController";
 
     protected Player player;
     protected PlayerViewOnServer client;
@@ -53,8 +60,11 @@ public abstract class PlayerStateController {
             direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
         }
         catch(UserTimeoutException e){
-            //remove player from game
-            client.setConnected(false);
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
         }
 
         //move the player
@@ -97,8 +107,11 @@ public abstract class PlayerStateController {
             player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(discardedCard));
         }
         catch(UserTimeoutException e){
-            //remove player from game
-            client.setConnected(false);
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
         }
 
 
@@ -110,28 +123,27 @@ public abstract class PlayerStateController {
      * choose targets and fire.
      */
     public void shoot() {
-        List<String> weapons = new ArrayList<>();
-        while(player.getInventory().getWeapons().iterator().hasNext()){
-            weapons.add(player.getInventory().getWeapons().iterator().next().getName());
-        }
-        String weapon = null;
-        try{
-            weapon = client.chooseWeapon(weapons);
-        }
-        catch(UserTimeoutException e){
-            //remove player from game
-            client.setConnected(false);
-        }
+        List<String> weapons = player.getInventory().getWeapons().stream()
+                .map((Weapon::getName))
+                .collect(Collectors.toList());
 
-
-        WeaponController weaponController = null;
-        for(WeaponController w : gameBoardController.getWeaponControllers()){
-            if(w.getName().equals(weapon)){
-                weaponController = w;
-            }
+        try {
+            String selectedWeapon = client.chooseWeapon(weapons);
+            gameBoardController.getWeaponControllers().stream()
+                    .filter((WeaponController w) ->
+                            w.getName().equals(selectedWeapon)
+                    )
+                    .forEach((WeaponController w) ->
+                            w.fire(player, client)
+                    );
         }
-
-        weaponController.fire(player, client);
+        catch (UserTimeoutException e){
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
+        }
     }
 
     /**
@@ -172,8 +184,11 @@ public abstract class PlayerStateController {
             }
         }
         catch(UserTimeoutException e){
-            //remove player from game
-            client.setConnected(false);
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
         }
 
     }
@@ -189,8 +204,11 @@ public abstract class PlayerStateController {
             index = client.chooseItemToGrab();
         }
         catch(UserTimeoutException e){
-            //remove player from game
-            client.setConnected(false);
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
         }
 
         if(position instanceof SpawnSquare){
@@ -228,8 +246,11 @@ public abstract class PlayerStateController {
             }
         }
         catch(UserTimeoutException e){
-            //remove player from game
-            client.setConnected(false);
+            Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
         }
 
 

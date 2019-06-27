@@ -9,8 +9,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TractorBeamController extends OptionalEffectWeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public TractorBeamController(GameBoardController g) {
     super(g);
     name = "TractorBeamController";
@@ -45,8 +52,12 @@ public class TractorBeamController extends OptionalEffectWeaponController {
                       (gameBoardController.getPlayerNames(possibletargets))));
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
 
     return targets;
@@ -93,8 +104,12 @@ public class TractorBeamController extends OptionalEffectWeaponController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
 
   }

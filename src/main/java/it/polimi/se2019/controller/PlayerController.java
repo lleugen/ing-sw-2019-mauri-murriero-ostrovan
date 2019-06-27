@@ -5,7 +5,10 @@ import it.polimi.se2019.controller.player_state_controller.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class controls player actions, it contains the player's current state
@@ -16,6 +19,10 @@ import java.util.List;
  * complex actions that a player can make during a turn
  */
 public class PlayerController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "PlayerController";
 
 //  private GameBoardController gameBoardController;
   private PlayerViewOnServer client;
@@ -88,8 +95,11 @@ public class PlayerController {
         }
       }
       catch(UserTimeoutException e){
-        //remove player from game
-        client.setConnected(false);
+        Logger.getLogger(LOG_NAMESPACE).log(
+                    Level.WARNING,
+                    "Client Disconnected",
+                    e
+            );
       }
     }
   }

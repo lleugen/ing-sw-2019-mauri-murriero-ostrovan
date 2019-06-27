@@ -11,8 +11,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SecondFreneticStateController extends PlayerStateController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public SecondFreneticStateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);
     availableActions = 1;
@@ -47,8 +54,12 @@ public class SecondFreneticStateController extends PlayerStateController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
 
   }
@@ -102,8 +113,12 @@ public class SecondFreneticStateController extends PlayerStateController {
       }
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
 
     shoot();

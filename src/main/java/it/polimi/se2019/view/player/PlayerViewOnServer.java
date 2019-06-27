@@ -1,7 +1,6 @@
 package it.polimi.se2019.view.player;
 
 import it.polimi.se2019.RMI.UserTimeoutException;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMI;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIServer;
 
@@ -13,15 +12,57 @@ import java.util.List;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TransferQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "PlayerViewOnServer";
+
   private String name;
   private String character;
 
+  /**
+   * Hostname the RMI registry is located to
+   */
+  private String host;
+
+  /**
+   * True if a connection to the other end exists, false otherwise
+   */
   private boolean connected = true;
 
-  public void setConnected(boolean c){
-    connected = c;
+  public Boolean isConnected(){
+    if (!this.connected){
+      this.makeConnection();
+    }
+
+    return this.connected;
+  }
+
+  /**
+   * Attempt to bind this player to a remote player on the RMI registry
+   *
+   * The host is on the property host, the user on the property name.
+   * Property connected is set according to success
+   */
+  private void makeConnection(){
+    try {
+      this.connectedPlayer = (ViewFacadeInterfaceRMIClient) Naming.lookup(
+              "//" + this.host + "/players/" + this.name
+      );
+      this.connected = true;
+    }
+    catch (MalformedURLException | NotBoundException | RemoteException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.INFO,
+              "Unable to reconnect player <" + this.name + ">",
+              e
+      );
+      this.connected = false;
+    }
   }
 
   /**
@@ -37,13 +78,14 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
    * @throws InitializationError If an error occurs while initializing the player
    */
   public PlayerViewOnServer(String user, String host) throws InitializationError {
-    try {
-      this.connectedPlayer = (ViewFacadeInterfaceRMIClient) Naming.lookup(
-              "//" + host + "/players/" + user
+    this.host = host;
+    this.name = user;
+    this.makeConnection();
+
+    if (!this.connected){
+      throw new InitializationError(
+              "Unable to initialize player <" + this.name + ">"
       );
-    }
-    catch (MalformedURLException | NotBoundException | RemoteException e){
-      throw new InitializationError(e);
     }
   }
 
@@ -70,6 +112,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public String chooseAction(String state) throws UserTimeoutException {
     WaitFor<String, String> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseAction,
             state
     );
@@ -82,6 +125,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public int chooseSpawnLocation(List<String> powerUps) throws UserTimeoutException {
     WaitFor<List<String>, Integer> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseSpawnLocation,
             powerUps
     );
@@ -94,6 +138,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public int chooseMap() throws UserTimeoutException {
     WaitFor<Void, Integer> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseMap
     );
   }
@@ -105,6 +150,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public int chooseNumberOfPlayers() throws UserTimeoutException {
     WaitFor<Void, Integer> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseNumberOfPlayers
     );
   }
@@ -117,6 +163,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseWeapon,
             weapons
     );
@@ -131,6 +178,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseTargets,
             possibleTargets
     );
@@ -145,6 +193,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseWeaponToReload,
             weapons
     );
@@ -158,6 +207,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<String>, List<Integer>> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::choosePowerUpCardsForReload,
             powerUps
     );
@@ -171,6 +221,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<String>, Integer> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseIndex,
             availableEffects
     );
@@ -183,6 +234,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public int chooseItemToGrab() throws UserTimeoutException {
     WaitFor<Void, Integer> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseItemToGrab
     );
   }
@@ -195,6 +247,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<String, Boolean> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseFiringMode,
             description
     );
@@ -207,6 +260,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public Boolean chooseBoolean(String description) throws UserTimeoutException {
     WaitFor<String, Boolean> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseBoolean,
             description
     );
@@ -219,6 +273,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public String chooseRoom(List<String> rooms) throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseRoom,
             rooms
     );
@@ -233,6 +288,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<List<Integer>>, List<Integer>> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseTargetSquare,
             targettableSquareCoordinates
     );
@@ -246,6 +302,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws UserTimeoutException {
     WaitFor<List<Integer>, Integer> wf = new WaitFor<>();
     return wf.waitFor(
+            this,
             this.connectedPlayer::chooseDirection,
             possibleDirections
     );
@@ -270,6 +327,9 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
     /**
      * Wait for the item generated by supp to become available
      *
+     * @param me   Reference to a PlayerViewOnServer to operate on.
+     *             If a timeout is reached, connected is set to false on this
+     *             reference
      * @param supp Supplier Function to wait for. The supplier function can
      *             optionally accept a parameter
      * @param i    Input param for the supplier
@@ -279,7 +339,8 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @throws UserTimeoutException If an item can not be obtained before
      *                              TIMEOUT expiration
      */
-    public R waitFor(RMIFunction<I, R> supp, I i) throws UserTimeoutException {
+    public R waitFor(PlayerViewOnServer me, RMIFunction<I, R> supp, I i)
+            throws UserTimeoutException {
       new Thread(
               () -> {
                 try {
@@ -298,6 +359,8 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
         );
       }
       catch (InterruptedException e){
+        me.connected = false;
+        Thread.currentThread().interrupt();
         throw new UserTimeoutException(e);
       }
     }
@@ -305,6 +368,9 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
     /**
      * Wait for the item generated by supp to become available
      *
+     * @param me   Reference to a PlayerViewOnServer to operate on.
+     *             If a timeout is reached, connected is set to false on this
+     *             reference
      * @param supp Supplier Function to wait for. The supplier function can
      *             optionally accept a parameter
      *
@@ -313,7 +379,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @throws UserTimeoutException If an item can not be obtained before
      *                              TIMEOUT expiration
      */
-    public R waitFor(RMISupplier<R> supp) throws UserTimeoutException {
+    public R waitFor(PlayerViewOnServer me, RMISupplier<R> supp) throws UserTimeoutException {
       new Thread(
               () -> {
                 try {
@@ -332,6 +398,8 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
         );
       }
       catch (InterruptedException e){
+        me.connected = false;
+        Thread.currentThread().interrupt();
         throw new UserTimeoutException(e);
       }
     }
@@ -340,6 +408,10 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public class InitializationError extends Exception {
     public InitializationError(Throwable e){
       super(e);
+    }
+
+    public InitializationError(String msg){
+      super(msg);
     }
   }
 

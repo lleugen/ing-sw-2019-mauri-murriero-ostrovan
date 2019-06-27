@@ -9,8 +9,15 @@ import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GrenadeLauncherController extends OptionalEffectWeaponController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public GrenadeLauncherController(GameBoardController g) {
     super(g);
     name = "GrenadeLauncherController";
@@ -31,8 +38,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
                       (gameBoardController.getPlayerNames(visiblePlayers))));
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
     return targets;
   }
@@ -52,8 +63,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
       s = map.getMapSquares()[chosenSquareCoordinates.get(0)][chosenSquareCoordinates.get(1)];
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
     return s;
   }
@@ -74,8 +89,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
               (map.getOpenDirections(shooter.getPosition()));
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+    Level.WARNING,
+    "Client Disconnected",
+    e
+);
     }
 
     if(direction != -1){

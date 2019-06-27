@@ -7,12 +7,19 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The teleporter can be used by a player on his/her turn to move to any square
  * on the map, regardless of distance or obstacles in the way.
  */
 public class TeleporterController extends PowerUpController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ddd"; // TODO
+
   public TeleporterController() {
   }
 
@@ -44,8 +51,12 @@ public class TeleporterController extends PowerUpController {
       used = true;
     }
     catch(UserTimeoutException e){
-      //remove player from game
-      client.setConnected(false);
+      
+    Logger.getLogger(LOG_NAMESPACE).log(
+        Level.WARNING,
+        "Client Disconnected",
+        e
+    );
     }
     return used;
   }
