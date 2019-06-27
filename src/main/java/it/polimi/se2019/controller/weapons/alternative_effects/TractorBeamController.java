@@ -9,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TractorBeamController extends OptionalEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public TractorBeamController(GameBoardController g) {
     super(g);
     name = "TractorBeamController";
@@ -59,7 +52,7 @@ public class TractorBeamController extends OptionalEffectWeaponController {
     client = identifyClient(shooter);
     if(firingMode.get(0)){
       List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
-      List<Square> squaresTwoMovesFromtarget = map.getTwoMovesAwaySquares(shooter.getPosition());
+      List<Square> squaresTwoMovesFromtarget = map.getReachableSquares(shooter.getPosition(), 2);
       List<Square> destinationSquares = new ArrayList<>();
       List<List<Integer>> destinationSquareCoordinates = new ArrayList<>();
       for(Square q : squaresTwoMovesFromtarget){

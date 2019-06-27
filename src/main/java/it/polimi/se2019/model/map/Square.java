@@ -3,8 +3,6 @@ package it.polimi.se2019.model.map;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
 
-import it.polimi.se2019.model.grabbable.Grabbable;
-
 import java.util.ArrayList;
 import java.util.List;
 

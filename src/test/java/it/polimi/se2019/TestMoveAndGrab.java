@@ -41,7 +41,7 @@ public class TestMoveAndGrab {
     public void runAroundTest(){
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            List<Square> threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
             for(Square q : threeMovesAway){
                 threeMovesAwayCoordinates.clear();
@@ -56,7 +56,7 @@ public class TestMoveAndGrab {
 
             //test run around in state adrenaline 2
             playerController.setState(2);
-            threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             for(Square q : threeMovesAway){
                 threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -66,7 +66,7 @@ public class TestMoveAndGrab {
 
             //test run around in state normal
             playerController.setState(0);
-            threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             for(Square q : threeMovesAway){
                 threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -77,7 +77,7 @@ public class TestMoveAndGrab {
             //test run around in state frenetic 1
             playerController.setState(3);
 
-            List<Square> fourMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            List<Square> fourMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             for(Square q : fourMovesAway){
                 for(Direction d : q.getAdjacencies()){
                     if((!d.isBlocked()) & (!fourMovesAway.contains(q))){
@@ -101,7 +101,7 @@ public class TestMoveAndGrab {
     public void grabStuffAdrenaline1Test(){
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> twoMovesAway = gameBoard.getMap().getTwoMovesAwaySquares(player.getPosition());
+            List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
             for(Square q : twoMovesAway){
                 twoMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -140,7 +140,7 @@ public class TestMoveAndGrab {
     public void grabStuffAdrenaline2Test(){
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> twoMovesAway = gameBoard.getMap().getTwoMovesAwaySquares(player.getPosition());
+            List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
             for(Square q : twoMovesAway){
                 twoMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -179,7 +179,7 @@ public class TestMoveAndGrab {
     public void grabStuffNormalTest(){
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> oneMoveAway = gameBoard.getMap().getTwoMovesAwaySquares(player.getPosition());
+            List<Square> oneMoveAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> oneMoveAwayCoordinates = new ArrayList<>();
             for(Square q : oneMoveAway){
                 oneMoveAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));

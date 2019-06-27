@@ -5,6 +5,7 @@ import it.polimi.se2019.model.grabbable.Weapon;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,15 +32,14 @@ public class SpawnSquare extends Square {
 
   @Override
   public List<Grabbable> getItem(){
-    List content = weaponList;
-    return content;
+    return new LinkedList<>(weaponList);
   }
 
   /**
    * @return The list of weapons available in this square
    */
   public List<Weapon> getWeaponList() {
-    List<Weapon> weaponsCopy = new ArrayList<Weapon>();
+    List<Weapon> weaponsCopy = new ArrayList<>();
     Collections.copy(weaponsCopy, weaponList);
     return weaponsCopy;
   }

@@ -26,7 +26,7 @@ public class SecondFreneticStateController extends PlayerStateController {
    */
   @Override
   public void grabStuff() throws UserTimeoutException {
-    List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
+    List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
@@ -57,7 +57,7 @@ public class SecondFreneticStateController extends PlayerStateController {
    */
   @Override
   public void shootPeople() throws UserTimeoutException {
-    List<Square> twoMovesAway = map.getTwoMovesAwaySquares(player.getPosition());
+    List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
       twoMovesAwayCoordinates.add(map.getSquareCoordinates(q));

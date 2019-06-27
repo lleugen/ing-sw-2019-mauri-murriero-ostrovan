@@ -8,15 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PowerGloveController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public PowerGloveController(GameBoardController g) {
     super(g);
     name = "PowerGloveController";
@@ -30,10 +23,9 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
     List<Player> targets = new ArrayList<>();
     if(firingMode.get(0)){
       //basic mode, one target one move away
-      List<Player> possibleTargets = new ArrayList<>();
       List<String> possibleTargetNames = new ArrayList<>();
       //get all players one move away
-      possibleTargets.addAll(map.getOneMoveAway(shooter.getPosition()));
+      List<Player> possibleTargets = new ArrayList<>(map.getOneMoveAway(shooter.getPosition()));
       //get their names
       for(Player p : possibleTargets){
         possibleTargetNames.add(p.getName());

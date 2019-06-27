@@ -106,7 +106,7 @@ public class PlayerBoard {
      */
   public Player getMostWorthyPlayer(){
       ArrayList<Player> distinctDamagers = new ArrayList<Player>();
-      Integer index = 0, count = 0;
+      int index = 0, count = 0;
 
       //create a distinct list of players who dealt damages, in order of first blood first
       for(int i = 0; i < damageReceived.size(); i++) {

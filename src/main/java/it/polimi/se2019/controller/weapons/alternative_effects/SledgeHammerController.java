@@ -8,15 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SledgeHammerController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "SledgeHammerController";
-
   public SledgeHammerController(GameBoardController g) {
     super(g);
     name = "SledgeHammerController";
@@ -58,9 +51,8 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
       //if the damaged target has a tagback gredade, he/she can use it now
       useTagbackGrenade(targets.get(0));
       //optionally move the target 0, 1 or 2 squares in one direction
-      List<Square> possibleSquares = new ArrayList<>();
       List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();
-      possibleSquares.addAll(map.getAdjacentSquares(targets.get(0).getPosition()));
+      List<Square> possibleSquares = new ArrayList<>(map.getReachableSquares(targets.get(0).getPosition(), 1));
       possibleSquares.add(targets.get(0).getPosition());
 
       while(possibleSquares.iterator().hasNext()){

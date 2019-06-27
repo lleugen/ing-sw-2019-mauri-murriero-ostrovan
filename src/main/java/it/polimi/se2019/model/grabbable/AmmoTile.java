@@ -21,8 +21,7 @@ public class AmmoTile extends Grabbable{
   }
 
   public boolean getPowerUp(){
-    boolean hasPowerUpCopy = hasPowerUp;
-    return hasPowerUpCopy;
+    return hasPowerUp;
   }
 
   public AmmoTile(int redAmount, int blueAmount, int yellowAmount, boolean containsPowerup) {

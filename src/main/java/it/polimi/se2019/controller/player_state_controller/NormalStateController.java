@@ -26,7 +26,7 @@ public class NormalStateController extends PlayerStateController {
    */
   @Override
   public void runAround() throws UserTimeoutException {
-    List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
+    List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));

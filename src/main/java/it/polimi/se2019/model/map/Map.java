@@ -5,7 +5,9 @@ import it.polimi.se2019.model.GameBoard;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A map is a virtual collection of squares, linked together.
@@ -338,18 +340,18 @@ public class Map {
     return openDirections;
   }
 
-  /**
-   * get adjacent squares
-   */
-  public List<Square> getAdjacentSquares(Square position){
-    List<Square> adjacentSquares = new ArrayList<>();
-    for(int i = 0; i<3; i++){
-      if(!position.getAdjacencies().get(i).isBlocked()){
-        adjacentSquares.add(position.getAdjacencies().get(i).getSquare());
-      }
-    }
-    return adjacentSquares;
-  }
+//  /**
+//   * get adjacent squares
+//   */
+//  public List<Square> getAdjacentSquares(Square position){
+//    List<Square> adjacentSquares = new ArrayList<>();
+//    for(int i = 0; i<3; i++){
+//      if(!position.getAdjacencies().get(i).isBlocked()){
+//        adjacentSquares.add(position.getAdjacencies().get(i).getSquare());
+//      }
+//    }
+//    return adjacentSquares;
+//  }
 
   /**
    * get all players who are at most two moves away from position
@@ -365,7 +367,7 @@ public class Map {
     }
     for(Square q : oneMoveAway){
       for(Direction d : q.getAdjacencies()){
-        if((!d.isBlocked())&(!twoMovesAway.contains(d.getSquare()))){
+        if((!d.isBlocked()) && (!twoMovesAway.contains(d.getSquare()))){
           twoMovesAway.add(d.getSquare());
         }
       }
@@ -378,42 +380,85 @@ public class Map {
     return twoMovesAwayPlayers;
   }
 
+//  /**
+//   * get all squares that are at most two moves away from position
+//   */
+//  public List<Square> getTwoMovesAwaySquares(Square position){
+//    List<Square> twoMovesAway = new ArrayList<>();
+//    List<Square> oneMoveAway = new ArrayList<>();
+//    List<Player> twoMovesAwayPlayers = new ArrayList<>();
+//    for(Direction d : position.getAdjacencies()){
+//      if(!d.isBlocked()){
+//        oneMoveAway.add(d.getSquare());
+//      }
+//    }
+//    for(Square q : oneMoveAway){
+//      for(Direction d : q.getAdjacencies()){
+//        if((!d.isBlocked()) && (!twoMovesAway.contains(d.getSquare()))){
+//          twoMovesAway.add(d.getSquare());
+//        }
+//      }
+//    }
+//    return twoMovesAway;
+//  }
+
+//  /**
+//   * get all squares that are at most three moves away from position
+//   */
+//  public List<Square> getThreeMovesAwaySquares(Square position){
+//    List<Square> twoMovesAway = getTwoMovesAwaySquares(position);
+//    List<Square> threeMovesAway = new LinkedList<>(twoMovesAway);
+//    for(Square q : twoMovesAway){
+//      for(Direction d : q.getAdjacencies()){
+//        if((!d.isBlocked()) && (!threeMovesAway.contains(d.getSquare()))){
+//          threeMovesAway.add(d.getSquare());
+//        }
+//      }
+//    }
+//    return threeMovesAway;
+//
+////    this.getReachableSquaresFromSquare(position, )
+//  }
+
   /**
-   * get all squares that are at most two moves away from position
+   * Get a list of reachable squares from the squares passed as parameter
+   *
+   * @param b   List of squares to use as base
+   * @param d   Maximum distance to search
+   *
+   * @return the list of reachable squares
+   *
+   * __INFO__ The result is duplicate-free
    */
-  public List<Square> getTwoMovesAwaySquares(Square position){
-    List<Square> twoMovesAway = new ArrayList<>();
-    List<Square> oneMoveAway = new ArrayList<>();
-    List<Player> twoMovesAwayPlayers = new ArrayList<>();
-    for(Direction d : position.getAdjacencies()){
-      if(!d.isBlocked()){
-        oneMoveAway.add(d.getSquare());
-      }
+  public List<Square> getReachableSquares(Square b, int d) {
+    List<Square> toReturn = new LinkedList<>();
+    toReturn.add(b);
+
+    for (int i = 0; i < d; i++){
+      toReturn.addAll(this.getAdjacients(toReturn));
     }
-    for(Square q : oneMoveAway){
-      for(Direction d : q.getAdjacencies()){
-        if((!d.isBlocked())&(!twoMovesAway.contains(d.getSquare()))){
-          twoMovesAway.add(d.getSquare());
-        }
-      }
-    }
-    return twoMovesAway;
+
+    return toReturn.stream()
+            .distinct()
+            .collect(Collectors.toList());
   }
 
   /**
-   * get all squares that are at most three moves away from position
+   * Get the list of adjacent squares (squares reachable with one movement)
+   * from the squares passed as parameter
+   *
+   * @param b List of squares to calculate adjacent from
+   *
+   * @return The list of adjacent squares
+   *
+   * __WARN__ The returned list may contains duplicates
    */
-  public List<Square> getThreeMovesAwaySquares(Square position){
-    List<Square> twoMovesAway = getTwoMovesAwaySquares(position);
-    List<Square> threeMovesAway = new ArrayList<>();
-    threeMovesAway.addAll(twoMovesAway);
-    for(Square q : twoMovesAway){
-      for(Direction d : q.getAdjacencies()){
-        if((!d.isBlocked()) & (!threeMovesAway.contains(d.getSquare()))){
-          threeMovesAway.add(d.getSquare());
-        }
-      }
-    }
-    return threeMovesAway;
+  private List<Square> getAdjacients(Collection<Square> b){
+    return b.stream()
+            .map(Square::getAdjacencies)
+            .flatMap(List::stream)
+            .filter(Direction::isAccessible)
+            .map(Direction::getSquare)
+            .collect(Collectors.toList());
   }
 }

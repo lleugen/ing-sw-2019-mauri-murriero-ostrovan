@@ -43,7 +43,7 @@ public class KillScoreBoard {
     this.kills = new ArrayList<>();
     this.doubleKills = new ArrayList<>();
 
-    Integer i;
+    int i;
     Integer element;
 
     for (i = 0; i < scores.length; i++){
@@ -77,12 +77,7 @@ public class KillScoreBoard {
    *          false otherwise
    */
   public boolean gameRunning(){
-    if (this.remainingSkulls > 0){
-      return true;
-    }
-    else {
-      return false;
-    }
+    return this.remainingSkulls > 0;
   }
 
   /**
@@ -98,7 +93,7 @@ public class KillScoreBoard {
     Map<Player, Integer> scoreboard = new HashMap<>();
 
     // Summing Up Doubles kills
-    Integer i;
+    int i;
     Player p = null;
     Integer score;
 
@@ -138,7 +133,7 @@ public class KillScoreBoard {
     // Sorting Temp scoreboard
     Set<Map.Entry<Player, Integer>> settedMap;
     ArrayList<Map.Entry<Player, Integer>> listedMap;
-    Boolean sorted = false;
+    boolean sorted = false;
     Map.Entry<Player, Integer> a;
     Map.Entry<Player, Integer> b;
     Map.Entry<Player, Integer> tmp;
@@ -146,7 +141,7 @@ public class KillScoreBoard {
     settedMap = scoreboard.entrySet();
     listedMap = new ArrayList<>(settedMap);
 
-    while (sorted == false){
+    while (!sorted){
       for (i = 0; i < (listedMap.size() - 1); i++){
 
         a = listedMap.get(i);

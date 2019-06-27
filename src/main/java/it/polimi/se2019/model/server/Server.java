@@ -5,7 +5,6 @@ import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,7 +22,7 @@ public class Server implements ServerLobbyInterface, Serializable {
   /**
    * Contains the list of all lobbies active
    */
-  private List<ServerLobby> lobbyes = new LinkedList<>();
+  private transient List<ServerLobby> lobbyes = new LinkedList<>();
 
   /**
    * Hostname the registry is located to
@@ -35,7 +34,7 @@ public class Server implements ServerLobbyInterface, Serializable {
    *
    * @param host Hostname the registry is located to
    */
-  public Server(String host) throws RemoteException, MalformedURLException {
+  public Server(String host) throws RemoteException {
     Registry registry = LocateRegistry.getRegistry(host);
     registry.rebind("//" + host + "/server",
             UnicastRemoteObject.exportObject(this, 0)
@@ -58,7 +57,6 @@ public class Server implements ServerLobbyInterface, Serializable {
     try {
       PlayerViewOnServer p = new PlayerViewOnServer(user, this.hostname);
       p.setName(user);
-      System.out.println("GOT CONNECTION");
 
       if (this.lobbyes.isEmpty() || this.lobbyes.get(0).checkRoomFull()) {
         this.lobbyes.add(

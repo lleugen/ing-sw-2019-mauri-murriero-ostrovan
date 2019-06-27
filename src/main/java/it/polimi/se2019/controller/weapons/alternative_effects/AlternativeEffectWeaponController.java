@@ -8,8 +8,6 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This is an abstract marker class, it doesn't have its own methods or
@@ -18,11 +16,6 @@ import java.util.logging.Logger;
  * Alternative effect weapons have two mutually exclusive firing methods.
  */
 public abstract class AlternativeEffectWeaponController extends WeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public AlternativeEffectWeaponController(GameBoardController g) {
     super(g);
   }

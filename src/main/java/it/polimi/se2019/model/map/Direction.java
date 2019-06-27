@@ -47,4 +47,11 @@ public class Direction {
   public boolean isBlocked() {
     return this.blocked;
   }
+
+  /**
+   * @return true if the direction is accessible, false if it is blocked
+   */
+  public boolean isAccessible() {
+    return !this.blocked;
+  }
 }

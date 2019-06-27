@@ -11,7 +11,6 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,9 +29,16 @@ public class GameBoardController{
    */
   private static final String LOG_NAMESPACE = "GameBoardController";
 
+  private List<Player> players;
+  private List<PlayerController> playerControllers;
+  private List<PlayerViewOnServer> clients;
+  private List<String> clientNames;
+  private GameBoard gameBoard;
+  private List<WeaponController> weaponControllers;
+  private List<PowerUpController> powerUpControllers;
+
   public GameBoardController(GameBoard g) {
     gameBoard = g;
-    isReady = false;
     weaponControllers = new LinkedList<>();
     powerUpControllers = new LinkedList<>();
     players = new LinkedList<>();
@@ -65,44 +71,34 @@ public class GameBoardController{
     powerUpControllers.add(new TeleporterController());
   }
 
-  private List<Player> players;
-  private List<PlayerController> playerControllers;
-  private List<PlayerViewOnServer> clients;
-  private List<String> clientNames;
-  private List<String> disconnectedClientNames;
-  private GameBoard gameBoard;
-  private List<WeaponController> weaponControllers;
-  private List<PowerUpController> powerUpControllers;
-  private boolean isReady;
-
   /**
    * getter methods for each relevant attribute
    */
   public List<Player> getPlayers(){
-    return players;
+    return new LinkedList<>(this.players);
   }
 
   public List<PlayerViewOnServer> getClients(){
-    return clients;
+    return new LinkedList<>(this.clients);
   }
 
   public GameBoard getGameBoard(){
-    return gameBoard;
+    return this.gameBoard;
   }
 
   public List<WeaponController> getWeaponControllers(){
-    return weaponControllers;
+    return new LinkedList<>(this.weaponControllers);
   }
 
   public List<PowerUpController> getPowerUpControllers(){
-    return powerUpControllers;
+    return new LinkedList<>(this.powerUpControllers);
   }
 
   /**
-   * add the player controllers to the game and set isReady to true so that the game can start
+   * add the player controllers to the game and set isReady to true so that
+   * the game can start
    */
   public void addPlayerControllers(List<PlayerController> c){
-
     playerControllers = new LinkedList<>(c);
     players = c.stream()
             .map(PlayerController::getPlayer)
@@ -110,8 +106,6 @@ public class GameBoardController{
     clientNames = c.stream()
             .map(PlayerController::getName)
             .collect(Collectors.toList());
-    isReady = true;
-
   }
 
   public Player identifyPlayer(String name){

@@ -8,15 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FurnaceController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public FurnaceController(GameBoardController g) {
     super(g);
     name = "FurnaceController";
@@ -34,7 +27,7 @@ public class FurnaceController extends AlternativeEffectWeaponController {
       List<String> visibleRooms = new ArrayList<>();
       List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
       for(Square q : visibleSquares){
-        if((!visibleRooms.contains(q.getIdRoom())) & (!shooter.getPosition().getIdRoom().equals(q.getIdRoom()))){
+        if((!visibleRooms.contains(q.getIdRoom())) && (!shooter.getPosition().getIdRoom().equals(q.getIdRoom()))){
           visibleRooms.add(q.getIdRoom());
         }
       }

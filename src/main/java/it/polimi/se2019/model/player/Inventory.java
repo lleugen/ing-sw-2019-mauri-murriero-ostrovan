@@ -2,10 +2,8 @@ package it.polimi.se2019.model.player;
 
 import it.polimi.se2019.model.grabbable.*;
 import it.polimi.se2019.model.deck.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,7 +55,7 @@ public class Inventory {
   /**
    * @return a copy of the weapons in the player's inventory
    */
-  public ArrayList<Weapon> getWeapons() {
+  public List<Weapon> getWeapons() {
     /*
     ArrayList<Weapon> weaponsCopy = null;
     Collections.copy(weaponsCopy, weapons);
@@ -69,7 +67,7 @@ public class Inventory {
   /**
    * @return a copy of the powerUps in the player's inventory
    */
-  public ArrayList<PowerUpCard> getPowerUps() {
+  public List<PowerUpCard> getPowerUps() {
     /*
     ArrayList<PowerUpCard> powerUpsCopy = null;
     Collections.copy(powerUpsCopy, powerUps);

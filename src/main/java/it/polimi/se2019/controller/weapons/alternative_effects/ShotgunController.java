@@ -8,16 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ShotgunController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ShotgunController";
-
-
   public ShotgunController(GameBoardController g) {
     super(g);
     name = "ShotgunController";
@@ -40,7 +32,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
     else{
       //long barrel mode, shoot one target one move away
       List<Square> adjacentSquares =
-              gameBoardController.getGameBoard().getMap().getAdjacentSquares(shooter.getPosition());
+              gameBoardController.getGameBoard().getMap().getReachableSquares(shooter.getPosition(), 1);
       List<Player> possibleTargets = new ArrayList<>();
       while(adjacentSquares.iterator().hasNext()){
         possibleTargets.addAll(map.getPlayersOnSquare(adjacentSquares.iterator().next()));
@@ -65,9 +57,8 @@ public class ShotgunController extends AlternativeEffectWeaponController {
       //if the damaged target has a tagback gredade, he/she can use it now
       useTagbackGrenade(targets.get(0));
       //optionally move the target by one square
-      List<Square> possibleSquares = new ArrayList<>();
       List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();
-      possibleSquares.addAll(map.getAdjacentSquares(targets.get(0).getPosition()));
+      List<Square> possibleSquares = new ArrayList<>(map.getReachableSquares(targets.get(0).getPosition(), 1));
       possibleSquares.add(targets.get(0).getPosition());
       while(possibleSquares.iterator().hasNext()){
         possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));

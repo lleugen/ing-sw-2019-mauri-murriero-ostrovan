@@ -7,15 +7,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ZX2Controller extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public ZX2Controller(GameBoardController g) {
     super(g);
     name = "ZX2Controller";
@@ -27,8 +20,7 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    List<Player> possibleTargets = new ArrayList<>();
-      if(firingMode.get(0)){
+    if(firingMode.get(0)){
         targets.add
                 (gameBoardController.identifyPlayer
                         (client.chooseTargets
@@ -36,7 +28,7 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
                                         (map.getVisiblePlayers(shooter.getPosition())))));
       }
       else{
-        possibleTargets.addAll(map.getVisiblePlayers(shooter.getPosition()));
+      List<Player> possibleTargets = new ArrayList<>(map.getVisiblePlayers(shooter.getPosition()));
         for(int i = 0; i<2; i++){
           if(possibleTargets.size()>0){
             targets.add

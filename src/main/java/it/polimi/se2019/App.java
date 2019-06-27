@@ -5,7 +5,6 @@ package it.polimi.se2019;
 import it.polimi.se2019.model.server.Server;
 import it.polimi.se2019.view.Client;
 
-import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,9 +66,9 @@ public class App {
   private static void spawnServer(Map<String, String> args){
     if (args.containsKey("host")) {
       try {
-        Server server = new Server(args.get("host"));
+        new Server(args.get("host"));
       }
-      catch (RemoteException | MalformedURLException e){
+      catch (RemoteException e){
         Logger.getLogger(LOG_NAMESPACE).log(
                 Level.SEVERE,
                 "Error while starting RMI server",
@@ -79,7 +78,7 @@ public class App {
       }
     }
     else {
-      System.out.println("Host param is required");
+      throw new WrongArguments("Host param is required");
     }
   }
 
@@ -90,10 +89,10 @@ public class App {
    */
   private static void spawnClient(Map<String, String> args){
     if (args.containsKey("host")) {
-      Client client = new Client(args.get("host"));
+      new Client(args.get("host"));
     }
     else {
-      System.out.println("Host param is required");
+      throw new WrongArguments("Host param is required");
     }
   }
 

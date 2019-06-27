@@ -4,7 +4,6 @@ import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.powerup.PowerUpController;
 import it.polimi.se2019.controller.weapons.WeaponController;
-import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Map;
@@ -15,16 +14,9 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class PlayerStateController {
-    /**
-     * Namespace this class logs to
-     */
-    private static final String LOG_NAMESPACE = "PlayerStateController";
-
     protected Player player;
     protected PlayerViewOnServer client;
     protected GameBoardController gameBoardController;
@@ -168,14 +160,14 @@ public abstract class PlayerStateController {
      */
     public void grab() throws UserTimeoutException{
         Square position = player.getPosition();
-        int index = index = client.chooseItemToGrab();
+        int index = client.chooseItemToGrab();
 
         if(position instanceof SpawnSquare){
             //return here when add to inventory method is finished
-            player.getInventory().addWeaponToInventory((Weapon)position.grab(index));
+            player.getInventory().addWeaponToInventory(position.grab(index));
         }
         else{
-            player.getInventory().addAmmoTileToInventory((AmmoTile) position.grab(index));
+            player.getInventory().addAmmoTileToInventory(position.grab(index));
         }
     }
 
