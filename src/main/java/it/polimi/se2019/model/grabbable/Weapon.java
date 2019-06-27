@@ -266,7 +266,8 @@ public class Weapon extends Grabbable {
   /**
    * Reload a weapon (a weapon reloaded can be used)
    */
-  public void reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
+  public boolean reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
+    boolean result = false;
     if(!loaded)
     {
       int redPowerUpCards = 0;
@@ -288,19 +289,19 @@ public class Weapon extends Grabbable {
       for(PowerUpCard p : powerUpCardsToDiscard){
         this.owner.getInventory().discardPowerUp(p);
       }
-      try{
-        playerAmmoBox.useRed(this.grabCost.getRed() - redPowerUpCards);
-        playerAmmoBox.useBlue(this.grabCost.getBlue() - bluePowerUpCards);
-        playerAmmoBox.useYellow(this.grabCost.getYellow() - yellowPowerUpCards);
+      if(playerAmmoBox.getRed() >= (reloadCost.getRed() - redPowerUpCards)){
+        if(playerAmmoBox.getBlue() >= (reloadCost.getBlue() - bluePowerUpCards)){
+          if(playerAmmoBox.getYellow() >= (reloadCost.getYellow() - yellowPowerUpCards)){
+            playerAmmoBox.useRed(reloadCost.getRed() - redPowerUpCards);
+            playerAmmoBox.useBlue(reloadCost.getBlue() - bluePowerUpCards);
+            playerAmmoBox.useYellow(reloadCost.getYellow() - yellowPowerUpCards);
+            this.loaded = true;
+            result = true;
+          }
+        }
       }
-      catch(Ammo.InsufficientAmmoException exception){
-        throw new UnableToReloadException();
-      }
-      this.loaded = true;
     }
-    else{
-      throw new WeaponAlreadyLoadedException();
-    }
+    return result;
   }
 
   /**

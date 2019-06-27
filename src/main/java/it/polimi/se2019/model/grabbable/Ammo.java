@@ -7,17 +7,17 @@ public class Ammo extends Grabbable {
   /**
    * The amount of red ammunition cubes in the ammo box
    */
-  private int red;
+  private Integer red;
 
   /**
    * The amount of blue ammunition cubes in the ammo box
    */
-  private int blue;
+  private Integer blue;
 
   /**
    * The amount of yellow ammunition cubes in the ammo box
    */
-  private int yellow;
+  private Integer yellow;
 
   /**
    * @param redAmount The amount of red ammunition cubes in the ammo box
@@ -107,12 +107,13 @@ public class Ammo extends Grabbable {
   /**
    * @param amount subtract amount red ammunition cubes from the ammo box
    */
-  public void useRed(int amount){
-    if(getRed() < amount){
-      throw new InsufficientAmmoException();
+  public boolean useRed(int amount){
+    if(getRed() >= amount){
+      this.red = this.red - amount;
+      return true;
     }
     else{
-      this.red = this.red - amount;
+      return false;
     }
   }
 
@@ -120,12 +121,13 @@ public class Ammo extends Grabbable {
    *
    * @param amount subtract amount of blue ammunition cubes from the ammo box
    */
-  public void useBlue(int amount){
-    if(getBlue() < amount){
-      throw new InsufficientAmmoException();
+  public boolean useBlue(int amount){
+    if(getBlue() >= amount){
+      this.blue = this.blue - amount;
+      return true;
     }
     else{
-      this.blue = this.blue - amount;
+      return false;
     }
   }
 
@@ -133,20 +135,13 @@ public class Ammo extends Grabbable {
    *
    * @param amount subtract amount of yellow ammunition cubes from the ammo box
    */
-  public void useYellow(int amount){
-    if(getYellow() < amount) {
-      throw new InsufficientAmmoException();
-    }
-    else {
+  public boolean useYellow(int amount){
+    if(getYellow() >= amount){
       this.yellow = this.yellow - amount;
+      return true;
     }
-
-  }
-  public static class InsufficientAmmoException extends RuntimeException
-  {
-    @Override
-    public String toString() {
-      return "Not enough ammo!";
+    else{
+      return false;
     }
   }
 }

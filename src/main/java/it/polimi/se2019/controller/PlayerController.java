@@ -32,6 +32,7 @@ public class PlayerController {
     gameBoardController = g;
     client = c;
     player = p;
+    stateControllerList = new ArrayList<>();
     stateControllerList.add(0, new NormalStateController(g, p, c));
     stateControllerList.add(1, new Adrenaline1StateController(g, p, c));
     stateControllerList.add(2, new Adrenaline2StateController(g, p, c));
