@@ -19,8 +19,8 @@ public class SpawnSquare extends Square {
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
    */
-  public SpawnSquare(String roomId, List<Direction> adjacencies) {
-    super(roomId, adjacencies);
+  public SpawnSquare(Map m, String roomId, List<Direction> adjacencies) {
+    super(m, roomId, adjacencies);
   }
 
   /**
@@ -63,7 +63,7 @@ public class SpawnSquare extends Square {
     //draw a weapon from the weapons cards deck
     //add the drawn weapon to weaponsList
     while(weaponList.size() < 3){
-      Weapon newWeapon = getDecks().drawWeapon();//decks deve restituire un'arma, non una lista
+      Weapon newWeapon = getDecks().drawWeapon();
       weaponList.add(newWeapon);
     }
   }

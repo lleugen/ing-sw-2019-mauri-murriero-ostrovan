@@ -18,8 +18,8 @@ public class AmmoSquare extends Square {
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
    */
-  public AmmoSquare(String roomId, List<Direction> adjacencies) {
-    super(roomId, adjacencies);
+  public AmmoSquare(Map m, String roomId, List<Direction> adjacencies) {
+    super(m, roomId, adjacencies);
   }
 
   /**

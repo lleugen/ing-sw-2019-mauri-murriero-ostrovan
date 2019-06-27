@@ -43,6 +43,9 @@ public class Map {
   public Square getYellowSpawnPoint(){
     return yellowSpawnPoint;
   }
+  public GameBoard getGameBoard(){
+    return gameBoard;
+  }
 
 
   /**
@@ -54,68 +57,68 @@ public class Map {
     gameBoard = g;
     mapSquares = new Square[3][4];
     if(mapType == 0){
-      mapSquares[0][0] = new AmmoSquare("blue", null);
-      mapSquares[0][1] = new AmmoSquare("blue", null);
-      mapSquares[0][2] = new SpawnSquare("blue", null);
+      mapSquares[0][0] = new AmmoSquare(this,"blue", null);
+      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
+      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
       mapSquares[0][3] = null;
 
-      mapSquares[1][0] = new SpawnSquare("red", null);
-      mapSquares[1][1] = new AmmoSquare("red", null);
-      mapSquares[1][2] = new AmmoSquare("red", null);
-      mapSquares[1][3] = new AmmoSquare("yellow", null);
+      mapSquares[1][0] = new SpawnSquare(this,"red", null);
+      mapSquares[1][1] = new AmmoSquare(this,"red", null);
+      mapSquares[1][2] = new AmmoSquare(this,"red", null);
+      mapSquares[1][3] = new AmmoSquare(this,"yellow", null);
 
       mapSquares[2][0] = null;
-      mapSquares[2][1] = new AmmoSquare("white", null);
-      mapSquares[2][2] = new AmmoSquare("white", null);
-      mapSquares[2][3] = new SpawnSquare("yellow", null);
+      mapSquares[2][1] = new AmmoSquare(this,"white", null);
+      mapSquares[2][2] = new AmmoSquare(this,"white", null);
+      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
     }
     else if(mapType == 1){
-      mapSquares[0][0] = new AmmoSquare("blue", null);
-      mapSquares[0][1] = new AmmoSquare("blue", null);
-      mapSquares[0][2] = new SpawnSquare("blue", null);
-      mapSquares[0][3] = new AmmoSquare("gray", null);
+      mapSquares[0][0] = new AmmoSquare(this,"blue", null);
+      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
+      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
+      mapSquares[0][3] = new AmmoSquare(this,"gray", null);
 
-      mapSquares[1][0] = new SpawnSquare("red", null);
-      mapSquares[1][1] = new AmmoSquare("red", null);
-      mapSquares[1][2] = new AmmoSquare("yellow", null);
-      mapSquares[1][3] = new AmmoSquare("yello", null);
+      mapSquares[1][0] = new SpawnSquare(this,"red", null);
+      mapSquares[1][1] = new AmmoSquare(this,"red", null);
+      mapSquares[1][2] = new AmmoSquare(this,"yellow", null);
+      mapSquares[1][3] = new AmmoSquare(this,"yello", null);
 
       mapSquares[2][0] = null;
-      mapSquares[2][1] = new AmmoSquare("white", null);
-      mapSquares[2][2] = new AmmoSquare("yellow", null);
-      mapSquares[2][3] = new SpawnSquare("yellow", null);
+      mapSquares[2][1] = new AmmoSquare(this,"white", null);
+      mapSquares[2][2] = new AmmoSquare(this,"yellow", null);
+      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
     }
     else if(mapType == 2){
-      mapSquares[0][0] = new AmmoSquare("red", null);
-      mapSquares[0][1] = new AmmoSquare("blue", null);
-      mapSquares[0][2] = new SpawnSquare("blue", null);
-      mapSquares[0][3] = new AmmoSquare("gray", null);
+      mapSquares[0][0] = new AmmoSquare(this,"red", null);
+      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
+      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
+      mapSquares[0][3] = new AmmoSquare(this,"gray", null);
 
-      mapSquares[1][0] = new SpawnSquare("red", null);
-      mapSquares[1][1] = new AmmoSquare("purple", null);
-      mapSquares[1][2] = new AmmoSquare("yellow", null);
-      mapSquares[1][3] = new AmmoSquare("yellow", null);
+      mapSquares[1][0] = new SpawnSquare(this,"red", null);
+      mapSquares[1][1] = new AmmoSquare(this,"purple", null);
+      mapSquares[1][2] = new AmmoSquare(this,"yellow", null);
+      mapSquares[1][3] = new AmmoSquare(this,"yellow", null);
 
-      mapSquares[2][0] = new AmmoSquare("white", null);
-      mapSquares[2][1] = new AmmoSquare("white", null);
-      mapSquares[2][2] = new AmmoSquare("yellow", null);
-      mapSquares[2][3] = new SpawnSquare("yellow", null);
+      mapSquares[2][0] = new AmmoSquare(this,"white", null);
+      mapSquares[2][1] = new AmmoSquare(this,"white", null);
+      mapSquares[2][2] = new AmmoSquare(this,"yellow", null);
+      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
     }
     else{
-      mapSquares[0][0] = new AmmoSquare("red", null);
-      mapSquares[0][1] = new AmmoSquare("blue", null);
-      mapSquares[0][2] = new SpawnSquare("blue", null);
+      mapSquares[0][0] = new AmmoSquare(this,"red", null);
+      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
+      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
       mapSquares[0][3] = null;
 
-      mapSquares[1][0] = new SpawnSquare("red", null);
-      mapSquares[1][1] = new AmmoSquare("purple", null);
-      mapSquares[1][2] = new AmmoSquare("purple", null);
-      mapSquares[1][3] = new AmmoSquare("yellow", null);
+      mapSquares[1][0] = new SpawnSquare(this,"red", null);
+      mapSquares[1][1] = new AmmoSquare(this,"purple", null);
+      mapSquares[1][2] = new AmmoSquare(this,"purple", null);
+      mapSquares[1][3] = new AmmoSquare(this,"yellow", null);
 
-      mapSquares[2][0] = new AmmoSquare("white", null);
-      mapSquares[2][1] = new AmmoSquare("white", null);
-      mapSquares[2][2] = new AmmoSquare("white", null);
-      mapSquares[2][3] = new SpawnSquare("yellow", null);
+      mapSquares[2][0] = new AmmoSquare(this,"white", null);
+      mapSquares[2][1] = new AmmoSquare(this,"white", null);
+      mapSquares[2][2] = new AmmoSquare(this,"white", null);
+      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
     }
     root = mapSquares[0][0];
     redSpawnPoint = mapSquares[0][2];
@@ -129,33 +132,33 @@ public class Map {
       for(int j = 0; j<4; j++){
         if(mapSquares[i][j] != null){
           currentAdjacencies.clear();
-          //west adjacency
-          if(j!=0){
-            currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
+          //north adjacency
+          if(i!=0){
+            currentAdjacencies.add(0,new Direction(mapSquares[i - 1][j], false));
           }
           else{
-            currentAdjacencies.add(new Direction(null, true));
-          }
-          //south adjacency
-          if(i!=2){
-            currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
-          }
-          else{
-            currentAdjacencies.add(new Direction(null, true));
+            currentAdjacencies.add(0,new Direction(null, true));
           }
           //east adjacency
           if(j!=3){
-            currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
+            currentAdjacencies.add(1,new Direction(mapSquares[i][j + 1], false));
           }
           else{
-            currentAdjacencies.add(new Direction(null, true));
+            currentAdjacencies.add(1,new Direction(null, true));
           }
-          //north adjacency
-          if(i!=0){
-            currentAdjacencies.add(new Direction(mapSquares[i - 1][j], false));
+          //south adjacency
+          if(i!=2){
+            currentAdjacencies.add(2,new Direction(mapSquares[i + 1][j], false));
           }
           else{
-            currentAdjacencies.add(new Direction(null, true));
+            currentAdjacencies.add(2,new Direction(null, true));
+          }
+          //west adjacency
+          if(j!=0){
+            currentAdjacencies.add(3,new Direction(mapSquares[i][j - 1], false));
+          }
+          else{
+            currentAdjacencies.add(3,new Direction(null, true));
           }
           mapSquares[i][j].setAdjacencies(currentAdjacencies);
         }
@@ -166,11 +169,18 @@ public class Map {
 
     //add walls
     if(mapType == 0){
+      mapSquares[0][0].setBlocked(true, false, false,true);
       mapSquares[0][1].setBlocked(true, false, true,false);
-      mapSquares[1][1].setBlocked(true, false,false,false);
+      mapSquares[0][2].setBlocked(true, true,false,false);
+      //mapSquares[0][3].setBlocked(true, true, true, true);
+      mapSquares[1][0].setBlocked(false, false, true, true);
+      mapSquares[1][1].setBlocked(true, false, false, false);
       mapSquares[1][2].setBlocked(false, false, true, false);
-      mapSquares[2][2].setBlocked(true, true, true, false);
-      mapSquares[2][3].setBlocked(false, true, true, true);
+      mapSquares[1][3].setBlocked(true, true, false, false);
+      //mapSquares[2][0].setBlocked(true, true, true, true);
+      mapSquares[2][1].setBlocked(false, false, true, true);
+      mapSquares[2][2].setBlocked(true, false, true, false);
+      mapSquares[2][3].setBlocked(false, true, true, false);
     }
     else if(mapType == 1){
       mapSquares[0][1].setBlocked(true, false, true, false);
@@ -191,6 +201,15 @@ public class Map {
       mapSquares[1][3].setBlocked(true, true, false, false);
     }
 
+
+    //add items to squares
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<4; j++){
+        if(mapSquares[i][j] != null){
+          mapSquares[i][j].refill();
+        }
+      }
+    }
   }
 
   public Square[][]getMapSquares(){
@@ -248,9 +267,11 @@ public class Map {
     int yCoordinate = 0;
     for(int i = 0; i<3; i++){
       for(int j = 0; j<2; j++){
-        if(mapSquares[i][j].equals(position)){
-          xCoordinate = i;
-          yCoordinate = j;
+        if(mapSquares[i][j] != null){
+          if(mapSquares[i][j].equals(position)){
+            xCoordinate = i;
+            yCoordinate = j;
+          }
         }
       }
     }
@@ -382,8 +403,10 @@ public class Map {
    * get all squares that are at most three moves away from position
    */
   public List<Square> getThreeMovesAwaySquares(Square position){
-    List<Square> threeMovesAway = getTwoMovesAwaySquares(position);
-    for(Square q : threeMovesAway){
+    List<Square> twoMovesAway = getTwoMovesAwaySquares(position);
+    List<Square> threeMovesAway = new ArrayList<>();
+    threeMovesAway.addAll(twoMovesAway);
+    for(Square q : twoMovesAway){
       for(Direction d : q.getAdjacencies()){
         if((!d.isBlocked()) & (!threeMovesAway.contains(d.getSquare()))){
           threeMovesAway.add(d.getSquare());

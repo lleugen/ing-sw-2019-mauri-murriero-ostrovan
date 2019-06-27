@@ -30,7 +30,7 @@ public abstract class Square {
     return decks;
   }
 
-
+  private Map map;
 
   /**
    *
@@ -42,7 +42,9 @@ public abstract class Square {
    * @param roomId      The id of the room this Square belongs to
    * @param a The list of adjacents squares
    */
-  public Square(String roomId, List<Direction> a) {
+  public Square(Map m, String roomId, List<Direction> a) {
+    map = m;
+    decks = map.getGameBoard().getDecks();
     adjacencies = new ArrayList<>();
     if(a == null){
       adjacencies.add(0, new Direction(null, true));
@@ -53,7 +55,6 @@ public abstract class Square {
     else{
       adjacencies = a;
     }
-    Direction test = adjacencies.get(0);
     this.idRoom = roomId;
   }
 

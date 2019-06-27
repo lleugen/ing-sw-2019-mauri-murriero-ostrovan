@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-@Ignore
+
 public class TestWeapon {
 //    @Test(expected = Weapon.WeaponAlreadyLoadedException.class)
 //    public void testReloadLoadedWeapon(){

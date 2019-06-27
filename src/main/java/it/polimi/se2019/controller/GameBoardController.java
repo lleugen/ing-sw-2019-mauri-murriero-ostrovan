@@ -111,6 +111,7 @@ public class GameBoardController{
             .map(PlayerController::getName)
             .collect(Collectors.toList());
     isReady = true;
+
   }
 
   public Player identifyPlayer(String name){
