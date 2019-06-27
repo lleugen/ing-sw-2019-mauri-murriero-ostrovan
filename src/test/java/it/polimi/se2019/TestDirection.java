@@ -14,7 +14,7 @@ public class TestDirection {
   @Test
   public void TestGetSquare() {
     ArrayList<Direction> dirs = new ArrayList<>();
-    Square square = new AmmoSquare("room1", dirs);
+    Square square = new AmmoSquare(null,"room1", dirs);
     Direction dir = new Direction(square, true);
 
     Square gotSquare = dir.getSquare();
@@ -30,7 +30,7 @@ public class TestDirection {
   @Test
   public void TestIsBlockedTrue() {
     ArrayList<Direction> dirs = new ArrayList<>();
-    Square square = new AmmoSquare("room1", dirs);
+    Square square = new AmmoSquare(null,"room1", dirs);
     Direction dir = new Direction(square, true);
 
     if (dir.isBlocked() == true){
@@ -44,7 +44,7 @@ public class TestDirection {
   @Test
   public void TestIsBlockedFalse() {
     ArrayList<Direction> dirs = new ArrayList<>();
-    Square square = new AmmoSquare("room1", dirs);
+    Square square = new AmmoSquare(null,"room1", dirs);
     Direction dir = new Direction(square, false);
 
     if (dir.isBlocked() == false){

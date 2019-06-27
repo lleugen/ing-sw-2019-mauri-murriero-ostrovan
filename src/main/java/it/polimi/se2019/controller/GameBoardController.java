@@ -92,6 +92,7 @@ public class GameBoardController{
   public void addPlayerControllers(List<PlayerController> c){
     playerControllers = c;
     isReady = true;
+
   }
 
   public Player identifyPlayer(String name){
