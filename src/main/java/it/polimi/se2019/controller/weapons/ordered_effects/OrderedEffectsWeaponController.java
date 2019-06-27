@@ -28,7 +28,7 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
 
   }
   protected Integer numberOfOptionalEffects;
-  public List<Boolean> selectFiringMode(PlayerViewOnServer client){
+  public List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException {
     List<Boolean> firingModeFlags = new ArrayList<>();
     List<String> effects = new ArrayList<>();
     for(int i = 0; i<numberOfOptionalEffects; i++){
@@ -36,7 +36,6 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
     }
 
     Integer chosenEffect;
-    try{
       chosenEffect = client.chooseIndex(effects);
       for(int k = 0; k<numberOfOptionalEffects; k++){
         if(k<=chosenEffect){
@@ -46,15 +45,7 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
           firingModeFlags.add(k, false);
         }
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
 
     return firingModeFlags;
   }

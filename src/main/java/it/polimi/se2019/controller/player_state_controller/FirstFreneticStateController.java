@@ -35,11 +35,11 @@ public class FirstFreneticStateController extends PlayerStateController {
   /**
    *
    */
-  public void runAround() {
+  public void runAround() throws UserTimeoutException {
     List<Square> fourMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
     for(Square q : fourMovesAway){
       for(Direction d : q.getAdjacencies()){
-        if((!d.isBlocked()) & (!fourMovesAway.contains(q))){
+        if((!d.isBlocked()) && (!fourMovesAway.contains(q))){
           fourMovesAway.add(q);
         }
       }
@@ -48,25 +48,15 @@ public class FirstFreneticStateController extends PlayerStateController {
     for(Square q : fourMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
-    try {
-      List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
-      player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+    List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
+    player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
 
   }
 
   /**
    *
    */
-  public void grabStuff() {
+  public void grabStuff() throws UserTimeoutException  {
     List<Square> twoMovesAway = map.getTwoMovesAwaySquares(player.getPosition());
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
@@ -75,7 +65,6 @@ public class FirstFreneticStateController extends PlayerStateController {
     List<Integer> moveToCoordinates;
     Square position;
     int pickUpIndex;
-    try {
       moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
       position = player.getPosition();
@@ -86,22 +75,12 @@ public class FirstFreneticStateController extends PlayerStateController {
       else{
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
   }
 
   /**
    *
    */
-  public void shootPeople() {
-    try {
+  public void shootPeople() throws UserTimeoutException {
       Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
       if(direction != -1){
         player.move(player.getPosition().getAdjacencies().get(direction));
@@ -131,15 +110,6 @@ public class FirstFreneticStateController extends PlayerStateController {
           }
         }
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
 
     shoot();
   }

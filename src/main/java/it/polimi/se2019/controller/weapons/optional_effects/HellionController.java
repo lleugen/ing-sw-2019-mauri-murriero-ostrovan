@@ -25,7 +25,7 @@ public class HellionController extends OptionalEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     //choose one target player at least one move away
     List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
@@ -35,25 +35,15 @@ public class HellionController extends OptionalEffectWeaponController {
       }
     }
     List<Player> targets = new ArrayList<>();
-    try{
       targets.add(gameBoardController.identifyPlayer
               (identifyClient(shooter).chooseTargets
                       (gameBoardController.getPlayerNames(possibleTargets))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     targets.get(0).takeDamage(shooter, 1);
     //add one more point of damage if the player chooses to use a targeting scope
     if(useTargetingScope(shooter)){

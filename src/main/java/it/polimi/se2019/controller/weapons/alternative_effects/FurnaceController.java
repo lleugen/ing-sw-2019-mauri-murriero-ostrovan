@@ -25,67 +25,58 @@ public class FurnaceController extends AlternativeEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    try{
-      if(firingMode.get(0)){
-        //basic mode, all players in a room you're not in
-        //get visible rooms
-        List<String> visibleRooms = new ArrayList<>();
-        List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
-        for(Square q : visibleSquares){
-          if((!visibleRooms.contains(q.getIdRoom())) & (!shooter.getPosition().getIdRoom().equals(q.getIdRoom()))){
-            visibleRooms.add(q.getIdRoom());
-          }
-        }
-        //choose one room
-        String targetRoom = client.chooseRoom(visibleRooms);
-        //all players in the chosen room are targets
-        for(Player p : gameBoardController.getPlayers()){
-          if(p.getPosition().getIdRoom().equals(targetRoom)){
-            targets.add(p);
-          }
+    if(firingMode.get(0)){
+      //basic mode, all players in a room you're not in
+      //get visible rooms
+      List<String> visibleRooms = new ArrayList<>();
+      List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
+      for(Square q : visibleSquares){
+        if((!visibleRooms.contains(q.getIdRoom())) & (!shooter.getPosition().getIdRoom().equals(q.getIdRoom()))){
+          visibleRooms.add(q.getIdRoom());
         }
       }
-      else{
-        //cosy fire, all players in a square one move away
-        //get all adjacent squares
-        List<Square> adjacentSquares = new ArrayList<>();
-        for(int i = 0; i<3; i++){
-          adjacentSquares.add(shooter.getPosition().getAdjacencies().get(i).getSquare());
-        }
-        //get their coordinates
-        List<List<Integer>> adjacentSquaresCoordinates = new ArrayList<>();
-        for(Square q : adjacentSquares){
-          adjacentSquaresCoordinates.add(map.getSquareCoordinates(q));
-        }
-        //choose one square
-        List<Integer> targetSquareCoordinates = new ArrayList<>();
-        targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
-        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-        //all players on the chosen square are targets
-        for(Player p : gameBoardController.getPlayers()){
-          if(p.getPosition().equals(targetSquare)){
-            targets.add(p);
-          }
+      //choose one room
+      String targetRoom = client.chooseRoom(visibleRooms);
+      //all players in the chosen room are targets
+      for(Player p : gameBoardController.getPlayers()){
+        if(p.getPosition().getIdRoom().equals(targetRoom)){
+          targets.add(p);
         }
       }
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
+    else{
+      //cosy fire, all players in a square one move away
+      //get all adjacent squares
+      List<Square> adjacentSquares = new ArrayList<>();
+      for(int i = 0; i<3; i++){
+        adjacentSquares.add(shooter.getPosition().getAdjacencies().get(i).getSquare());
+      }
+      //get their coordinates
+      List<List<Integer>> adjacentSquaresCoordinates = new ArrayList<>();
+      for(Square q : adjacentSquares){
+        adjacentSquaresCoordinates.add(map.getSquareCoordinates(q));
+      }
+      //choose one square
+      List<Integer> targetSquareCoordinates = new ArrayList<>();
+      targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
+      Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+      //all players on the chosen square are targets
+      for(Player p : gameBoardController.getPlayers()){
+        if(p.getPosition().equals(targetSquare)){
+          targets.add(p);
+        }
+      }
     }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     if(firingMode.get(0)){
       for(Player p : targets){
         p.takeDamage(shooter, 1);

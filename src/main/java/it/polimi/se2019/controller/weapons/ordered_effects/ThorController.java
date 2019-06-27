@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.ordered_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.player.PlayerBoard;
@@ -24,7 +25,7 @@ public class ThorController extends OrderedEffectsWeaponController {
   }
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
     PlayerViewOnServer client = identifyClient(shooter);
@@ -36,24 +37,16 @@ public class ThorController extends OrderedEffectsWeaponController {
       }
     }
     for(int k = 1; k<chainLength; k++){
-      try{
         targets.add(k, gameBoardController.identifyPlayer
                 (client.chooseTargets(gameBoardController.getPlayerNames
                         (map.getVisiblePlayers(targets.get(k-1).getPosition())))));
-      }
-      catch(Exception e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+
     }
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     targets.get(0).takeDamage(shooter, 2);
     //add one more point of damage if the player chooses to use a targeting scope
     if(useTargetingScope(shooter)){

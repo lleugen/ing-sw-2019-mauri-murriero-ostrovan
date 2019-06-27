@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.powerup.*;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.controller.weapons.alternative_effects.*;
@@ -13,6 +14,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +25,11 @@ import java.util.stream.Collectors;
  * ends the game.
  */
 public class GameBoardController{
+  /**
+   * Namespace this class log to
+   */
+  private static final String LOG_NAMESPACE = "GameBoardController";
+
   public GameBoardController(GameBoard g) {
     gameBoard = g;
     isReady = false;
@@ -139,8 +147,17 @@ public class GameBoardController{
   public void playTurns() {
     currentPlayer = 0;
     while(gameBoard.getKillScoreBoard().gameRunning()){
-      playerControllers.get(currentPlayer).
-              playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
+      try {
+        playerControllers.get(currentPlayer).
+                playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
+      }
+      catch (UserTimeoutException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                e
+        );
+      }
       currentPlayer++;
       if(currentPlayer == players.size()){
         currentPlayer = 0;
@@ -168,8 +185,17 @@ public class GameBoardController{
       playerControllers.get(i).setState(4);
     }
     for(int i = 0; i<players.size(); i++){
-      playerControllers.get(currentPlayer).playTurn
+      try {
+        playerControllers.get(currentPlayer).playTurn
               (playerControllers.get(currentPlayer).getState().getAvailableActions());
+      }
+      catch (UserTimeoutException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                e
+        );
+      }
       currentPlayer++;
       if(currentPlayer == players.size()){
         currentPlayer = 0;

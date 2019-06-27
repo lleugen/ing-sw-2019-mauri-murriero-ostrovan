@@ -33,6 +33,6 @@ public abstract class PowerUpController {
   /**
    * Method prototype, it will be implemented by its subclasses.
    */
-  public abstract Boolean usePowerUp(Player user);
+  public abstract Boolean usePowerUp(Player user) throws UserTimeoutException;
 
 }

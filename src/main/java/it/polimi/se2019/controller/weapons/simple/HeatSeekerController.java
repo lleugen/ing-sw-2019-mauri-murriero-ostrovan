@@ -30,7 +30,7 @@ public class HeatSeekerController extends SimpleWeaponController {
     return firingMode;
   }
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
     List<Player> targettablePlayers = new ArrayList<>();
     for(Player p : getGameBoardController().getGameBoard().getPlayers()){
@@ -41,23 +41,14 @@ public class HeatSeekerController extends SimpleWeaponController {
     //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);
-    try{
-      targets.add(gameBoardController.identifyPlayer(client.chooseTargets
+    targets.add(gameBoardController.identifyPlayer(client.chooseTargets
               (gameBoardController.getPlayerNames(targettablePlayers))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     for(Player p : targets){
       p.takeDamage(shooter, 3);
       //add one more point of damage if the player chooses to use a targeting scope

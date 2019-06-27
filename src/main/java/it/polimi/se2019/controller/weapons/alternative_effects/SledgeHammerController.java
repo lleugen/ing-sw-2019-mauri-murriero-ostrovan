@@ -25,29 +25,20 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    try{
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames
                               (map.getPlayersOnSquare(shooter.getPosition())))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 2);
@@ -76,18 +67,9 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
         possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));
       }
       List<Integer> targetSquareCoordinates;
-      try{
-        targetSquareCoordinates = identifyClient(shooter).chooseTargetSquare(possibleSquaresCoordinates);
-        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-        targets.get(0).moveToSquare(targetSquare);
-      }
-      catch(UserTimeoutException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+      targetSquareCoordinates = identifyClient(shooter).chooseTargetSquare(possibleSquaresCoordinates);
+      Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+      targets.get(0).moveToSquare(targetSquare);
     }
   }
 }

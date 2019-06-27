@@ -30,23 +30,12 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
    * Make a list of all possible targets.
    */
   @Override
-  public abstract List<Player> findTargets(Player shooter);
+  public abstract List<Player> findTargets(Player shooter) throws UserTimeoutException ;
 
   @Override
-  public List<Boolean> selectFiringMode(PlayerViewOnServer client){
+  public List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException{
     List<Boolean> firingMode = new ArrayList<>();
-    Boolean clientChoice = false;
-    try{
-      clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for powered");
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+    Boolean clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for powered");
 
     if(clientChoice){
       firingMode.add(false);
@@ -60,5 +49,5 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
   }
 
   @Override
-  public abstract void shootTargets(Player shooter, List<Player> targets);
+  public abstract void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException ;
 }

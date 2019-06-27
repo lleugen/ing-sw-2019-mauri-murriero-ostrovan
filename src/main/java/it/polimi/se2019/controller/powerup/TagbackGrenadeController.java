@@ -31,51 +31,45 @@ public class TagbackGrenadeController extends PowerUpController {
   @Override
   public Boolean usePowerUp(Player user) {
     client = identifyClient(user);
-    Boolean used = false;
-    try{
-      if(client.chooseBoolean("Do you want to use a tagback grenade?")){
+    try {
+      if (client.chooseBoolean("Do you want to use a tagback grenade?")) {
         List<String> tagbackGrenadesAvailable = new ArrayList<>();
-        for(PowerUpCard p : user.getInventory().getPowerUps()){
-          if(p.getDescription().equals("TagbackGrenadeRed")
+        for (PowerUpCard p : user.getInventory().getPowerUps()) {
+          if (p.getDescription().equals("TagbackGrenadeRed")
                   | p.getDescription().equals("TagbackGrenadeBlue")
-                  | p.getDescription().equals("TagbackGrenadeYellow")){
+                  | p.getDescription().equals("TagbackGrenadeYellow")) {
             tagbackGrenadesAvailable.add(p.getDescription());
           }
         }
-        Integer chosenCardIndex;
+        int chosenCardIndex;
         PowerUpCard chosenCard = null;
-        if(tagbackGrenadesAvailable.size() > 1){
+        if (tagbackGrenadesAvailable.size() > 1) {
           //choose which one to use if more than one is available
           chosenCardIndex = client.chooseSpawnLocation(tagbackGrenadesAvailable);
-        }
-        else{
+        } else {
           chosenCardIndex = 0;
         }
-        for(PowerUpCard p : user.getInventory().getPowerUps()){
-          if(p.getDescription().equals(tagbackGrenadesAvailable.get(chosenCardIndex))){
+        for (PowerUpCard p : user.getInventory().getPowerUps()) {
+          if (p.getDescription().equals(tagbackGrenadesAvailable.get(chosenCardIndex))) {
             chosenCard = p;
           }
         }
         user.getBoard().getDamageReceived().get
-                (user.getBoard().getDamageReceived().size()-1).takeMarks(user, 1);
+                (user.getBoard().getDamageReceived().size() - 1).takeMarks(user, 1);
         user.getInventory().discardPowerUp(chosenCard);
-        used = true;
+        return true;
       }
-      else{
-        used = false;
+      else {
+        return false;
       }
     }
-    catch(UserTimeoutException e){
-      
+    catch (UserTimeoutException e){
       Logger.getLogger(LOG_NAMESPACE).log(
-          Level.WARNING,
-          "Client Disconnected",
-          e
+              Level.INFO,
+              "User Disconnected",
+              e
       );
+      return false;
     }
-
-
-
-    return used;
   }
 }

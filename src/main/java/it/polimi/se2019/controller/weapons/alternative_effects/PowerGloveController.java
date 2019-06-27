@@ -25,72 +25,63 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    try{
-      if(firingMode.get(0)){
-        //basic mode, one target one move away
-        List<Player> possibleTargets = new ArrayList<>();
-        List<String> possibleTargetNames = new ArrayList<>();
-        //get all players one move away
-        possibleTargets.addAll(map.getOneMoveAway(shooter.getPosition()));
-        //get their names
-        for(Player p : possibleTargets){
-          possibleTargetNames.add(p.getName());
-        }
-        //make the view choose one target
-        //incompatible type error will be solved by change to the viewinterface
-        targets.add(gameBoardController.identifyPlayer
-                (client.chooseTargets(possibleTargetNames)));
+    if(firingMode.get(0)){
+      //basic mode, one target one move away
+      List<Player> possibleTargets = new ArrayList<>();
+      List<String> possibleTargetNames = new ArrayList<>();
+      //get all players one move away
+      possibleTargets.addAll(map.getOneMoveAway(shooter.getPosition()));
+      //get their names
+      for(Player p : possibleTargets){
+        possibleTargetNames.add(p.getName());
       }
-      else{
-        //rocket fist mode, one target one move away and another target two moves away, but in the same direction
+      //make the view choose one target
+      //incompatible type error will be solved by change to the viewinterface
+      targets.add(gameBoardController.identifyPlayer
+              (client.chooseTargets(possibleTargetNames)));
+    }
+    else{
+      //rocket fist mode, one target one move away and another target two moves away, but in the same direction
 
-        Integer direction = client.chooseDirection(map.getOpenDirections(shooter.getPosition()));
-        //get all players one move away in "direction"
-        Square targetSquare = shooter.getPosition().getAdjacencies().get(direction).getSquare();
-        List<Player> firstPossibleTargets = map.getPlayersOnSquare(targetSquare);
-        //get their names
-        List<String> firstPossibleTargetsNames = new ArrayList<>();
-        for(Player p: firstPossibleTargets){
-          firstPossibleTargetsNames.add(p.getName());
-        }
-        //choose first target
-        //incompatible type error will be solved by change to the viewinterface
-        targets.add(gameBoardController.identifyPlayer
-                (client.chooseTargets(firstPossibleTargetsNames)));
-        //get all possible second targets
-        List<Player> possibleSecondTargets = new ArrayList<>();
-        if(!targetSquare.getAdjacencies().get(direction).isBlocked()){
-          possibleSecondTargets = map.getPlayersOnSquare
-                  (targetSquare.getAdjacencies().get(direction).getSquare());
-        }
-        //get their names
-        List<String> possibleSecondTargetNames = new ArrayList<>();
-        for(Player p : possibleSecondTargets){
-          possibleSecondTargetNames.add(p.getName());
-        }
-        //choose second target
-        //incompatible type error will be solved by change to the viewinterface
-        targets.add(gameBoardController.identifyPlayer
-                (client.chooseTargets(possibleSecondTargetNames)));
+      Integer direction = client.chooseDirection(map.getOpenDirections(shooter.getPosition()));
+      //get all players one move away in "direction"
+      Square targetSquare = shooter.getPosition().getAdjacencies().get(direction).getSquare();
+      List<Player> firstPossibleTargets = map.getPlayersOnSquare(targetSquare);
+      //get their names
+      List<String> firstPossibleTargetsNames = new ArrayList<>();
+      for(Player p: firstPossibleTargets){
+        firstPossibleTargetsNames.add(p.getName());
       }
+      //choose first target
+      //incompatible type error will be solved by change to the viewinterface
+      targets.add(gameBoardController.identifyPlayer
+              (client.chooseTargets(firstPossibleTargetsNames)));
+      //get all possible second targets
+      List<Player> possibleSecondTargets = new ArrayList<>();
+      if(!targetSquare.getAdjacencies().get(direction).isBlocked()){
+        possibleSecondTargets = map.getPlayersOnSquare
+                (targetSquare.getAdjacencies().get(direction).getSquare());
+      }
+      //get their names
+      List<String> possibleSecondTargetNames = new ArrayList<>();
+      for(Player p : possibleSecondTargets){
+        possibleSecondTargetNames.add(p.getName());
+      }
+      //choose second target
+      //incompatible type error will be solved by change to the viewinterface
+      targets.add(gameBoardController.identifyPlayer
+              (client.chooseTargets(possibleSecondTargetNames)));
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     if(firingMode.get(0)){
       for(Player p : targets){
         p.takeMarks(shooter, 2);

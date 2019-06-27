@@ -23,6 +23,10 @@ public class Inventory {
     addPowerUpToInventory(decks.drawPowerUp());
   }
 
+  public Decks getDecksReference() {
+    return decksReference;
+  }
+
   /**
    * Reference to the decks
    */

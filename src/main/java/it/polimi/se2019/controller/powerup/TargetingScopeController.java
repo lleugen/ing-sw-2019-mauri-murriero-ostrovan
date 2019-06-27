@@ -29,46 +29,36 @@ public class TargetingScopeController extends PowerUpController {
    *
    */
   @Override
-  public Boolean usePowerUp(Player user) {
+  public Boolean usePowerUp(Player user) throws UserTimeoutException{
     client = identifyClient(user);
     Boolean used = false;
-    try{
-      if(client.chooseBoolean("Do you want to use a targeting scope?")){
-        List<String> availableTargetingScopes = new ArrayList<>();
-        for(PowerUpCard card : user.getInventory().getPowerUps()){
-          if((card.getDescription().equals("TargetingScopeRed"))
-                  | (card.getDescription().equals("TargetingScopeBlue"))
-                  | (card.getDescription().equals("TargetingScopeYellow"))){
-            availableTargetingScopes.add(card.getDescription());
-          }
+    if(client.chooseBoolean("Do you want to use a targeting scope?")){
+      List<String> availableTargetingScopes = new ArrayList<>();
+      for(PowerUpCard card : user.getInventory().getPowerUps()){
+        if((card.getDescription().equals("TargetingScopeRed"))
+                | (card.getDescription().equals("TargetingScopeBlue"))
+                | (card.getDescription().equals("TargetingScopeYellow"))){
+          availableTargetingScopes.add(card.getDescription());
         }
-        Integer chosenCardIndex;
-        PowerUpCard chosenCard = null;
-        if(availableTargetingScopes.size() > 1){
-          chosenCardIndex = client.chooseSpawnLocation(availableTargetingScopes);
-        }
-        else{
-          chosenCardIndex = 0;
-        }
-        for(PowerUpCard p : user.getInventory().getPowerUps()){
-          if(p.getDescription().equals(availableTargetingScopes.get(chosenCardIndex))){
-            chosenCard = p;
-          }
-        }
-        user.getInventory().discardPowerUp(chosenCard);
-        used = true;
+      }
+      Integer chosenCardIndex;
+      PowerUpCard chosenCard = null;
+      if(availableTargetingScopes.size() > 1){
+        chosenCardIndex = client.chooseSpawnLocation(availableTargetingScopes);
       }
       else{
-        used = false;
+        chosenCardIndex = 0;
       }
+      for(PowerUpCard p : user.getInventory().getPowerUps()){
+        if(p.getDescription().equals(availableTargetingScopes.get(chosenCardIndex))){
+          chosenCard = p;
+        }
+      }
+      user.getInventory().discardPowerUp(chosenCard);
+      used = true;
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-            Level.WARNING,
-            "Client Disconnected",
-            e
-        );
+    else{
+      used = false;
     }
 
 

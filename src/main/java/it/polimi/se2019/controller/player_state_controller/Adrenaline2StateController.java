@@ -32,32 +32,20 @@ public class Adrenaline2StateController extends PlayerStateController {
   /**
    *
    */
-  public void runAround() {
-    try {
-      List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
-      List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
-      for(Square q : threeMovesAway){
-        threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
-      }
-      List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
-      player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
+  public void runAround() throws UserTimeoutException {
+    List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
+    List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
+    for(Square q : threeMovesAway){
+      threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
-
+    List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
+    player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
   }
 
   /**
    *
    */
-  public void grabStuff() {
-    try {
+  public void grabStuff()  throws UserTimeoutException {
       List<Square> twoMovesAway = map.getTwoMovesAwaySquares(player.getPosition());
       List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
       for(Square q : twoMovesAway){
@@ -73,35 +61,16 @@ public class Adrenaline2StateController extends PlayerStateController {
       else{
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
 
   }
 
   /**
    *
    */
-  public void shootPeople() {
-    try {
-      Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
-      if(direction != -1){
-        player.move(player.getPosition().getAdjacencies().get(direction));
-      }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
+  public void shootPeople() throws UserTimeoutException{
+    Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
+    if(direction != -1){
+      player.move(player.getPosition().getAdjacencies().get(direction));
     }
 
     shoot();

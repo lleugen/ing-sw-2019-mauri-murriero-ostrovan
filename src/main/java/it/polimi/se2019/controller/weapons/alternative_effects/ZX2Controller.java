@@ -24,11 +24,10 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
     List<Player> possibleTargets = new ArrayList<>();
-    try{
       if(firingMode.get(0)){
         targets.add
                 (gameBoardController.identifyPlayer
@@ -49,21 +48,13 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
           }
         }
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 1);
       //add one more point of damage if the player chooses to use a targeting scope

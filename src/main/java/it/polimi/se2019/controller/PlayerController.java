@@ -80,40 +80,31 @@ public class PlayerController {
   /**
    * Take turn
    */
-  public void playTurn(Integer availableActions){
+  public void playTurn(Integer availableActions) throws UserTimeoutException{
     //use power up
     for(int i = 0; i<availableActions; i++){
       String chosenAction;
-      try{
-        chosenAction = client.chooseAction(state.toString());
+      chosenAction = client.chooseAction(state.toString());
 
-        if(chosenAction.equals("run")){
-          state.runAround();
-        /*
-        Integer direction;
-        for(int j = 0; j<2; j++){
-          direction = view.chooseDirection();
-          player.move(player.getPosition().getAdjacencies().get(direction));
-        }
-        */
-        }
-        else if(chosenAction.equals("grab")){
-          state.grabStuff();
-        }
-        else if(chosenAction.equals("shoot")){
-          state.shootPeople();
-        }
-        else if(chosenAction.equals("powerUp")){
-          i--;
-          state.usePowerUp();
-        }
+      if(chosenAction.equals("run")){
+        state.runAround();
+      /*
+      Integer direction;
+      for(int j = 0; j<2; j++){
+        direction = view.chooseDirection();
+        player.move(player.getPosition().getAdjacencies().get(direction));
       }
-      catch(UserTimeoutException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
+      */
+      }
+      else if(chosenAction.equals("grab")){
+        state.grabStuff();
+      }
+      else if(chosenAction.equals("shoot")){
+        state.shootPeople();
+      }
+      else if(chosenAction.equals("powerUp")){
+        i--;
+        state.usePowerUp();
       }
     }
   }

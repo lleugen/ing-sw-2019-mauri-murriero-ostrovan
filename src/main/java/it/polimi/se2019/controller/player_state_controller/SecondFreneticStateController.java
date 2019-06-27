@@ -34,14 +34,13 @@ public class SecondFreneticStateController extends PlayerStateController {
    *
    */
   @Override
-  public void grabStuff() {
+  public void grabStuff() throws UserTimeoutException {
     List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
     List<Integer> moveToCoordinates;
-    try{
       moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
       Square position = player.getPosition();
@@ -52,16 +51,6 @@ public class SecondFreneticStateController extends PlayerStateController {
       else{
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
-
   }
 
   /**
@@ -76,49 +65,39 @@ public class SecondFreneticStateController extends PlayerStateController {
    *
    */
   @Override
-  public void shootPeople() {
+  public void shootPeople() throws UserTimeoutException {
     List<Square> twoMovesAway = map.getTwoMovesAwaySquares(player.getPosition());
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
       twoMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
     List<Integer> moveToCoordinates;
-    try{
-      moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
-      player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
-      //reload
-      if(client.chooseBoolean("Do you want to reload a weapon?")){
-        List<String> weaponsToReload = new ArrayList<>();
-        List<Integer> powerUpsForReloadIndex = new ArrayList<>();
-        List<PowerUpCard> powerUpsForReload = new ArrayList<>();
-        List<String> availablePowerUps = new ArrayList<>();
-        for(Weapon w : player.getInventory().getWeapons()){
-          if(!w.isLoaded()){
-            weaponsToReload.add(w.getName());
-          }
-        }
-        String weaponToReload = client.chooseWeaponToReload(weaponsToReload);
-        for(Weapon w : player.getInventory().getWeapons()){
-          if(w.getName().equals(weaponToReload)){
-            for(PowerUpCard p : player.getInventory().getPowerUps()){
-              availablePowerUps.add(p.getDescription());
-            }
-            powerUpsForReloadIndex = client.choosePowerUpCardsForReload(availablePowerUps);
-            for(int i = 0; i<powerUpsForReloadIndex.size(); i++){
-              powerUpsForReload.add(player.getInventory().getPowerUps().get(powerUpsForReloadIndex.get(i)));
-            }
-            w.reload(powerUpsForReload, player.getInventory().getAmmo());
-          }
+    moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
+    player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
+    //reload
+    if(client.chooseBoolean("Do you want to reload a weapon?")){
+      List<String> weaponsToReload = new ArrayList<>();
+      List<Integer> powerUpsForReloadIndex = new ArrayList<>();
+      List<PowerUpCard> powerUpsForReload = new ArrayList<>();
+      List<String> availablePowerUps = new ArrayList<>();
+      for(Weapon w : player.getInventory().getWeapons()){
+        if(!w.isLoaded()){
+          weaponsToReload.add(w.getName());
         }
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
+      String weaponToReload = client.chooseWeaponToReload(weaponsToReload);
+      for(Weapon w : player.getInventory().getWeapons()){
+        if(w.getName().equals(weaponToReload)){
+          for(PowerUpCard p : player.getInventory().getPowerUps()){
+            availablePowerUps.add(p.getDescription());
+          }
+          powerUpsForReloadIndex = client.choosePowerUpCardsForReload(availablePowerUps);
+          for(int i = 0; i<powerUpsForReloadIndex.size(); i++){
+            powerUpsForReload.add(player.getInventory().getPowerUps().get(powerUpsForReloadIndex.get(i)));
+          }
+          w.reload(powerUpsForReload, player.getInventory().getAmmo());
+        }
+      }
     }
 
     shoot();

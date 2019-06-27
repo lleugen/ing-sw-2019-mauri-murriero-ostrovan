@@ -26,30 +26,22 @@ public class CyberBladeController extends OptionalEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     //choose one target from all the players on the same square
     List<Player> targets = new ArrayList<>();
     List<Player> playersOnSquare = map.getPlayersOnSquare(shooter.getPosition());
-    try{
+
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames(playersOnSquare))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<String> availableEffects = new ArrayList<>();
     if(firingMode.get(0)){
@@ -63,38 +55,27 @@ public class CyberBladeController extends OptionalEffectWeaponController {
     }
     Integer chosenEffect;
 
-    try{
-      while(firingMode.contains(true)){
-        //choose which effect to apply
-        chosenEffect = client.chooseIndex(availableEffects);
-        firingMode.set(chosenEffect, false);
-        if(chosenEffect == 0 || chosenEffect == 2){
-          List<Player> foundTargets = findTargets(shooter);
-          for(Player p : foundTargets){
-            p.takeDamage(shooter, 2);
-            //add one more point of damage if the player chooses to use a targeting scope
-            if(useTargetingScope(shooter)){
-              p.takeDamage(shooter, 1);
-            }
-            //if the damaged target has a tagback gredade, he/she can use it now
-            useTagbackGrenade(p);
+    while(firingMode.contains(true)){
+      //choose which effect to apply
+      chosenEffect = client.chooseIndex(availableEffects);
+      firingMode.set(chosenEffect, false);
+      if(chosenEffect == 0 || chosenEffect == 2){
+        List<Player> foundTargets = findTargets(shooter);
+        for(Player p : foundTargets){
+          p.takeDamage(shooter, 2);
+          //add one more point of damage if the player chooses to use a targeting scope
+          if(useTargetingScope(shooter)){
+            p.takeDamage(shooter, 1);
           }
-        }
-        else if(chosenEffect == 1){
-          shooter.move(shooter.getPosition().getAdjacencies().get
-                  (client.chooseDirection
-                          (map.getOpenDirections(shooter.getPosition()))));
+          //if the damaged target has a tagback gredade, he/she can use it now
+          useTagbackGrenade(p);
         }
       }
+      else if(chosenEffect == 1){
+        shooter.move(shooter.getPosition().getAdjacencies().get
+                (client.chooseDirection
+                        (map.getOpenDirections(shooter.getPosition()))));
+      }
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
-
   }
 }

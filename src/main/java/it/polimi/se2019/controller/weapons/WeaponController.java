@@ -44,7 +44,7 @@ public abstract class WeaponController {
       return client;
   }
 
-  protected void useTagbackGrenade(Player p){
+  protected void useTagbackGrenade(Player p) throws UserTimeoutException {
       for(PowerUpCard card : p.getInventory().getPowerUps()){
           if(card.getDescription().equals("TagbackGrenadeRed")
                   | card.getDescription().equals("TagbackGrenadeBlue")
@@ -54,7 +54,7 @@ public abstract class WeaponController {
       }
   }
 
-  protected boolean useTargetingScope(Player p){
+  protected boolean useTargetingScope(Player p) throws UserTimeoutException {
       Boolean used = false;
       for(PowerUpCard card : p.getInventory().getPowerUps()){
           if((card.getDescription().equals("TargetingScopeRed"))
@@ -78,7 +78,7 @@ public abstract class WeaponController {
   /**
    * Create a list of valid targets, choose targets and shoot them.
    */
-  public void fire(Player player, PlayerViewOnServer client) {
+  public void fire(Player player, PlayerViewOnServer client) throws UserTimeoutException {
     List<Player> chosenTargets = new ArrayList<>();
 
     firingMode = selectFiringMode(client);
@@ -88,30 +88,22 @@ public abstract class WeaponController {
     shootTargets(player, chosenTargets);
   }
 
-  protected Player chooseOneVisiblePlayer(Player shooter){
+  protected Player chooseOneVisiblePlayer(Player shooter) throws UserTimeoutException{
       List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
       Player p = null;
       PlayerViewOnServer client = identifyClient(shooter);
-      try{
-          p = gameBoardController.identifyPlayer
-                  (client.chooseTargets(gameBoardController.getPlayerNames(possibleTargets)));
-      }
-      catch(UserTimeoutException e){
-          Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+      p = gameBoardController.identifyPlayer
+              (client.chooseTargets(gameBoardController.getPlayerNames(possibleTargets)));
+
       return p;
   }
 
-  public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client);
+  public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException;
 
   /**
    * Find all possible targets
    */
-  public abstract List<Player> findTargets(Player shooter);
+  public abstract List<Player> findTargets(Player shooter) throws UserTimeoutException;
 
   /*
    * Choose targets from the list of possible targets
@@ -122,6 +114,6 @@ public abstract class WeaponController {
   /**
    * Apply the weapon's effects on selected targets.
    */
-  public abstract void shootTargets(Player shooter, List<Player> targets);
+  public abstract void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException ;
 
 }

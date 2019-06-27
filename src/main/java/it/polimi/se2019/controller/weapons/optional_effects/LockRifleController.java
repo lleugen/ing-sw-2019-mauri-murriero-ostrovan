@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.optional_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 
@@ -14,14 +15,14 @@ public class LockRifleController extends OptionalEffectWeaponController {
   }
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     targets.get(0).takeMarks(shooter, 1);
     targets.get(0).takeDamage(shooter, 2);
     //add one more point of damage if the player chooses to use a targeting scope

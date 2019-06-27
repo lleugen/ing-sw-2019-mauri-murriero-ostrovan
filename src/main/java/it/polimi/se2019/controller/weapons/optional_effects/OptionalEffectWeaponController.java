@@ -29,20 +29,12 @@ public abstract class OptionalEffectWeaponController extends WeaponController {
 
   protected Integer numberOfOptionalEffects;
 
-  public List<Boolean> selectFiringMode(PlayerViewOnServer client){
+  public List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException{
     List<Boolean> optionalEffectFlags = new ArrayList<>();
     for(int i = 0; i<numberOfOptionalEffects; i++){
-      try{
         optionalEffectFlags.add
                 (client.chooseFiringMode("select effect" + i));
-      }
-      catch(UserTimeoutException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+
 
     }
     return optionalEffectFlags;

@@ -25,7 +25,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     client = identifyClient(shooter);
     //choose one target player at least one move away
     List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
@@ -35,25 +35,15 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
       }
     }
     List<Player> targets = new ArrayList<>();
-    try{
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames(possibleTargets))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     List<String> availableEffects = new ArrayList<>();
     if(firingMode.get(0)){
       availableEffects.add("basic effect");
@@ -63,60 +53,51 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
     }
     Integer chosenEffect;
 
-    try{
-      while(firingMode.contains(true)){
-        //choose which effect to apply
-        chosenEffect = client.chooseIndex(availableEffects);
-        firingMode.set(chosenEffect, false);
-        if(chosenEffect == 0){
-          //basic effect
-          targets = findTargets(shooter);
-          targets.get(0).takeDamage(shooter, 2);
-          //add one more point of damage if the player chooses to use a targeting scope
-          if(useTargetingScope(shooter)){
-            targets.get(0).takeDamage(shooter, 1);
-          }
-          //if the damaged target has a tagback gredade, he/she can use it now
-          useTagbackGrenade(targets.get(0));
-          if(firingMode.get(2)){
-            //fragmenting warhead, has to take place during the first action and before moving the target(cfr:game rules)
-            List<Player> t = map.getPlayersOnSquare(targets.get(0).getPosition());
-            for(Player p : t){
+    while(firingMode.contains(true)){
+      //choose which effect to apply
+      chosenEffect = client.chooseIndex(availableEffects);
+      firingMode.set(chosenEffect, false);
+      if(chosenEffect == 0){
+        //basic effect
+        targets = findTargets(shooter);
+        targets.get(0).takeDamage(shooter, 2);
+        //add one more point of damage if the player chooses to use a targeting scope
+        if(useTargetingScope(shooter)){
+          targets.get(0).takeDamage(shooter, 1);
+        }
+        //if the damaged target has a tagback gredade, he/she can use it now
+        useTagbackGrenade(targets.get(0));
+        if(firingMode.get(2)){
+          //fragmenting warhead, has to take place during the first action and before moving the target(cfr:game rules)
+          List<Player> t = map.getPlayersOnSquare(targets.get(0).getPosition());
+          for(Player p : t){
+            p.takeDamage(shooter, 1);
+            //add one more point of damage if the player chooses to use a targeting scope
+            if(useTargetingScope(shooter)){
               p.takeDamage(shooter, 1);
-              //add one more point of damage if the player chooses to use a targeting scope
-              if(useTargetingScope(shooter)){
-                p.takeDamage(shooter, 1);
-              }
-              //if the damaged target has a tagback gredade, he/she can use it now
-              useTagbackGrenade(p);
             }
-          }
-          Integer direction = client.chooseDirection
-                  (map.getOpenDirections(shooter.getPosition()));
-          if(direction != -1){
-            targets.get(0).move(targets.get(0).getPosition().getAdjacencies().get(direction));
+            //if the damaged target has a tagback gredade, he/she can use it now
+            useTagbackGrenade(p);
           }
         }
-        else if(chosenEffect == 1){
-          Integer direction = null;
-          for(int i = 0; i<2; i++) {
-            direction = client.chooseDirection(map.getOpenDirections
-                    (shooter.getPosition()));
-            if(direction != -1){
-              shooter.move(shooter.getPosition().getAdjacencies().get(direction));
-            }
-          }
-
+        Integer direction = client.chooseDirection
+                (map.getOpenDirections(shooter.getPosition()));
+        if(direction != -1){
+          targets.get(0).move(targets.get(0).getPosition().getAdjacencies().get(direction));
         }
       }
+      else if(chosenEffect == 1){
+        Integer direction = null;
+        for(int i = 0; i<2; i++) {
+          direction = client.chooseDirection(map.getOpenDirections
+                  (shooter.getPosition()));
+          if(direction != -1){
+            shooter.move(shooter.getPosition().getAdjacencies().get(direction));
+          }
+        }
+
+      }
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
+
   }
 }

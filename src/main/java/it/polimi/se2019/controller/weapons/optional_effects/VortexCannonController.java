@@ -28,7 +28,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     client = identifyClient(shooter);
     List<Integer> vortexCoordinates = new ArrayList<>();
     List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
@@ -37,7 +37,6 @@ public class VortexCannonController extends OptionalEffectWeaponController {
       visibleSquareCoordinates.add(map.getSquareCoordinates(q));
     }
     List<Player> targets = new ArrayList<>();
-    try{
       vortexCoordinates = client.chooseTargetSquare(visibleSquareCoordinates);
       vortex = map.getMapSquares()[vortexCoordinates.get(0)][vortexCoordinates.get(1)];
       oneMoveAwayFromvortex = map.getOneMoveAway(vortex);
@@ -47,20 +46,12 @@ public class VortexCannonController extends OptionalEffectWeaponController {
                       (gameBoardController.getPlayerNames
                               (map.getOneMoveAway(vortex)))));
       oneMoveAwayFromvortex.remove(targets.get(0));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException{
     client = identifyClient(shooter);
     targets.get(0).moveToSquare(vortex);
     targets.get(0).takeDamage(shooter, 2);
@@ -70,7 +61,6 @@ public class VortexCannonController extends OptionalEffectWeaponController {
     }
     //if the damaged target has a tagback gredade, he/she can use it now
     useTagbackGrenade(targets.get(0));
-    try{
       if(firingMode.get(1)){
         Player target1 = gameBoardController.identifyPlayer
                 (client.chooseTargets
@@ -97,15 +87,6 @@ public class VortexCannonController extends OptionalEffectWeaponController {
         //if the damaged target has a tagback gredade, he/she can use it now
         useTagbackGrenade(target2);
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
 
   }
 }

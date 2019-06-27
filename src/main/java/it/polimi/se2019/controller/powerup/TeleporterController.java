@@ -29,7 +29,7 @@ public class TeleporterController extends PowerUpController {
    *
    */
   @Override
-  public Boolean usePowerUp(Player user) {
+  public Boolean usePowerUp(Player user) throws UserTimeoutException {
     client = identifyClient(user);
     Boolean used = false;
     //choose where to move
@@ -44,20 +44,11 @@ public class TeleporterController extends PowerUpController {
       }
     }
     List<Integer> targetSquare;
-    try{
-      targetSquare = client.chooseTargetSquare(squares);
-      //move to the chosen square
-      user.moveToSquare(gameBoardController.getGameBoard().getMap().getMapSquares()[targetSquare.get(0)][targetSquare.get(1)]);
-      used = true;
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+    targetSquare = client.chooseTargetSquare(squares);
+    //move to the chosen square
+    user.moveToSquare(gameBoardController.getGameBoard().getMap().getMapSquares()[targetSquare.get(0)][targetSquare.get(1)]);
+    used = true;
+
     return used;
   }
 

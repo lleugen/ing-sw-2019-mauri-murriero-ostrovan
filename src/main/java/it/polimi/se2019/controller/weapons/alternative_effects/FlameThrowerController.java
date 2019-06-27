@@ -28,7 +28,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   List<Player> secondaryTargets = new ArrayList<>();
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     primaryTargets.clear();
     secondaryTargets.clear();
     PlayerViewOnServer client = identifyClient(shooter);
@@ -39,17 +39,8 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       }
     }
     Integer direction = 0;
-    try{
       direction = client.chooseDirection(possibleDirections);
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
+
 
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
@@ -83,19 +74,11 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
-      try{
         primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possiblePrimaryTargetsNames)));
         secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possibleSecondaryTargetsNames)));
-      }
-      catch(UserTimeoutException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+
 
 
     }
@@ -105,7 +88,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     for(Player p : primaryTargets){
       if(firingMode.get(0)){
         //basic
