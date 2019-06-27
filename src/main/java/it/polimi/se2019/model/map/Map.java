@@ -210,6 +210,7 @@ public class Map {
         }
       }
     }
+
   }
 
   public Square[][]getMapSquares(){

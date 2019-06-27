@@ -27,10 +27,16 @@ public abstract class Square {
   private Decks decks;
 
   public Decks getDecks(){
-    return decks;
+    if(decks != null){
+      return decks;
+    }
+    else{
+      decks = map.getGameBoard().getDecks();
+      return decks;
+    }
   }
 
-  private Map map;
+  protected Map map;
 
   /**
    *

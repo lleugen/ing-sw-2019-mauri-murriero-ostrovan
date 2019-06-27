@@ -21,6 +21,7 @@ public class SpawnSquare extends Square {
    */
   public SpawnSquare(Map m, String roomId, List<Direction> adjacencies) {
     super(m, roomId, adjacencies);
+    weaponList = new ArrayList<>();
   }
 
   /**
@@ -62,9 +63,14 @@ public class SpawnSquare extends Square {
   public void refill(){
     //draw a weapon from the weapons cards deck
     //add the drawn weapon to weaponsList
-    while(weaponList.size() < 3){
-      Weapon newWeapon = getDecks().drawWeapon();
-      weaponList.add(newWeapon);
+    if(map.getGameBoard().getDecks() != null){
+      while(weaponList.size() < 3){
+        Weapon newWeapon = getDecks().drawWeapon();
+        weaponList.add(newWeapon);
+      }
+    }
+    else{
+      System.err.println("decks is null");
     }
   }
 }
