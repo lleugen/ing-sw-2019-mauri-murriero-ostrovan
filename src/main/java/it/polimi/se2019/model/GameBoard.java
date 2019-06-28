@@ -324,7 +324,7 @@ public class GameBoard {
   }
 
   public void createKillScoreBoard(Integer skulls, Integer[] scores){
-    killScoreBoard = new KillScoreBoard(skulls, scores);
+    killScoreBoard = new KillScoreBoard(this, skulls, scores);
   }
 
   /**

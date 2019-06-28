@@ -33,22 +33,25 @@ public class KillScoreBoard {
   private List<Integer> scoreBoardValue;
 
   /**
+   *
+   */
+  private GameBoard gameBoard;
+
+  /**
    * Init a new KillScoreBoard
    *
    * @param skulls  Number of available skulls
    * @param scores  Array containing the scores of the board
    */
-  public KillScoreBoard(Integer skulls, Integer[] scores) {
+  public KillScoreBoard(GameBoard g, Integer skulls, Integer[] scores) {
+    gameBoard = g;
+    scoreBoardValue = new ArrayList<>();
     this.remainingSkulls = skulls;
     this.kills = new ArrayList<>();
     this.doubleKills = new ArrayList<>();
 
-    int i;
-    Integer element;
-
-    for (i = 0; i < scores.length; i++){
-      element = scores[i];
-      this.scoreBoardValue.add(element);
+    for(int i = 0; i<scores.length; i++){
+      scoreBoardValue.add(scores[i]);
     }
   }
 
@@ -85,7 +88,7 @@ public class KillScoreBoard {
    *
    * @return a map of Player:score
    */
-  public synchronized Map<Player, Integer> resolveScoreboard(){
+  public synchronized void resolveScoreboard(){
     // Points for each player
     Map<Player, Integer> points = new HashMap<>();
 
@@ -161,7 +164,7 @@ public class KillScoreBoard {
         b = listedMap.get(i + 1);
 
         if (a.getValue() < b.getValue()){
-          sorted = false;
+          sorted = true;
         }
       }
     }
@@ -191,7 +194,8 @@ public class KillScoreBoard {
         scoreboard.put(p, scoredPoints + currentPoints);
       }
     }
-
-    return points;
+    for(Player player : gameBoard.getPlayers()){
+      player.addPoints(points.get(player));
+    }
   }
 }
