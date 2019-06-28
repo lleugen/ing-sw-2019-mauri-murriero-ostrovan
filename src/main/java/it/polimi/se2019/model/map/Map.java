@@ -378,6 +378,7 @@ public class Map {
 
     return Arrays.stream(mapSquares)
             .flatMap(Arrays::stream)
+            .filter(Objects::nonNull)
             .filter((Square s) ->
                     visibleRooms.stream().anyMatch(s.getIdRoom()::equals)
             )
@@ -415,149 +416,10 @@ public class Map {
     return b.stream()
             .map(Square::getAdjacencies)
             .flatMap(List::stream)
+            .filter(Objects::nonNull)
             .filter(Direction::isAccessible)
             .map(Direction::getSquare)
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
   }
-
-
-//  /**
-//   * get adjacent squares
-//   */
-//  public List<Square> getAdjacentSquares(Square position){
-//    List<Square> adjacentSquares = new ArrayList<>();
-//    for(int i = 0; i<3; i++){
-//      if(!position.getAdjacencies().get(i).isBlocked()){
-//        adjacentSquares.add(position.getAdjacencies().get(i).getSquare());
-//      }
-//    }
-//    return adjacentSquares;
-//  }
-
-//  /**
-//   * get all players who are at most two moves away from position
-//   */
-//  public List<Player> getTwoMovesAway(Square position){
-//    List<Square> twoMovesAway = new ArrayList<>();
-//    List<Square> oneMoveAway = new ArrayList<>();
-//    List<Player> twoMovesAwayPlayers = new ArrayList<>();
-//    for(Direction d : position.getAdjacencies()){
-//      if(!d.isBlocked()){
-//        oneMoveAway.add(d.getSquare());
-//      }
-//    }
-//    for(Square q : oneMoveAway){
-//      for(Direction d : q.getAdjacencies()){
-//        if((!d.isBlocked()) && (!twoMovesAway.contains(d.getSquare()))){
-//          twoMovesAway.add(d.getSquare());
-//        }
-//      }
-//    }
-//    for(Player p : gameBoard.getPlayers()){
-//      if(twoMovesAway.contains(p.getPosition())){
-//        twoMovesAwayPlayers.add(p);
-//      }
-//    }
-//    return twoMovesAwayPlayers;
-//  }
-
-//  /**
-//   * get all squares that are at most two moves away from position
-//   */
-//  public List<Square> getTwoMovesAwaySquares(Square position){
-//    List<Square> twoMovesAway = new ArrayList<>();
-//    List<Square> oneMoveAway = new ArrayList<>();
-//    List<Player> twoMovesAwayPlayers = new ArrayList<>();
-//    for(Direction d : position.getAdjacencies()){
-//      if(!d.isBlocked()){
-//        oneMoveAway.add(d.getSquare());
-//      }
-//    }
-//    for(Square q : oneMoveAway){
-//      for(Direction d : q.getAdjacencies()){
-//        if((!d.isBlocked()) && (!twoMovesAway.contains(d.getSquare()))){
-//          twoMovesAway.add(d.getSquare());
-//        }
-//      }
-//    }
-//    return twoMovesAway;
-//  }
-
-//  /**
-//   * get all squares that are at most three moves away from position
-//   */
-//  public List<Square> getThreeMovesAwaySquares(Square position){
-//    List<Square> twoMovesAway = getTwoMovesAwaySquares(position);
-//    List<Square> threeMovesAway = new LinkedList<>(twoMovesAway);
-//    for(Square q : twoMovesAway){
-//      for(Direction d : q.getAdjacencies()){
-//        if((!d.isBlocked()) && (!threeMovesAway.contains(d.getSquare()))){
-//          threeMovesAway.add(d.getSquare());
-//        }
-//      }
-//    }
-//    return threeMovesAway;
-//
-////    this.getReachableSquaresFromSquare(position, )
-//  }
-
-
-//  /**
-//   * Calculate the Manhattan distance between two squares
-//   */
-//  public Integer calculateDistance(Square a, Square b){
-//    List<Integer> aCoordinates = getSquareCoordinates(a);
-//    List<Integer> bCoordinates = getSquareCoordinates(b);
-//    Integer xDifference = aCoordinates.get(0) - bCoordinates.get(0);
-//    if(xDifference < 0){
-//      xDifference = -xDifference;
-//    }
-//    Integer yDifference = aCoordinates.get(1) - bCoordinates.get(1);
-//    if(yDifference < 0){
-//      yDifference = -yDifference;
-//    }
-//    return(xDifference + yDifference);
-//  }
-
-//  /**
-//   * Get all players one move away
-//   */
-//  public List<Player> getOneMoveAway(Square position){
-//    List<Player> playersOneMoveAway = new ArrayList<>();
-//    for(int i = 0; i<3; i++){
-//      if(!position.getAdjacencies().get(i).isBlocked()){
-//        playersOneMoveAway.addAll(getPlayersOnSquare(position.getAdjacencies().get(i).getSquare()));
-//      }
-//    }
-//    return playersOneMoveAway;
-//  }
-
-//  /**
-//   * return a list of all the players on a given square
-//   */
-//  public List<Player> getPlayersOnSquare(Square position){
-//    List<Player> playersOnPosition = new ArrayList<>();
-//    for(Player p : gameBoard.getPlayers()){
-//      if(p.getPosition().equals(position)){
-//        playersOnPosition.add(p);
-//      }
-//    }
-//    return playersOnPosition;
-//  }
-
-
-//  /**
-//   * Get a list of all visible players from a square
-//   */
-//  public List<Player> getVisiblePlayers(Square position){
-//
-//    List<Player> visiblePlayers = new ArrayList<>();
-//    List<Square> visibleSquares = getVisibleSquares(position);
-//    for(Player p : gameBoard.getPlayers()){
-//      if(visibleSquares.contains(p.getPosition())){
-//        visiblePlayers.add(p);
-//      }
-//    }
-//    return visiblePlayers;
-//  }
 }

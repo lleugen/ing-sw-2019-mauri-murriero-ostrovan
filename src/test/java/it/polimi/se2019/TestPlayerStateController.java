@@ -84,7 +84,7 @@ public class TestPlayerStateController {
             for(PowerUpCard p : player.getInventory().getPowerUps()){
                 powerUps.add(p.getDescription());
             }
-            Mockito.when(client.chooseSpawnLocation(powerUps)).thenReturn(0);
+//            Mockito.when(client.chooseSpawnLocation(powerUps)).thenReturn(0);
             playerController.getState().spawn();
             if(colour == 0){
                 assert(player.getPosition().equals(gameBoard.getMap().getRedSpawnPoint()));

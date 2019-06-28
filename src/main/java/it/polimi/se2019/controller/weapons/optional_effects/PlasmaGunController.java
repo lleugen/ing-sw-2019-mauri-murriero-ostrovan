@@ -27,6 +27,26 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
+
+    while(firingMode.contains(true)){
+      int chosenEffect = identifyClient(shooter).chooseIndex(availableEffects);
+      firingMode.set(chosenEffect, false);
+
+      switch (chosenEffect){
+        case 0:
+          // basic effect
+          break;
+        case 1:
+          // ghase glide
+
+          break;
+        case 2:
+          // charged shot
+          break;
+      }
+    }
+
+
     List<String> availableEffects = new ArrayList<>();
     if(firingMode.get(0)){
       availableEffects.add("basic effect");
