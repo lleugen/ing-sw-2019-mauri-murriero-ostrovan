@@ -9,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Adrenaline1StateController extends PlayerStateController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "Adrenaline1StateController" +
-          "";
   public Adrenaline1StateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);
     availableActions = 2;
@@ -31,62 +24,44 @@ public class Adrenaline1StateController extends PlayerStateController {
   /**
    *
    */
-  public void runAround() {
-    try{
-      List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
+  public void runAround() throws UserTimeoutException {
+      List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
       List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
       for(Square q : threeMovesAway){
         threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
       }
       List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
-    }
-    catch(UserTimeoutException e){
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.WARNING,
-              "Client Disconnected",
-              e
-      );
-    }
 
   }
 
   /**
    *
    */
-  public void grabStuff() {
-    try {
-      List<Square> twoMovesAway = map.getTwoMovesAwaySquares(player.getPosition());
-      List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
-      for(Square q : twoMovesAway){
-        twoMovesAwayCoordinates.add(map.getSquareCoordinates(q));
-      }
-      List<Integer> moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
-      player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
-      Square position = player.getPosition();
-      int pickUpIndex = client.chooseItemToGrab();
-      if(position instanceof SpawnSquare){
-        player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
-      }
-      else{
-        player.getInventory().addAmmoTileToInventory(position.grab(0));
-      }
+  public void grabStuff() throws UserTimeoutException {
+    List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
+    List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
+    for(Square q : twoMovesAway){
+      twoMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
-    catch(UserTimeoutException e){
-      //remove player from game
-      Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
+    List<Integer> moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
+    player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
+    Square position = player.getPosition();
+    int pickUpIndex = client.chooseItemToGrab();
+    if(position instanceof SpawnSquare){
+      player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
     }
+    else{
+      player.getInventory().addAmmoTileToInventory(position.grab(0));
+    }
+
 
   }
 
   /**
    *
    */
-  public void shootPeople() {
+  public void shootPeople() throws UserTimeoutException {
     shoot();
   }
 }

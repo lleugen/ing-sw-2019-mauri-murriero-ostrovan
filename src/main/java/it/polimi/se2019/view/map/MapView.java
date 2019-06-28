@@ -6,7 +6,7 @@ public class MapView {
   /**
    * A 2D array with references to all the squares that make up the map.
    */
-  public Square[][] squares;
+  private Square[][] squares;
 
   /**
    *

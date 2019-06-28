@@ -46,8 +46,8 @@ public class Ammo extends Grabbable {
    */
   public static int compare(Ammo set, Ammo reference) {
     if((set.getRed() >= reference.getRed())
-            &(set.getBlue()>= reference.getBlue())
-            &(set.getYellow() >= reference.getYellow())){
+            &&(set.getBlue()>= reference.getBlue())
+            &&(set.getYellow() >= reference.getYellow())){
       return 1;
     }
     else return 0;

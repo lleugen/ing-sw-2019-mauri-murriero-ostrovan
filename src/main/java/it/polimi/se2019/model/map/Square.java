@@ -3,8 +3,6 @@ package it.polimi.se2019.model.map;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
 
-import it.polimi.se2019.model.grabbable.Grabbable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +24,29 @@ public abstract class Square {
    */
   private Decks decks;
 
-  public Decks getDecks(){
-    return decks;
+  /**
+   * Available rooms color
+   */
+  public enum RoomColor {
+    BLUE,
+    YELLOW,
+    WHITE,
+    RED,
+    GRAY,
+    PURPLE
   }
 
+  public Decks getDecks(){
+    if(decks != null){
+      return decks;
+    }
+    else{
+      decks = map.getGameBoard().getDecks();
+      return decks;
+    }
+  }
 
+  protected Map map;
 
   /**
    *
@@ -42,7 +58,9 @@ public abstract class Square {
    * @param roomId      The id of the room this Square belongs to
    * @param a The list of adjacents squares
    */
-  public Square(String roomId, List<Direction> a) {
+  public Square(Map m, RoomColor roomId, List<Direction> a) {
+    map = m;
+    decks = map.getGameBoard().getDecks();
     adjacencies = new ArrayList<>();
     if(a == null){
       adjacencies.add(0, new Direction(null, true));
@@ -53,7 +71,6 @@ public abstract class Square {
     else{
       adjacencies = a;
     }
-    Direction test = adjacencies.get(0);
     this.idRoom = roomId;
   }
 
@@ -102,12 +119,12 @@ public abstract class Square {
   /**
    * The id of the room this Square belongs to
    */
-  private String idRoom;
+  private RoomColor idRoom;
 
   /**
    * @return The id of the room this Square belongs to
    */
-  public String getIdRoom() {
+  public RoomColor getIdRoom() {
     return this.idRoom;
   }
 

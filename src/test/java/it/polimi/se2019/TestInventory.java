@@ -1,12 +1,15 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.deck.Deck;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Inventory;
+import it.polimi.se2019.model.player.Player;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +22,7 @@ public class TestInventory {
     static Inventory inventory;
 
     @BeforeClass
-    public static void createEmptyInventory(){
+    public static void createEmptyInventory() throws UnknownMapTypeException {
         //initialize decks Decks decks = new Decks();
         List<Weapon> w = new ArrayList<>();
         w.add(new Weapon("mockWeapon",
@@ -33,16 +36,13 @@ public class TestInventory {
         a.add(new AmmoTile(1,1,1, false));
         Deck amo = new Deck(a);
         Decks decks = new Decks(w, p, a);
-        inventory = new Inventory(decks);
-        int prova = 1;
-    }
-    @After
-    public void emptyTheInventory(){
-
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("player", "character", gameBoard);
+        inventory = new Inventory(player, decks);
     }
 
     @Test
-    public void testAddToInventoryShouldSucceed(){
+    public void testAddToInventoryShouldSucceed() {
         Weapon weapon = new Weapon("a",
                 new Ammo(1,1,1),
                 new Ammo(1,1,1));
@@ -69,5 +69,23 @@ public class TestInventory {
         inventory.addWeaponToInventory(weapon3);
         inventory.addWeaponToInventory(weapon4);
         assert (!inventory.getWeapons().contains(weapon4));
+    }
+
+    @Test
+    public void addToInventoryOverLimit() throws UnknownMapTypeException {
+        GameBoard gameBoard = new GameBoard(0);
+        Player player1 = new Player("player1", "character1", gameBoard);
+        Inventory inventory = player1.getInventory();
+        assert(inventory.getPowerUps().size() == 1);
+        inventory.addPowerUpToInventory(gameBoard.getDecks().drawPowerUp());
+        inventory.addPowerUpToInventory(gameBoard.getDecks().drawPowerUp());
+        inventory.addPowerUpToInventory(gameBoard.getDecks().drawPowerUp());
+        assert(inventory.getPowerUps().size() == 3);
+        inventory.getAmmo().addRed(4);
+        inventory.getAmmo().addBlue(4);
+        inventory.getAmmo().addYellow(4);
+        assert(inventory.getAmmo().getRed() == 3);
+        assert(inventory.getAmmo().getBlue() == 3);
+        assert(inventory.getAmmo().getYellow() == 3);
     }
 }

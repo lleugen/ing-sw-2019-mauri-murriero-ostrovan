@@ -5,15 +5,21 @@ package it.polimi.se2019;
 import it.polimi.se2019.model.server.Server;
 import it.polimi.se2019.view.Client;
 
-import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class App {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "App";
+
   /**
    * Contains actions for param type (what type of program should be spawned)
    */
@@ -60,15 +66,19 @@ public class App {
   private static void spawnServer(Map<String, String> args){
     if (args.containsKey("host")) {
       try {
-        Server server = new Server(args.get("host"));
+        new Server(args.get("host"));
       }
-      catch (RemoteException | MalformedURLException e){
-        e.printStackTrace();
+      catch (RemoteException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while starting RMI server",
+                e
+        );
         throw new WrongArguments("Unable to start RMI server");
       }
     }
     else {
-      System.out.println("Host param is required");
+      throw new WrongArguments("Host param is required");
     }
   }
 
@@ -79,28 +89,24 @@ public class App {
    */
   private static void spawnClient(Map<String, String> args){
     if (args.containsKey("host")) {
-      Client client = new Client(args.get("host"));
+      new Client(args.get("host"));
     }
     else {
-      System.out.println("Host param is required");
+      throw new WrongArguments("Host param is required");
     }
   }
 
   /**
    * Type: server, client
    * @param args
+   *
+   * @throws WrongArguments If passed args are invalid
    */
   public static void main(String[] args) {
     params = new HashMap<>();
     initMapping();
 
-    try {
-      initParams(args);
-    }
-    catch (WrongArguments e){
-      // TODO: if necessary, implement additional logic here
-      throw e;
-    }
+    initParams(args);
 
     if (params.containsKey("type")){
       typeMapping.get(params.get("type")).accept(params);

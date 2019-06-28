@@ -3,6 +3,7 @@ package it.polimi.se2019.model.server;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
@@ -14,7 +15,7 @@ public class ServerLobby implements Remote {
   private Integer maxPlayers;
   private GameBoardController gameBoardController;
 
-  ServerLobby(Integer playerCount, Integer mapType){
+  ServerLobby(Integer playerCount, Integer mapType) throws UnknownMapTypeException {
     this.maxPlayers = playerCount;
     GameBoard gameBoard = new GameBoard(mapType);
     this.gameBoardController = new GameBoardController(gameBoard);

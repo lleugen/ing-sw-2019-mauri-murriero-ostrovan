@@ -7,15 +7,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PlasmaGunController extends OptionalEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public PlasmaGunController(GameBoardController g) {
     super(g);
     name = "PlasmaGunController";
@@ -25,15 +18,35 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
+
+    while(firingMode.contains(true)){
+      int chosenEffect = identifyClient(shooter).chooseIndex(availableEffects);
+      firingMode.set(chosenEffect, false);
+
+      switch (chosenEffect){
+        case 0:
+          // basic effect
+          break;
+        case 1:
+          // ghase glide
+
+          break;
+        case 2:
+          // charged shot
+          break;
+      }
+    }
+
+
     List<String> availableEffects = new ArrayList<>();
     if(firingMode.get(0)){
       availableEffects.add("basic effect");
@@ -46,7 +59,6 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
     }
     Integer chosenEffect;
 
-    try{
       while(firingMode.contains(true)){
         //choose which effect to apply
         Player target = null;
@@ -79,15 +91,6 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
           useTagbackGrenade(target);
         }
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
 
   }
 }

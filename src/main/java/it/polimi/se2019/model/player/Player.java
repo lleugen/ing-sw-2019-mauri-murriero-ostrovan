@@ -1,10 +1,16 @@
 package it.polimi.se2019.model.player;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
+import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.model.map.Square;
 
 import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Player contains all the player data, and related collections (eg: Inventory)
@@ -17,7 +23,7 @@ public class Player {
     this.state = 0;
     gameBoardReference = g;
     board = new PlayerBoard();
-    inventory = new Inventory(gameBoardReference.getDecks());
+    inventory = new Inventory(this, gameBoardReference.getDecks());
   }
 
   /**
@@ -63,6 +69,53 @@ public class Player {
     return state;
   }
 
+  /**
+   * Ask a client if he wants to reload a weapon, and reload it
+   * Available weapons are referred to this user
+   *
+   * @param c Reference to the client
+   */
+  public void reloadWeapon(PlayerViewOnServer c) throws UserTimeoutException {
+    if(c.chooseBoolean("Do you want to reload a weapon?")){
+      List<String> emptyWeapons = this.getInventory().getWeapons().stream()
+              .filter(Weapon::isUnloaded)
+              .map(Weapon::getName)
+              .collect(Collectors.toList());
+
+      String selectedWeapon = c.chooseWeaponToReload(emptyWeapons);
+
+      List<Weapon> weaponsToReload = this.getInventory().getWeapons().stream()
+              .filter((Weapon w) -> selectedWeapon.equals(w.getName()))
+              .collect(Collectors.toList());
+
+      for (Weapon w : weaponsToReload) {
+        w.reload(
+                this.getPowerUpsForReload(c),
+                this.getInventory().getAmmo()
+        );
+      }
+    }
+  }
+
+  /**
+   * Ask the client to select power ups for reload a weapon.
+   * Available powerups are referred to this client
+   *
+   * @param c Reference to the client
+   *
+   * @return The list of selected PowerUps
+   */
+  private List<PowerUpCard> getPowerUpsForReload(PlayerViewOnServer c)
+          throws UserTimeoutException {
+
+    List<String> descs = this.getInventory().getPowerUps().stream()
+            .map(PowerUpCard::getDescription)
+            .collect(Collectors.toList());
+
+    return c.choosePowerUpCardsForReload(descs).stream()
+            .map(this.getInventory().getPowerUps()::get)
+            .collect(Collectors.toList());
+  }
 
   /**
    * @return the player's character

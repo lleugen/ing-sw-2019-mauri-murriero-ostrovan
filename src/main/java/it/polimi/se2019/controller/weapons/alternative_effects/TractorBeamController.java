@@ -9,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TractorBeamController extends OptionalEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public TractorBeamController(GameBoardController g) {
     super(g);
     name = "TractorBeamController";
@@ -26,7 +19,7 @@ public class TractorBeamController extends OptionalEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     client = identifyClient(shooter);
     List<Player> possibletargets = new ArrayList<>();
     List<Player> currentSquareTwoMovesAway = new ArrayList<>();
@@ -35,7 +28,11 @@ public class TractorBeamController extends OptionalEffectWeaponController {
       List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
       for(Square q : visibleSquares){
         currentSquareTwoMovesAway.clear();
-        currentSquareTwoMovesAway.addAll(map.getTwoMovesAway(q));
+        currentSquareTwoMovesAway.addAll(
+                map.getPlayersOnSquares(
+                        map.getReachableSquares(q, 2)
+                )
+        );
         for(Player p : currentSquareTwoMovesAway){
           if(!possibletargets.contains(p)){
             possibletargets.add(p);
@@ -44,72 +41,55 @@ public class TractorBeamController extends OptionalEffectWeaponController {
       }
     }
     else{
-      possibletargets = map.getTwoMovesAway(shooter.getPosition());
+      possibletargets = map.getPlayersOnSquares(
+              map.getReachableSquares(shooter.getPosition(), 2)
+      );
     }
-    try{
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames(possibletargets))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException{
     client = identifyClient(shooter);
-    try{
-      if(firingMode.get(0)){
-        List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
-        List<Square> squaresTwoMovesFromtarget = map.getTwoMovesAwaySquares(shooter.getPosition());
-        List<Square> destinationSquares = new ArrayList<>();
-        List<List<Integer>> destinationSquareCoordinates = new ArrayList<>();
-        for(Square q : squaresTwoMovesFromtarget){
-          if(visibleSquares.contains(q)){
-            destinationSquares.add(q);
-            destinationSquareCoordinates.add(map.getSquareCoordinates(q));
-          }
+    if(firingMode.get(0)){
+      List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
+      List<Square> squaresTwoMovesFromtarget = map.getReachableSquares(shooter.getPosition(), 2);
+      List<Square> destinationSquares = new ArrayList<>();
+      List<List<Integer>> destinationSquareCoordinates = new ArrayList<>();
+      for(Square q : squaresTwoMovesFromtarget){
+        if(visibleSquares.contains(q)){
+          destinationSquares.add(q);
+          destinationSquareCoordinates.add(map.getSquareCoordinates(q));
         }
+      }
 
-        List<Integer> chosenDestinationSquareCoordinates = client.chooseTargetSquare
-                (destinationSquareCoordinates);
-        Square chosenDestinationSquare =
-                map.getMapSquares()[chosenDestinationSquareCoordinates.get(0)][chosenDestinationSquareCoordinates.get(1)];
-        targets.get(0).moveToSquare(chosenDestinationSquare);
-        targets.get(0).takeDamage(shooter,1);
-        //add one more point of damage if the player chooses to use a targeting scope
-        if(useTargetingScope(shooter)){
-          targets.get(0).takeDamage(shooter, 1);
-        }
-        //if the damaged target has a tagback gredade, he/she can use it now
-        useTagbackGrenade(targets.get(0));
+      List<Integer> chosenDestinationSquareCoordinates = client.chooseTargetSquare
+              (destinationSquareCoordinates);
+      Square chosenDestinationSquare =
+              map.getMapSquares()[chosenDestinationSquareCoordinates.get(0)][chosenDestinationSquareCoordinates.get(1)];
+      targets.get(0).moveToSquare(chosenDestinationSquare);
+      targets.get(0).takeDamage(shooter,1);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
       }
-      else{
-        targets.get(0).moveToSquare(shooter.getPosition());
-        targets.get(0).takeDamage(shooter, 3);
-        //add one more point of damage if the player chooses to use a targeting scope
-        if(useTargetingScope(shooter)){
-          targets.get(0).takeDamage(shooter, 1);
-        }
-        //if the damaged target has a tagback gredade, he/she can use it now
-        useTagbackGrenade(targets.get(0));
-      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
+    else{
+      targets.get(0).moveToSquare(shooter.getPosition());
+      targets.get(0).takeDamage(shooter, 3);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(0).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(0));
     }
 
   }

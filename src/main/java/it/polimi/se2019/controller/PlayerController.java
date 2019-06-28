@@ -7,8 +7,6 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class controls player actions, it contains the player's current state
@@ -19,23 +17,15 @@ import java.util.logging.Logger;
  * complex actions that a player can make during a turn
  */
 public class PlayerController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "PlayerController";
-
-//  private GameBoardController gameBoardController;
   private PlayerViewOnServer client;
   private Player player;
   private PlayerStateController state;
   private List<PlayerStateController> stateControllerList;
-  private GameBoardController gameBoardController;
 
   /**
    *
    */
   public PlayerController(GameBoardController g, Player p, PlayerViewOnServer c) {
-    gameBoardController = g;
     client = c;
     player = p;
     stateControllerList = new ArrayList<>();
@@ -64,42 +54,40 @@ public class PlayerController {
   }
 
   /**
+   * @return the name of the player linked to this controller
+   */
+  public String getName(){
+    return this.player.getName();
+  }
+
+  /**
+   * @return A reference to the player linked to this controller
+   */
+  public Player getPlayer(){
+    return this.player;
+  }
+
+  /**
    * Take turn
    */
-  public void playTurn(Integer availableActions){
+  public void playTurn(Integer availableActions) throws UserTimeoutException{
     //use power up
     for(int i = 0; i<availableActions; i++){
       String chosenAction;
-      try{
-        chosenAction = client.chooseAction(state.toString());
+      chosenAction = client.chooseAction(state.toString());
 
-        if(chosenAction.equals("run")){
-          state.runAround();
-        /*
-        Integer direction;
-        for(int j = 0; j<2; j++){
-          direction = view.chooseDirection();
-          player.move(player.getPosition().getAdjacencies().get(direction));
-        }
-        */
-        }
-        else if(chosenAction.equals("grab")){
-          state.grabStuff();
-        }
-        else if(chosenAction.equals("shoot")){
-          state.shootPeople();
-        }
-        else if(chosenAction.equals("powerUp")){
-          i--;
-          state.usePowerUp();
-        }
+      if(chosenAction.equals("run")){
+        state.runAround();
       }
-      catch(UserTimeoutException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
+      else if(chosenAction.equals("grab")){
+        state.grabStuff();
+      }
+      else if(chosenAction.equals("shoot")){
+        state.shootPeople();
+      }
+      else if(chosenAction.equals("powerUp")){
+        i--;
+        state.usePowerUp();
       }
     }
   }

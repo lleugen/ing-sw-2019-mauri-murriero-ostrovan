@@ -8,19 +8,12 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The newton powerup moves the targeted enemy player one or two squares
  * in any direction.
  */
 public class NewtonController extends PowerUpController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public NewtonController() {
     name = "NewtonController";
   }
@@ -31,42 +24,30 @@ public class NewtonController extends PowerUpController {
    *
    */
   @Override
-  public Boolean usePowerUp(Player user) {
+  public Boolean usePowerUp(Player user) throws UserTimeoutException {
     client = identifyClient(user);
-    Boolean used = false;
+    boolean used = false;
     Map map = gameBoardController.getGameBoard().getMap();
 
     //choose target
-    try{
-      Player target = gameBoardController.identifyPlayer(client.chooseTargets
-              (gameBoardController.getPlayerNames(gameBoardController.getPlayers())));
+    Player target = gameBoardController.identifyPlayer(client.chooseTargets
+            (gameBoardController.getPlayerNames(gameBoardController.getPlayers())));
 
-      //choose where to move the target
-      List<List<Integer>> possibleSquares = new ArrayList<>();
-      Square firstSquare;
-      Square secondSquare;
-      for(int i = 0; i<3; i++){
-        firstSquare = target.getPosition().getAdjacencies().get(i).getSquare();
-        secondSquare = firstSquare.getAdjacencies().get(i).getSquare();
-        possibleSquares.add(map.getSquareCoordinates(firstSquare));
-        possibleSquares.add(map.getSquareCoordinates(secondSquare));
-      }
-      List<Integer> squareCoordinates = client.chooseTargetSquare(possibleSquares);
-
-      //move the target
-      target.moveToSquare(map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)]);
-      used = true;
+    //choose where to move the target
+    List<List<Integer>> possibleSquares = new ArrayList<>();
+    Square firstSquare;
+    Square secondSquare;
+    for(int i = 0; i<3; i++){
+      firstSquare = target.getPosition().getAdjacencies().get(i).getSquare();
+      secondSquare = firstSquare.getAdjacencies().get(i).getSquare();
+      possibleSquares.add(map.getSquareCoordinates(firstSquare));
+      possibleSquares.add(map.getSquareCoordinates(secondSquare));
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+    List<Integer> squareCoordinates = client.chooseTargetSquare(possibleSquares);
 
-
+    //move the target
+    target.moveToSquare(map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)]);
+    used = true;
 
     return used;
   }

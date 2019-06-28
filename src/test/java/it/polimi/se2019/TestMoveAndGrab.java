@@ -7,10 +7,7 @@ import it.polimi.se2019.controller.player_state_controller.Adrenaline1StateContr
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
-import it.polimi.se2019.model.map.AmmoSquare;
-import it.polimi.se2019.model.map.Direction;
-import it.polimi.se2019.model.map.SpawnSquare;
-import it.polimi.se2019.model.map.Square;
+import it.polimi.se2019.model.map.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
@@ -18,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +29,24 @@ public class TestMoveAndGrab {
     PlayerViewOnServer client;
     @Mock
     Decks decksReference;
-    GameBoard gameBoard = new GameBoard(0);
-    Player player = new Player("playerName", "playerCharacter", gameBoard);
-    Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
-    GameBoardController gameBoardController = new GameBoardController(gameBoard);
-    PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
     @Test
-    public void runAroundTest(){
+    public void runAroundTest() throws UnknownMapTypeException {
         try {
+            GameBoard gameBoard = new GameBoard(0);
+            Player player = new Player("playerName", "playerCharacter", gameBoard);
+            Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            List<Square> threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
             for(Square q : threeMovesAway){
-                threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
-            Mockito.when(client.chooseTargetSquare(threeMovesAwayCoordinates)).thenReturn(threeMovesAwayCoordinates.get(0));
+            Mockito.when(client.chooseTargetSquare(any())).thenReturn(threeMovesAwayCoordinates.get(0));
 
             //test run around in state adrenaline 1
             playerController.setState(1);
@@ -56,7 +55,7 @@ public class TestMoveAndGrab {
 
             //test run around in state adrenaline 2
             playerController.setState(2);
-            threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             for(Square q : threeMovesAway){
                 threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -66,7 +65,7 @@ public class TestMoveAndGrab {
 
             //test run around in state normal
             playerController.setState(0);
-            threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             for(Square q : threeMovesAway){
                 threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -77,7 +76,7 @@ public class TestMoveAndGrab {
             //test run around in state frenetic 1
             playerController.setState(3);
 
-            List<Square> fourMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            List<Square> fourMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             for(Square q : fourMovesAway){
                 for(Direction d : q.getAdjacencies()){
                     if((!d.isBlocked()) & (!fourMovesAway.contains(q))){
@@ -85,10 +84,12 @@ public class TestMoveAndGrab {
                     }
                 }
             }
+            assert(!fourMovesAway.isEmpty());
             List<List<Integer>> fourMovesAwayCoordinates = new ArrayList<>();
             for(Square q : fourMovesAway){
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
+            assert(!fourMovesAwayCoordinates.isEmpty());
             Mockito.when(client.chooseTargetSquare(fourMovesAwayCoordinates)).thenReturn(fourMovesAwayCoordinates.get(0));
             playerController.getState().runAround();
             assert(player.getPosition().equals(fourMovesAway.get(0)));
@@ -98,10 +99,18 @@ public class TestMoveAndGrab {
         }
     }
     @Test
-    public void grabStuffAdrenaline1Test(){
+    public void grabStuffAdrenaline1Test() throws UnknownMapTypeException{
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("playerName", "playerCharacter", gameBoard);
+        Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> twoMovesAway = gameBoard.getMap().getTwoMovesAwaySquares(player.getPosition());
+            gameBoard.getMap().getMapSquares()[0][0].refill();
+            List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
             for(Square q : twoMovesAway){
                 twoMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -121,7 +130,7 @@ public class TestMoveAndGrab {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(player.getInventory().getPowerUps().size() == 2);
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
@@ -137,10 +146,18 @@ public class TestMoveAndGrab {
     }
 
     @Test
-    public void grabStuffAdrenaline2Test(){
+    public void grabStuffAdrenaline2Test() throws UnknownMapTypeException{
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("playerName", "playerCharacter", gameBoard);
+        Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> twoMovesAway = gameBoard.getMap().getTwoMovesAwaySquares(player.getPosition());
+            gameBoard.getMap().getMapSquares()[0][0].refill();
+            List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
             for(Square q : twoMovesAway){
                 twoMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
@@ -160,7 +177,7 @@ public class TestMoveAndGrab {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(player.getInventory().getPowerUps().size() == 2);
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
@@ -176,19 +193,29 @@ public class TestMoveAndGrab {
     }
 
     @Test
-    public void grabStuffNormalTest(){
+    public void grabStuffNormalTest() throws UnknownMapTypeException{
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("playerName", "playerCharacter", gameBoard);
+        Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
-            List<Square> oneMoveAway = gameBoard.getMap().getTwoMovesAwaySquares(player.getPosition());
+            gameBoard.getMap().getMapSquares()[0][0].refill();
+            List<Square> oneMoveAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> oneMoveAwayCoordinates = new ArrayList<>();
             for(Square q : oneMoveAway){
                 oneMoveAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
             Mockito.when(client.chooseTargetSquare(oneMoveAwayCoordinates)).thenReturn(oneMoveAwayCoordinates.get(0));
             Mockito.when(client.chooseItemToGrab()).thenReturn(0);
+            Mockito.when(client.chooseDirection(any())).thenReturn(-1);
             PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
             Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
             playerController.setState(0);
+            assert(playerController.getState() != null);
             Grabbable item = oneMoveAway.get(0).getItem().get(0);
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
@@ -199,7 +226,7 @@ public class TestMoveAndGrab {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(player.getInventory().getPowerUps().size() == 2);
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));

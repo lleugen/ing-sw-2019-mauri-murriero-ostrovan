@@ -9,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FlameThrowerController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "FlameThrowerController";
-
   public FlameThrowerController(GameBoardController g) {
     super(g);
     name = "FlameThrowerController";
@@ -28,7 +21,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   List<Player> secondaryTargets = new ArrayList<>();
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     primaryTargets.clear();
     secondaryTargets.clear();
     PlayerViewOnServer client = identifyClient(shooter);
@@ -39,17 +32,8 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       }
     }
     Integer direction = 0;
-    try{
       direction = client.chooseDirection(possibleDirections);
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
+
 
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
@@ -70,10 +54,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     }
     else{
       //basic firing mode
-      List<Player> possiblePrimaryTargets = new ArrayList<>();
-      List<Player> possibleSecondaryTargets = new ArrayList<>();
-      possiblePrimaryTargets.addAll(map.getPlayersOnSquare(targetSquares.get(0)));
-      possibleSecondaryTargets.addAll(map.getPlayersOnSquare(targetSquares.get(1)));
+      List<Player> possiblePrimaryTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquares.get(0), 0)
+      ));
+      List<Player> possibleSecondaryTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquares.get(1), 0)
+      ));
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();
       List<String> possibleSecondaryTargetsNames = new ArrayList<>();
@@ -83,19 +69,11 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
-      try{
         primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possiblePrimaryTargetsNames)));
         secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possibleSecondaryTargetsNames)));
-      }
-      catch(UserTimeoutException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+
 
 
     }
@@ -105,7 +83,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     for(Player p : primaryTargets){
       if(firingMode.get(0)){
         //basic

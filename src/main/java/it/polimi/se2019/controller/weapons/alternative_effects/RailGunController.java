@@ -8,15 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class RailGunController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public RailGunController(GameBoardController g) {
     super(g);
     name = "RailGunController";
@@ -25,7 +18,7 @@ public class RailGunController extends AlternativeEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     //choose where to shoot
     List<Integer> directions = new ArrayList<>();
@@ -34,48 +27,45 @@ public class RailGunController extends AlternativeEffectWeaponController {
     directions.add(2, 2);
     directions.add(3, 3);
     List<Player> targets = null;
-    try{
-      Integer direction = client.chooseDirection(directions);
-      //make a list of all players in that direction
-      List<Player> possibleTargets = new ArrayList<>();
-      Square currentSquare = shooter.getPosition();
-      while(currentSquare.getAdjacencies().get(direction).getSquare() != null){
-        possibleTargets.addAll(map.getPlayersOnSquare(currentSquare.getAdjacencies().get(direction).getSquare()));
-        currentSquare = currentSquare.getAdjacencies().get(direction).getSquare();
-      }
-      //get their names
-      List<String> possibleTargetNames = gameBoardController.getPlayerNames(possibleTargets);
-      //choose targets
-      targets = new ArrayList<>();
-      if(firingMode.get(0)){
-        //basic mode, one target
-        targets.add(gameBoardController.identifyPlayer
-                (client.chooseTargets(possibleTargetNames)));
-      }
-      else{
-        //piercing mode, choose two targets
-        List<String> targetNames = new ArrayList<>();
-        targetNames.add(client.chooseTargets(possibleTargetNames));
-        possibleTargetNames.remove(targetNames.get(0));
-        targetNames.add(client.chooseTargets(possibleTargetNames));
-        targets.add(gameBoardController.identifyPlayer(targetNames.get(0)));
-        targets.add(gameBoardController.identifyPlayer(targetNames.get(1)));
-      }
+
+    Integer direction = client.chooseDirection(directions);
+    //make a list of all players in that direction
+    List<Player> possibleTargets = new ArrayList<>();
+    Square currentSquare = shooter.getPosition();
+    while(currentSquare.getAdjacencies().get(direction).getSquare() != null){
+      possibleTargets.addAll(map.getPlayersOnSquares(
+              map.getReachableSquares(
+                      currentSquare.getAdjacencies().get(direction).getSquare(),
+                      0
+              )
+      ));
+
+      currentSquare = currentSquare.getAdjacencies().get(direction).getSquare();
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
+    //get their names
+    List<String> possibleTargetNames = gameBoardController.getPlayerNames(possibleTargets);
+    //choose targets
+    targets = new ArrayList<>();
+    if(firingMode.get(0)){
+      //basic mode, one target
+      targets.add(gameBoardController.identifyPlayer
+              (client.chooseTargets(possibleTargetNames)));
+    }
+    else{
+      //piercing mode, choose two targets
+      List<String> targetNames = new ArrayList<>();
+      targetNames.add(client.chooseTargets(possibleTargetNames));
+      possibleTargetNames.remove(targetNames.get(0));
+      targetNames.add(client.chooseTargets(possibleTargetNames));
+      targets.add(gameBoardController.identifyPlayer(targetNames.get(0)));
+      targets.add(gameBoardController.identifyPlayer(targetNames.get(1)));
     }
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 3);
       //add one more point of damage if the player chooses to use a targeting scope

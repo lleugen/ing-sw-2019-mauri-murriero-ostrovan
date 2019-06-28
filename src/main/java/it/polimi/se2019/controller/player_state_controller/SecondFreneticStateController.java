@@ -2,8 +2,6 @@ package it.polimi.se2019.controller.player_state_controller;
 
 import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -11,15 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SecondFreneticStateController extends PlayerStateController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public SecondFreneticStateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);
     availableActions = 1;
@@ -34,14 +25,13 @@ public class SecondFreneticStateController extends PlayerStateController {
    *
    */
   @Override
-  public void grabStuff() {
-    List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
+  public void grabStuff() throws UserTimeoutException {
+    List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
     List<Integer> moveToCoordinates;
-    try{
       moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
       Square position = player.getPosition();
@@ -52,16 +42,6 @@ public class SecondFreneticStateController extends PlayerStateController {
       else{
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
-    }
-
   }
 
   /**
@@ -69,57 +49,28 @@ public class SecondFreneticStateController extends PlayerStateController {
    */
   @Override
   public void runAround(){
-
+    // Not implemented in game
   }
 
   /**
    *
    */
   @Override
-  public void shootPeople() {
-    List<Square> twoMovesAway = map.getTwoMovesAwaySquares(player.getPosition());
+  public void shootPeople() throws UserTimeoutException {
+    List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
       twoMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
     List<Integer> moveToCoordinates;
-    try{
-      moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
-      player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
-      //reload
-      if(client.chooseBoolean("Do you want to reload a weapon?")){
-        List<String> weaponsToReload = new ArrayList<>();
-        List<Integer> powerUpsForReloadIndex = new ArrayList<>();
-        List<PowerUpCard> powerUpsForReload = new ArrayList<>();
-        List<String> availablePowerUps = new ArrayList<>();
-        for(Weapon w : player.getInventory().getWeapons()){
-          if(!w.isLoaded()){
-            weaponsToReload.add(w.getName());
-          }
-        }
-        String weaponToReload = client.chooseWeaponToReload(weaponsToReload);
-        for(Weapon w : player.getInventory().getWeapons()){
-          if(w.getName().equals(weaponToReload)){
-            for(PowerUpCard p : player.getInventory().getPowerUps()){
-              availablePowerUps.add(p.getDescription());
-            }
-            powerUpsForReloadIndex = client.choosePowerUpCardsForReload(availablePowerUps);
-            for(int i = 0; i<powerUpsForReloadIndex.size(); i++){
-              powerUpsForReload.add(player.getInventory().getPowerUps().get(powerUpsForReloadIndex.get(i)));
-            }
-            w.reload(powerUpsForReload, player.getInventory().getAmmo());
-          }
-        }
-      }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
+    moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
+    player.moveToSquare(
+            map.getMapSquares()
+                    [moveToCoordinates.get(0)]
+                    [moveToCoordinates.get(1)]
     );
-    }
+
+    player.reloadWeapon(client);
 
     shoot();
   }

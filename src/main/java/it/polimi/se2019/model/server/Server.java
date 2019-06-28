@@ -2,10 +2,10 @@ package it.polimi.se2019.model.server;
 
 import it.polimi.se2019.RMI.ServerLobbyInterface;
 import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,7 +23,7 @@ public class Server implements ServerLobbyInterface, Serializable {
   /**
    * Contains the list of all lobbies active
    */
-  private List<ServerLobby> lobbyes = new LinkedList<>();
+  private transient List<ServerLobby> lobbyes = new LinkedList<>();
 
   /**
    * Hostname the registry is located to
@@ -35,7 +35,7 @@ public class Server implements ServerLobbyInterface, Serializable {
    *
    * @param host Hostname the registry is located to
    */
-  public Server(String host) throws RemoteException, MalformedURLException {
+  public Server(String host) throws RemoteException {
     Registry registry = LocateRegistry.getRegistry(host);
     registry.rebind("//" + host + "/server",
             UnicastRemoteObject.exportObject(this, 0)
@@ -58,29 +58,22 @@ public class Server implements ServerLobbyInterface, Serializable {
     try {
       PlayerViewOnServer p = new PlayerViewOnServer(user, this.hostname);
       p.setName(user);
-      System.out.println("GOT CONNECTION");
 
       if (this.lobbyes.isEmpty() || this.lobbyes.get(0).checkRoomFull()) {
-        this.lobbyes.add(
-                0,
-                new ServerLobby(
-                        p.chooseNumberOfPlayers(),
-                        p.chooseMap()
-                )
-        );
-      }
-
-      try {
-        if (!this.lobbyes.isEmpty()) {
-          this.lobbyes.get(0).connect(
-                  p,
-                  p.getName(),
-                  p.getCharacter()
+        while (!this.addLobby(p)) {
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "Recreating lobby"
           );
         }
       }
-      catch (ServerLobby.RoomFullException e){
-        // Checked before, never happens
+
+      if (!this.lobbyes.isEmpty()) {
+        this.lobbyes.get(0).connect(
+                p,
+                p.getName(),
+                p.getCharacter()
+        );
       }
     }
     catch (PlayerViewOnServer.InitializationError | UserTimeoutException e){
@@ -89,6 +82,39 @@ public class Server implements ServerLobbyInterface, Serializable {
               "Unable to initialize user",
               e
       );
+    }
+    catch (ServerLobby.RoomFullException e){
+      // Checked before, never happens
+    }
+  }
+
+  /**
+   * Add a new lobby to the server
+   *
+   * @param p User that should initialize the map
+   *
+   * @return true on success (the lobby will be add at place 0), false on error
+   *
+   * @throws UserTimeoutException If the user does not respond on time
+   */
+  private boolean addLobby(PlayerViewOnServer p) throws UserTimeoutException {
+    try {
+      this.lobbyes.add(
+              0,
+              new ServerLobby(
+                      p.chooseNumberOfPlayers(),
+                      p.chooseMap()
+              )
+      );
+      return true;
+    }
+    catch (UnknownMapTypeException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.WARNING,
+              "Unknown Map Type",
+              e
+      );
+      return false;
     }
   }
 }

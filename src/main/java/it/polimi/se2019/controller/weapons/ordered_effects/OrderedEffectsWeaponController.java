@@ -7,8 +7,6 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This is an abstract marker class, it doesn't have its own methods or
@@ -18,17 +16,12 @@ import java.util.logging.Logger;
  * can be applied only if they satisfy particular conditions.
  */
 public abstract class OrderedEffectsWeaponController extends WeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public OrderedEffectsWeaponController(GameBoardController g) {
     super(g);
 
   }
   protected Integer numberOfOptionalEffects;
-  public List<Boolean> selectFiringMode(PlayerViewOnServer client){
+  public List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException {
     List<Boolean> firingModeFlags = new ArrayList<>();
     List<String> effects = new ArrayList<>();
     for(int i = 0; i<numberOfOptionalEffects; i++){
@@ -36,7 +29,6 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
     }
 
     Integer chosenEffect;
-    try{
       chosenEffect = client.chooseIndex(effects);
       for(int k = 0; k<numberOfOptionalEffects; k++){
         if(k<=chosenEffect){
@@ -46,15 +38,7 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
           firingModeFlags.add(k, false);
         }
       }
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
 
     return firingModeFlags;
   }

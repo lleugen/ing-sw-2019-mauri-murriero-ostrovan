@@ -1,9 +1,11 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.deck.Deck;
+import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.deck.EmptyDeckException;
-import it.polimi.se2019.model.grabbable.Ammo;
-import it.polimi.se2019.model.grabbable.Grabbable;
+import it.polimi.se2019.model.grabbable.*;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -142,5 +144,18 @@ public class TestDeck {
     catch(EmptyDeckException exception){
       fail("The deck is empty.");
     }
+  }
+
+  @Test
+  public void testDraw() throws UnknownMapTypeException {
+    GameBoard gameBoard = new GameBoard(0);
+    Decks decks = gameBoard.getDecks();
+    assert(decks != null);
+    Weapon weapon = decks.drawWeapon();
+    assert(weapon != null);
+    AmmoTile ammoTile = decks.drawAmmoTile();
+    assert(ammoTile != null);
+    PowerUpCard powerUpCard = decks.drawPowerUp();
+    assert(powerUpCard != null);
   }
 }

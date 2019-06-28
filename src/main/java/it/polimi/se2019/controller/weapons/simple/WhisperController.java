@@ -8,15 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class WhisperController extends SimpleWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ddd"; // TODO
-
   public WhisperController(GameBoardController g) {
     super(g);
     name = "WhisperController";
@@ -29,9 +22,13 @@ public class WhisperController extends SimpleWeaponController {
   }
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     Map map = getGameBoardController().getGameBoard().getMap();
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<Integer> positionCoordinates = map.getSquareCoordinates(shooter.getPosition());
     for(Player p : visiblePlayers){
       if((map.getSquareCoordinates(p.getPosition()).get(0) > positionCoordinates.get(0) - 1) ||
@@ -44,24 +41,15 @@ public class WhisperController extends SimpleWeaponController {
     //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);
-    try{
       targets.add(gameBoardController.identifyPlayer(client.chooseTargets
               (gameBoardController.getPlayerNames(visiblePlayers))));
-    }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-        Level.WARNING,
-        "Client Disconnected",
-        e
-    );
-    }
+
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     for(Player p : targets){
       p.takeDamage(shooter, 3);
       //add one more point of damage if the player chooses to use a targeting scope

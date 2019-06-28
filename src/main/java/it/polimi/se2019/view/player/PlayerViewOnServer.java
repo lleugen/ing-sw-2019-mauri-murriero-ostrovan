@@ -344,7 +344,12 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
       new Thread(
               () -> {
                 try {
-                  this.tq.offer(supp.apply(i));
+                  if (!this.tq.offer(supp.apply(i))){
+                    Logger.getLogger(LOG_NAMESPACE).log(
+                            Level.SEVERE,
+                            "Unable to pass response to the TQ"
+                    );
+                  }
                 }
                 catch (RemoteException e){
                   // Ignore exception, triggers timeout
@@ -383,7 +388,12 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
       new Thread(
               () -> {
                 try {
-                  this.tq.offer(supp.get());
+                  if (!this.tq.offer(supp.get())){
+                    Logger.getLogger(LOG_NAMESPACE).log(
+                            Level.SEVERE,
+                            "Unable to pass response to the TQ"
+                    );
+                  }
                 }
                 catch (RemoteException e){
                   // Ignore exception, triggers timeout
@@ -406,11 +416,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   }
 
   public class InitializationError extends Exception {
-    public InitializationError(Throwable e){
-      super(e);
-    }
-
-    public InitializationError(String msg){
+    InitializationError(String msg){
       super(msg);
     }
   }

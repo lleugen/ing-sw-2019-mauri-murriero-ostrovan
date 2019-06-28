@@ -2,10 +2,8 @@ package it.polimi.se2019.model.player;
 
 import it.polimi.se2019.model.grabbable.*;
 import it.polimi.se2019.model.deck.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,7 +13,8 @@ import java.util.List;
  * using the same interface Grabbable
  */
 public class Inventory {
-  public Inventory(Decks decks) {
+  public Inventory(Player p, Decks decks) {
+    owner = p;
     decksReference = decks;
     ammo = new Ammo(1, 1, 1);
     weapons = new ArrayList<>();
@@ -23,14 +22,23 @@ public class Inventory {
     addPowerUpToInventory(decks.drawPowerUp());
   }
 
+  public Decks getDecksReference() {
+    return decksReference;
+  }
+
   /**
    * Reference to the decks
    */
-  public Decks decksReference;
+  private Decks decksReference;
   /**
    * The player's ammo box
    */
   private Ammo ammo;
+
+  /**
+   *
+   */
+  private Player owner;
 
   /**
    * The player's weapons
@@ -53,7 +61,7 @@ public class Inventory {
   /**
    * @return a copy of the weapons in the player's inventory
    */
-  public ArrayList<Weapon> getWeapons() {
+  public List<Weapon> getWeapons() {
     /*
     ArrayList<Weapon> weaponsCopy = null;
     Collections.copy(weaponsCopy, weapons);
@@ -65,7 +73,7 @@ public class Inventory {
   /**
    * @return a copy of the powerUps in the player's inventory
    */
-  public ArrayList<PowerUpCard> getPowerUps() {
+  public List<PowerUpCard> getPowerUps() {
     /*
     ArrayList<PowerUpCard> powerUpsCopy = null;
     Collections.copy(powerUpsCopy, powerUps);
@@ -84,6 +92,7 @@ public class Inventory {
   public void addWeaponToInventory(Weapon item){
     if(weapons.size()<3){
       weapons.add(item);
+      item.setOwner(owner);
     }
   }
 
@@ -93,9 +102,6 @@ public class Inventory {
   public void addPowerUpToInventory(PowerUpCard item){
     if(powerUps.size()<4){
       powerUps.add(item);
-    }
-    else{
-      throw new InventoryFullException();
     }
   }
 

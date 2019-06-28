@@ -8,16 +8,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ShotgunController extends AlternativeEffectWeaponController {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ShotgunController";
-
-
   public ShotgunController(GameBoardController g) {
     super(g);
     name = "ShotgunController";
@@ -26,45 +18,45 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   PlayerViewOnServer client;
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    try{
-      if(firingMode.get(0)){
-        //basic mode, shoot one target on your square
-        targets.add(gameBoardController.identifyPlayer
-                (client.chooseTargets
-                        (gameBoardController.getPlayerNames
-                                (gameBoardController.getGameBoard().getMap().getPlayersOnSquare
-                                        (shooter.getPosition())))));
-      }
-      else{
-        //long barrel mode, shoot one target one move away
-        List<Square> adjacentSquares =
-                gameBoardController.getGameBoard().getMap().getAdjacentSquares(shooter.getPosition());
-        List<Player> possibleTargets = new ArrayList<>();
-        while(adjacentSquares.iterator().hasNext()){
-          possibleTargets.addAll(map.getPlayersOnSquare(adjacentSquares.iterator().next()));
-        }
-        targets.add(gameBoardController.identifyPlayer
-                (client.chooseTargets
-                        (gameBoardController.getPlayerNames(possibleTargets))));
-      }
+    if(firingMode.get(0)){
+      //basic mode, shoot one target on your square
+      targets.add(gameBoardController.identifyPlayer
+              (client.chooseTargets
+                      (gameBoardController.getPlayerNames
+                              (gameBoardController.getGameBoard().getMap().getPlayersOnSquares(
+                                      map.getReachableSquares(
+                                              shooter.getPosition(),
+                                              0
+                                      )
+                              )))));
     }
-    catch(UserTimeoutException e){
-      
-    Logger.getLogger(LOG_NAMESPACE).log(
-    Level.WARNING,
-    "Client Disconnected",
-    e
-);
+    else{
+      //long barrel mode, shoot one target one move away
+      List<Square> adjacentSquares =
+              gameBoardController.getGameBoard().getMap().getReachableSquares(shooter.getPosition(), 1);
+      List<Player> possibleTargets = new ArrayList<>();
+      while(adjacentSquares.iterator().hasNext()){
+        possibleTargets.addAll(map.getPlayersOnSquares(
+                map.getReachableSquares(
+                        adjacentSquares.iterator().next(),
+                        0
+                )
+        ));
+      }
+
+      targets.add(gameBoardController.identifyPlayer
+              (client.chooseTargets
+                      (gameBoardController.getPlayerNames(possibleTargets))));
     }
 
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 3);
@@ -75,26 +67,16 @@ public class ShotgunController extends AlternativeEffectWeaponController {
       //if the damaged target has a tagback gredade, he/she can use it now
       useTagbackGrenade(targets.get(0));
       //optionally move the target by one square
-      List<Square> possibleSquares = new ArrayList<>();
       List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();
-      possibleSquares.addAll(map.getAdjacentSquares(targets.get(0).getPosition()));
+      List<Square> possibleSquares = new ArrayList<>(map.getReachableSquares(targets.get(0).getPosition(), 1));
       possibleSquares.add(targets.get(0).getPosition());
       while(possibleSquares.iterator().hasNext()){
         possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));
       }
       List<Integer> targetSquareCoordinates;
-      try{
-        targetSquareCoordinates = client.chooseTargetSquare(possibleSquaresCoordinates);
-        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-        targets.get(0).moveToSquare(targetSquare);
-      }
-      catch(UserTimeoutException e){
-            Logger.getLogger(LOG_NAMESPACE).log(
-                    Level.WARNING,
-                    "Client Disconnected",
-                    e
-            );
-      }
+      targetSquareCoordinates = client.chooseTargetSquare(possibleSquaresCoordinates);
+      Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+      targets.get(0).moveToSquare(targetSquare);
 
     }
     else{

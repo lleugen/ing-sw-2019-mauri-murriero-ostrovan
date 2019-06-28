@@ -5,6 +5,7 @@ import it.polimi.se2019.model.grabbable.Weapon;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,8 +20,9 @@ public class SpawnSquare extends Square {
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
    */
-  public SpawnSquare(String roomId, List<Direction> adjacencies) {
-    super(roomId, adjacencies);
+  public SpawnSquare(Map m, RoomColor roomId, List<Direction> adjacencies) {
+    super(m, roomId, adjacencies);
+    weaponList = new ArrayList<>();
   }
 
   /**
@@ -30,15 +32,14 @@ public class SpawnSquare extends Square {
 
   @Override
   public List<Grabbable> getItem(){
-    List content = weaponList;
-    return content;
+    return new LinkedList<>(weaponList);
   }
 
   /**
    * @return The list of weapons available in this square
    */
   public List<Weapon> getWeaponList() {
-    List<Weapon> weaponsCopy = new ArrayList<Weapon>();
+    List<Weapon> weaponsCopy = new ArrayList<>();
     Collections.copy(weaponsCopy, weaponList);
     return weaponsCopy;
   }
@@ -62,9 +63,14 @@ public class SpawnSquare extends Square {
   public void refill(){
     //draw a weapon from the weapons cards deck
     //add the drawn weapon to weaponsList
-    while(weaponList.size() < 3){
-      Weapon newWeapon = getDecks().drawWeapon();//decks deve restituire un'arma, non una lista
-      weaponList.add(newWeapon);
+    if(map.getGameBoard().getDecks() != null){
+      while(weaponList.size() < 3){
+        Weapon newWeapon = getDecks().drawWeapon();
+        weaponList.add(newWeapon);
+      }
+    }
+    else{
+      System.err.println("decks is null");
     }
   }
 }
