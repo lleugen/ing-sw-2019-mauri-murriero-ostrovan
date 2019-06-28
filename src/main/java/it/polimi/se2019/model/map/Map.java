@@ -101,7 +101,6 @@ public class Map {
         }
       }
     }
-
     this.refillAll();
   }
 

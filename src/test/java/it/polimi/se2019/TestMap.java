@@ -228,4 +228,12 @@ public class TestMap {
 //    assert(!twoMovesAway.contains(player1));
 //  }
 
+  @Test
+  public void testSpawnPoints() throws UnknownMapTypeException {
+    GameBoard gameBoard = new GameBoard(0);
+    assert(gameBoard.getMap().getRedSpawnPoint() != null);
+    assert(gameBoard.getMap().getBlueSpawnPoint() != null);
+    assert(gameBoard.getMap().getYellowSpawnPoint() != null);
+  }
+
 }

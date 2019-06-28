@@ -23,7 +23,7 @@ public class Player {
     this.state = 0;
     gameBoardReference = g;
     board = new PlayerBoard();
-    inventory = new Inventory(gameBoardReference.getDecks());
+    inventory = new Inventory(this, gameBoardReference.getDecks());
   }
 
   /**

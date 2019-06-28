@@ -22,7 +22,7 @@ public class TestInventory {
     static Inventory inventory;
 
     @BeforeClass
-    public static void createEmptyInventory(){
+    public static void createEmptyInventory() throws UnknownMapTypeException {
         //initialize decks Decks decks = new Decks();
         List<Weapon> w = new ArrayList<>();
         w.add(new Weapon("mockWeapon",
@@ -36,11 +36,13 @@ public class TestInventory {
         a.add(new AmmoTile(1,1,1, false));
         Deck amo = new Deck(a);
         Decks decks = new Decks(w, p, a);
-        inventory = new Inventory(decks);
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("player", "character", gameBoard);
+        inventory = new Inventory(player, decks);
     }
 
     @Test
-    public void testAddToInventoryShouldSucceed(){
+    public void testAddToInventoryShouldSucceed() {
         Weapon weapon = new Weapon("a",
                 new Ammo(1,1,1),
                 new Ammo(1,1,1));

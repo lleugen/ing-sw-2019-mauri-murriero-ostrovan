@@ -37,6 +37,7 @@ public class Weapon extends Grabbable {
   private String name;
 
   private WeaponController controller;
+  private String description;
 
   public WeaponController getController() {
     return controller;
