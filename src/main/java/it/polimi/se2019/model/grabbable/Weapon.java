@@ -34,9 +34,6 @@ public class Weapon extends Grabbable {
   /**
    * Description of the weapon
    */
-  private String description_eng;
-  private String description_ita;
-  private String description;
   private String name;
 
   private WeaponController controller;
