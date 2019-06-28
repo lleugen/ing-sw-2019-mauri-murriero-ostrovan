@@ -96,9 +96,6 @@ public class Inventory {
     if(powerUps.size()<4){
       powerUps.add(item);
     }
-    else{
-      throw new InventoryFullException();
-    }
   }
 
   /**

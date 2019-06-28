@@ -232,7 +232,7 @@ public class Map {
     List<Square> visibleSquares = new ArrayList<>();
     List<String> visibleRooms = new ArrayList<>();
     for(Direction d : position.getAdjacencies()){
-      if(!d.isBlocked()){
+      if(!d.isBlocked() && !visibleRooms.contains(d.getSquare().getIdRoom())){
         visibleRooms.add(d.getSquare().getIdRoom());
       }
     }

@@ -39,8 +39,9 @@ public class TestSpawnSquare {
         }
         Player player = new Player("player", "character", gameBoard);
         GameBoardController gameBoardController = new GameBoardController(gameBoard);
-        PlayerController playerController = new PlayerController(gameBoardController, player, null);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
         player.moveToSquare(spawnSquare);
+        spawnSquare.refill();
         try{
             Mockito.when(client.chooseItemToGrab()).thenReturn(0);
             playerController.getState().grab();

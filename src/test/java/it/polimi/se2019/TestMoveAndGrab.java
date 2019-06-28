@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,19 +32,21 @@ public class TestMoveAndGrab {
     PlayerViewOnServer client;
     @Mock
     Decks decksReference;
-    GameBoard gameBoard = new GameBoard(0);
-    Player player = new Player("playerName", "playerCharacter", gameBoard);
-    Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
-    GameBoardController gameBoardController = new GameBoardController(gameBoard);
-    PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
     @Test
     public void runAroundTest(){
         try {
+            GameBoard gameBoard = new GameBoard(0);
+            Player player = new Player("playerName", "playerCharacter", gameBoard);
+            Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
             List<Square> threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
             for(Square q : threeMovesAway){
-                threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
             Mockito.when(client.chooseTargetSquare(any())).thenReturn(threeMovesAwayCoordinates.get(0));
@@ -85,10 +87,12 @@ public class TestMoveAndGrab {
                     }
                 }
             }
+            assert(!fourMovesAway.isEmpty());
             List<List<Integer>> fourMovesAwayCoordinates = new ArrayList<>();
             for(Square q : fourMovesAway){
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
+            assert(!fourMovesAwayCoordinates.isEmpty());
             Mockito.when(client.chooseTargetSquare(fourMovesAwayCoordinates)).thenReturn(fourMovesAwayCoordinates.get(0));
             playerController.getState().runAround();
             assert(player.getPosition().equals(fourMovesAway.get(0)));
@@ -99,6 +103,13 @@ public class TestMoveAndGrab {
     }
     @Test
     public void grabStuffAdrenaline1Test(){
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("playerName", "playerCharacter", gameBoard);
+        Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
             List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
@@ -138,6 +149,13 @@ public class TestMoveAndGrab {
 
     @Test
     public void grabStuffAdrenaline2Test(){
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("playerName", "playerCharacter", gameBoard);
+        Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
             List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
@@ -177,6 +195,13 @@ public class TestMoveAndGrab {
 
     @Test
     public void grabStuffNormalTest(){
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("playerName", "playerCharacter", gameBoard);
+        Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
             List<Square> oneMoveAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
