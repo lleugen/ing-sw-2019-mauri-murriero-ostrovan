@@ -7,6 +7,7 @@ import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Inventory;
 import it.polimi.se2019.model.player.Player;
 import org.junit.After;
@@ -69,7 +70,7 @@ public class TestInventory {
     }
 
     @Test
-    public void addToInventoryOverLimit(){
+    public void addToInventoryOverLimit() throws UnknownMapTypeException {
         GameBoard gameBoard = new GameBoard(0);
         Player player1 = new Player("player1", "character1", gameBoard);
         Inventory inventory = player1.getInventory();

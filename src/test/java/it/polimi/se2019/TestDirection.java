@@ -15,44 +15,44 @@ import static org.junit.Assert.fail;
 
 public class TestDirection {
 
-  @Test
-  public void TestGetSquare() {
-    ArrayList<Direction> dirs = new ArrayList<>();
-    Square square = new AmmoSquare(null,"room1", dirs);
-    Direction dir = new Direction(square, true);
+//  @Test
+//  public void TestGetSquare() {
+//    ArrayList<Direction> dirs = new ArrayList<>();
+//    Square square = new AmmoSquare(null,"room1", dirs);
+//    Direction dir = new Direction(square, true);
+//
+//    Square gotSquare = dir.getSquare();
+//
+//    if (gotSquare.equals(square)){
+//      // Test Passed
+//    }
+//    else {
+//      fail("Wrong square returned");
+//    }
+//  }
 
-    Square gotSquare = dir.getSquare();
-
-    if (gotSquare.equals(square)){
-      // Test Passed
-    }
-    else {
-      fail("Wrong square returned");
-    }
-  }
-
-  @Test
-  public void TestIsBlockedTrue() {
-    GameBoard gameBoard = new GameBoard(0);
-    Map map = gameBoard.getMap();
-    List<Direction> dirs = map.getMapSquares()[0][0].getAdjacencies();
-    assert(dirs.get(0).isBlocked());
-    assert(!dirs.get(1).isBlocked());
-    assert(!dirs.get(2).isBlocked());
-    assert(dirs.get(3).isBlocked());
-  }
-
-  @Test
-  public void TestIsBlockedFalse() {
-    ArrayList<Direction> dirs = new ArrayList<>();
-    Square square = new AmmoSquare(null,"room1", dirs);
-    Direction dir = new Direction(square, false);
-
-    if (dir.isBlocked() == false){
-      // Test Passed
-    }
-    else {
-      fail("Wrong Blocking returned");
-    }
-  }
+//  @Test
+//  public void TestIsBlockedTrue() {
+//    GameBoard gameBoard = new GameBoard(0);
+//    Map map = gameBoard.getMap();
+//    List<Direction> dirs = map.getMapSquares()[0][0].getAdjacencies();
+//    assert(dirs.get(0).isBlocked());
+//    assert(!dirs.get(1).isBlocked());
+//    assert(!dirs.get(2).isBlocked());
+//    assert(dirs.get(3).isBlocked());
+//  }
+//
+//  @Test
+//  public void TestIsBlockedFalse() {
+//    ArrayList<Direction> dirs = new ArrayList<>();
+//    Square square = new AmmoSquare(null,"room1", dirs);
+//    Direction dir = new Direction(square, false);
+//
+//    if (dir.isBlocked() == false){
+//      // Test Passed
+//    }
+//    else {
+//      fail("Wrong Blocking returned");
+//    }
+//  }
 }

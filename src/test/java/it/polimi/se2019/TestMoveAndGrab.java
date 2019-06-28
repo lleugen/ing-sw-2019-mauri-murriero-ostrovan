@@ -7,10 +7,7 @@ import it.polimi.se2019.controller.player_state_controller.Adrenaline1StateContr
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
-import it.polimi.se2019.model.map.AmmoSquare;
-import it.polimi.se2019.model.map.Direction;
-import it.polimi.se2019.model.map.SpawnSquare;
-import it.polimi.se2019.model.map.Square;
+import it.polimi.se2019.model.map.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
@@ -34,7 +31,7 @@ public class TestMoveAndGrab {
     Decks decksReference;
 
     @Test
-    public void runAroundTest(){
+    public void runAroundTest() throws UnknownMapTypeException {
         try {
             GameBoard gameBoard = new GameBoard(0);
             Player player = new Player("playerName", "playerCharacter", gameBoard);
@@ -102,7 +99,7 @@ public class TestMoveAndGrab {
         }
     }
     @Test
-    public void grabStuffAdrenaline1Test(){
+    public void grabStuffAdrenaline1Test() throws UnknownMapTypeException{
         GameBoard gameBoard = new GameBoard(0);
         Player player = new Player("playerName", "playerCharacter", gameBoard);
         Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
@@ -148,7 +145,7 @@ public class TestMoveAndGrab {
     }
 
     @Test
-    public void grabStuffAdrenaline2Test(){
+    public void grabStuffAdrenaline2Test() throws UnknownMapTypeException{
         GameBoard gameBoard = new GameBoard(0);
         Player player = new Player("playerName", "playerCharacter", gameBoard);
         Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
@@ -194,7 +191,7 @@ public class TestMoveAndGrab {
     }
 
     @Test
-    public void grabStuffNormalTest(){
+    public void grabStuffNormalTest() throws UnknownMapTypeException{
         GameBoard gameBoard = new GameBoard(0);
         Player player = new Player("playerName", "playerCharacter", gameBoard);
         Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);

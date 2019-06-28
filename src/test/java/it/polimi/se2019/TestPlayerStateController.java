@@ -8,6 +8,7 @@ import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
@@ -36,7 +37,10 @@ public class TestPlayerStateController {
     GameBoardController gameBoardController = new GameBoardController(gameBoard);
     PlayerController playerController = new PlayerController(gameBoardController, player, client);
     PlayerController shooterController = new PlayerController(gameBoardController, shooter, shooterClient);
-    @Test
+
+  public TestPlayerStateController() throws UnknownMapTypeException {}
+
+  @Test
     public void moveTest(){
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
@@ -83,6 +87,7 @@ public class TestPlayerStateController {
             List powerUpsToUse = new ArrayList();
             powerUpsToUse.add(0);
             Mockito.when(client.choosePowerUpCardsForReload(powerUps)).thenReturn(powerUpsToUse);
+
             playerController.getState().reload();
             assert (player.getInventory().getWeapons().get(0).isLoaded());
             assert (player.getInventory().getPowerUps().isEmpty());

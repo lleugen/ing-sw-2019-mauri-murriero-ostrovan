@@ -25,30 +25,30 @@ import static junit.framework.TestCase.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestSpawnSquare {
-    @Mock
-    PlayerViewOnServer client;
-    @Test
-    public void testGrabItem(){
-        GameBoard gameBoard = new GameBoard(0);
-        SpawnSquare spawnSquare = (SpawnSquare) gameBoard.getMap().getRedSpawnPoint();
-        List<Weapon> weapons= new ArrayList<>();
-        List<Grabbable> items = new ArrayList<>();
-        items = spawnSquare.getItem();
-        for(int i = 0; i<items.size(); i++){
-            weapons.add((Weapon)items.get(i));
-        }
-        Player player = new Player("player", "character", gameBoard);
-        GameBoardController gameBoardController = new GameBoardController(gameBoard);
-        PlayerController playerController = new PlayerController(gameBoardController, player, client);
-        player.moveToSquare(spawnSquare);
-        spawnSquare.refill();
-        try{
-            Mockito.when(client.chooseItemToGrab()).thenReturn(0);
-            playerController.getState().grab();
-        }
-        catch (UserTimeoutException e){
-            fail();
-        }
-        assert(!player.getInventory().getWeapons().isEmpty());
-    }
+//    @Mock
+//    PlayerViewOnServer client;
+//    @Test
+//    public void testGrabItem(){
+//        GameBoard gameBoard = new GameBoard(0);
+//        SpawnSquare spawnSquare = (SpawnSquare) gameBoard.getMap().getRedSpawnPoint();
+//        List<Weapon> weapons= new ArrayList<>();
+//        List<Grabbable> items = new ArrayList<>();
+//        items = spawnSquare.getItem();
+//        for(int i = 0; i<items.size(); i++){
+//            weapons.add((Weapon)items.get(i));
+//        }
+//        Player player = new Player("player", "character", gameBoard);
+//        GameBoardController gameBoardController = new GameBoardController(gameBoard);
+//        PlayerController playerController = new PlayerController(gameBoardController, player, client);
+//        player.moveToSquare(spawnSquare);
+//        spawnSquare.refill();
+//        try{
+//            Mockito.when(client.chooseItemToGrab()).thenReturn(0);
+//            playerController.getState().grab();
+//        }
+//        catch (UserTimeoutException e){
+//            fail();
+//        }
+//        assert(!player.getInventory().getWeapons().isEmpty());
+//    }
 }

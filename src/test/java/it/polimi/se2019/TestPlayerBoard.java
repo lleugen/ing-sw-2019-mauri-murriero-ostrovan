@@ -1,6 +1,7 @@
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.player.PlayerBoard;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class TestPlayerBoard {
     @Test
-    public void testTurnAround()
+    public void testTurnAround() throws UnknownMapTypeException
     {
         PlayerBoard board = new PlayerBoard();
         GameBoard gameBoard = new GameBoard(0);

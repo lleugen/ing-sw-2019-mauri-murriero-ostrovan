@@ -3,6 +3,7 @@ package it.polimi.se2019;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
@@ -20,7 +21,10 @@ public class TestPowerUps {
     Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
     GameBoardController gameBoardController = new GameBoardController(gameBoard);
     PlayerController playerController = new PlayerController(gameBoardController, player, client);
-    @Test
+
+  public TestPowerUps() throws UnknownMapTypeException {}
+
+  @Test
     public void newtonTest(){
 
     }

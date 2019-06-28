@@ -5,6 +5,7 @@ import it.polimi.se2019.model.deck.Deck;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.deck.EmptyDeckException;
 import it.polimi.se2019.model.grabbable.*;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -146,7 +147,7 @@ public class TestDeck {
   }
 
   @Test
-  public void testDraw(){
+  public void testDraw() throws UnknownMapTypeException {
     GameBoard gameBoard = new GameBoard(0);
     Decks decks = gameBoard.getDecks();
     assert(decks != null);
