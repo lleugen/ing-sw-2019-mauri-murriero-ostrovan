@@ -85,6 +85,8 @@ public class TestPlayer {
         assert((attacker1.getPoints() == 2) & (attacker2.getPoints() == 1));
     }
 
+    /*
+    //this test will be for the controller
     @Mock
     PlayerViewOnServer client;
     @Test
@@ -113,4 +115,5 @@ public class TestPlayer {
         assert(player1.getInventory().getAmmo().getYellow() == 0);
 
     }
+    */
 }
