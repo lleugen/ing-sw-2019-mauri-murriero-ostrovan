@@ -208,7 +208,13 @@ public class Map {
     for(int i = 0; i<3; i++){
       for(int j = 0; j<4; j++){
         if(mapSquares[i][j] != null){
-          mapSquares[i][j].refill();
+          if(gameBoard.getDecks() != null){
+            mapSquares[i][j].refill();
+          }
+          else{
+            System.err.println("decks is null in map constructor");
+          }
+
         }
       }
     }

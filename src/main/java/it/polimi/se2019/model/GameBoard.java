@@ -63,7 +63,7 @@ public class GameBoard {
     playersAdded = false;
     killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
-    this.map = new Map(mapType, this);
+
 
     /*
     Integer i;
@@ -80,6 +80,8 @@ public class GameBoard {
             this.genPowerUpDeck(),
             this.genAmmoDeck()
     );
+
+    this.map = new Map(mapType, this);
   }
 
   public boolean isFrenzy(){

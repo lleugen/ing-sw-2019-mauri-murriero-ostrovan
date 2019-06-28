@@ -13,7 +13,8 @@ import java.util.List;
  * using the same interface Grabbable
  */
 public class Inventory {
-  public Inventory(Decks decks) {
+  public Inventory(Player p, Decks decks) {
+    owner = p;
     decksReference = decks;
     ammo = new Ammo(1, 1, 1);
     weapons = new ArrayList<>();
@@ -33,6 +34,11 @@ public class Inventory {
    * The player's ammo box
    */
   private Ammo ammo;
+
+  /**
+   *
+   */
+  private Player owner;
 
   /**
    * The player's weapons
@@ -86,6 +92,7 @@ public class Inventory {
   public void addWeaponToInventory(Weapon item){
     if(weapons.size()<3){
       weapons.add(item);
+      item.setOwner(owner);
     }
   }
 

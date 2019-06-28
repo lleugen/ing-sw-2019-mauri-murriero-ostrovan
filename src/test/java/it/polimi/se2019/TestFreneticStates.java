@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class TestFreneticStates {
             Mockito.when(client.chooseTargetSquare(threeMovesAwayCoordinates)).thenReturn(threeMovesAwayCoordinates.get(0));
             Mockito.when(client.chooseItemToGrab()).thenReturn(0);
             PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
-            Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
+            //Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
 
             playerController.setState(4);
             Grabbable item = threeMovesAway.get(0).getItem().get(0);

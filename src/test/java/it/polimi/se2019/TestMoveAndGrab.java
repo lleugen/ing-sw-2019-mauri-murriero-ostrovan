@@ -112,6 +112,7 @@ public class TestMoveAndGrab {
 
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
+            gameBoard.getMap().getMapSquares()[0][0].refill();
             List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
             for(Square q : twoMovesAway){
@@ -132,7 +133,7 @@ public class TestMoveAndGrab {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(player.getInventory().getPowerUps().size() == 2);
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
@@ -158,6 +159,7 @@ public class TestMoveAndGrab {
 
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
+            gameBoard.getMap().getMapSquares()[0][0].refill();
             List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
             for(Square q : twoMovesAway){
@@ -178,7 +180,7 @@ public class TestMoveAndGrab {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(player.getInventory().getPowerUps().size() == 2);
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
@@ -204,6 +206,7 @@ public class TestMoveAndGrab {
 
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
+            gameBoard.getMap().getMapSquares()[0][0].refill();
             List<Square> oneMoveAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
             List<List<Integer>> oneMoveAwayCoordinates = new ArrayList<>();
             for(Square q : oneMoveAway){
@@ -211,9 +214,11 @@ public class TestMoveAndGrab {
             }
             Mockito.when(client.chooseTargetSquare(oneMoveAwayCoordinates)).thenReturn(oneMoveAwayCoordinates.get(0));
             Mockito.when(client.chooseItemToGrab()).thenReturn(0);
+            Mockito.when(client.chooseDirection(any())).thenReturn(-1);
             PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
             Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
             playerController.setState(0);
+            assert(playerController.getState() != null);
             Grabbable item = oneMoveAway.get(0).getItem().get(0);
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
@@ -224,7 +229,7 @@ public class TestMoveAndGrab {
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assert(player.getInventory().getPowerUps().size() == 2);
                 }
                 assert(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));

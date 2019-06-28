@@ -35,7 +35,9 @@ public class TestInventory {
         a.add(new AmmoTile(1,1,1, false));
         Deck amo = new Deck(a);
         Decks decks = new Decks(w, p, a);
-        inventory = new Inventory(decks);
+        GameBoard gameBoard = new GameBoard(0);
+        Player player = new Player("player", "character", gameBoard);
+        inventory = new Inventory(player, decks);
     }
 
     @Test
