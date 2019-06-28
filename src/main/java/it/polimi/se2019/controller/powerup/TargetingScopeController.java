@@ -1,7 +1,9 @@
 package it.polimi.se2019.controller.powerup;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,25 +16,28 @@ public class TargetingScopeController extends PowerUpController {
   public TargetingScopeController() {
   }
 
+  PlayerViewOnServer client;
+
   /**
    *
    */
   @Override
-  public Boolean usePowerUp(Player user) {
-    Boolean used = false;
-    if(identifyClient(user).chooseBoolean("Do you want to use a targeting scope?")){
+  public Boolean usePowerUp(Player user) throws UserTimeoutException{
+    client = identifyClient(user);
+    boolean used = false;
+    if(client.chooseBoolean("Do you want to use a targeting scope?")){
       List<String> availableTargetingScopes = new ArrayList<>();
       for(PowerUpCard card : user.getInventory().getPowerUps()){
         if((card.getDescription().equals("TargetingScopeRed"))
-                | (card.getDescription().equals("TargetingScopeBlue"))
-                | (card.getDescription().equals("TargetingScopeYellow"))){
+                || (card.getDescription().equals("TargetingScopeBlue"))
+                || (card.getDescription().equals("TargetingScopeYellow"))){
           availableTargetingScopes.add(card.getDescription());
         }
       }
-      Integer chosenCardIndex;
+      int chosenCardIndex;
       PowerUpCard chosenCard = null;
       if(availableTargetingScopes.size() > 1){
-        chosenCardIndex = identifyClient(user).chooseSpawnLocation(availableTargetingScopes);
+        chosenCardIndex = client.chooseSpawnLocation(availableTargetingScopes);
       }
       else{
         chosenCardIndex = 0;
@@ -48,6 +53,7 @@ public class TargetingScopeController extends PowerUpController {
     else{
       used = false;
     }
+
 
     return used;
   }

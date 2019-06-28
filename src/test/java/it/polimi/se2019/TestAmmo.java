@@ -84,10 +84,12 @@ public class TestAmmo {
         int result = ammo.getRed();
         assertEquals(0, result);
     }
-    @Test(expected = Ammo.InsufficientAmmoException.class)
+    @Test
     public void testUseRedShouldFail(){
         Ammo ammo = new Ammo(1,1,1);
         ammo.useRed(2);
+        int result = ammo.getRed();
+        assertEquals(1, result);
     }
     @Test
     public void testUseBlueShouldSucceed(){
@@ -96,10 +98,12 @@ public class TestAmmo {
         int result = ammo.getBlue();
         assertEquals(0, result);
     }
-    @Test(expected = Ammo.InsufficientAmmoException.class)
+    @Test
     public void testUseBlueShouldFail(){
         Ammo ammo = new Ammo(1,1,1);
         ammo.useBlue(2);
+        int result = ammo.getBlue();
+        assertEquals(1, result);
     }
     @Test
     public void testUseYellowShouldSucceed(){
@@ -108,9 +112,19 @@ public class TestAmmo {
         int result = ammo.getYellow();
         assertEquals(0, result);
     }
-    @Test(expected = Ammo.InsufficientAmmoException.class)
+    @Test
     public void testUseYellowShouldFail(){
         Ammo ammo = new Ammo(1,1,1);
         ammo.useYellow(2);
+        int result = ammo.getYellow();
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testCreation(){
+        Ammo ammo = new Ammo(1,2,3);
+        assert(ammo.getRed() == 1);
+        assert(ammo.getBlue() == 2);
+        assert(ammo.getYellow() == 3);
     }
 }

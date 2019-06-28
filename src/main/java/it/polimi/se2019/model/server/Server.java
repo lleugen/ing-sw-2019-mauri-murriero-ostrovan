@@ -1,123 +1,120 @@
 package it.polimi.se2019.model.server;
 
-import java.rmi.Remote;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import it.polimi.se2019.RMI.ServerLobbyInterface;
+import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
-public class Server implements Remote {
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Server implements ServerLobbyInterface, Serializable {
   /**
-   * Contains a reference to every lobby currently active
+   * Namespace this class logs to
    */
-  private Map<String, ServerLobby> lobbyMap;
+  private static final String LOG_NAMESPACE = "Server";
+
+  /**
+   * Contains the list of all lobbies active
+   */
+  private transient List<ServerLobby> lobbyes = new LinkedList<>();
+
+  /**
+   * Hostname the registry is located to
+   */
+  private final String hostname;
 
   /**
    * Creates a new Server
+   *
+   * @param host Hostname the registry is located to
    */
-  public Server(){
+  public Server(String host) throws RemoteException {
+    Registry registry = LocateRegistry.getRegistry(host);
+    registry.rebind("//" + host + "/server",
+            UnicastRemoteObject.exportObject(this, 0)
+    );
+
+    this.hostname = host;
+
     if (System.getSecurityManager() == null) {
       System.setSecurityManager(new SecurityManager());
     }
-
-    this.lobbyMap = Collections.synchronizedMap(new HashMap<>());
   }
 
   /**
-   * Gets a lobby from the server
+   * Handle connection of an user to the server
    *
-   * @param id Id of the lobby to get
-   *
-   * @return The searched lobby
-   *
-   * @throws LobbyNotFoundException if the id is not found
+   * @param user User id of the connected player
    */
-  public ServerLobby getLobby(String id){
-    if (this.lobbyMap.containsKey(id)) {
-      return this.lobbyMap.get(id);
-    }
-    else {
-      throw new LobbyNotFoundException();
-    }
-  }
-
-  /**
-   * Publish the object to the RMI registry, to the given key, at the given port
-   *
-   * @param key The key to publish the server to
-   * @param port The port to publish the server to
-   *
-   * @throws RMIInitializationException if errors occur when initialization the
-   *                                RMI registry
-   */
-  public void publishToRMI(String key, Integer port){
+  @Override
+  public synchronized void connect(String user){
     try {
-      LocateRegistry.getRegistry().rebind(
-              key,
-              UnicastRemoteObject.exportObject(
-                      this, port
-              )
+      PlayerViewOnServer p = new PlayerViewOnServer(user, this.hostname);
+      p.setName(user);
+
+      if (this.lobbyes.isEmpty() || this.lobbyes.get(0).checkRoomFull()) {
+        while (!this.addLobby(p)) {
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "Recreating lobby"
+          );
+        }
+      }
+
+      if (!this.lobbyes.isEmpty()) {
+        this.lobbyes.get(0).connect(
+                p,
+                p.getName(),
+                p.getCharacter()
+        );
+      }
+    }
+    catch (PlayerViewOnServer.InitializationError | UserTimeoutException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.WARNING,
+              "Unable to initialize user",
+              e
       );
     }
-    catch (java.rmi.RemoteException e){
-      throw new RMIInitializationException(e);
+    catch (ServerLobby.RoomFullException e){
+      // Checked before, never happens
     }
   }
 
   /**
-   * Creates a new lobby
+   * Add a new lobby to the server
    *
-   * @param id The id to assign the new lobby to
+   * @param p User that should initialize the map
    *
-   * @throws LobbyConflictException if the id is already registered
+   * @return true on success (the lobby will be add at place 0), false on error
+   *
+   * @throws UserTimeoutException If the user does not respond on time
    */
-  public void createLobby(String id){
-    ServerLobby result;
-    result = this.lobbyMap.putIfAbsent(
-            id,
-            new ServerLobby(
-                    5,
-                    1
-            )
-    );
-
-    if (result != null){
-      throw new LobbyConflictException();
+  private boolean addLobby(PlayerViewOnServer p) throws UserTimeoutException {
+    try {
+      this.lobbyes.add(
+              0,
+              new ServerLobby(
+                      p.chooseNumberOfPlayers(),
+                      p.chooseMap()
+              )
+      );
+      return true;
     }
-  }
-
-  /**
-   * Thrown when there are errors while connecting to the RMI registry
-   */
-  public static class RMIInitializationException extends RuntimeException{
-    RMIInitializationException(Exception e){
-      super(e);
-    }
-
-    @Override
-    public String toString() {
-      return "Unable to start RMI registry";
-    }
-  }
-
-  /**
-   * Thrown when a searched lobby is not found
-   */
-  public static class LobbyNotFoundException extends RuntimeException{
-    @Override
-    public String toString() {
-      return "The searched lobby doesn't exists";
-    }
-  }
-
-  /**
-   * Thrown when trying to create a lobby with an already used id
-   */
-  public static class LobbyConflictException extends RuntimeException{
-    @Override
-    public String toString() {
-      return "A lobby with this id already exists";
+    catch (UnknownMapTypeException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.WARNING,
+              "Unknown Map Type",
+              e
+      );
+      return false;
     }
   }
 }

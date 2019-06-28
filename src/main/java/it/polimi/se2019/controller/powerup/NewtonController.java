@@ -1,8 +1,10 @@
 package it.polimi.se2019.controller.powerup;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +14,23 @@ import java.util.List;
  * in any direction.
  */
 public class NewtonController extends PowerUpController {
-
   public NewtonController() {
     name = "NewtonController";
   }
+
+  PlayerViewOnServer client;
 
   /**
    *
    */
   @Override
-  public Boolean usePowerUp(Player user) {
-    Boolean used = false;
+  public Boolean usePowerUp(Player user) throws UserTimeoutException {
+    client = identifyClient(user);
+    boolean used = false;
     Map map = gameBoardController.getGameBoard().getMap();
 
     //choose target
-    Player target = gameBoardController.identifyPlayer(identifyClient(user).chooseTargets
+    Player target = gameBoardController.identifyPlayer(client.chooseTargets
             (gameBoardController.getPlayerNames(gameBoardController.getPlayers())));
 
     //choose where to move the target
@@ -39,11 +43,12 @@ public class NewtonController extends PowerUpController {
       possibleSquares.add(map.getSquareCoordinates(firstSquare));
       possibleSquares.add(map.getSquareCoordinates(secondSquare));
     }
-    List<Integer> squareCoordinates = identifyClient(user).chooseTargetSquare(possibleSquares);
+    List<Integer> squareCoordinates = client.chooseTargetSquare(possibleSquares);
 
     //move the target
     target.moveToSquare(map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)]);
     used = true;
+
     return used;
   }
 

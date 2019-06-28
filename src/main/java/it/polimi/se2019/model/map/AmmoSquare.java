@@ -1,10 +1,9 @@
 package it.polimi.se2019.model.map;
 
-import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.Grabbable;
-import it.polimi.se2019.model.player.Inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,14 +16,26 @@ public class AmmoSquare extends Square {
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
    */
-  public AmmoSquare(String roomId, List<Direction> adjacencies) {
-    super(roomId, adjacencies);
+  public AmmoSquare(Map m, RoomColor roomId, List<Direction> adjacencies) {
+    super(m, roomId, adjacencies);
+    ammos = null;
   }
 
   /**
    * The list of Ammos of PowerUps placed on this square
    */
   private AmmoTile ammos;
+
+  @Override
+  public List<Grabbable> getItem(){
+    List content = new ArrayList();
+    content.add(ammos);
+    return content;
+  }
+
+  public AmmoTile getAmmos(){
+    return ammos;
+  }
 
   /**
    * Grab items from the square
@@ -46,7 +57,12 @@ public class AmmoSquare extends Square {
   public void refill(){
     //draw an ammo tile from the ammo tile deck
     if(ammos == null){
-      ammos = getDecks().drawAmmoTile();
+      if(map.getGameBoard().getDecks() != null){
+        ammos = map.getGameBoard().getDecks().drawAmmoTile();
+      }
+      else{
+        System.err.println("decks is null");
+      }
     }
   }
 }

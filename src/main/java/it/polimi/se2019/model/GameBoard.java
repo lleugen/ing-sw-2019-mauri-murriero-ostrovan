@@ -45,6 +45,8 @@ public class GameBoard {
 
   private boolean playersAdded;
 
+  private boolean isFrenzy;
+
   private boolean killScoreBoardCreated;
   public boolean isKillScoreBoardCreated(){
     return killScoreBoardCreated;
@@ -55,13 +57,15 @@ public class GameBoard {
    *
    * @param mapType Type of the map to generate
    *
-   * @throws NullPointerException if players contains a null player
+   * @throws NullPointerException     if players contains a null player
+   * @throws UnknownMapTypeException  if the selected map does not exist
    */
-  public GameBoard(int mapType){
+  public GameBoard(int mapType) throws UnknownMapTypeException {
+    isFrenzy = false;
     playersAdded = false;
     killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
-    this.map = new Map(mapType, this);
+
 
     /*
     Integer i;
@@ -78,6 +82,16 @@ public class GameBoard {
             this.genPowerUpDeck(),
             this.genAmmoDeck()
     );
+
+    this.map = new Map(mapType, this);
+  }
+
+  public boolean isFrenzy(){
+    return isFrenzy;
+  }
+
+  public void setFrenzy(){
+    isFrenzy = true;
   }
 
   private List<AmmoTile> genAmmoDeck(){
@@ -312,7 +326,7 @@ public class GameBoard {
   }
 
   public void createKillScoreBoard(Integer skulls, Integer[] scores){
-    killScoreBoard = new KillScoreBoard(skulls, scores);
+    killScoreBoard = new KillScoreBoard(this, skulls, scores);
   }
 
   /**

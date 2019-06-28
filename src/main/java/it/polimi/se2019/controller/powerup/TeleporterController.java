@@ -1,7 +1,8 @@
 package it.polimi.se2019.controller.powerup;
 
-import it.polimi.se2019.model.map.Square;
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +15,15 @@ public class TeleporterController extends PowerUpController {
   public TeleporterController() {
   }
 
+  PlayerViewOnServer client;
+
   /**
    *
    */
   @Override
-  public Boolean usePowerUp(Player user) {
-    Boolean used = false;
+  public Boolean usePowerUp(Player user) throws UserTimeoutException {
+    client = identifyClient(user);
+    boolean used = false;
     //choose where to move
     List<List<Integer>> squares = new ArrayList<>();
     List<Integer> currentSquare = new ArrayList<>();
@@ -31,10 +35,12 @@ public class TeleporterController extends PowerUpController {
         squares.add(currentSquare);
       }
     }
-    List<Integer> targetSquare = identifyClient(user).chooseTargetSquare(squares);
+    List<Integer> targetSquare;
+    targetSquare = client.chooseTargetSquare(squares);
     //move to the chosen square
     user.moveToSquare(gameBoardController.getGameBoard().getMap().getMapSquares()[targetSquare.get(0)][targetSquare.get(1)]);
     used = true;
+
     return used;
   }
 

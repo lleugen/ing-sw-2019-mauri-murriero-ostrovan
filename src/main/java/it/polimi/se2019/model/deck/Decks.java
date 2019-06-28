@@ -1,7 +1,6 @@
 package it.polimi.se2019.model.deck;
 
 import it.polimi.se2019.model.grabbable.AmmoTile;
-import it.polimi.se2019.model.grabbable.Grabbable;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
 

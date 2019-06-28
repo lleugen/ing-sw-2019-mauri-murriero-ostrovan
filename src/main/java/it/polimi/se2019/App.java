@@ -1,14 +1,25 @@
+// Ciao eu v2
+
 package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
+import it.polimi.se2019.view.Client;
 
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class App {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "App";
+
   /**
    * Contains actions for param type (what type of program should be spawned)
    */
@@ -25,6 +36,7 @@ public class App {
   private static void initMapping(){
     typeMapping = new HashMap<>();
     typeMapping.put("server", App::spawnServer);
+    typeMapping.put("client", App::spawnClient);
   }
 
   /**
@@ -44,8 +56,6 @@ public class App {
                     (String[] item) -> item[1]
                     )
             );
-
-    params.keySet().forEach(System.out::println);
   }
 
   /**
@@ -54,28 +64,51 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    Server server = new Server();
-    server.publishToRMI("server", 5432);
+    if (args.containsKey("host")) {
+      try {
+        new Server(args.get("host"));
+      }
+      catch (RemoteException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while starting RMI server",
+                e
+        );
+        throw new WrongArguments("Unable to start RMI server");
+      }
+    }
+    else {
+      throw new WrongArguments("Host param is required");
+    }
   }
 
   /**
-   * Type: server
+   * Spawn a new client
+   *
+   * @param args Args array received from the command line
+   */
+  private static void spawnClient(Map<String, String> args){
+    if (args.containsKey("host")) {
+      new Client(args.get("host"));
+    }
+    else {
+      throw new WrongArguments("Host param is required");
+    }
+  }
+
+  /**
+   * Type: server, client
    * @param args
+   *
+   * @throws WrongArguments If passed args are invalid
    */
   public static void main(String[] args) {
     params = new HashMap<>();
     initMapping();
 
-    try {
-      initParams(args);
-    }
-    catch (WrongArguments e){
-      // TODO: if necessary, implement additional logic here
-      throw e;
-    }
+    initParams(args);
 
     if (params.containsKey("type")){
-      System.out.println(params.get("type"));
       typeMapping.get(params.get("type")).accept(params);
     }
     else {
@@ -91,15 +124,8 @@ public class App {
    * The toString method may contain additional informations about the error
    */
   public static class WrongArguments extends RuntimeException {
-    private final String message;
-
     WrongArguments(String message){
-      this.message = message;
-    }
-
-    @Override
-    public String toString(){
-      return message;
+      super(message);
     }
   }
 }

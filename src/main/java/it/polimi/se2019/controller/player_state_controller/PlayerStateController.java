@@ -1,9 +1,9 @@
 package it.polimi.se2019.controller.player_state_controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.powerup.PowerUpController;
 import it.polimi.se2019.controller.weapons.WeaponController;
-import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Map;
@@ -14,9 +14,9 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class PlayerStateController {
-
     protected Player player;
     protected PlayerViewOnServer client;
     protected GameBoardController gameBoardController;
@@ -34,9 +34,9 @@ public abstract class PlayerStateController {
         return  availableActions;
     }
 
-    public abstract void runAround();
-    public abstract void grabStuff();
-    public abstract void shootPeople();
+    public abstract void runAround() throws UserTimeoutException;
+    public abstract void grabStuff() throws UserTimeoutException;
+    public abstract void shootPeople() throws UserTimeoutException;
 
     /**
      * Move the player 1 square in one of four directions
@@ -46,8 +46,11 @@ public abstract class PlayerStateController {
      *                  2 = south
      *                  3 = west
      */
-    public void move() {
-        int direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
+    public void move() throws UserTimeoutException{
+        int direction = 0;
+        direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
+
+
         //move the player
         if(!player.getPosition().getAdjacencies().get(direction).isBlocked()){
             player.move(player.getPosition().getAdjacencies().get(direction));
@@ -62,28 +65,32 @@ public abstract class PlayerStateController {
      * The player has to draw a power up card, then discard one and spawns in
      * the square corresponding to the discarded card's equivalent ammo colour.
      */
-    public void spawn() {
-        player.getInventory().addPowerUpToInventory(gameBoardController.getGameBoard().getDecks().drawPowerUp());
+    public void spawn() throws UserTimeoutException {
+        player.getInventory().addPowerUpToInventory(player.getInventory().getDecksReference().drawPowerUp());
         //ask player to choose a power up card to discard, return a colour
-        //client will have to be the PlayerView stub
+        //view will have to be the PlayerView stub
         List<String> powerUps = new ArrayList<>();
         for(PowerUpCard p : player.getInventory().getPowerUps()){
             powerUps.add(p.getDescription());
         }
-        int discardedCard = client.chooseSpawnLocation(powerUps);
-        if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
-            //spawn on the red spawnpoint
-            player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
-        }
-        else if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getBlue() == 1){
-            //spawn on the blue spawnpoint
-            player.respawn(gameBoardController.getGameBoard().getMap().getBlueSpawnPoint());
-        }
-        else{
-            //spawn on the yellow spawnpoint
-            player.respawn(gameBoardController.getGameBoard().getMap().getYellowSpawnPoint());
-        }
-        player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(discardedCard));
+        int discardedCard;
+            discardedCard = client.chooseSpawnLocation(powerUps);
+            if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getRed() == 1){
+                //spawn on the red spawnpoint
+                player.respawn(gameBoardController.getGameBoard().getMap().getRedSpawnPoint());
+            }
+            else if(player.getInventory().getPowerUps().get(discardedCard).getAmmoEquivalent().getBlue() == 1){
+                //spawn on the blue spawnpoint
+                player.respawn(gameBoardController.getGameBoard().getMap().getBlueSpawnPoint());
+            }
+            else{
+                //spawn on the yellow spawnpoint
+                player.respawn(gameBoardController.getGameBoard().getMap().getYellowSpawnPoint());
+            }
+            player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(discardedCard));
+
+
+
     }
 
     /**
@@ -91,21 +98,23 @@ public abstract class PlayerStateController {
      * Once the weapon is chosen, weapon specific methods will be invoked to
      * choose targets and fire.
      */
-    public void shoot() {
-        List<String> weapons = new ArrayList<>();
-        while(player.getInventory().getWeapons().iterator().hasNext()){
-            weapons.add(player.getInventory().getWeapons().iterator().next().getName());
-        }
-        String weapon = client.chooseWeapon(weapons);
+    public void shoot() throws UserTimeoutException {
+      List<String> weapons = player.getInventory().getWeapons().stream()
+              .map((Weapon::getName))
+              .collect(Collectors.toList());
 
-        WeaponController weaponController = null;
-        for(WeaponController w : gameBoardController.getWeaponControllers()){
-            if(w.getName().equals(weapon)){
-                weaponController = w;
-            }
+        String selectedWeapon = client.chooseWeapon(weapons);
+        List<WeaponController> selectedWeapons;
+        selectedWeapons = gameBoardController.getWeaponControllers().stream()
+                .filter((WeaponController w) ->
+                        w.getName().equals(selectedWeapon)
+                )
+                .collect(Collectors.toList());
+
+        for (WeaponController weaponController: selectedWeapons) {
+          weaponController.fire(player, client);
         }
 
-        weaponController.fire(player, client);
     }
 
     /**
@@ -113,7 +122,7 @@ public abstract class PlayerStateController {
      * Choose which weapon to reload, subtract the reload cost from inventory
      * and set the weapon as loaded.
      */
-    public void reload() {
+    public void reload() throws UserTimeoutException {
         List<String> playersWeapons = new ArrayList<>();
         String weaponToReloadName = null;
         List<Integer> cardsToUseIndexes = new ArrayList<>();
@@ -149,27 +158,29 @@ public abstract class PlayerStateController {
      * Grab the ammo tile or a weapon from the current square and add
      * the corresponding resources to the inventory.
      */
-    public void grab() {
+    public void grab() throws UserTimeoutException{
         Square position = player.getPosition();
         int index = client.chooseItemToGrab();
+
         if(position instanceof SpawnSquare){
             //return here when add to inventory method is finished
-            player.getInventory().addWeaponToInventory((Weapon)position.grab(index));
+            player.getInventory().addWeaponToInventory(position.grab(index));
         }
         else{
-            player.getInventory().addAmmoTileToInventory((AmmoTile) position.grab(index));
+            player.getInventory().addAmmoTileToInventory(position.grab(index));
         }
     }
 
     /**
      * Use a power up from the inventory
      */
-    public void usePowerUp(){
+    public void usePowerUp() throws UserTimeoutException {
         List<String> powerUpCardsInInventory = new ArrayList<>();
         for(PowerUpCard p : player.getInventory().getPowerUps()){
             powerUpCardsInInventory.add(p.getDescription());
         }
-        List<Integer> powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
+        List<Integer> powerUpCardsToUseIndex;
+        powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
         for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
             //identify power up controller
             PowerUpController powerUpController = null;

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
@@ -10,10 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlameThrowerController extends AlternativeEffectWeaponController {
-
   public FlameThrowerController(GameBoardController g) {
+    super(g);
     name = "FlameThrowerController";
-    gameBoardController = g;
   }
   Map map = getGameBoardController().getGameBoard().getMap();
 
@@ -21,7 +21,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   List<Player> secondaryTargets = new ArrayList<>();
 
   @Override
-  public List<Player> findTargets(Player shooter){
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     primaryTargets.clear();
     secondaryTargets.clear();
     PlayerViewOnServer client = identifyClient(shooter);
@@ -31,7 +31,10 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
         possibleDirections.add(i);
       }
     }
-    Integer direction = client.chooseDirection(possibleDirections);
+    Integer direction = 0;
+      direction = client.chooseDirection(possibleDirections);
+
+
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
     targetSquares.add(targetSquares.get(0).getAdjacencies().get(direction).getSquare());
@@ -51,10 +54,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     }
     else{
       //basic firing mode
-      List<Player> possiblePrimaryTargets = new ArrayList<>();
-      List<Player> possibleSecondaryTargets = new ArrayList<>();
-      possiblePrimaryTargets.addAll(map.getPlayersOnSquare(targetSquares.get(0)));
-      possibleSecondaryTargets.addAll(map.getPlayersOnSquare(targetSquares.get(1)));
+      List<Player> possiblePrimaryTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquares.get(0), 0)
+      ));
+      List<Player> possibleSecondaryTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquares.get(1), 0)
+      ));
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();
       List<String> possibleSecondaryTargetsNames = new ArrayList<>();
@@ -64,11 +69,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
-      //incompatible type error will be solved by change to the viewinterface
-      primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
-              (possiblePrimaryTargetsNames)));
-      secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
-              (possibleSecondaryTargetsNames)));
+        primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
+                (possiblePrimaryTargetsNames)));
+        secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
+                (possibleSecondaryTargetsNames)));
+
+
 
     }
     targets.addAll(primaryTargets);
@@ -77,7 +83,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     for(Player p : primaryTargets){
       if(firingMode.get(0)){
         //basic

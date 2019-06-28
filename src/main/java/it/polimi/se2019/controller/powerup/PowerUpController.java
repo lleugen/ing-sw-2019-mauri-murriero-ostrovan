@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.powerup;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -32,6 +33,6 @@ public abstract class PowerUpController {
   /**
    * Method prototype, it will be implemented by its subclasses.
    */
-  public abstract Boolean usePowerUp(Player user);
+  public abstract Boolean usePowerUp(Player user) throws UserTimeoutException;
 
 }

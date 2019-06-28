@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.powerup.*;
 import it.polimi.se2019.controller.weapons.WeaponController;
 import it.polimi.se2019.controller.weapons.alternative_effects.*;
@@ -10,8 +11,11 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * The game board controller is the game manager, it initializes a game by
@@ -20,9 +24,25 @@ import java.util.List;
  * ends the game.
  */
 public class GameBoardController{
+  /**
+   * Namespace this class log to
+   */
+  private static final String LOG_NAMESPACE = "GameBoardController";
+
+  private List<Player> players;
+  private List<PlayerController> playerControllers;
+  private List<PlayerViewOnServer> clients;
+  private List<String> clientNames;
+  private GameBoard gameBoard;
+  private List<WeaponController> weaponControllers;
+  private List<PowerUpController> powerUpControllers;
+
   public GameBoardController(GameBoard g) {
     gameBoard = g;
-    isReady = false;
+    weaponControllers = new LinkedList<>();
+    powerUpControllers = new LinkedList<>();
+    players = new LinkedList<>();
+
     weaponControllers.add(new CyberBladeController(this));
     weaponControllers.add(new ElectroscytheController(this));
     weaponControllers.add(new PlasmaGunController(this));
@@ -51,43 +71,41 @@ public class GameBoardController{
     powerUpControllers.add(new TeleporterController());
   }
 
-  private List<Player> players;
-  private List<PlayerController> playerControllers;
-  private List<PlayerViewOnServer> clients;
-  private GameBoard gameBoard;
-  private List<WeaponController> weaponControllers;
-  private List<PowerUpController> powerUpControllers;
-  private boolean isReady;
-
   /**
    * getter methods for each relevant attribute
    */
   public List<Player> getPlayers(){
-    return players;
+    return new LinkedList<>(this.players);
   }
 
   public List<PlayerViewOnServer> getClients(){
-    return clients;
+    return new LinkedList<>(this.clients);
   }
 
   public GameBoard getGameBoard(){
-    return gameBoard;
+    return this.gameBoard;
   }
 
   public List<WeaponController> getWeaponControllers(){
-    return weaponControllers;
+    return new LinkedList<>(this.weaponControllers);
   }
 
   public List<PowerUpController> getPowerUpControllers(){
-    return powerUpControllers;
+    return new LinkedList<>(this.powerUpControllers);
   }
 
   /**
-   * add the player controllers to the game and set isReady to true so that the game can start
+   * add the player controllers to the game and set isReady to true so that
+   * the game can start
    */
   public void addPlayerControllers(List<PlayerController> c){
-    playerControllers = c;
-    isReady = true;
+    playerControllers = new LinkedList<>(c);
+    players = c.stream()
+            .map(PlayerController::getPlayer)
+            .collect(Collectors.toList());
+    clientNames = c.stream()
+            .map(PlayerController::getName)
+            .collect(Collectors.toList());
   }
 
   public Player identifyPlayer(String name){
@@ -101,11 +119,7 @@ public class GameBoardController{
   }
 
   public List<String> getPlayerNames(List<Player> players){
-      List<String> names = new ArrayList<>();
-      for(Player p : players){
-          names.add(p.getName());
-      }
-      return names;
+      return new LinkedList<>(this.clientNames);
   }
 
   /**
@@ -116,6 +130,7 @@ public class GameBoardController{
     addPlayerControllers(p);
     playTurns();
     playFrenzyTurn();
+
   }
 
   /**
@@ -123,11 +138,21 @@ public class GameBoardController{
    * turn, replaces resources that have been picked up during a turn and
    * resolves player deaths.
    */
+  int currentPlayer = 0;
   public void playTurns() {
-    int currentPlayer = 0;
+    currentPlayer = 0;
     while(gameBoard.getKillScoreBoard().gameRunning()){
-      playerControllers.get(currentPlayer).
-              playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
+      try {
+        playerControllers.get(currentPlayer).
+                playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
+      }
+      catch (UserTimeoutException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                e
+        );
+      }
       currentPlayer++;
       if(currentPlayer == players.size()){
         currentPlayer = 0;
@@ -142,5 +167,34 @@ public class GameBoardController{
    */
   public void playFrenzyTurn() {
     //player the last turn and end the game
+    gameBoard.setFrenzy();
+    for(Player p : players){
+      if(p.getBoard().getDamageReceived().isEmpty()){
+        p.getBoard().turnAround();
+      }
+    }
+    for(int i = currentPlayer; i<players.size(); i++){
+      playerControllers.get(i).setState(3);
+    }
+    for(int i = 0; i<currentPlayer; i++){
+      playerControllers.get(i).setState(4);
+    }
+    for(int i = 0; i<players.size(); i++){
+      try {
+        playerControllers.get(currentPlayer).playTurn
+              (playerControllers.get(currentPlayer).getState().getAvailableActions());
+      }
+      catch (UserTimeoutException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                e
+        );
+      }
+      currentPlayer++;
+      if(currentPlayer == players.size()){
+        currentPlayer = 0;
+      }
+    }
   }
 }

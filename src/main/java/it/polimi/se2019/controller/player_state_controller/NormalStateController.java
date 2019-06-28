@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.player_state_controller;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
@@ -24,8 +25,8 @@ public class NormalStateController extends PlayerStateController {
    * Move three squares
    */
   @Override
-  public void runAround() {
-    List<Square> threeMovesAway = map.getThreeMovesAwaySquares(player.getPosition());
+  public void runAround() throws UserTimeoutException {
+    List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
@@ -38,7 +39,7 @@ public class NormalStateController extends PlayerStateController {
    * Grab what is on your square, optionally move one square
    */
   @Override
-  public void grabStuff() {
+  public void grabStuff() throws UserTimeoutException {
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(direction != -1){
       player.move(player.getPosition().getAdjacencies().get(direction));
@@ -57,7 +58,7 @@ public class NormalStateController extends PlayerStateController {
    * Use your action to fire a weapon
    */
   @Override
-  public void shootPeople() {
+  public void shootPeople() throws UserTimeoutException {
     shoot();
   }
 }

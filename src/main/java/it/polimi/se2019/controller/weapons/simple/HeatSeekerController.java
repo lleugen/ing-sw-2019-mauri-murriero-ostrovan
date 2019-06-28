@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.simple;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class HeatSeekerController extends SimpleWeaponController {
   public HeatSeekerController(GameBoardController g) {
+    super(g);
     name = "HeatSeekerController";
-    gameBoardController = g;
   }
   Map map = getGameBoardController().getGameBoard().getMap();
 
@@ -22,8 +23,12 @@ public class HeatSeekerController extends SimpleWeaponController {
     return firingMode;
   }
   @Override
-  public List<Player> findTargets(Player shooter){
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+  public List<Player> findTargets(Player shooter) throws UserTimeoutException {
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<Player> targettablePlayers = new ArrayList<>();
     for(Player p : getGameBoardController().getGameBoard().getPlayers()){
       if( ! visiblePlayers.contains(p)){
@@ -32,13 +37,15 @@ public class HeatSeekerController extends SimpleWeaponController {
     }
     //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
-    targets.add(gameBoardController.identifyPlayer(identifyClient(shooter).chooseTargets
-            (gameBoardController.getPlayerNames(targettablePlayers))));
+    PlayerViewOnServer client = identifyClient(shooter);
+    targets.add(gameBoardController.identifyPlayer(client.chooseTargets
+              (gameBoardController.getPlayerNames(targettablePlayers))));
+
     return targets;
   }
 
   @Override
-  public void shootTargets(Player shooter, List<Player> targets){
+  public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     for(Player p : targets){
       p.takeDamage(shooter, 3);
       //add one more point of damage if the player chooses to use a targeting scope
