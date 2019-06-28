@@ -54,8 +54,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     }
     else{
       //basic firing mode
-      List<Player> possiblePrimaryTargets = new ArrayList<>(map.getPlayersOnSquare(targetSquares.get(0)));
-      List<Player> possibleSecondaryTargets = new ArrayList<>(map.getPlayersOnSquare(targetSquares.get(1)));
+      List<Player> possiblePrimaryTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquares.get(0), 0)
+      ));
+      List<Player> possibleSecondaryTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquares.get(1), 0)
+      ));
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();
       List<String> possibleSecondaryTargetsNames = new ArrayList<>();

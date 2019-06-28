@@ -22,7 +22,11 @@ public class MachineGunController extends OptionalEffectWeaponController {
     client = identifyClient(shooter);
     //choose one or two target players that you can see
     List<Player> targets = new ArrayList<>();
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<String> possibleTargetNames = gameBoardController.getPlayerNames(visiblePlayers);
 
     targets.add(gameBoardController.identifyPlayer
@@ -39,7 +43,11 @@ public class MachineGunController extends OptionalEffectWeaponController {
     client = identifyClient(shooter);
     String firstTarget = null;
     String secondTarget = null;
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<String> targetNames = gameBoardController.getPlayerNames(targets);
     for(Player p : targets){
       p.takeDamage(shooter, 1);

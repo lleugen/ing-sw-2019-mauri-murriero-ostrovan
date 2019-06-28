@@ -22,7 +22,11 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     //possible targets are all visible players
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<Player> targets = new ArrayList<>();
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
@@ -65,7 +69,12 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
     }
     if(firingMode.get(1)){
       Square targetSquare = findTargetSquare(shooter);
-      List<Player> playersOnSquare = map.getPlayersOnSquare(targetSquare);
+      List<Player> playersOnSquare = map.getPlayersOnSquares(
+              map.getReachableSquares(
+                      targetSquare,
+                      0
+              )
+      );
       for(Player p : playersOnSquare){
         p.takeDamage(shooter, 1);
         //add one more point of damage if the player chooses to use a targeting scope

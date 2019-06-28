@@ -38,11 +38,18 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
         targets.add(gameBoardController.identifyPlayer
                 (client.chooseTargets
                         (gameBoardController.getPlayerNames
-                                (map.getPlayersOnSquare(targetSquares.get(i))))));
+                                (map.getPlayersOnSquares(
+                                        map.getReachableSquares(
+                                                targetSquares.get(i),
+                                                0
+                                        )
+                                )))));
       }
     }
     else{
-      targets.addAll(map.getOneMoveAway(shooter.getPosition()));
+      targets.addAll(map.getPlayersOnSquares(
+              map.getReachableSquares(shooter.getPosition(), 1)
+      ));
     }
     return targets;
   }

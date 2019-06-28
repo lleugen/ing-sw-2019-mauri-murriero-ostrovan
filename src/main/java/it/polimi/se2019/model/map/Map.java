@@ -3,10 +3,8 @@ package it.polimi.se2019.model.map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -55,78 +53,15 @@ public class Map {
    *
    * @param mapType The type of the map to generate
    */
-  public Map(int mapType, GameBoard g){
-    gameBoard = g;
-    mapSquares = new Square[3][4];
-    if(mapType == 0){
-      mapSquares[0][0] = new AmmoSquare(this,"blue", null);
-      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
-      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
-      mapSquares[0][3] = null;
+  public Map(Integer mapType, GameBoard g) throws UnknownMapTypeException {
+    this.gameBoard = g;
 
-      mapSquares[1][0] = new SpawnSquare(this,"red", null);
-      mapSquares[1][1] = new AmmoSquare(this,"red", null);
-      mapSquares[1][2] = new AmmoSquare(this,"red", null);
-      mapSquares[1][3] = new AmmoSquare(this,"yellow", null);
+    this.mapSquares = genMap(this, mapType.toString());
 
-      mapSquares[2][0] = null;
-      mapSquares[2][1] = new AmmoSquare(this,"white", null);
-      mapSquares[2][2] = new AmmoSquare(this,"white", null);
-      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
-    }
-    else if(mapType == 1){
-      mapSquares[0][0] = new AmmoSquare(this,"blue", null);
-      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
-      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
-      mapSquares[0][3] = new AmmoSquare(this,"gray", null);
-
-      mapSquares[1][0] = new SpawnSquare(this,"red", null);
-      mapSquares[1][1] = new AmmoSquare(this,"red", null);
-      mapSquares[1][2] = new AmmoSquare(this,"yellow", null);
-      mapSquares[1][3] = new AmmoSquare(this,"yello", null);
-
-      mapSquares[2][0] = null;
-      mapSquares[2][1] = new AmmoSquare(this,"white", null);
-      mapSquares[2][2] = new AmmoSquare(this,"yellow", null);
-      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
-    }
-    else if(mapType == 2){
-      mapSquares[0][0] = new AmmoSquare(this,"red", null);
-      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
-      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
-      mapSquares[0][3] = new AmmoSquare(this,"gray", null);
-
-      mapSquares[1][0] = new SpawnSquare(this,"red", null);
-      mapSquares[1][1] = new AmmoSquare(this,"purple", null);
-      mapSquares[1][2] = new AmmoSquare(this,"yellow", null);
-      mapSquares[1][3] = new AmmoSquare(this,"yellow", null);
-
-      mapSquares[2][0] = new AmmoSquare(this,"white", null);
-      mapSquares[2][1] = new AmmoSquare(this,"white", null);
-      mapSquares[2][2] = new AmmoSquare(this,"yellow", null);
-      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
-    }
-    else{
-      mapSquares[0][0] = new AmmoSquare(this,"red", null);
-      mapSquares[0][1] = new AmmoSquare(this,"blue", null);
-      mapSquares[0][2] = new SpawnSquare(this,"blue", null);
-      mapSquares[0][3] = null;
-
-      mapSquares[1][0] = new SpawnSquare(this,"red", null);
-      mapSquares[1][1] = new AmmoSquare(this,"purple", null);
-      mapSquares[1][2] = new AmmoSquare(this,"purple", null);
-      mapSquares[1][3] = new AmmoSquare(this,"yellow", null);
-
-      mapSquares[2][0] = new AmmoSquare(this,"white", null);
-      mapSquares[2][1] = new AmmoSquare(this,"white", null);
-      mapSquares[2][2] = new AmmoSquare(this,"white", null);
-      mapSquares[2][3] = new SpawnSquare(this,"yellow", null);
-    }
-    root = mapSquares[0][0];
-    redSpawnPoint = mapSquares[0][2];
-    blueSpawnPoint = mapSquares[1][0];
-    yellowSpawnPoint = mapSquares[2][3];
-
+    this.root = this.mapSquares[0][0];
+    this.redSpawnPoint = this.mapSquares[0][2];
+    this.blueSpawnPoint = this.mapSquares[1][0];
+    this.yellowSpawnPoint = this.mapSquares[2][3];
 
     //add square adjacencies
     List<Direction> currentAdjacencies = new ArrayList<>();
@@ -167,52 +102,7 @@ public class Map {
       }
     }
 
-
-
-    //add walls
-    if(mapType == 0){
-      mapSquares[0][0].setBlocked(true, false, false,true);
-      mapSquares[0][1].setBlocked(true, false, true,false);
-      mapSquares[0][2].setBlocked(true, true,false,false);
-      //mapSquares[0][3].setBlocked(true, true, true, true);
-      mapSquares[1][0].setBlocked(false, false, true, true);
-      mapSquares[1][1].setBlocked(true, false, false, false);
-      mapSquares[1][2].setBlocked(false, false, true, false);
-      mapSquares[1][3].setBlocked(true, true, false, false);
-      //mapSquares[2][0].setBlocked(true, true, true, true);
-      mapSquares[2][1].setBlocked(false, false, true, true);
-      mapSquares[2][2].setBlocked(true, false, true, false);
-      mapSquares[2][3].setBlocked(false, true, true, false);
-    }
-    else if(mapType == 1){
-      mapSquares[0][1].setBlocked(true, false, true, false);
-      mapSquares[1][1]. setBlocked(true, true, false, false);
-      mapSquares[1][2].setBlocked(false, false, false, true);
-    }
-    else if(mapType == 2){
-      mapSquares[1][0].setBlocked(false, true, false, true);
-      mapSquares[1][1].setBlocked(false, true, false, true);
-      mapSquares[1][2].setBlocked(false, false, false, true);
-    }
-    else{
-      mapSquares[1][0].setBlocked(false, true, false, true);
-      mapSquares[1][1].setBlocked(false, false, false, true);
-      mapSquares[1][2].setBlocked(false, false, true, false);
-      mapSquares[2][2].setBlocked(true, false, true, false);
-      mapSquares[0][2].setBlocked(true, true, false, false);
-      mapSquares[1][3].setBlocked(true, true, false, false);
-    }
-
-
-    //add items to squares
-    for(int i = 0; i<3; i++){
-      for(int j = 0; j<4; j++){
-        if(mapSquares[i][j] != null){
-          mapSquares[i][j].refill();
-        }
-      }
-    }
-
+    this.refillAll();
   }
 
   public Square[][]getMapSquares(){
@@ -226,43 +116,6 @@ public class Map {
   }
 
   /**
-   * Get a list of visible squares from one square
-   */
-  public List<Square> getVisibleSquares(Square position){
-    List<Square> visibleSquares = new ArrayList<>();
-    List<String> visibleRooms = new ArrayList<>();
-    for(Direction d : position.getAdjacencies()){
-      if(!d.isBlocked()){
-        visibleRooms.add(d.getSquare().getIdRoom());
-      }
-    }
-    for(int i = 0; i<3; i++){
-      for(int j = 0; j<2; j++){
-        for(String s : visibleRooms){
-          if(mapSquares[i][j].getIdRoom().equals(s)){
-            visibleSquares.add(mapSquares[i][j]);
-          }
-        }
-      }
-    }
-    return visibleSquares;
-  }
-
-  /**
-   * Get a list of all visible players from a square
-   */
-  public List<Player> getVisiblePlayers(Square position){
-    List<Player> visiblePlayers = new ArrayList<>();
-    List<Square> visibleSquares = getVisibleSquares(position);
-    for(Player p : gameBoard.getPlayers()){
-      if(visibleSquares.contains(p.getPosition())){
-        visiblePlayers.add(p);
-      }
-    }
-    return visiblePlayers;
-  }
-
-  /**
    * get the coordinates of a square
    */
   public List<Integer> getSquareCoordinates(Square position){
@@ -270,11 +123,9 @@ public class Map {
     int yCoordinate = 0;
     for(int i = 0; i<3; i++){
       for(int j = 0; j<2; j++){
-        if(mapSquares[i][j] != null){
-          if(mapSquares[i][j].equals(position)){
-            xCoordinate = i;
-            yCoordinate = j;
-          }
+        if(mapSquares[i][j] != null && mapSquares[i][j].equals(position)){
+          xCoordinate = i;
+          yCoordinate = j;
         }
       }
     }
@@ -282,49 +133,6 @@ public class Map {
     positionCoordinates.add(xCoordinate);
     positionCoordinates.add(yCoordinate);
     return positionCoordinates;
-  }
-
-  /**
-   * Calculate the Manhattan distance between two squares
-   */
-  public Integer calculateDistance(Square a, Square b){
-    List<Integer> aCoordinates = getSquareCoordinates(a);
-    List<Integer> bCoordinates = getSquareCoordinates(b);
-    Integer xDifference = aCoordinates.get(0) - bCoordinates.get(0);
-    if(xDifference < 0){
-      xDifference = -xDifference;
-    }
-    Integer yDifference = aCoordinates.get(1) - bCoordinates.get(1);
-    if(yDifference < 0){
-      yDifference = -yDifference;
-    }
-    return(xDifference + yDifference);
-  }
-
-  /**
-   * Get all players one move away
-   */
-  public List<Player> getOneMoveAway(Square position){
-    List<Player> playersOneMoveAway = new ArrayList<>();
-    for(int i = 0; i<3; i++){
-      if(!position.getAdjacencies().get(i).isBlocked()){
-        playersOneMoveAway.addAll(getPlayersOnSquare(position.getAdjacencies().get(i).getSquare()));
-      }
-    }
-    return playersOneMoveAway;
-  }
-
-  /**
-   * return a list of all the players on a given square
-   */
-  public List<Player> getPlayersOnSquare(Square position){
-    List<Player> playersOnPosition = new ArrayList<>();
-    for(Player p : gameBoard.getPlayers()){
-      if(p.getPosition().equals(position)){
-        playersOnPosition.add(p);
-      }
-    }
-    return playersOnPosition;
   }
 
   /**
@@ -340,6 +148,280 @@ public class Map {
     return openDirections;
   }
 
+
+  // -----
+
+  /**
+   * Refill all squares of the map
+   */
+  private void refillAll(){
+    Arrays.stream(this.mapSquares)
+            .flatMap(Arrays::stream)
+            .filter(Objects::nonNull)
+            .forEach(Square::refill);
+  }
+
+  /**
+   * Generate a new map
+   *
+   * @param mapReference A reference to the map the generated map belongs to
+   * @param type         Type of the map to generate
+   *
+   * @return The generated map
+   */
+  private static Square[][] genMap(Map mapReference, String type)
+          throws UnknownMapTypeException {
+    java.util.Map<String, Function<Map, Square[][]>> generators = new HashMap<>();
+
+    generators.put("0", Map::genMapType0);
+    generators.put("1", Map::genMapType1);
+    generators.put("2", Map::genMapType2);
+    generators.put("3", Map::genMapType3);
+
+    if (generators.containsKey(type)) {
+      return generators.get(type).apply(mapReference);
+    }
+    else {
+      throw new UnknownMapTypeException();
+    }
+  }
+
+  /**
+   * Generate a new map of type 0
+   *
+   * @param mapReference A reference to the map the generated map belongs to
+   *
+   * @return The generated map
+   */
+  private static Square[][] genMapType0(Map mapReference){
+    Square[][] mapSquares = new Square[3][4];
+
+    // Squares
+    mapSquares[0][0] = new AmmoSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][1] = new AmmoSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][2] = new SpawnSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][3] = null;
+
+    mapSquares[1][0] = new SpawnSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][1] = new AmmoSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][2] = new AmmoSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][3] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    mapSquares[2][0] = null;
+    mapSquares[2][1] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    // walls
+    mapSquares[0][0].setBlocked(true, false, false,true);
+    mapSquares[0][1].setBlocked(true, false, true,false);
+    mapSquares[0][2].setBlocked(true, true,false,false);
+    //mapSquares[0][3].setBlocked(true, true, true, true);
+    mapSquares[1][0].setBlocked(false, false, true, true);
+    mapSquares[1][1].setBlocked(true, false, false, false);
+    mapSquares[1][2].setBlocked(false, false, true, false);
+    mapSquares[1][3].setBlocked(true, true, false, false);
+    //mapSquares[2][0].setBlocked(true, true, true, true);
+    mapSquares[2][1].setBlocked(false, false, true, true);
+    mapSquares[2][2].setBlocked(true, false, true, false);
+    mapSquares[2][3].setBlocked(false, true, true, false);
+
+    // adjacencies
+
+
+    return mapSquares;
+  }
+
+  /**
+   * Generate a new map of type 1
+   *
+   * @param mapReference A reference to the map the generated map belongs to
+   *
+   * @return The generated map
+   */
+  private static Square[][] genMapType1(Map mapReference){
+    Square[][] mapSquares = new Square[3][4];
+
+    // Squares
+    mapSquares[0][0] = new AmmoSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][1] = new AmmoSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][2] = new SpawnSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][3] = new AmmoSquare(mapReference,Square.RoomColor.GRAY, null);
+
+    mapSquares[1][0] = new SpawnSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][1] = new AmmoSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][2] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+    mapSquares[1][3] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    mapSquares[2][0] = null;
+    mapSquares[2][1] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+    mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    // walls
+    mapSquares[0][1].setBlocked(true, false, true, false);
+    mapSquares[1][1]. setBlocked(true, true, false, false);
+    mapSquares[1][2].setBlocked(false, false, false, true);
+
+    return mapSquares;
+  }
+
+  /**
+   * Generate a new map of type 2
+   *
+   * @param mapReference A reference to the map the generated map belongs to
+   *
+   * @return The generated map
+   */
+  private static Square[][] genMapType2(Map mapReference){
+    Square[][] mapSquares = new Square[3][4];
+
+    // Squares
+    mapSquares[0][0] = new AmmoSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[0][1] = new AmmoSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][2] = new SpawnSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][3] = new AmmoSquare(mapReference,Square.RoomColor.GRAY, null);
+
+    mapSquares[1][0] = new SpawnSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][1] = new AmmoSquare(mapReference,Square.RoomColor.PURPLE, null);
+    mapSquares[1][2] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+    mapSquares[1][3] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    mapSquares[2][0] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][1] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+    mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    // walls
+    mapSquares[1][0].setBlocked(false, true, false, true);
+    mapSquares[1][1].setBlocked(false, true, false, true);
+    mapSquares[1][2].setBlocked(false, false, false, true);
+
+    return mapSquares;
+  }
+
+  /**
+   * Generate a new map of type 3
+   *
+   * @param mapReference A reference to the map the generated map belongs to
+   *
+   * @return The generated map
+   */
+  private static Square[][] genMapType3(Map mapReference){
+    Square[][] mapSquares = new Square[3][4];
+
+    // Squares
+    mapSquares[0][0] = new AmmoSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[0][1] = new AmmoSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][2] = new SpawnSquare(mapReference,Square.RoomColor.BLUE, null);
+    mapSquares[0][3] = null;
+
+    mapSquares[1][0] = new SpawnSquare(mapReference,Square.RoomColor.RED, null);
+    mapSquares[1][1] = new AmmoSquare(mapReference,Square.RoomColor.PURPLE, null);
+    mapSquares[1][2] = new AmmoSquare(mapReference,Square.RoomColor.PURPLE, null);
+    mapSquares[1][3] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    mapSquares[2][0] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][1] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
+    mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
+
+    // walls
+    mapSquares[1][0].setBlocked(false, true, false, true);
+    mapSquares[1][1].setBlocked(false, false, false, true);
+    mapSquares[1][2].setBlocked(false, false, true, false);
+    mapSquares[2][2].setBlocked(true, false, true, false);
+    mapSquares[0][2].setBlocked(true, true, false, false);
+    mapSquares[1][3].setBlocked(true, true, false, false);
+
+    return mapSquares;
+  }
+
+  /**
+   * Get a list of reachable squares from the squares passed as parameter
+   *
+   * @param b   List of squares to use as base
+   * @param d   Maximum distance to search
+   *
+   * @return the list of reachable squares
+   *
+   * __INFO__ The result is duplicate-free
+   */
+  public List<Square> getReachableSquares(Square b, int d) {
+    List<Square> toReturn = new LinkedList<>();
+    toReturn.add(b);
+
+    for (int i = 0; i < d; i++){
+      toReturn.addAll(this.getAdjacients(toReturn));
+    }
+
+    return toReturn.stream()
+            .distinct()
+            .collect(Collectors.toList());
+  }
+
+  /**
+   * Get the list of visible squares from the square passed as parameter
+   * A square is visible if either is adjacent to the base square or either
+   * belongs to the same room of a square adjacent to the base
+   *
+   * @param b   Base square to find visible square from
+   *
+   * @return The list of visible squares from the base
+   *
+   * __INFO__ The result is duplicate-free
+   */
+  public List<Square> getVisibleSquares(Square b){
+    List<Square.RoomColor> visibleRooms = this.getReachableSquares(b, 1).stream()
+            .map(Square::getIdRoom)
+            .distinct()
+            .collect(Collectors.toList());
+
+    return Arrays.stream(mapSquares)
+            .flatMap(Arrays::stream)
+            .filter((Square s) ->
+                    visibleRooms.stream().anyMatch(s.getIdRoom()::equals)
+            )
+            .distinct()
+            .collect(Collectors.toList());
+  }
+
+  /**
+   * Get all players on a list of squares
+   *
+   * @param b List of square find players onto
+   *
+   * @return The list of players found on squares passed as parameter
+   *
+   * __INFO__ The result is duplicate-free
+   */
+  public List<Player> getPlayersOnSquares(List<Square> b){
+    return this.gameBoard.getPlayers().stream()
+            .filter((Player p) -> b.contains(p.getPosition()))
+            .distinct()
+            .collect(Collectors.toList());
+  }
+
+  /**
+   * Get the list of adjacent squares (squares reachable with one movement)
+   * from the squares passed as parameter
+   *
+   * @param b List of squares to calculate adjacent from
+   *
+   * @return The list of adjacent squares
+   *
+   * __WARN__ The returned list may contains duplicates
+   */
+  private List<Square> getAdjacients(Collection<Square> b){
+    return b.stream()
+            .map(Square::getAdjacencies)
+            .flatMap(List::stream)
+            .filter(Direction::isAccessible)
+            .map(Direction::getSquare)
+            .collect(Collectors.toList());
+  }
+
+
 //  /**
 //   * get adjacent squares
 //   */
@@ -353,32 +435,32 @@ public class Map {
 //    return adjacentSquares;
 //  }
 
-  /**
-   * get all players who are at most two moves away from position
-   */
-  public List<Player> getTwoMovesAway(Square position){
-    List<Square> twoMovesAway = new ArrayList<>();
-    List<Square> oneMoveAway = new ArrayList<>();
-    List<Player> twoMovesAwayPlayers = new ArrayList<>();
-    for(Direction d : position.getAdjacencies()){
-      if(!d.isBlocked()){
-        oneMoveAway.add(d.getSquare());
-      }
-    }
-    for(Square q : oneMoveAway){
-      for(Direction d : q.getAdjacencies()){
-        if((!d.isBlocked()) && (!twoMovesAway.contains(d.getSquare()))){
-          twoMovesAway.add(d.getSquare());
-        }
-      }
-    }
-    for(Player p : gameBoard.getPlayers()){
-      if(twoMovesAway.contains(p.getPosition())){
-        twoMovesAwayPlayers.add(p);
-      }
-    }
-    return twoMovesAwayPlayers;
-  }
+//  /**
+//   * get all players who are at most two moves away from position
+//   */
+//  public List<Player> getTwoMovesAway(Square position){
+//    List<Square> twoMovesAway = new ArrayList<>();
+//    List<Square> oneMoveAway = new ArrayList<>();
+//    List<Player> twoMovesAwayPlayers = new ArrayList<>();
+//    for(Direction d : position.getAdjacencies()){
+//      if(!d.isBlocked()){
+//        oneMoveAway.add(d.getSquare());
+//      }
+//    }
+//    for(Square q : oneMoveAway){
+//      for(Direction d : q.getAdjacencies()){
+//        if((!d.isBlocked()) && (!twoMovesAway.contains(d.getSquare()))){
+//          twoMovesAway.add(d.getSquare());
+//        }
+//      }
+//    }
+//    for(Player p : gameBoard.getPlayers()){
+//      if(twoMovesAway.contains(p.getPosition())){
+//        twoMovesAwayPlayers.add(p);
+//      }
+//    }
+//    return twoMovesAwayPlayers;
+//  }
 
 //  /**
 //   * get all squares that are at most two moves away from position
@@ -420,45 +502,63 @@ public class Map {
 ////    this.getReachableSquaresFromSquare(position, )
 //  }
 
-  /**
-   * Get a list of reachable squares from the squares passed as parameter
-   *
-   * @param b   List of squares to use as base
-   * @param d   Maximum distance to search
-   *
-   * @return the list of reachable squares
-   *
-   * __INFO__ The result is duplicate-free
-   */
-  public List<Square> getReachableSquares(Square b, int d) {
-    List<Square> toReturn = new LinkedList<>();
-    toReturn.add(b);
 
-    for (int i = 0; i < d; i++){
-      toReturn.addAll(this.getAdjacients(toReturn));
-    }
+//  /**
+//   * Calculate the Manhattan distance between two squares
+//   */
+//  public Integer calculateDistance(Square a, Square b){
+//    List<Integer> aCoordinates = getSquareCoordinates(a);
+//    List<Integer> bCoordinates = getSquareCoordinates(b);
+//    Integer xDifference = aCoordinates.get(0) - bCoordinates.get(0);
+//    if(xDifference < 0){
+//      xDifference = -xDifference;
+//    }
+//    Integer yDifference = aCoordinates.get(1) - bCoordinates.get(1);
+//    if(yDifference < 0){
+//      yDifference = -yDifference;
+//    }
+//    return(xDifference + yDifference);
+//  }
 
-    return toReturn.stream()
-            .distinct()
-            .collect(Collectors.toList());
-  }
+//  /**
+//   * Get all players one move away
+//   */
+//  public List<Player> getOneMoveAway(Square position){
+//    List<Player> playersOneMoveAway = new ArrayList<>();
+//    for(int i = 0; i<3; i++){
+//      if(!position.getAdjacencies().get(i).isBlocked()){
+//        playersOneMoveAway.addAll(getPlayersOnSquare(position.getAdjacencies().get(i).getSquare()));
+//      }
+//    }
+//    return playersOneMoveAway;
+//  }
 
-  /**
-   * Get the list of adjacent squares (squares reachable with one movement)
-   * from the squares passed as parameter
-   *
-   * @param b List of squares to calculate adjacent from
-   *
-   * @return The list of adjacent squares
-   *
-   * __WARN__ The returned list may contains duplicates
-   */
-  private List<Square> getAdjacients(Collection<Square> b){
-    return b.stream()
-            .map(Square::getAdjacencies)
-            .flatMap(List::stream)
-            .filter(Direction::isAccessible)
-            .map(Direction::getSquare)
-            .collect(Collectors.toList());
-  }
+//  /**
+//   * return a list of all the players on a given square
+//   */
+//  public List<Player> getPlayersOnSquare(Square position){
+//    List<Player> playersOnPosition = new ArrayList<>();
+//    for(Player p : gameBoard.getPlayers()){
+//      if(p.getPosition().equals(position)){
+//        playersOnPosition.add(p);
+//      }
+//    }
+//    return playersOnPosition;
+//  }
+
+
+//  /**
+//   * Get a list of all visible players from a square
+//   */
+//  public List<Player> getVisiblePlayers(Square position){
+//
+//    List<Player> visiblePlayers = new ArrayList<>();
+//    List<Square> visibleSquares = getVisibleSquares(position);
+//    for(Player p : gameBoard.getPlayers()){
+//      if(visibleSquares.contains(p.getPosition())){
+//        visiblePlayers.add(p);
+//      }
+//    }
+//    return visiblePlayers;
+//  }
 }

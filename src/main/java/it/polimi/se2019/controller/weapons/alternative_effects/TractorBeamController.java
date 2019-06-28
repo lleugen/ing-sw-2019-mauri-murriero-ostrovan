@@ -28,7 +28,11 @@ public class TractorBeamController extends OptionalEffectWeaponController {
       List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
       for(Square q : visibleSquares){
         currentSquareTwoMovesAway.clear();
-        currentSquareTwoMovesAway.addAll(map.getTwoMovesAway(q));
+        currentSquareTwoMovesAway.addAll(
+                map.getPlayersOnSquares(
+                        map.getReachableSquares(q, 2)
+                )
+        );
         for(Player p : currentSquareTwoMovesAway){
           if(!possibletargets.contains(p)){
             possibletargets.add(p);
@@ -37,7 +41,9 @@ public class TractorBeamController extends OptionalEffectWeaponController {
       }
     }
     else{
-      possibletargets = map.getTwoMovesAway(shooter.getPosition());
+      possibletargets = map.getPlayersOnSquares(
+              map.getReachableSquares(shooter.getPosition(), 2)
+      );
     }
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets

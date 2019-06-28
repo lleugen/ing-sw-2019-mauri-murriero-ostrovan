@@ -24,7 +24,11 @@ public class WhisperController extends SimpleWeaponController {
   @Override
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     Map map = getGameBoardController().getGameBoard().getMap();
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<Integer> positionCoordinates = map.getSquareCoordinates(shooter.getPosition());
     for(Player p : visiblePlayers){
       if((map.getSquareCoordinates(p.getPosition()).get(0) > positionCoordinates.get(0) - 1) ||

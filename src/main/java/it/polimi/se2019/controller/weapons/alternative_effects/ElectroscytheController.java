@@ -15,7 +15,9 @@ public class ElectroscytheController extends OptionalEffectWeaponController {
 
   @Override
   public List<Player> findTargets(Player shooter){
-    return map.getPlayersOnSquare(shooter.getPosition());
+    return map.getPlayersOnSquares(
+            map.getReachableSquares(shooter.getPosition(), 0)
+    );
   }
 
   @Override

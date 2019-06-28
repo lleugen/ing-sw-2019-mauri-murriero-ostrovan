@@ -21,7 +21,11 @@ public class HellionController extends OptionalEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     //choose one target player at least one move away
-    List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> possibleTargets = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     for(Player p : possibleTargets){
       if(p.getPosition().equals(shooter.getPosition())){
         possibleTargets.remove(p);
@@ -44,7 +48,12 @@ public class HellionController extends OptionalEffectWeaponController {
     }
     //if the damaged target has a tagback gredade, he/she can use it now
     useTagbackGrenade(targets.get(0));
-    List<Player> playersOnSquare = map.getPlayersOnSquare(targets.get(0).getPosition());
+    List<Player> playersOnSquare = map.getPlayersOnSquares(
+            map.getReachableSquares(
+                    targets.get(0).getPosition(),
+                    0
+            )
+    );
     for(Player p : playersOnSquare){
       p.takeMarks(shooter, 1);
     }

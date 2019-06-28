@@ -25,7 +25,9 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       //basic mode, one target one move away
       List<String> possibleTargetNames = new ArrayList<>();
       //get all players one move away
-      List<Player> possibleTargets = new ArrayList<>(map.getOneMoveAway(shooter.getPosition()));
+      List<Player> possibleTargets = new ArrayList<>(map.getPlayersOnSquares(
+              map.getReachableSquares(shooter.getPosition(), 1)
+      ));
       //get their names
       for(Player p : possibleTargets){
         possibleTargetNames.add(p.getName());
@@ -41,7 +43,9 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       Integer direction = client.chooseDirection(map.getOpenDirections(shooter.getPosition()));
       //get all players one move away in "direction"
       Square targetSquare = shooter.getPosition().getAdjacencies().get(direction).getSquare();
-      List<Player> firstPossibleTargets = map.getPlayersOnSquare(targetSquare);
+      List<Player> firstPossibleTargets = map.getPlayersOnSquares(
+              map.getReachableSquares(targetSquare, 0)
+      );
       //get their names
       List<String> firstPossibleTargetsNames = new ArrayList<>();
       for(Player p: firstPossibleTargets){
@@ -54,8 +58,12 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       //get all possible second targets
       List<Player> possibleSecondTargets = new ArrayList<>();
       if(!targetSquare.getAdjacencies().get(direction).isBlocked()){
-        possibleSecondTargets = map.getPlayersOnSquare
-                (targetSquare.getAdjacencies().get(direction).getSquare());
+        possibleSecondTargets = map.getPlayersOnSquares(
+                map.getReachableSquares(
+                        targetSquare.getAdjacencies().get(direction).getSquare(),
+                        0
+                )
+        );
       }
       //get their names
       List<String> possibleSecondTargetNames = new ArrayList<>();

@@ -25,10 +25,18 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
                 (gameBoardController.identifyPlayer
                         (client.chooseTargets
                                 (gameBoardController.getPlayerNames
-                                        (map.getVisiblePlayers(shooter.getPosition())))));
+                                        (map.getPlayersOnSquares(
+                                                map.getVisibleSquares(
+                                                        shooter.getPosition()
+                                                )
+                                        )))));
       }
       else{
-      List<Player> possibleTargets = new ArrayList<>(map.getVisiblePlayers(shooter.getPosition()));
+      List<Player> possibleTargets = map.getPlayersOnSquares(
+              map.getVisibleSquares(
+                      shooter.getPosition()
+              )
+      );
         for(int i = 0; i<2; i++){
           if(possibleTargets.size()>0){
             targets.add

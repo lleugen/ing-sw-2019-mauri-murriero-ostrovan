@@ -2,6 +2,7 @@ package it.polimi.se2019.model.server;
 
 import it.polimi.se2019.RMI.ServerLobbyInterface;
 import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.io.Serializable;
@@ -59,26 +60,20 @@ public class Server implements ServerLobbyInterface, Serializable {
       p.setName(user);
 
       if (this.lobbyes.isEmpty() || this.lobbyes.get(0).checkRoomFull()) {
-        this.lobbyes.add(
-                0,
-                new ServerLobby(
-                        p.chooseNumberOfPlayers(),
-                        p.chooseMap()
-                )
-        );
-      }
-
-      try {
-        if (!this.lobbyes.isEmpty()) {
-          this.lobbyes.get(0).connect(
-                  p,
-                  p.getName(),
-                  p.getCharacter()
+        while (!this.addLobby(p)) {
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "Recreating lobby"
           );
         }
       }
-      catch (ServerLobby.RoomFullException e){
-        // Checked before, never happens
+
+      if (!this.lobbyes.isEmpty()) {
+        this.lobbyes.get(0).connect(
+                p,
+                p.getName(),
+                p.getCharacter()
+        );
       }
     }
     catch (PlayerViewOnServer.InitializationError | UserTimeoutException e){
@@ -87,6 +82,39 @@ public class Server implements ServerLobbyInterface, Serializable {
               "Unable to initialize user",
               e
       );
+    }
+    catch (ServerLobby.RoomFullException e){
+      // Checked before, never happens
+    }
+  }
+
+  /**
+   * Add a new lobby to the server
+   *
+   * @param p User that should initialize the map
+   *
+   * @return true on success (the lobby will be add at place 0), false on error
+   *
+   * @throws UserTimeoutException If the user does not respond on time
+   */
+  private boolean addLobby(PlayerViewOnServer p) throws UserTimeoutException {
+    try {
+      this.lobbyes.add(
+              0,
+              new ServerLobby(
+                      p.chooseNumberOfPlayers(),
+                      p.chooseMap()
+              )
+      );
+      return true;
+    }
+    catch (UnknownMapTypeException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.WARNING,
+              "Unknown Map Type",
+              e
+      );
+      return false;
     }
   }
 }

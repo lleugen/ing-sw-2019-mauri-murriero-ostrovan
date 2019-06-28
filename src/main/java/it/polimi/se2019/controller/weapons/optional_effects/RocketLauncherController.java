@@ -21,7 +21,11 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     client = identifyClient(shooter);
     //choose one target player at least one move away
-    List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> possibleTargets = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     for(Player p : possibleTargets){
       if(p.getPosition().equals(shooter.getPosition())){
         possibleTargets.remove(p);
@@ -62,7 +66,12 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
         useTagbackGrenade(targets.get(0));
         if(firingMode.get(2)){
           //fragmenting warhead, has to take place during the first action and before moving the target(cfr:game rules)
-          List<Player> t = map.getPlayersOnSquare(targets.get(0).getPosition());
+          List<Player> t = map.getPlayersOnSquares(
+                  map.getReachableSquares(
+                          targets.get(0).getPosition(),
+                          0
+                  )
+          );
           for(Player p : t){
             p.takeDamage(shooter, 1);
             //add one more point of damage if the player chooses to use a targeting scope

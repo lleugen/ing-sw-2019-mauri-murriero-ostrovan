@@ -33,7 +33,13 @@ public class RailGunController extends AlternativeEffectWeaponController {
     List<Player> possibleTargets = new ArrayList<>();
     Square currentSquare = shooter.getPosition();
     while(currentSquare.getAdjacencies().get(direction).getSquare() != null){
-      possibleTargets.addAll(map.getPlayersOnSquare(currentSquare.getAdjacencies().get(direction).getSquare()));
+      possibleTargets.addAll(map.getPlayersOnSquares(
+              map.getReachableSquares(
+                      currentSquare.getAdjacencies().get(direction).getSquare(),
+                      0
+              )
+      ));
+
       currentSquare = currentSquare.getAdjacencies().get(direction).getSquare();
     }
     //get their names

@@ -81,7 +81,11 @@ public abstract class WeaponController {
   }
 
   protected Player chooseOneVisiblePlayer(Player shooter) throws UserTimeoutException{
-      List<Player> possibleTargets = map.getVisiblePlayers(shooter.getPosition());
+      List<Player> possibleTargets = map.getPlayersOnSquares(
+              map.getVisibleSquares(
+                      shooter.getPosition()
+              )
+      );
       Player p = null;
       PlayerViewOnServer client = identifyClient(shooter);
       p = gameBoardController.identifyPlayer

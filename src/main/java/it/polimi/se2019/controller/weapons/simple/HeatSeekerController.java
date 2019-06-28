@@ -24,7 +24,11 @@ public class HeatSeekerController extends SimpleWeaponController {
   }
   @Override
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
-    List<Player> visiblePlayers = map.getVisiblePlayers(shooter.getPosition());
+    List<Player> visiblePlayers = map.getPlayersOnSquares(
+            map.getVisibleSquares(
+                    shooter.getPosition()
+            )
+    );
     List<Player> targettablePlayers = new ArrayList<>();
     for(Player p : getGameBoardController().getGameBoard().getPlayers()){
       if( ! visiblePlayers.contains(p)){

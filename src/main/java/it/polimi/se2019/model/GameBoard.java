@@ -6,6 +6,7 @@ import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Map;
+import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
@@ -56,9 +57,10 @@ public class GameBoard {
    *
    * @param mapType Type of the map to generate
    *
-   * @throws NullPointerException if players contains a null player
+   * @throws NullPointerException     if players contains a null player
+   * @throws UnknownMapTypeException  if the selected map does not exist
    */
-  public GameBoard(int mapType){
+  public GameBoard(int mapType) throws UnknownMapTypeException {
     isFrenzy = false;
     playersAdded = false;
     killScoreBoardCreated = false;

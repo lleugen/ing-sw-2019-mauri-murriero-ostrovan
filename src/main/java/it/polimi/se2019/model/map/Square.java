@@ -24,6 +24,18 @@ public abstract class Square {
    */
   private Decks decks;
 
+  /**
+   * Available rooms color
+   */
+  public enum RoomColor {
+    BLUE,
+    YELLOW,
+    WHITE,
+    RED,
+    GRAY,
+    PURPLE
+  }
+
   public Decks getDecks(){
     if(decks != null){
       return decks;
@@ -46,7 +58,7 @@ public abstract class Square {
    * @param roomId      The id of the room this Square belongs to
    * @param a The list of adjacents squares
    */
-  public Square(Map m, String roomId, List<Direction> a) {
+  public Square(Map m, RoomColor roomId, List<Direction> a) {
     map = m;
     decks = map.getGameBoard().getDecks();
     adjacencies = new ArrayList<>();
@@ -107,12 +119,12 @@ public abstract class Square {
   /**
    * The id of the room this Square belongs to
    */
-  private String idRoom;
+  private RoomColor idRoom;
 
   /**
    * @return The id of the room this Square belongs to
    */
-  public String getIdRoom() {
+  public RoomColor getIdRoom() {
     return this.idRoom;
   }
 

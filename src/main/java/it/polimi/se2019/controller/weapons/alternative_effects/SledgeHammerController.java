@@ -24,7 +24,12 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames
-                              (map.getPlayersOnSquare(shooter.getPosition())))));
+                              (map.getPlayersOnSquares(
+                                      map.getReachableSquares(
+                                              shooter.getPosition(),
+                                              0
+                                      )
+                              )))));
 
 
     return targets;

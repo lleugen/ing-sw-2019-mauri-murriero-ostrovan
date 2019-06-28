@@ -26,8 +26,12 @@ public class ShotgunController extends AlternativeEffectWeaponController {
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames
-                              (gameBoardController.getGameBoard().getMap().getPlayersOnSquare
-                                      (shooter.getPosition())))));
+                              (gameBoardController.getGameBoard().getMap().getPlayersOnSquares(
+                                      map.getReachableSquares(
+                                              shooter.getPosition(),
+                                              0
+                                      )
+                              )))));
     }
     else{
       //long barrel mode, shoot one target one move away
@@ -35,8 +39,14 @@ public class ShotgunController extends AlternativeEffectWeaponController {
               gameBoardController.getGameBoard().getMap().getReachableSquares(shooter.getPosition(), 1);
       List<Player> possibleTargets = new ArrayList<>();
       while(adjacentSquares.iterator().hasNext()){
-        possibleTargets.addAll(map.getPlayersOnSquare(adjacentSquares.iterator().next()));
+        possibleTargets.addAll(map.getPlayersOnSquares(
+                map.getReachableSquares(
+                        adjacentSquares.iterator().next(),
+                        0
+                )
+        ));
       }
+
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (gameBoardController.getPlayerNames(possibleTargets))));

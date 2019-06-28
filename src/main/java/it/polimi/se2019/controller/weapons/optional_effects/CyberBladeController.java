@@ -23,7 +23,12 @@ public class CyberBladeController extends OptionalEffectWeaponController {
     client = identifyClient(shooter);
     //choose one target from all the players on the same square
     List<Player> targets = new ArrayList<>();
-    List<Player> playersOnSquare = map.getPlayersOnSquare(shooter.getPosition());
+    List<Player> playersOnSquare = map.getPlayersOnSquares(
+            map.getReachableSquares(
+                    shooter.getPosition(),
+                    0
+            )
+    );
 
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets

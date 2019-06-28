@@ -20,7 +20,7 @@ public class SpawnSquare extends Square {
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
    */
-  public SpawnSquare(Map m, String roomId, List<Direction> adjacencies) {
+  public SpawnSquare(Map m, RoomColor roomId, List<Direction> adjacencies) {
     super(m, roomId, adjacencies);
     weaponList = new ArrayList<>();
   }
