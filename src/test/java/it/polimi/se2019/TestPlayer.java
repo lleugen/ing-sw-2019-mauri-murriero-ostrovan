@@ -1,12 +1,37 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.GameBoard;
+import it.polimi.se2019.model.grabbable.Ammo;
+import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static junit.framework.TestCase.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 public class TestPlayer {
+    @Test
+    public void testCreate(){
+        GameBoard gameBoard = new GameBoard(0);
+        Player player1 = new Player("player1", "character1", gameBoard);
+        assert(player1.getInventory() != null);
+        assert(player1.getBoard() != null);
+        assert(player1.getCharacter().equals("character1"));
+        assert(player1.getName().equals("player1"));
+        assert(player1.getPoints() == 0);
+        assert(player1.getState() == 0);
+    }
     @Test
     public void testTakeDamage(){
         GameBoard gameBoard = new GameBoard(0);
@@ -58,5 +83,34 @@ public class TestPlayer {
         deadPlayer.takeDamage(attacker2, 6);
         deadPlayer.resolveDeath();
         assert((attacker1.getPoints() == 2) & (attacker2.getPoints() == 1));
+    }
+
+    @Mock
+    PlayerViewOnServer client;
+    @Test
+    public void testReloadWeapon(){
+        GameBoard gameBoard = new GameBoard(0);
+        Player player1 = new Player("player1", "character1", gameBoard);
+        List<Player> playerList = new ArrayList<>();
+        playerList.add(player1);
+        gameBoard.addPlayers(playerList);
+        Weapon weapon = new Weapon("weapon1", new Ammo(0,0,0), new Ammo(1,1,1));
+        player1.getInventory().addWeaponToInventory(weapon);
+        player1.getInventory().getWeapons().get(0).unload();
+        List<String> weapons = new ArrayList<>();
+        weapons.add(weapon.getName());
+        try{
+            Mockito.when(client.chooseBoolean(any())).thenReturn(true);
+            Mockito.when(client.chooseWeaponToReload(weapons)).thenReturn(weapons.get(0));
+            player1.reloadWeapon(client);
+        }
+        catch(UserTimeoutException e){
+            fail();
+        }
+        assert(player1.getInventory().getWeapons().get(0).isLoaded());
+        assert(player1.getInventory().getAmmo().getRed() == 0);
+        assert(player1.getInventory().getAmmo().getBlue() == 0);
+        assert(player1.getInventory().getAmmo().getYellow() == 0);
+
     }
 }

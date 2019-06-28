@@ -76,7 +76,7 @@ public class TestFreneticStates {
         try {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
 
-            List<Square> threeMovesAway = gameBoard.getMap().getThreeMovesAwaySquares(player.getPosition());
+            List<Square> threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
             List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
             for(Square q : threeMovesAway){
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));

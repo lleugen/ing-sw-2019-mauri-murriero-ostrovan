@@ -47,7 +47,7 @@ public class TestMoveAndGrab {
                 threeMovesAwayCoordinates.clear();
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
-            Mockito.when(client.chooseTargetSquare(threeMovesAwayCoordinates)).thenReturn(threeMovesAwayCoordinates.get(0));
+            Mockito.when(client.chooseTargetSquare(any())).thenReturn(threeMovesAwayCoordinates.get(0));
 
             //test run around in state adrenaline 1
             playerController.setState(1);

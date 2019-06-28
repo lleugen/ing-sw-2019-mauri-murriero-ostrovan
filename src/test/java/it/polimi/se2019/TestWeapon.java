@@ -78,4 +78,11 @@ public class TestWeapon {
 //        weapon.unload();
 //        weapon.reload(player.getInventory().getPowerUps(), new Ammo(0,1,1));
 //    }
+
+    @Test
+    public void testUnload(){
+        Weapon weapon = new Weapon("testWeapon", new Ammo(0,0,0), new Ammo(1,1,1));
+        weapon.unload();
+        assert(!weapon.isLoaded());
+    }
 }
