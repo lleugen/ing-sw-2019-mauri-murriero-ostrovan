@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Scanner;
 
-public final class CliIO implements ViewFacadeInterfaceRMIClient {
+public final class CliIO{
     /**
      * Namespace this class logs to
      */
@@ -56,7 +57,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
      * Quando ho finito di pensare la chiamo e stampo a schermo
      */
     private void displayRender() {
-        System.console().writer().println("\033[H\033[2J");
+        //System.console().writer().println("\033[H\033[2J");
 
         System.console().writer().write(this.pendingUpdate.toString());
         System.console().writer().write("\n");
@@ -138,8 +139,10 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
     public CliIO(){
         this.loop();
     }
+    List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<ArrayList<ArrayList<String>>>();
     private void loop() {
         while (true) {
+            /*
             // Leggo
             String input = readLine();
             // Stampo il titolo della sezione
@@ -153,6 +156,82 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
             //System.console().readLine();
             // Stampo effettivamente a schermo
             this.displayRender();
+            */
+
+
+            for(int i = 0; i<3; i++){
+                mapInfo.add(new ArrayList<ArrayList<String>>());
+                for(int k = 0; k<4; k++){
+                    mapInfo.get(i).add(new ArrayList<String>());
+                }
+            }
+
+            for(int i = 0; i<3; i++){
+                for(int k = 0; k<4; k++){
+                    mapInfo.get(i).get(k).add(0, "room "+i+k);
+                }
+            }
+            /*
+            for(int i = 0; i<3; i++){
+              for(int k = 0; k<4; k++){
+                System.out.println(mapInfo.get(i).get(k).get(0));
+              }
+            }
+            */
+
+
+            String name;
+            inputName();
+            String action;
+            chooseAction("NormalState");
+
+            List<String> powerUps = new ArrayList<>();
+            powerUps.add("NewtonBlue");
+            powerUps.add("TargetingScopeRed");
+
+            chooseSpawnLocation(powerUps);
+            int map = chooseMap();
+            int numberOfPlayers = chooseNumberOfPlayers();
+            List<String> weapons = new ArrayList<>();
+            weapons.add("electroshish");
+            weapons.add("heat seeker");
+            String weapon = chooseWeapon(weapons);
+            List<String> targets = new ArrayList<>();
+            targets.add("noob_master_69");
+            targets.add("fatThor");
+            String target = chooseTargets(targets);
+            String reloadThis = chooseWeaponToReload(weapons);
+
+            List<Integer> cards = choosePowerUpCardsForReload(powerUps);
+
+            List<String> effects = new ArrayList<>();
+            effects.add("tactical nuke");
+            effects.add("barbecue");
+            Integer index = chooseIndex(effects);
+            Integer item = chooseItemToGrab();
+            Boolean firingMode = chooseFiringMode("this is the description");
+            Boolean chacha = chooseBoolean("Is this the best game ever?");
+            List<String> rooms = new ArrayList<>();
+            rooms.add("RED");
+            rooms.add("BLUE");
+            String room = chooseRoom(rooms);
+            List<List<Integer>> squares = new ArrayList<>();
+            List<Integer> square1 = new ArrayList<>();
+            List<Integer> square2 = new ArrayList<>();
+            square1.add(0);
+            square1.add(0);
+            square2.add(1);
+            square2.add(3);
+            squares.add(square1);
+            squares.add(square2);
+            List<Integer> chosenSquare = chooseTargetSquare(squares);
+            List<Integer> directions = new ArrayList<>();
+            directions.add(0);
+            directions.add(1);
+            directions.add(2);
+            directions.add(3);
+            Integer direction = chooseDirection(directions);
+
         }
     }
 
@@ -178,11 +257,10 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
 
 
-    private List<ArrayList<ArrayList<String>>> mapInfo;
+    //private List<ArrayList<ArrayList<String>>> mapInfo;
     private String name;
 
 
-    @Override
     public String getName(){
         return name;
     }
@@ -193,7 +271,6 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         name = readLine();
     }
 
-    @Override
     public String chooseAction(String state){
         displayMap();
         markSection("Choose your action!");
@@ -207,7 +284,6 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         return readLine();
     }
 
-    @Override
     public int chooseSpawnLocation(List<String> powerUps){
         displayMap();
         markSection("Discard a power up card to spawn.");
@@ -216,10 +292,13 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         }
         markSection("please input a number");
         displayRender();
-        return Integer.parseInt(readLine());
+        Scanner scanner = new Scanner(System.in);
+        int result = scanner.nextInt();
+
+        return result;
     }
 
-    @Override
+
     public int chooseMap(){
         markSection("Choose the map for the game.");
         markSection("0 : good for 3/4 players");
@@ -228,18 +307,24 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         markSection("3 : bonus map");
         markSection("please input a number");
         displayRender();
-        return Integer.parseInt(readLine());
+        Scanner scanner = new Scanner(System.in);
+        int result = scanner.nextInt();
+
+        return result;
     }
 
-    @Override
+
     public int chooseNumberOfPlayers(){
         markSection("Choose how many players will player the match.");
         markSection("please input a number");
         displayRender();
-        return Integer.parseInt(readLine());
+        Scanner scanner = new Scanner(System.in);
+        int result = scanner.nextInt();
+
+        return result;
     }
 
-    @Override
+
     public String chooseWeapon(List<String> weapons){
         markSection("Which weapon will you use?");
         for(String s : weapons){
@@ -249,7 +334,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         return readLine();
     }
 
-    @Override
+
     public String chooseTargets(List<String> possibleTargets){
         displayMap();
         markSection("Who would you like to target?");
@@ -260,7 +345,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         return readLine();
     }
 
-    @Override
+
     public String chooseWeaponToReload(List<String> weapons){
         markSection("Which weapon will you reload?");
         for(String s : weapons){
@@ -270,8 +355,10 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         return readLine();
     }
 
-    @Override
+
     public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
+
+        Scanner scanner = new Scanner(System.in);
         markSection("Choose power ups to use for reloading.");
         for(String s : powerUps){
             markSection(s);
@@ -279,50 +366,57 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         markSection("please input one number at a time, -1 to stop");
         displayRender();
         List<Integer> choices = new ArrayList<>();
-        String choice;
-        while(!powerUps.isEmpty()){
-            choice = readLine();
-            if(choice.equals("-1")){
-                break;
-            }
-            choices.add(Integer.parseInt(choice));
+        Integer choice = 0;
+        while(choice != -1){
+            choice = scanner.nextInt();
+            choices.add(choice);
         }
+
         return choices;
     }
 
-    @Override
+
     public Integer chooseIndex(List<String> availableEffects){
+        Scanner scanner = new Scanner(System.in);
         markSection("Choose one of the following:");
         for(String s : availableEffects){
             markSection(s);
         }
-        return Integer.parseInt(readLine());
+        Integer result = scanner.nextInt();
+
+        return result;
     }
 
-    @Override
+
     public int chooseItemToGrab(){
         markSection("Choose which one you would like to pick up:");
         markSection("0/1/2");
         displayRender();
-        return Integer.parseInt(readLine());
+        Scanner scanner = new Scanner(System.in);
+        int result = scanner.nextInt();
+        return result;
     }
 
-    @Override
+
     public Boolean chooseFiringMode(String description){
         markSection("Choose firing mode");
+        markSection(description);
         markSection("input 0 for basic or 1 for alternative");
         displayRender();
-        Integer choice = Integer.parseInt(readLine());
+        Scanner scanner = new Scanner(System.in);
+        Integer choice = scanner.nextInt();
+
         if(choice == 1){
             return true;
         }
         else return false;
     }
 
-    @Override
+
     public Boolean chooseBoolean(String description){
         markSection(description);
         markSection("yes/no");
+        markSection("please input yes/no");
         displayRender();
         String choice = readLine();
         if(choice.equals("yes")){
@@ -331,7 +425,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         return false;
     }
 
-    @Override
+
     public String chooseRoom(List<String> rooms){
         displayMap();
         markSection("Choose target room");
@@ -341,12 +435,11 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
         return readLine();
     }
 
-    @Override
+
     public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
         displayMap();
         markSection("Choose target square");
         markSection("please choose from the following possible");
-        displayRender();
         List<Integer> coordinates = new ArrayList<>();
         int currentX;
         int currentY;
@@ -355,12 +448,15 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
             currentY = targettableSquareCoordinates.get(i).get(0);
             markSection("x : " + currentX + " " + " y : " + currentY);
         }
-        int choice = Integer.parseInt(readLine());
+        displayRender();
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+
         coordinates = targettableSquareCoordinates.get(choice);
         return coordinates;
     }
 
-    @Override
+
     public Integer chooseDirection(List<Integer> possibleDirections){
         displayMap();
         markSection("Choose which way you want to go");
@@ -397,7 +493,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
     }
 
-    @Override
+
     public void sendMapInfo(List<ArrayList<ArrayList<String>>> m){
         mapInfo = m;
     }
@@ -412,6 +508,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
                     stringBuilder.append("[]");
+                    //System.out.println(o + " " + l);
                     if(!mapInfo.get(o).get(l).get(0).equals("NR")){
                         if(m < mapInfo.get(o).get(l).size()){
                             stringBuilder.append(mapInfo.get(o).get(l).get(m));
