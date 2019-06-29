@@ -107,5 +107,5 @@ public interface ViewFacadeInterfaceRMIServer {
      *
      * @param killScoreBoardInfo contains information about scored kills and double kills
      */
-    void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException;
+    void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws UserTimeoutException, RemoteException;
 }

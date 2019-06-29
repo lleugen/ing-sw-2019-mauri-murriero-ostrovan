@@ -14,10 +14,10 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -220,69 +220,77 @@ public class GameBoardController{
   }
 
 
-  private void sendInfo(){
-    AmmoTile currentAmmoTile = null;
-    List<Player> playersOnSquare = new ArrayList<>();
-    List<Square> currentSquare = new ArrayList<>();
-    for(int i = 0; i<3; i++){
-      for(int k = 0; k<4; k++){
+  /**
+   * Send to the client the current state of the gameboard
+   *
+   * @throws UserTimeoutException if the user is disconnected
+   */
+  private void sendInfo() throws UserTimeoutException {
+    try {
+      AmmoTile currentAmmoTile = null;
+      List<Player> playersOnSquare = new ArrayList<>();
+      List<Square> currentSquare = new ArrayList<>();
+      for (int i = 0; i < 3; i++) {
+        for (int k = 0; k < 4; k++) {
 
-        if(gameBoard.getMap().getMapSquares()[i][k] != null){
-          if(gameBoard.getMap().getMapSquares()[i][k] instanceof AmmoSquare){
-            currentAmmoTile = (AmmoTile) gameBoard.getMap().getMapSquares()[i][k].getItem().get(0);
-            for(int l = 0; l<currentAmmoTile.getAmmo().getRed(); l++){
-              mapInfo.get(i).get(k).add("red");
+          if (gameBoard.getMap().getMapSquares()[i][k] != null) {
+            if (gameBoard.getMap().getMapSquares()[i][k] instanceof AmmoSquare) {
+              currentAmmoTile = (AmmoTile) gameBoard.getMap().getMapSquares()[i][k].getItem().get(0);
+              for (int l = 0; l < currentAmmoTile.getAmmo().getRed(); l++) {
+                mapInfo.get(i).get(k).add("red");
+              }
+              for (int l = 0; l < currentAmmoTile.getAmmo().getBlue(); l++) {
+                mapInfo.get(i).get(k).add("blue");
+              }
+              for (int l = 0; l < currentAmmoTile.getAmmo().getYellow(); l++) {
+                mapInfo.get(i).get(k).add("yellow");
+              }
+              if (currentAmmoTile.getPowerUp()) {
+                mapInfo.get(i).get(k).add("power up");
+              }
+              currentSquare.clear();
+              currentSquare.add(gameBoard.getMap().getMapSquares()[i][k]);
+              playersOnSquare = gameBoard.getMap().getPlayersOnSquares(currentSquare);
+              for (Player p : playersOnSquare) {
+                mapInfo.get(i).get(k).add(p.getName());
+              }
             }
-            for(int l = 0; l<currentAmmoTile.getAmmo().getBlue(); l++){
-              mapInfo.get(i).get(k).add("blue");
-            }
-            for(int l = 0; l<currentAmmoTile.getAmmo().getYellow(); l++){
-              mapInfo.get(i).get(k).add("yellow");
-            }
-            if(currentAmmoTile.getPowerUp()){
-              mapInfo.get(i).get(k).add("power up");
-            }
-            currentSquare.clear();
-            currentSquare.add(gameBoard.getMap().getMapSquares()[i][k]);
-            playersOnSquare = gameBoard.getMap().getPlayersOnSquares(currentSquare);
-            for(Player p : playersOnSquare){
-              mapInfo.get(i).get(k).add(p.getName());
-            }
+          } else {
+            mapInfo.get(i).get(k).add("NR");
           }
         }
-        else{
-            mapInfo.get(i).get(k).add("NR");
-        }
       }
-    }
-    playerControllers.get(currentPlayer).getClient().sendMapInfo(mapInfo);
+      playerControllers.get(currentPlayer).getClient().sendMapInfo(mapInfo);
 
-    for(int i = 0; i<3; i++){
-      playerInfo.get(i).clear();
-    }
-    for(int i = 0; i<gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().size(); i++){
-      playerInfo.get(0)
-              .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().get(i).getName());
-    }
-    for(int i = 0; i<gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().size(); i++){
-      playerInfo.get(1)
-              .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().get(i).getName());
-    }
-    playerInfo.get(3).add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDeathValue().get(0).toString());
-    playerControllers.get(currentPlayer).getClient().sendPlayerInfo(playerInfo);
+      for (int i = 0; i < 3; i++) {
+        playerInfo.get(i).clear();
+      }
+      for (int i = 0; i < gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().size(); i++) {
+        playerInfo.get(0)
+                .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().get(i).getName());
+      }
+      for (int i = 0; i < gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().size(); i++) {
+        playerInfo.get(1)
+                .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().get(i).getName());
+      }
+      playerInfo.get(3).add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDeathValue().get(0).toString());
+      playerControllers.get(currentPlayer).getClient().sendPlayerInfo(playerInfo);
 
 
-    for(int i = 0; i<2; i++){
-      killScoreBoardInfo.get(i).clear();
+      for (int i = 0; i < 2; i++) {
+        killScoreBoardInfo.get(i).clear();
+      }
+      for (int i = 0; i < gameBoard.getKillScoreBoard().getKills().size(); i++) {
+        killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getKills().get(i).getName());
+      }
+      for (int i = 0; i < gameBoard.getKillScoreBoard().getDoubleKills().size(); i++) {
+        killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getDoubleKills().get(i).getName());
+      }
+      playerControllers.get(currentPlayer).getClient().sendKillScoreBoardInfo(killScoreBoardInfo);
     }
-    for(int i = 0; i<gameBoard.getKillScoreBoard().getKills().size(); i++){
-      killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getKills().get(i).getName());
+    catch (RemoteException e){
+      throw new UserTimeoutException(e);
     }
-    for(int i = 0; i<gameBoard.getKillScoreBoard().getDoubleKills().size(); i++){
-      killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getDoubleKills().get(i).getName());
-    }
-    playerControllers.get(currentPlayer).getClient().sendKillScoreBoardInfo(killScoreBoardInfo);
-
 
   }
 }

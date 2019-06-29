@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TimeUnit;
@@ -111,7 +112,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public String chooseAction(String state) throws UserTimeoutException {
     WaitFor<String, String> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseAction,
             state
@@ -124,7 +125,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public int chooseSpawnLocation(List<String> powerUps) throws UserTimeoutException {
     WaitFor<List<String>, Integer> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseSpawnLocation,
             powerUps
@@ -137,7 +138,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public int chooseMap() throws UserTimeoutException {
     WaitFor<Void, Integer> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForSupp(
             this,
             this.connectedPlayer::chooseMap
     );
@@ -149,7 +150,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public int chooseNumberOfPlayers() throws UserTimeoutException {
     WaitFor<Void, Integer> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForSupp(
             this,
             this.connectedPlayer::chooseNumberOfPlayers
     );
@@ -162,7 +163,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public String chooseWeapon(List<String> weapons)
           throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseWeapon,
             weapons
@@ -177,7 +178,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public String chooseTargets(List<String> possibleTargets)
           throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseTargets,
             possibleTargets
@@ -192,7 +193,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public String chooseWeaponToReload(List<String> weapons)
           throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseWeaponToReload,
             weapons
@@ -206,7 +207,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public List<Integer> choosePowerUpCardsForReload(List<String> powerUps)
           throws UserTimeoutException {
     WaitFor<List<String>, List<Integer>> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::choosePowerUpCardsForReload,
             powerUps
@@ -220,7 +221,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public Integer chooseIndex(List<String> availableEffects)
           throws UserTimeoutException {
     WaitFor<List<String>, Integer> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseIndex,
             availableEffects
@@ -233,7 +234,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public int chooseItemToGrab() throws UserTimeoutException {
     WaitFor<Void, Integer> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForSupp(
             this,
             this.connectedPlayer::chooseItemToGrab
     );
@@ -246,7 +247,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public Boolean chooseFiringMode(String description)
           throws UserTimeoutException {
     WaitFor<String, Boolean> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseFiringMode,
             description
@@ -259,7 +260,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public Boolean chooseBoolean(String description) throws UserTimeoutException {
     WaitFor<String, Boolean> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseBoolean,
             description
@@ -272,7 +273,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public String chooseRoom(List<String> rooms) throws UserTimeoutException {
     WaitFor<List<String>, String> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseRoom,
             rooms
@@ -287,7 +288,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
           throws UserTimeoutException {
     WaitFor<List<List<Integer>>, List<Integer>> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseTargetSquare,
             targettableSquareCoordinates
@@ -301,14 +302,49 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   public Integer chooseDirection(List<Integer> possibleDirections)
           throws UserTimeoutException {
     WaitFor<List<Integer>, Integer> wf = new WaitFor<>();
-    return wf.waitFor(
+    return wf.waitForFunc(
             this,
             this.connectedPlayer::chooseDirection,
             possibleDirections
     );
   }
 
+  @Override
+  public void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo)
+          throws UserTimeoutException, RemoteException {
+    WaitFor<List<ArrayList<ArrayList<String>>>, Void> wf = new WaitFor<>();
+    wf.waitForCons(
+            this,
+            this.connectedPlayer::sendMapInfo,
+            mapInfo
+    );
+  }
+
+  @Override
+  public void sendPlayerInfo(List<ArrayList<String>> playerInfo)
+          throws UserTimeoutException, RemoteException {
+    WaitFor<List<ArrayList<String>>, Void> wf = new WaitFor<>();
+    wf.waitForCons(
+            this,
+            this.connectedPlayer::sendPlayerInfo,
+            playerInfo
+    );
+  }
+
+  @Override
+  public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo)
+          throws UserTimeoutException, RemoteException {
+    WaitFor<List<ArrayList<String>>, Void> wf = new WaitFor<>();
+    wf.waitForCons(
+            this,
+            this.connectedPlayer::sendKillScoreBoardInfo,
+            killScoreBoardInfo
+    );
+  }
+
   /**
+   * Wait for a call on the remote end, throwing an exception if the user is
+   * disconnected, or a response can not be obtained in time
    *
    * @param <I> Param Type
    * @param <R> Return Type
@@ -330,8 +366,8 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @param me   Reference to a PlayerViewOnServer to operate on.
      *             If a timeout is reached, connected is set to false on this
      *             reference
-     * @param supp Supplier Function to wait for. The supplier function can
-     *             optionally accept a parameter
+     * @param func Supplier Function to wait for. The supplier function accept
+     *             a parameter of type I (like a java.util.function.Function)
      * @param i    Input param for the supplier
      *
      * @return The generated item on success
@@ -339,35 +375,13 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @throws UserTimeoutException If an item can not be obtained before
      *                              TIMEOUT expiration
      */
-    public R waitFor(PlayerViewOnServer me, RMIFunction<I, R> supp, I i)
+    public R waitForFunc(PlayerViewOnServer me, RMIFunction<I, R> func, I i)
             throws UserTimeoutException {
-      new Thread(
-              () -> {
-                try {
-                  if (!this.tq.offer(supp.apply(i))){
-                    Logger.getLogger(LOG_NAMESPACE).log(
-                            Level.SEVERE,
-                            "Unable to pass response to the TQ"
-                    );
-                  }
-                }
-                catch (RemoteException e){
-                  // Ignore exception, triggers timeout
-                }
-              }
-      ).start();
-
-      try {
-        return this.tq.poll(
-                TIMEOUT,
-                TimeUnit.SECONDS
-        );
-      }
-      catch (InterruptedException e){
-        me.connected = false;
-        Thread.currentThread().interrupt();
-        throw new UserTimeoutException(e);
-      }
+      return this.handler(
+              me,
+              func,
+              i
+      );
     }
 
     /**
@@ -376,19 +390,50 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @param me   Reference to a PlayerViewOnServer to operate on.
      *             If a timeout is reached, connected is set to false on this
      *             reference
-     * @param supp Supplier Function to wait for. The supplier function can
-     *             optionally accept a parameter
+     * @param supp Supplier Function to wait for.
      *
      * @return The generated item on success
      *
      * @throws UserTimeoutException If an item can not be obtained before
      *                              TIMEOUT expiration
      */
-    public R waitFor(PlayerViewOnServer me, RMISupplier<R> supp) throws UserTimeoutException {
+    public R waitForSupp(PlayerViewOnServer me, RMISupplier<R> supp)
+            throws UserTimeoutException {
+      return this.handler(
+              me,
+              (I i) -> supp.get(),
+              null
+      );
+    }
+
+    /**
+     * Delivers an item to the other end
+     *
+     * @param me   Reference to a PlayerViewOnServer to operate on.
+     *             If a timeout is reached, connected is set to false on this
+     *             reference
+     * @param cons Consumer function on the other end
+     * @param i    Item to deliver
+     *
+     * @return True on success
+     *
+     * @throws UserTimeoutException If an item can not be delivered before
+     *                              TIMEOUT expiration
+     */
+    public R waitForCons(PlayerViewOnServer me, RMIConsumer<I> cons, I i)
+            throws UserTimeoutException {
+      return this.handler(
+              me,
+              (I li) -> {cons.accept(li); return null;},
+              i
+      );
+    }
+
+    private R handler(PlayerViewOnServer me, RMIFunction<I, R> call, I i) throws UserTimeoutException {
       new Thread(
               () -> {
                 try {
-                  if (!this.tq.offer(supp.get())){
+                  if (!this.tq.offer(call.apply(i))){
                     Logger.getLogger(LOG_NAMESPACE).log(
                             Level.SEVERE,
                             "Unable to pass response to the TQ"
@@ -421,11 +466,18 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
     }
   }
 
+  @FunctionalInterface
   public interface RMIFunction<I extends Object, R extends Object> {
     R apply(I i) throws RemoteException;
   }
 
+  @FunctionalInterface
   public interface RMISupplier<R extends Object> {
     R get() throws RemoteException;
+  }
+
+  @FunctionalInterface
+  public interface RMIConsumer<I extends Object> {
+    void accept(I i) throws RemoteException;
   }
 }
