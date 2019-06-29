@@ -41,13 +41,21 @@ public class GameBoardController{
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
 
-  private List<List<List<String>>> mapInfo;
+  private List<ArrayList<ArrayList<String>>> mapInfo;
 
   public GameBoardController(GameBoard g) {
     gameBoard = g;
     weaponControllers = new LinkedList<>();
     powerUpControllers = new LinkedList<>();
     players = new LinkedList<>();
+
+    mapInfo = new ArrayList<ArrayList<ArrayList<String>>>();
+    for(int i = 0; i<3; i++){
+      mapInfo.add(new ArrayList<ArrayList<String>>());
+      for(int k = 0; k<4; k++){
+          mapInfo.get(i).add(new ArrayList<String>());
+      }
+    }
 
     weaponControllers.add(new CyberBladeController(this));
     weaponControllers.add(new ElectroscytheController(this));
@@ -236,6 +244,9 @@ public class GameBoardController{
               mapInfo.get(i).get(k).add(p.getName());
             }
           }
+        }
+        else{
+            mapInfo.get(i).get(k).add("NR");
         }
       }
     }

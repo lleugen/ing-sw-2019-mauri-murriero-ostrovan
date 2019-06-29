@@ -1,6 +1,7 @@
 package it.polimi.se2019.RMI;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ViewFacadeInterfaceRMIServer {
@@ -94,5 +95,5 @@ public interface ViewFacadeInterfaceRMIServer {
      *
      * @param mapInfo specifies the content of all map squares
      */
-    void sendMapInfo(List<List<List<String>>> mapInfo) throws UserTimeoutException, RemoteException;
+    void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws UserTimeoutException, RemoteException;
 }

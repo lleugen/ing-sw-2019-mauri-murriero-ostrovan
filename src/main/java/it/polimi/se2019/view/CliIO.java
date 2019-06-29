@@ -374,7 +374,6 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
                                 stringBuilder.append(" ");
                             }
                         }
-
                     }
                     else{
                         for(int n = 0; n<15; n++){
