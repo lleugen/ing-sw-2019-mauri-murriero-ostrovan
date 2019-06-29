@@ -96,4 +96,16 @@ public interface ViewFacadeInterfaceRMIServer {
      * @param mapInfo specifies the content of all map squares
      */
     void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws UserTimeoutException, RemoteException;
+
+    /**
+     *
+     * @param playerInfo contains the damage, marks and number of deaths
+     */
+    void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws UserTimeoutException, RemoteException;
+
+    /**
+     *
+     * @param killScoreBoardInfo contains information about scored kills and double kills
+     */
+    void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException;
 }

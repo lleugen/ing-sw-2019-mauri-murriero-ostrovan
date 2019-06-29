@@ -17,6 +17,7 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -42,6 +43,8 @@ public class GameBoardController{
   private List<PowerUpController> powerUpControllers;
 
   private List<ArrayList<ArrayList<String>>> mapInfo;
+  private List<ArrayList<String>> playerInfo;
+  private List<ArrayList<String>> killScoreBoardInfo;
 
   public GameBoardController(GameBoard g) {
     gameBoard = g;
@@ -56,6 +59,8 @@ public class GameBoardController{
           mapInfo.get(i).add(new ArrayList<String>());
       }
     }
+    playerInfo = new ArrayList<>();
+    killScoreBoardInfo = new ArrayList<>();
 
     weaponControllers.add(new CyberBladeController(this));
     weaponControllers.add(new ElectroscytheController(this));
@@ -251,5 +256,33 @@ public class GameBoardController{
       }
     }
     playerControllers.get(currentPlayer).getClient().sendMapInfo(mapInfo);
+
+    for(int i = 0; i<3; i++){
+      playerInfo.get(i).clear();
+    }
+    for(int i = 0; i<gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().size(); i++){
+      playerInfo.get(0)
+              .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().get(i).getName());
+    }
+    for(int i = 0; i<gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().size(); i++){
+      playerInfo.get(1)
+              .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().get(i).getName());
+    }
+    playerInfo.get(3).add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDeathValue().get(0).toString());
+    playerControllers.get(currentPlayer).getClient().sendPlayerInfo(playerInfo);
+
+
+    for(int i = 0; i<2; i++){
+      killScoreBoardInfo.get(i).clear();
+    }
+    for(int i = 0; i<gameBoard.getKillScoreBoard().getKills().size(); i++){
+      killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getKills().get(i).getName());
+    }
+    for(int i = 0; i<gameBoard.getKillScoreBoard().getDoubleKills().size(); i++){
+      killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getDoubleKills().get(i).getName());
+    }
+    playerControllers.get(currentPlayer).getClient().sendKillScoreBoardInfo(killScoreBoardInfo);
+
+
   }
 }

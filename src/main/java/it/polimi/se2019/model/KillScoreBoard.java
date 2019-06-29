@@ -75,6 +75,13 @@ public class KillScoreBoard {
     this.doubleKills.add(player);
   }
 
+  public List<Player> getKills(){
+    return kills;
+  }
+  public List<Player> getDoubleKills(){
+    return doubleKills;
+  }
+
   /**
    * @return  true when there are available skulls on the scoreboard,
    *          false otherwise
