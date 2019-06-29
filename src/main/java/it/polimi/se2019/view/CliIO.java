@@ -178,9 +178,24 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
 
 
-    private List<List<List<String>>> mapInfo;
+    private List<ArrayList<ArrayList<String>>> mapInfo;
+    private String name;
+
+
+    @Override
+    public String getName(){
+        return name;
+    }
+
+    public void inputName(){
+        markSection("What is your name?");
+        displayRender();
+        name = readLine();
+    }
+
     @Override
     public String chooseAction(String state){
+        displayMap();
         markSection("Choose your action!");
         markSection("You are in state " + state);
         if(!state.equals("Adrenaline2State")){
@@ -194,6 +209,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
     @Override
     public int chooseSpawnLocation(List<String> powerUps){
+        displayMap();
         markSection("Discard a power up card to spawn.");
         for(String s : powerUps){
             markSection(s);
@@ -235,6 +251,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
     @Override
     public String chooseTargets(List<String> possibleTargets){
+        displayMap();
         markSection("Who would you like to target?");
         for(String s : possibleTargets){
             markSection(s);
@@ -255,7 +272,22 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
     @Override
     public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
-
+        markSection("Choose power ups to use for reloading.");
+        for(String s : powerUps){
+            markSection(s);
+        }
+        markSection("please input one number at a time, -1 to stop");
+        displayRender();
+        List<Integer> choices = new ArrayList<>();
+        String choice;
+        while(!powerUps.isEmpty()){
+            choice = readLine();
+            if(choice.equals("-1")){
+                break;
+            }
+            choices.add(Integer.parseInt(choice));
+        }
+        return choices;
     }
 
     @Override
@@ -270,7 +302,9 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
     @Override
     public int chooseItemToGrab(){
         markSection("Choose which one you would like to pick up:");
-        markSection();
+        markSection("0/1/2");
+        displayRender();
+        return Integer.parseInt(readLine());
     }
 
     @Override
@@ -299,6 +333,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
     @Override
     public String chooseRoom(List<String> rooms){
+        displayMap();
         markSection("Choose target room");
         for(String s : rooms){
             markSection(s);
@@ -308,11 +343,26 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
 
     @Override
     public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
-
+        displayMap();
+        markSection("Choose target square");
+        markSection("please choose from the following possible");
+        displayRender();
+        List<Integer> coordinates = new ArrayList<>();
+        int currentX;
+        int currentY;
+        for(int i = 0; i<targettableSquareCoordinates.size(); i++){
+            currentX = targettableSquareCoordinates.get(i).get(0);
+            currentY = targettableSquareCoordinates.get(i).get(0);
+            markSection("x : " + currentX + " " + " y : " + currentY);
+        }
+        int choice = Integer.parseInt(readLine());
+        coordinates = targettableSquareCoordinates.get(choice);
+        return coordinates;
     }
 
     @Override
     public Integer chooseDirection(List<Integer> possibleDirections){
+        displayMap();
         markSection("Choose which way you want to go");
         StringBuilder directions = new StringBuilder();
         for(Integer s : possibleDirections){
@@ -348,13 +398,13 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
     }
 
     @Override
-    public void sendMapInfo(List<List<List<String>>> m){
+    public void sendMapInfo(List<ArrayList<ArrayList<String>>> m){
         mapInfo = m;
     }
 
     public void displayMap(){
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i<38; i++){
+        for(int i = 0; i<40; i++){
             stringBuilder.append("[]");
         }
         stringBuilder.append("\n");
@@ -362,21 +412,21 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
                     stringBuilder.append("[]");
-                    if(mapInfo.get(o).get(l) != null){
+                    if(!mapInfo.get(o).get(l).get(0).equals("NR")){
                         if(m < mapInfo.get(o).get(l).size()){
                             stringBuilder.append(mapInfo.get(o).get(l).get(m));
-                            for(int k = 0; k< 15 - mapInfo.get(o).get(l).get(m).length(); k++){
+                            for(int k = 0; k< 16 - mapInfo.get(o).get(l).get(m).length(); k++){
                                 stringBuilder.append(" ");
                             }
                         }
                         else{
-                            for(int k = 0; k< 15; k++){
+                            for(int k = 0; k< 16; k++){
                                 stringBuilder.append(" ");
                             }
                         }
                     }
                     else{
-                        for(int n = 0; n<15; n++){
+                        for(int n = 0; n<8; n++){
                             stringBuilder.append("[]");
                         }
                     }
@@ -384,7 +434,7 @@ public final class CliIO implements ViewFacadeInterfaceRMIClient {
                 }
                 stringBuilder.append("\n");
             }
-            for(int i = 0; i<38; i++){
+            for(int i = 0; i<40; i++){
                 stringBuilder.append("[]");
             }
             stringBuilder.append("\n");
