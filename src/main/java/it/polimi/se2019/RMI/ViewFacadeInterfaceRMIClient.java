@@ -87,4 +87,11 @@ public interface ViewFacadeInterfaceRMIClient extends Remote {
      * @return 0 for north, 1 for east, 2 for south or 3 for west
      */
     Integer chooseDirection(List<Integer> possibleDirections) throws RemoteException;
+
+
+    /**
+     *
+     * @param mapInfo specifies the content of all map squares
+     */
+    void sendMapInfo(List<List<List<String>>> mapInfo) throws RemoteException;
 }

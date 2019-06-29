@@ -7,10 +7,14 @@ import it.polimi.se2019.controller.weapons.alternative_effects.*;
 import it.polimi.se2019.controller.weapons.optional_effects.*;
 import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
+import it.polimi.se2019.model.grabbable.AmmoTile;
+import it.polimi.se2019.model.map.AmmoSquare;
+import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,6 +40,8 @@ public class GameBoardController{
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
+
+  private List<List<List<String>>> mapInfo;
 
   public GameBoardController(GameBoard g) {
     gameBoard = g;
@@ -143,6 +149,7 @@ public class GameBoardController{
     currentPlayer = 0;
     while(gameBoard.getKillScoreBoard().gameRunning()){
       try {
+        sendInfo();
         playerControllers.get(currentPlayer).
                 playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
       }
@@ -181,6 +188,7 @@ public class GameBoardController{
     }
     for(int i = 0; i<players.size(); i++){
       try {
+        sendInfo();
         playerControllers.get(currentPlayer).playTurn
               (playerControllers.get(currentPlayer).getState().getAvailableActions());
       }
@@ -196,5 +204,41 @@ public class GameBoardController{
         currentPlayer = 0;
       }
     }
+  }
+
+
+  private void sendInfo(){
+    AmmoTile currentAmmoTile = null;
+    List<Player> playersOnSquare = new ArrayList<>();
+    List<Square> currentSquare = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      for(int k = 0; k<4; k++){
+
+        if(gameBoard.getMap().getMapSquares()[i][k] != null){
+          if(gameBoard.getMap().getMapSquares()[i][k] instanceof AmmoSquare){
+            currentAmmoTile = (AmmoTile) gameBoard.getMap().getMapSquares()[i][k].getItem().get(0);
+            for(int l = 0; l<currentAmmoTile.getAmmo().getRed(); l++){
+              mapInfo.get(i).get(k).add("red");
+            }
+            for(int l = 0; l<currentAmmoTile.getAmmo().getBlue(); l++){
+              mapInfo.get(i).get(k).add("blue");
+            }
+            for(int l = 0; l<currentAmmoTile.getAmmo().getYellow(); l++){
+              mapInfo.get(i).get(k).add("yellow");
+            }
+            if(currentAmmoTile.getPowerUp()){
+              mapInfo.get(i).get(k).add("power up");
+            }
+            currentSquare.clear();
+            currentSquare.add(gameBoard.getMap().getMapSquares()[i][k]);
+            playersOnSquare = gameBoard.getMap().getPlayersOnSquares(currentSquare);
+            for(Player p : playersOnSquare){
+              mapInfo.get(i).get(k).add(p.getName());
+            }
+          }
+        }
+      }
+    }
+    playerControllers.get(currentPlayer).getClient().sendMapInfo(mapInfo);
   }
 }
