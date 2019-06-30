@@ -131,7 +131,7 @@ public class Map {
     int xCoordinate = 0;
     int yCoordinate = 0;
     for(int i = 0; i<3; i++){
-      for(int j = 0; j<2; j++){
+      for(int j = 0; j<4; j++){
         if(mapSquares[i][j] != null && mapSquares[i][j].equals(position)){
           xCoordinate = i;
           yCoordinate = j;
@@ -149,7 +149,7 @@ public class Map {
    */
   public List<Integer> getOpenDirections(Square position){
     List<Integer> openDirections = new ArrayList<>();
-    for(int i = 0; i<3; i++){
+    for(int i = 0; i<4; i++){
       if(!position.getAdjacencies().get(i).isBlocked()){
         openDirections.add(i);
       }

@@ -27,13 +27,8 @@ public class TestMap {
     try{
       GameBoard gameBoard = new GameBoard(0);
       Square returnedSquare;
-
-      try {
-        returnedSquare = gameBoard.getMap().getRoot();
-      }
-      catch (Exception e){
-        fail("something bad happened");
-      }
+      returnedSquare = gameBoard.getMap().getRoot();
+      assert(returnedSquare != null);
     }
     catch(UnknownMapTypeException e){
       fail("could not generate game board");
@@ -57,7 +52,7 @@ public class TestMap {
             currentAdjacencies = map.getMapSquares()[i][j].getAdjacencies();
             for(int k = 0; k<currentAdjacencies.size(); k++){
               if(!currentAdjacencies.get(k).isBlocked()){
-                System.err.println(i + " " + j + " " + k);
+                //System.err.println(i + " " + j + " " + k);
                 assert(currentAdjacencies.get(k).getSquare() != null);
               }
             }
@@ -141,13 +136,10 @@ public class TestMap {
       player1.moveToSquare(map.getMapSquares()[0][0]);
       player2.moveToSquare(map.getMapSquares()[0][1]);
       List<Player> visiblePlayers = new ArrayList<>();
-      map.getPlayersOnSquares(
-              map.getVisibleSquares(
-                      map.getMapSquares()[0][0]
-              )
-      );
+      List<Square> visibleSquares = map.getVisibleSquares(map.getMapSquares()[0][0]);
+      visiblePlayers =  map.getPlayersOnSquares(visibleSquares);
       assert(visiblePlayers.contains(player2));
-      assert(!visiblePlayers.contains(player1));
+      assert(visiblePlayers.contains(player1));
       visiblePlayers.clear();
       visiblePlayers = map.getPlayersOnSquares(
               map.getVisibleSquares(
@@ -173,7 +165,8 @@ public class TestMap {
         for(int k = 0; k<4; k++){
           if(map.getMapSquares()[i][k] != null){
             coordinates = map.getSquareCoordinates(map.getMapSquares()[i][k]);
-            assert(map.getMapSquares()[i][k].equals(map.getMapSquares()[coordinates.get(0)][coordinates.get(1)]));
+            //System.err.println(i + " " + k);
+            assert map.getMapSquares()[coordinates.get(0)][coordinates.get(1)].equals(map.getMapSquares()[i][k]);
           }
         }
       }
@@ -275,7 +268,11 @@ public class TestMap {
             openDirections.clear();
             openDirections = map.getOpenDirections(map.getMapSquares()[i][k]);
             for(int l = 0; l<openDirections.size(); l++){
-              assert(!map.getMapSquares()[i][k].getAdjacencies().get(l).isBlocked());
+              //System.err.println(i + " " + k + " " + openDirections.get(l));
+              //System.err.println((map.getMapSquares()[i][k].getAdjacencies().get(l).isBlocked() ? "blocked" :
+              // "open"));
+
+              assert(!map.getMapSquares()[i][k].getAdjacencies().get(openDirections.get(l)).isBlocked());
             }
           }
         }
@@ -329,6 +326,56 @@ public class TestMap {
       fail("could not generate game board");
     }
 
+  }
+
+
+  @Test
+  public void testGenMap1(){
+    try{
+      GameBoard gameBoard = new GameBoard(1);
+      for(int i = 0; i<3; i++){
+        for(int k = 0; k<4; k++){
+          if(i != 2 && k != 0){
+            assert gameBoard.getMap().getMapSquares()[i][k] != null;
+          }
+        }
+      }
+    }
+    catch(UnknownMapTypeException e){
+      fail("could not generate game board");
+    }
+  }
+
+  @Test
+  public void testGenMap2(){
+    try{
+      GameBoard gameBoard = new GameBoard(2);
+      for(int i = 0; i<3; i++){
+        for(int k = 0; k<4; k++){
+          assert gameBoard.getMap().getMapSquares()[i][k] != null;
+        }
+      }
+    }
+    catch(UnknownMapTypeException e){
+      fail("could not generate game board");
+    }
+  }
+
+  @Test
+  public void testGenMap3(){
+    try{
+      GameBoard gameBoard = new GameBoard(3);
+      for(int i = 0; i<3; i++){
+        for(int k = 0; k<4; k++){
+          if(i != 0 && k != 3){
+            assert gameBoard.getMap().getMapSquares()[i][k] != null;
+          }
+        }
+      }
+    }
+    catch(UnknownMapTypeException e){
+      fail("could not generate game board");
+    }
   }
 
 }
