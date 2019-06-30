@@ -1,6 +1,7 @@
 package it.polimi.se2019.RMI;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ViewFacadeInterfaceRMIServer {
@@ -86,4 +87,25 @@ public interface ViewFacadeInterfaceRMIServer {
      * @return 0 for north, 1 for east, 2 for south or 3 for west
      */
     Integer chooseDirection(List<Integer> possibleDirections) throws UserTimeoutException, RemoteException;
+
+
+
+
+    /**
+     *
+     * @param mapInfo specifies the content of all map squares
+     */
+    void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws UserTimeoutException, RemoteException;
+
+    /**
+     *
+     * @param playerInfo contains the damage, marks and number of deaths
+     */
+    void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws UserTimeoutException, RemoteException;
+
+    /**
+     *
+     * @param killScoreBoardInfo contains information about scored kills and double kills
+     */
+    void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws UserTimeoutException, RemoteException;
 }

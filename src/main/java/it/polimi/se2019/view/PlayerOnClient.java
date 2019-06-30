@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -207,5 +208,23 @@ public class PlayerOnClient extends UnicastRemoteObject
     // TODO ricky
     System.out.println("chooseDirection");
     return Integer.parseInt(System.console().readLine());
+  }
+
+  @Override
+  public void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws RemoteException {
+    // TODO ricky
+    System.out.println("sendMapInfo");
+  }
+
+  @Override
+  public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
+    // TODO ricky
+    System.out.println("sendPlayerInfo");
+  }
+
+  @Override
+  public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
+    // TODO ricky
+    System.out.println("sendKillScoreBoardInfo");
   }
 }
