@@ -26,19 +26,21 @@ import static org.mockito.Matchers.any;
 public class TestFreneticStates {
     @Mock
     PlayerViewOnServer client;
-    GameBoard gameBoard = new GameBoard(0);
-    Decks decksReference = gameBoard.getDecks();
-    Player player = new Player("playerName", "playerCharacter", gameBoard);
-    Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
-    GameBoardController gameBoardController = new GameBoardController(gameBoard);
-    PlayerController playerController = new PlayerController(gameBoardController, player, client);
 
-    public TestFreneticStates() throws UnknownMapTypeException {
-    }
+
 
     @Test
     public void grabStuffFirstFreneticTest(){
         try {
+            GameBoard gameBoard = new GameBoard(0);
+            Decks decksReference = gameBoard.getDecks();
+            Player player = new Player("playerName", "playerCharacter", gameBoard);
+            Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
+
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
 
             List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
@@ -75,10 +77,23 @@ public class TestFreneticStates {
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");
         }
+        catch(UnknownMapTypeException f){
+            fail("could not create map");
+        }
     }
     @Test
     public void grabStuffSecondFreneticTest(){
         try {
+            GameBoard gameBoard = new GameBoard(0);
+            Decks decksReference = gameBoard.getDecks();
+            Player player = new Player("playerName", "playerCharacter", gameBoard);
+            Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
+
+
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
 
             List<Square> threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
@@ -115,6 +130,9 @@ public class TestFreneticStates {
         }
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");
+        }
+        catch(UnknownMapTypeException f){
+            fail("could not create map");
         }
     }
 

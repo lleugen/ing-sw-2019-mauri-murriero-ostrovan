@@ -204,7 +204,8 @@ public class TestMap {
       assert(player1.getPosition().equals(map.getMapSquares()[0][0]));
       List<Square> squares = new ArrayList<>();
       squares.add(map.getMapSquares()[0][1]);
-      List<Player> oneMoveAway = map.getPlayersOnSquares(squares);
+      List<Square> oneMoveAwaySquares = map.getReachableSquares(squares.get(0), 1);
+      List<Player> oneMoveAway = map.getPlayersOnSquares(oneMoveAwaySquares);
       assert(oneMoveAway.contains(player1));
       oneMoveAway.clear();
       squares.clear();

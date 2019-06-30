@@ -18,10 +18,11 @@ public class TestKillScoreboard {
         KillScoreBoard killScoreBoard = gameBoard.getKillScoreBoard();
         assert(killScoreBoard != null);
         Player player1 = new Player("player1", "character1", gameBoard);
-        Player player2 = new Player("player2", "character2", gameBoard);
-        player1.takeDamage(player2, 13);
-        killScoreBoard.addKill(player2);
+        Player player2 = new Player("player2", "character1", gameBoard);
+        killScoreBoard.addKill(player1);
         killScoreBoard.resolveScoreboard();
-        assert(player2.getPoints() == 8);
+        System.err.println(player1.getPoints());
+        System.err.println(player2.getPoints());
+        assert(player1.getPoints() == 8);
     }
 }

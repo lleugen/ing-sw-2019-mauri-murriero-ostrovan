@@ -17,10 +17,10 @@ public class TestPlayerBoard {
         assert(!playerBoard.getIfIsFrenzy());
         assert(playerBoard.getDeathValue().size() == 5);
         assert(playerBoard.getDeathValue().get(0) == 8);
-        assert(playerBoard.getDeathValue().get(0) == 6);
-        assert(playerBoard.getDeathValue().get(0) == 4);
-        assert(playerBoard.getDeathValue().get(0) == 2);
-        assert(playerBoard.getDeathValue().get(0) == 1);
+        assert(playerBoard.getDeathValue().get(1) == 6);
+        assert(playerBoard.getDeathValue().get(2) == 4);
+        assert(playerBoard.getDeathValue().get(3) == 2);
+        assert(playerBoard.getDeathValue().get(4) == 1);
         assert(playerBoard.getMarksAssigned().isEmpty());
         assert(playerBoard.getDamageReceived().isEmpty());
     }
