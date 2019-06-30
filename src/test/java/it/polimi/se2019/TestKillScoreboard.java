@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
+
 public class TestKillScoreboard {
 //    @Test
 //    public void testScoreBoard() throws UnknownMapTypeException {
@@ -23,6 +25,6 @@ public class TestKillScoreboard {
 //        killScoreBoard.resolveScoreboard();
 //        System.err.println(player1.getPoints());
 //        System.err.println(player2.getPoints());
-//        assert(player1.getPoints() == 8);
+//        assertTrue(player1.getPoints() == 8);
 //    }
 }

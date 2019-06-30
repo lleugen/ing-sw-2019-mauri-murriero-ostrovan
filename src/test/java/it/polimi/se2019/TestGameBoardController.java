@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 
 public class TestGameBoardController {
@@ -79,8 +80,8 @@ public class TestGameBoardController {
             List<PlayerController> playerControllers = new ArrayList<>();
             playerControllers.add(playerController1);
             gameBoardController.addPlayerControllers(playerControllers);
-            assert gameBoardController.getPlayerControllers().contains(playerController1);
-            assert gameBoardController.getPlayerControllers().size() == 1;
+            assertTrue(gameBoardController.getPlayerControllers().contains(playerController1));
+            assertTrue(gameBoardController.getPlayerControllers().size() == 1);
         }
         catch(UnknownMapTypeException e){
             fail("could not create game board");
@@ -101,7 +102,7 @@ public class TestGameBoardController {
             playerControllers.add(playerController1);
             gameBoardController.addPlayerControllers(playerControllers);
             Player result = gameBoardController.identifyPlayer("player1");
-            assert result.equals(player1);
+            assertTrue(result.equals(player1));
 
 
         }

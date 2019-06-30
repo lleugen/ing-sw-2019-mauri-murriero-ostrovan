@@ -20,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.jws.soap.SOAPBinding;
 
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.fail;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,8 +31,8 @@ public class TestAmmoSquare {
         Map map = gameBoard.getMap();
         AmmoSquare ammoSquare = (AmmoSquare) map.getMapSquares()[0][0];
         ammoSquare.refill();
-        assert(ammoSquare.getItem() != null);
-        assert(ammoSquare.getItem().get(0) != null);
+        assertTrue(ammoSquare.getItem() != null);
+        assertTrue(ammoSquare.getItem().get(0) != null);
     }
 
 
@@ -57,7 +58,7 @@ public class TestAmmoSquare {
         AmmoSquare ammoSquare = (AmmoSquare) gameBoard.getMap().getMapSquares()[0][0];
         ammoSquare.refill();
         AmmoTile item = (AmmoTile)ammoSquare.getItem().get(0);
-        assert(item != null);
+        assertTrue(item != null);
         Player player = new Player("player", "character", gameBoard);
         GameBoardController gameBoardController = new GameBoardController(gameBoard);
         PlayerController playerController = new PlayerController(gameBoardController, player, client);
@@ -71,14 +72,14 @@ public class TestAmmoSquare {
             fail();
         }
         //assert(ammoSquare.getItem() == null);
-        assert(player.getInventory().getAmmo().getRed() == 1 + item.getAmmo().getRed());
-        assert(player.getInventory().getAmmo().getBlue() == 1 + item.getAmmo().getBlue());
-        assert(player.getInventory().getAmmo().getYellow() == 1 + item.getAmmo().getYellow());
+        assertTrue(player.getInventory().getAmmo().getRed() == 1 + item.getAmmo().getRed());
+        assertTrue(player.getInventory().getAmmo().getBlue() == 1 + item.getAmmo().getBlue());
+        assertTrue(player.getInventory().getAmmo().getYellow() == 1 + item.getAmmo().getYellow());
         if(item.getPowerUp()){
-            assert(player.getInventory().getPowerUps().size() == 2);
+            assertTrue(player.getInventory().getPowerUps().size() == 2);
         }
         else{
-            assert(player.getInventory().getPowerUps().size() == 1);
+            assertTrue(player.getInventory().getPowerUps().size() == 1);
         }
 
     }

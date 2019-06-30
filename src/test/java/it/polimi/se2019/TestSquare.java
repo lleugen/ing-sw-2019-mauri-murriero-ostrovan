@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 
 public class TestSquare {
@@ -21,7 +22,7 @@ public class TestSquare {
         Square square = gameBoard.getMap().getMapSquares()[0][0];
         Decks decks;
         decks = square.getDecks();
-        assert(decks != null);
+        assertTrue(decks != null);
     }
 
     @Test
@@ -36,7 +37,7 @@ public class TestSquare {
             adjacencies.add(new Direction(null, true));
             square.setAdjacencies(adjacencies);
             for(int i = 0; i<4; i++){
-                assert(square.getAdjacencies().get(i) != null);
+                assertTrue(square.getAdjacencies().get(i) != null);
             }
         }
         catch(UnknownMapTypeException e){

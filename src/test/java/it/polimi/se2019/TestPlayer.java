@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,12 +27,12 @@ public class TestPlayer {
     public void testCreate()throws UnknownMapTypeException {
         GameBoard gameBoard = new GameBoard(0);
         Player player1 = new Player("player1", "character1", gameBoard);
-        assert(player1.getInventory() != null);
-        assert(player1.getBoard() != null);
-        assert(player1.getCharacter().equals("character1"));
-        assert(player1.getName().equals("player1"));
-        assert(player1.getPoints() == 0);
-        assert(player1.getState() == 0);
+        assertTrue(player1.getInventory() != null);
+        assertTrue(player1.getBoard() != null);
+        assertTrue(player1.getCharacter().equals("character1"));
+        assertTrue(player1.getName().equals("player1"));
+        assertTrue(player1.getPoints() == 0);
+        assertTrue(player1.getState() == 0);
     }
     @Test
     public void testTakeDamage()throws UnknownMapTypeException {
@@ -41,7 +42,7 @@ public class TestPlayer {
         Player playerAttackingB = new Player("attackerB", "a",gameBoard);
         playerDefending.takeDamage(playerAttacking, 1);
         playerDefending.takeDamage(playerAttackingB, 1);
-        assert((playerDefending.getBoard().getDamageReceived().get(0) == playerAttacking) & (playerDefending.getBoard().getDamageReceived().get(1) == playerAttackingB));
+        assertTrue((playerDefending.getBoard().getDamageReceived().get(0) == playerAttacking) & (playerDefending.getBoard().getDamageReceived().get(1) == playerAttackingB));
     }
     @Test
     public void testTakeMarks()throws UnknownMapTypeException {
@@ -49,7 +50,7 @@ public class TestPlayer {
         Player playerDefending = new Player("defender","d", gameBoard);
         Player playerAttacking = new Player("attacker", "a", gameBoard);
         playerDefending.takeMarks(playerAttacking, 1);
-        assert(playerDefending.getBoard().getMarksAssigned().get(0) == playerAttacking);
+        assertTrue(playerDefending.getBoard().getMarksAssigned().get(0) == playerAttacking);
     }
     /*
     @Test
@@ -71,7 +72,8 @@ public class TestPlayer {
         deadPlayer.takeDamage(attacker1, 6);
         deadPlayer.takeDamage(attacker2, 6);
         deadPlayer.resolveDeath();
-        assert(attacker1.getPoints() == 1 + deadPlayer.getBoard().getDeathValue().get(0)) & (attacker2.getPoints() == deadPlayer.getBoard().getDeathValue().get(1));
+        assertTrue(attacker1.getPoints() == 1 + deadPlayer.getBoard().getDeathValue().get(0));
+        assertTrue(attacker2.getPoints() == deadPlayer.getBoard().getDeathValue().get(1));
     }
     @Test
     public void testResolveDeadFrenzyModeShouldSucceed() throws UnknownMapTypeException {
@@ -83,7 +85,7 @@ public class TestPlayer {
         deadPlayer.takeDamage(attacker1, 6);
         deadPlayer.takeDamage(attacker2, 6);
         deadPlayer.resolveDeath();
-        assert((attacker1.getPoints() == 2) & (attacker2.getPoints() == 1));
+        assertTrue((attacker1.getPoints() == 2) & (attacker2.getPoints() == 1));
     }
 
     /*

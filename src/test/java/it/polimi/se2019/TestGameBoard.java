@@ -5,12 +5,14 @@ import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
+
 public class TestGameBoard {
     @Test
     public void testDeckCreation() throws UnknownMapTypeException {
         GameBoard gameBoard = new GameBoard(0);
-        assert(gameBoard.getDecks() != null);
+        assertTrue(gameBoard.getDecks() != null);
         Map map = gameBoard.getMap();
-        assert(map.getGameBoard().getDecks() != null);
+        assertTrue(map.getGameBoard().getDecks() != null);
     }
 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static it.polimi.se2019.model.grabbable.Ammo.compare;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestAmmo {
     @Test
@@ -123,9 +124,9 @@ public class TestAmmo {
     @Test
     public void testCreation(){
         Ammo ammo = new Ammo(1,2,3);
-        assert ammo != null;
-        assert(ammo.getRed() == 1);
-        assert(ammo.getBlue() == 2);
-        assert(ammo.getYellow() == 3);
+        assertTrue(ammo != null);
+        assertTrue(ammo.getRed() == 1);
+        assertTrue(ammo.getBlue() == 2);
+        assertTrue(ammo.getYellow() == 3);
     }
 }

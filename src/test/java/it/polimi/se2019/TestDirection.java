@@ -7,8 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TestDirection {
 
@@ -42,10 +41,10 @@ public class TestDirection {
           GameBoard gameBoard = new GameBoard(0);
           Map map = gameBoard.getMap();
           List<Direction> dirs = map.getMapSquares()[0][0].getAdjacencies();
-          assert(dirs.get(0).isBlocked());
-          assert(!dirs.get(1).isBlocked());
-          assert(!dirs.get(2).isBlocked());
-          assert(dirs.get(3).isBlocked());
+          assertTrue(dirs.get(0).isBlocked());
+          assertTrue(!dirs.get(1).isBlocked());
+          assertTrue(!dirs.get(2).isBlocked());
+          assertTrue(dirs.get(3).isBlocked());
       }
       catch(UnknownMapTypeException e){
           fail("could not build game board");

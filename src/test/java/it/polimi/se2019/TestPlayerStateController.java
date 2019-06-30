@@ -21,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.any;
 
@@ -54,7 +55,7 @@ public class TestPlayerStateController {
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
             Mockito.when(client.chooseDirection(gameBoard.getMap().getOpenDirections(player.getPosition()))).thenReturn(1);
             playerController.getState().move();
-            assert(player.getPosition().equals(gameBoard.getMap().getMapSquares()[0][1]));
+            assertTrue(player.getPosition().equals(gameBoard.getMap().getMapSquares()[0][1]));
         }
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");
@@ -87,13 +88,13 @@ public class TestPlayerStateController {
 //            Mockito.when(client.chooseSpawnLocation(powerUps)).thenReturn(0);
             playerController.getState().spawn();
             if(colour == 0){
-                assert(player.getPosition().equals(gameBoard.getMap().getRedSpawnPoint()));
+                assertTrue(player.getPosition().equals(gameBoard.getMap().getRedSpawnPoint()));
             }
             else if(colour == 1){
-                assert(player.getPosition().equals(gameBoard.getMap().getBlueSpawnPoint()));
+                assertTrue(player.getPosition().equals(gameBoard.getMap().getBlueSpawnPoint()));
             }
             else{
-                assert(player.getPosition().equals(gameBoard.getMap().getYellowSpawnPoint()));
+                assertTrue(player.getPosition().equals(gameBoard.getMap().getYellowSpawnPoint()));
             }
 
         }
@@ -115,7 +116,7 @@ public class TestPlayerStateController {
                     new Ammo(0, 0, 0),
                     new Ammo(2, 1, 0)));
             player.getInventory().getWeapons().get(0).unload();
-            assert(player.getInventory().getWeapons().get(0).getOwner().equals(player));
+            assertTrue(player.getInventory().getWeapons().get(0).getOwner().equals(player));
             player.getInventory().discardPowerUp(player.getInventory().getPowerUps().get(0));
             player.getInventory().addPowerUpToInventory(new PowerUpCard(new Ammo(1,0,0), "mockPowerUp"));
             List<String> playersWeapons = new ArrayList<>();
@@ -132,9 +133,9 @@ public class TestPlayerStateController {
             Mockito.when(client.choosePowerUpCardsForReload(powerUps)).thenReturn(powerUpsToUse);
 
             playerController.getState().reload();
-            assert (player.getInventory().getWeapons().get(0).isLoaded());
-            assert (player.getInventory().getPowerUps().isEmpty());
-            assert (player.getInventory().getAmmo().getRed().equals(0));
+            assertTrue (player.getInventory().getWeapons().get(0).isLoaded());
+            assertTrue (player.getInventory().getPowerUps().isEmpty());
+            assertTrue (player.getInventory().getAmmo().getRed().equals(0));
         }
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");

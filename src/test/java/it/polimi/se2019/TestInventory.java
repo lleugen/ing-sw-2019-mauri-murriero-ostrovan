@@ -17,6 +17,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
+
 public class TestInventory {
 
     static Inventory inventory;
@@ -52,11 +54,11 @@ public class TestInventory {
         inventory.addWeaponToInventory(weapon);
         inventory.addPowerUpToInventory(powerUp);
         inventory.addAmmoTileToInventory(ammoTile);
-        assert(inventory.getPowerUps().contains(powerUp));
-        assert(inventory.getAmmo().getRed() == 2);
-        assert(inventory.getAmmo().getBlue() == 2);
-        assert(inventory.getAmmo().getYellow() == 2);
-        assert(inventory.getWeapons().contains(weapon));
+        assertTrue(inventory.getPowerUps().contains(powerUp));
+        assertTrue(inventory.getAmmo().getRed() == 2);
+        assertTrue(inventory.getAmmo().getBlue() == 2);
+        assertTrue(inventory.getAmmo().getYellow() == 2);
+        assertTrue(inventory.getWeapons().contains(weapon));
     }
     @Test
     public void testAddToInventoryFourthWeaponShouldFail(){
@@ -68,7 +70,7 @@ public class TestInventory {
         inventory.addWeaponToInventory(weapon2);
         inventory.addWeaponToInventory(weapon3);
         inventory.addWeaponToInventory(weapon4);
-        assert (!inventory.getWeapons().contains(weapon4));
+        assertTrue (!inventory.getWeapons().contains(weapon4));
     }
 
     @Test
@@ -76,16 +78,16 @@ public class TestInventory {
         GameBoard gameBoard = new GameBoard(0);
         Player player1 = new Player("player1", "character1", gameBoard);
         Inventory inventory = player1.getInventory();
-        assert(inventory.getPowerUps().size() == 1);
+        assertTrue(inventory.getPowerUps().size() == 1);
         inventory.addPowerUpToInventory(gameBoard.getDecks().drawPowerUp());
         inventory.addPowerUpToInventory(gameBoard.getDecks().drawPowerUp());
         inventory.addPowerUpToInventory(gameBoard.getDecks().drawPowerUp());
-        assert(inventory.getPowerUps().size() == 3);
+        assertTrue(inventory.getPowerUps().size() == 3);
         inventory.getAmmo().addRed(4);
         inventory.getAmmo().addBlue(4);
         inventory.getAmmo().addYellow(4);
-        assert(inventory.getAmmo().getRed() == 3);
-        assert(inventory.getAmmo().getBlue() == 3);
-        assert(inventory.getAmmo().getYellow() == 3);
+        assertTrue(inventory.getAmmo().getRed() == 3);
+        assertTrue(inventory.getAmmo().getBlue() == 3);
+        assertTrue(inventory.getAmmo().getYellow() == 3);
     }
 }

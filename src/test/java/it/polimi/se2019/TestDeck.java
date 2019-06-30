@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class TestDeck {
@@ -150,12 +151,12 @@ public class TestDeck {
   public void testDraw() throws UnknownMapTypeException {
     GameBoard gameBoard = new GameBoard(0);
     Decks decks = gameBoard.getDecks();
-    assert(decks != null);
+    assertTrue(decks != null);
     Weapon weapon = decks.drawWeapon();
-    assert(weapon != null);
+    assertTrue(weapon != null);
     AmmoTile ammoTile = decks.drawAmmoTile();
-    assert(ammoTile != null);
+    assertTrue(ammoTile != null);
     PowerUpCard powerUpCard = decks.drawPowerUp();
-    assert(powerUpCard != null);
+    assertTrue(powerUpCard != null);
   }
 }

@@ -12,8 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TestMap {
 
@@ -201,17 +200,17 @@ public class TestMap {
       playerList.add(player1);
       gameBoard.addPlayers(playerList);
       player1.moveToSquare(map.getMapSquares()[0][0]);
-      assert(player1.getPosition().equals(map.getMapSquares()[0][0]));
+      assertTrue(player1.getPosition().equals(map.getMapSquares()[0][0]));
       List<Square> squares = new ArrayList<>();
       squares.add(map.getMapSquares()[0][1]);
       List<Square> oneMoveAwaySquares = map.getReachableSquares(squares.get(0), 1);
       List<Player> oneMoveAway = map.getPlayersOnSquares(oneMoveAwaySquares);
-      assert(oneMoveAway.contains(player1));
+      assertTrue(oneMoveAway.contains(player1));
       oneMoveAway.clear();
       squares.clear();
       squares.add(map.getMapSquares()[1][1]);
       oneMoveAway = map.getPlayersOnSquares(squares);
-      assert(!oneMoveAway.contains(player1));
+      assertTrue(!oneMoveAway.contains(player1));
     }
     catch(UnknownMapTypeException e){
       fail("could not generate game board");
@@ -236,20 +235,20 @@ public class TestMap {
       List<Square> squares = new ArrayList<>();
       squares.add(map.getMapSquares()[0][0]);
       playersOnSquare = map.getPlayersOnSquares(squares);
-      assert(playersOnSquare.contains(player1));
-      assert(playersOnSquare.contains(player2));
+      assertTrue(playersOnSquare.contains(player1));
+      assertTrue(playersOnSquare.contains(player2));
       player2.moveToSquare(map.getMapSquares()[1][1]);
       playersOnSquare.clear();
       squares.clear();
       squares.add(map.getMapSquares()[0][0]);
       playersOnSquare = map.getPlayersOnSquares(squares);
-      assert(playersOnSquare.contains(player1));
-      assert(!playersOnSquare.contains(player2));
+      assertTrue(playersOnSquare.contains(player1));
+      assertTrue(!playersOnSquare.contains(player2));
       playersOnSquare.clear();
       squares.clear();
       squares.add(map.getMapSquares()[2][2]);
       playersOnSquare = map.getPlayersOnSquares(squares);
-      assert(playersOnSquare.isEmpty());
+      assertTrue(playersOnSquare.isEmpty());
     }
     catch(UnknownMapTypeException e){
       fail("could not generate game board");
@@ -273,7 +272,7 @@ public class TestMap {
               //System.err.println((map.getMapSquares()[i][k].getAdjacencies().get(l).isBlocked() ? "blocked" :
               // "open"));
 
-              assert(!map.getMapSquares()[i][k].getAdjacencies().get(openDirections.get(l)).isBlocked());
+              assertTrue(!map.getMapSquares()[i][k].getAdjacencies().get(openDirections.get(l)).isBlocked());
             }
           }
         }
@@ -299,15 +298,15 @@ public class TestMap {
       List<Square> squares = new ArrayList<>();
       squares.addAll(map.getReachableSquares(map.getMapSquares()[0][0], 2));
       twoMovesAway = map.getPlayersOnSquares(squares);
-      assert(twoMovesAway.contains(player1));
+      assertTrue(twoMovesAway.contains(player1));
       squares.clear();
       squares.addAll(map.getReachableSquares(map.getMapSquares()[1][1], 2));
       twoMovesAway = map.getPlayersOnSquares(squares);
-      assert(twoMovesAway.contains(player1));
+      assertTrue(twoMovesAway.contains(player1));
       squares.clear();
       squares.addAll(map.getReachableSquares(map.getMapSquares()[2][2], 2));
       twoMovesAway = map.getPlayersOnSquares(squares);
-      assert(!twoMovesAway.contains(player1));
+      assertTrue(!twoMovesAway.contains(player1));
     }
     catch(UnknownMapTypeException e){
       fail("could not generate game board");
@@ -319,9 +318,9 @@ public class TestMap {
   public void testSpawnPoints() throws UnknownMapTypeException {
     try{
       GameBoard gameBoard = new GameBoard(0);
-      assert(gameBoard.getMap().getRedSpawnPoint() != null);
-      assert(gameBoard.getMap().getBlueSpawnPoint() != null);
-      assert(gameBoard.getMap().getYellowSpawnPoint() != null);
+      assertTrue(gameBoard.getMap().getRedSpawnPoint() != null);
+      assertTrue(gameBoard.getMap().getBlueSpawnPoint() != null);
+      assertTrue(gameBoard.getMap().getYellowSpawnPoint() != null);
     }
     catch(UnknownMapTypeException e){
       fail("could not generate game board");
@@ -337,7 +336,7 @@ public class TestMap {
       for(int i = 0; i<3; i++){
         for(int k = 0; k<4; k++){
           if(i != 2 && k != 0){
-            assert gameBoard.getMap().getMapSquares()[i][k] != null;
+            assertTrue(gameBoard.getMap().getMapSquares()[i][k] != null);
           }
         }
       }
@@ -353,7 +352,7 @@ public class TestMap {
       GameBoard gameBoard = new GameBoard(2);
       for(int i = 0; i<3; i++){
         for(int k = 0; k<4; k++){
-          assert gameBoard.getMap().getMapSquares()[i][k] != null;
+          assertTrue(gameBoard.getMap().getMapSquares()[i][k] != null);
         }
       }
     }
@@ -369,7 +368,7 @@ public class TestMap {
       for(int i = 0; i<3; i++){
         for(int k = 0; k<4; k++){
           if(i != 0 && k != 3){
-            assert gameBoard.getMap().getMapSquares()[i][k] != null;
+            assertTrue(gameBoard.getMap().getMapSquares()[i][k] != null);
           }
         }
       }

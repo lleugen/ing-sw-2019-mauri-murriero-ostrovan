@@ -20,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.any;
 
@@ -55,7 +56,7 @@ public class TestMoveAndGrab {
             //test run around in state adrenaline 1
             playerController.setState(1);
             playerController.getState().runAround();
-            assert(player.getPosition().equals(threeMovesAway.get(0)));
+            assertTrue(player.getPosition().equals(threeMovesAway.get(0)));
 
             //test run around in state adrenaline 2
             playerController.setState(2);
@@ -66,7 +67,7 @@ public class TestMoveAndGrab {
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
             playerController.getState().runAround();
-            assert(player.getPosition().equals(threeMovesAway.get(0)));
+            assertTrue(player.getPosition().equals(threeMovesAway.get(0)));
 
             //test run around in state normal
             playerController.setState(0);
@@ -77,22 +78,22 @@ public class TestMoveAndGrab {
                 threeMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
             playerController.getState().runAround();
-            assert(player.getPosition().equals(threeMovesAway.get(0)));
+            assertTrue(player.getPosition().equals(threeMovesAway.get(0)));
 
             //test run around in state frenetic 1
             playerController.setState(3);
 
             List<Square> fourMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 4);
-            assert(!fourMovesAway.isEmpty());
+            assertTrue(!fourMovesAway.isEmpty());
             List<List<Integer>> fourMovesAwayCoordinates = new ArrayList<>();
             for(Square q : fourMovesAway){
                 fourMovesAwayCoordinates.add(gameBoard.getMap().getSquareCoordinates(q));
             }
-            assert(!fourMovesAwayCoordinates.isEmpty());
+            assertTrue(!fourMovesAwayCoordinates.isEmpty());
             //Mockito.when(client.chooseTargetSquare(fourMovesAwayCoordinates)).thenReturn(fourMovesAwayCoordinates
             // .get(0));
             playerController.getState().runAround();
-            assert(player.getPosition().equals(fourMovesAway.get(0)));
+            assertTrue(player.getPosition().equals(fourMovesAway.get(0)));
         }
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");
@@ -124,19 +125,19 @@ public class TestMoveAndGrab {
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
                 Weapon weapon = (Weapon)item;
-                assert(player.getInventory().getWeapons().contains(weapon));
+                assertTrue(player.getInventory().getWeapons().contains(weapon));
             }
             else{
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().size() == 2);
+                    assertTrue(player.getInventory().getPowerUps().size() == 2);
                 }
-                assert(player.getInventory().getAmmo().getBlue().
+                assertTrue(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
-                assert(player.getInventory().getAmmo().getRed().
+                assertTrue(player.getInventory().getAmmo().getRed().
                         equals(1 + ammo.getRed()));
-                assert(player.getInventory().getAmmo().getYellow().
+                assertTrue(player.getInventory().getAmmo().getYellow().
                         equals(1 + ammo.getYellow()));
             }
         }
@@ -171,19 +172,19 @@ public class TestMoveAndGrab {
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
                 Weapon weapon = (Weapon)item;
-                assert(player.getInventory().getWeapons().contains(weapon));
+                assertTrue(player.getInventory().getWeapons().contains(weapon));
             }
             else{
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().size() == 2);
+                    assertTrue(player.getInventory().getPowerUps().size() == 2);
                 }
-                assert(player.getInventory().getAmmo().getBlue().
+                assertTrue(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
-                assert(player.getInventory().getAmmo().getRed().
+                assertTrue(player.getInventory().getAmmo().getRed().
                         equals(1 + ammo.getRed()));
-                assert(player.getInventory().getAmmo().getYellow().
+                assertTrue(player.getInventory().getAmmo().getYellow().
                         equals(1 + ammo.getYellow()));
             }
         }
@@ -215,24 +216,24 @@ public class TestMoveAndGrab {
             PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
             //Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
             playerController.setState(0);
-            assert(playerController.getState() != null);
+            assertTrue(playerController.getState() != null);
             Grabbable item = oneMoveAway.get(0).getItem().get(0);
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
                 Weapon weapon = (Weapon)item;
-                assert(player.getInventory().getWeapons().contains(weapon));
+                assertTrue(player.getInventory().getWeapons().contains(weapon));
             }
             else{
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().size() == 2);
+                    assertTrue(player.getInventory().getPowerUps().size() == 2);
                 }
-                assert(player.getInventory().getAmmo().getBlue().
+                assertTrue(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
-                assert(player.getInventory().getAmmo().getRed().
+                assertTrue(player.getInventory().getAmmo().getRed().
                         equals(1 + ammo.getRed()));
-                assert(player.getInventory().getAmmo().getYellow().
+                assertTrue(player.getInventory().getAmmo().getYellow().
                         equals(1 + ammo.getYellow()));
             }
         }
