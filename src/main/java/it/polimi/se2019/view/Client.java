@@ -16,20 +16,33 @@ public class Client {
    */
   private static final String LOG_NAMESPACE = "App";
 
-  public Client(String host){
-    System.out.println("Hi");
-    try {
-      Scanner scanner = new Scanner(System.in);
-      System.out.println("Choose name.");
-      String name = scanner.nextLine();
-      new PlayerOnClient(name, host);
-      this.findLobby(host, name);
+  /**
+   * Init a new client
+   *
+   * @param host Hostname of the RMI registry
+   * @param ui   cli|gui
+   */
+  public Client(String host, String ui){
+    if ("cli".equals(ui) || "gui".equals(ui)) {
+      try {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose name.");
+        String name = scanner.nextLine();
+        new PlayerOnClient(name, host);
+        this.findLobby(host, name);
+      }
+      catch (RemoteException | MalformedURLException e) {
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while connecting to server",
+                e
+        );
+      }
     }
-    catch (RemoteException | MalformedURLException e){
+    else {
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.SEVERE,
-              "Error while connecting to server",
-              e
+              "Wrong UI param. Valid UI params are <cli> and <gui>"
       );
     }
   }

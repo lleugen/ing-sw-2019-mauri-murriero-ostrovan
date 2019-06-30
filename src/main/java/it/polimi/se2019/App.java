@@ -88,8 +88,8 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnClient(Map<String, String> args){
-    if (args.containsKey("host")) {
-      new Client(args.get("host"));
+    if (args.containsKey("host") && args.containsKey("ui")) {
+      new Client(args.get("host"), args.get("ui"));
     }
     else {
       throw new WrongArguments("Host param is required");
@@ -98,7 +98,8 @@ public class App {
 
   /**
    * Type: server, client
-   * @param args
+   * @param args type: client|server
+   *             ui: cli|gui
    *
    * @throws WrongArguments If passed args are invalid
    */
