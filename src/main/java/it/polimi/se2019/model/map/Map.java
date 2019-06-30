@@ -225,8 +225,47 @@ public class Map {
     mapSquares[2][2].setBlocked(true, false, true, false);
     mapSquares[2][3].setBlocked(false, true, true, false);
 
+    /*
     // adjacencies
-
+    //add square adjacencies
+    List<Direction> currentAdjacencies = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<4; j++){
+        if(mapSquares[i][j] != null){
+          currentAdjacencies.clear();
+          //west adjacency
+          if(j!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //south adjacency
+          if(i!=2){
+            currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //east adjacency
+          if(j!=3){
+            currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //north adjacency
+          if(i!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i - 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          mapSquares[i][j].setAdjacencies(currentAdjacencies);
+        }
+      }
+    }
+    */
 
     return mapSquares;
   }
@@ -262,6 +301,47 @@ public class Map {
     mapSquares[1][1]. setBlocked(true, true, false, false);
     mapSquares[1][2].setBlocked(false, false, false, true);
 
+    /*
+    //add square adjacencies
+    List<Direction> currentAdjacencies = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<4; j++){
+        if(mapSquares[i][j] != null){
+          currentAdjacencies.clear();
+          //west adjacency
+          if(j!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //south adjacency
+          if(i!=2){
+            currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //east adjacency
+          if(j!=3){
+            currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //north adjacency
+          if(i!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i - 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          mapSquares[i][j].setAdjacencies(currentAdjacencies);
+        }
+      }
+    }
+    */
+
     return mapSquares;
   }
 
@@ -295,6 +375,47 @@ public class Map {
     mapSquares[1][0].setBlocked(false, true, false, true);
     mapSquares[1][1].setBlocked(false, true, false, true);
     mapSquares[1][2].setBlocked(false, false, false, true);
+
+    /*
+    //add square adjacencies
+    List<Direction> currentAdjacencies = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<4; j++){
+        if(mapSquares[i][j] != null){
+          currentAdjacencies.clear();
+          //west adjacency
+          if(j!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //south adjacency
+          if(i!=2){
+            currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //east adjacency
+          if(j!=3){
+            currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //north adjacency
+          if(i!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i - 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          mapSquares[i][j].setAdjacencies(currentAdjacencies);
+        }
+      }
+    }
+    */
 
     return mapSquares;
   }
@@ -332,6 +453,48 @@ public class Map {
     mapSquares[2][2].setBlocked(true, false, true, false);
     mapSquares[0][2].setBlocked(true, true, false, false);
     mapSquares[1][3].setBlocked(true, true, false, false);
+
+
+    /*
+    //add square adjacencies
+    List<Direction> currentAdjacencies = new ArrayList<>();
+    for(int i = 0; i<3; i++){
+      for(int j = 0; j<4; j++){
+        if(mapSquares[i][j] != null){
+          currentAdjacencies.clear();
+          //west adjacency
+          if(j!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i][j - 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //south adjacency
+          if(i!=2){
+            currentAdjacencies.add(new Direction(mapSquares[i + 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //east adjacency
+          if(j!=3){
+            currentAdjacencies.add(new Direction(mapSquares[i][j + 1], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          //north adjacency
+          if(i!=0){
+            currentAdjacencies.add(new Direction(mapSquares[i - 1][j], false));
+          }
+          else{
+            currentAdjacencies.add(new Direction(null, true));
+          }
+          mapSquares[i][j].setAdjacencies(currentAdjacencies);
+        }
+      }
+    }
+    */
 
     return mapSquares;
   }
