@@ -11,6 +11,7 @@ import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Inventory;
 import it.polimi.se2019.model.player.Player;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,8 +25,8 @@ public class TestInventory {
 
     static Inventory inventory;
 
-    @BeforeClass
-    public static void createEmptyInventory() throws UnknownMapTypeException {
+    @Before
+    public void createEmptyInventory() throws UnknownMapTypeException {
         //initialize decks Decks decks = new Decks();
         List<Weapon> w = new ArrayList<>();
         w.add(new Weapon("mockWeapon",
@@ -59,6 +60,7 @@ public class TestInventory {
         assertTrue(inventory.getAmmo().getRed() == 2);
         assertTrue(inventory.getAmmo().getBlue() == 2);
         assertTrue(inventory.getAmmo().getYellow() == 2);
+        //System.err.println(inventory.getWeapons().size());
         assertTrue(inventory.getWeapons().contains(weapon));
     }
     @Test
