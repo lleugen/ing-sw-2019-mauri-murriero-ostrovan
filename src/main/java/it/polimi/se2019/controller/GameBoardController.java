@@ -173,6 +173,8 @@ public class GameBoardController{
       characterInfo.add(p.getName());
       characterInfo.add(p.getCharacter());
     }
+
+    /*
     for(int i = 0; i<clients.size(); i++){
       try{
         clients.get(i).sendCharacterInfo(characterInfo);
@@ -192,6 +194,10 @@ public class GameBoardController{
         );
       }
     }
+    */
+
+
+
     while(gameBoard.getKillScoreBoard().gameRunning()){
       try {
         sendInfo();

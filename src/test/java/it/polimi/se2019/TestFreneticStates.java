@@ -136,8 +136,8 @@ public class TestFreneticStates {
         }
     }
 
-    @Test
-    public void shootPeopleTest(){
-
-    }
+//    @Test
+//    public void shootPeopleTest(){
+//
+//    }
 }

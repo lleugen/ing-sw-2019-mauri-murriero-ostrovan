@@ -15,7 +15,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     super(g);
     name = "FlameThrowerController";
   }
-  Map map = getGameBoardController().getGameBoard().getMap();
+  Map mapReference = getGameBoardController().getGameBoard().getMap();
 
   List<Player> primaryTargets = new ArrayList<>();
   List<Player> secondaryTargets = new ArrayList<>();
@@ -54,11 +54,11 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     }
     else{
       //basic firing mode
-      List<Player> possiblePrimaryTargets = new ArrayList<>(map.getPlayersOnSquares(
-              map.getReachableSquares(targetSquares.get(0), 0)
+      List<Player> possiblePrimaryTargets = new ArrayList<>(mapReference.getPlayersOnSquares(
+              mapReference.getReachableSquares(targetSquares.get(0), 0)
       ));
-      List<Player> possibleSecondaryTargets = new ArrayList<>(map.getPlayersOnSquares(
-              map.getReachableSquares(targetSquares.get(1), 0)
+      List<Player> possibleSecondaryTargets = new ArrayList<>(mapReference.getPlayersOnSquares(
+              mapReference.getReachableSquares(targetSquares.get(1), 0)
       ));
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();

@@ -123,6 +123,7 @@ public class TestAmmo {
     @Test
     public void testCreation(){
         Ammo ammo = new Ammo(1,2,3);
+        assert ammo != null;
         assert(ammo.getRed() == 1);
         assert(ammo.getBlue() == 2);
         assert(ammo.getYellow() == 3);
