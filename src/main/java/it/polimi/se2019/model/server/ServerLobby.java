@@ -9,8 +9,15 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.rmi.Remote;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerLobby implements Remote {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "ServerLobby";
+
   private Map<String, PlayerData> playersData;
   private Integer maxPlayers;
   private GameBoardController gameBoardController;
@@ -36,18 +43,18 @@ public class ServerLobby implements Remote {
    */
   private synchronized PlayerData addPlayer(String name)
           throws RoomFullException {
-    if (this.checkRoomFull() && this.checkPlayerNotExists(name)){
-      if (this.checkPlayerNotExists(name)){
+    if (this.checkRoomFull()){
+      throw new RoomFullException();
+    }
+    else {
+      if (this.checkPlayerExists(name)){
+        return null;
+      }
+      else {
         PlayerData toReturn = new PlayerData();
         this.playersData.put(name, toReturn);
         return toReturn;
       }
-      else {
-        return null;
-      }
-    }
-    else {
-      throw new RoomFullException();
     }
   }
 
@@ -56,7 +63,7 @@ public class ServerLobby implements Remote {
    *
    * @return true if the room is full, false otherwise
    */
-  public synchronized boolean checkRoomFull(){
+  synchronized boolean checkRoomFull(){
     return (this.playersData.size() >= this.maxPlayers);
   }
 
@@ -67,7 +74,7 @@ public class ServerLobby implements Remote {
    *
    * @return true if the player is already registered, false otherwise
    */
-  private boolean checkPlayerNotExists(String name){
+  private boolean checkPlayerExists(String name){
     return this.playersData.containsKey(name);
   }
 
@@ -81,27 +88,32 @@ public class ServerLobby implements Remote {
    *
    * @throws RoomFullException if the room is full
    */
-  public void connect(PlayerViewOnServer client, String name, String character) throws RoomFullException{
+  public void connect(PlayerViewOnServer client, String name, String character)
+          throws RoomFullException {
     PlayerData player;
     List<PlayerController> playerControllers = new ArrayList<>();
-    PlayerController currentPlayerController = null;
+    PlayerController currentPlayerController;
 
     player = this.addPlayer(name);
 
     if (player != null) {
       player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
       player.setView(client);
-      currentPlayerController = null;
       currentPlayerController = new PlayerController(this.gameBoardController, player.getModel(), player.getView());
       player.setController(currentPlayerController);
       playerControllers.add(currentPlayerController);
 
+      System.out.println("Added " + name + " to the serverlobby");
       if (this.checkRoomFull()){
         this.gameBoardController.startGame(playerControllers);
       }
     }
     else {
-      // Player is already registered to the game
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.INFO,
+              "<{0}> is already registered to this game",
+              name
+      );
     }
   }
 

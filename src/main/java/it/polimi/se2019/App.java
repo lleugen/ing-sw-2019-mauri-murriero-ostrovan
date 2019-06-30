@@ -92,7 +92,7 @@ public class App {
       new Client(args.get("host"), args.get("ui"));
     }
     else {
-      throw new WrongArguments("Host param is required");
+      throw new WrongArguments("Host and UI params are required");
     }
   }
 

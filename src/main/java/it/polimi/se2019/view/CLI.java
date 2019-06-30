@@ -4,6 +4,7 @@ import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -11,32 +12,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Scanner;
 
-public final class CliIO implements ViewFacadeInterfaceRMIClient {
+public final class CLI extends UnicastRemoteObject
+        implements ViewFacadeInterfaceRMIClient {
     /**
      * Namespace this class logs to
      */
-    private static final String LOG_NAMESPACE = "CliIO";
+    private static final String LOG_NAMESPACE = "CLI";
 
     /**
      * Contains data to print to screen on render
      */
     private StringBuilder pendingUpdate = new StringBuilder();
 
-    /**
-     * Contains commands to print to screen on render
-     */
-    private StringBuilder pendingCommands = new StringBuilder();
+    public CLI() throws RemoteException {
 
+    }
     /**
      * Physically print to screen buffered data
      */
     private void displayRender() {
         System.console().writer().write(this.pendingUpdate.toString());
         System.console().writer().write("\n");
-        System.console().writer().write(this.pendingCommands.toString());
-        System.console().writer().write("> ");
 
-        this.pendingCommands.delete(0, this.pendingCommands.length());
         this.pendingUpdate.delete(0, this.pendingUpdate.length());
 
         System.console().writer().flush();

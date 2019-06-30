@@ -51,6 +51,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
    */
   private void makeConnection(){
     try {
+      System.out.println("Ciao");
       this.connectedPlayer = (ViewFacadeInterfaceRMIClient) Naming.lookup(
               "//" + this.host + "/players/" + this.name
       );

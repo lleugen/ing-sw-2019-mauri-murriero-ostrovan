@@ -1,6 +1,7 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.RMI.ServerLobbyInterface;
+import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
@@ -23,26 +24,40 @@ public class Client {
    * @param ui   cli|gui
    */
   public Client(String host, String ui){
-    if ("cli".equals(ui) || "gui".equals(ui)) {
-      try {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Choose name.");
-        String name = scanner.nextLine();
-        new PlayerOnClient(name, host);
+    Scanner scanner = new Scanner(System.in);
+    System.console().writer().println("Choose name.");
+    String name = scanner.nextLine();
+
+    try {
+      ViewFacadeInterfaceRMIClient generatedUi;
+
+      switch (ui){
+        case "gui":
+          generatedUi = new GUI();
+          break;
+        case "cli":
+          generatedUi = new CLI();
+          break;
+        default:
+          generatedUi = null;
+      }
+
+      if (generatedUi != null){
+        new PlayerOnClient(name, host, generatedUi);
         this.findLobby(host, name);
       }
-      catch (RemoteException | MalformedURLException e) {
+      else {
         Logger.getLogger(LOG_NAMESPACE).log(
                 Level.SEVERE,
-                "Error while connecting to server",
-                e
+                "Unknown UI param, supported are <cli> and <gui>"
         );
       }
     }
-    else {
+    catch (RemoteException | MalformedURLException e) {
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.SEVERE,
-              "Wrong UI param. Valid UI params are <cli> and <gui>"
+              "Error while connecting to server",
+              e
       );
     }
   }
