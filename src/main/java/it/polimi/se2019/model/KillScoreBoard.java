@@ -95,7 +95,7 @@ public class KillScoreBoard {
    * his score
    */
   public synchronized void resolveScoreboard(){
-    Stream.concat(this.kills.stream(), this.doubleKills.stream())
+    List<Player> scoreboard = Stream.concat(this.kills.stream(), this.doubleKills.stream())
             .collect(Collectors.groupingBy(
                     (Player p) -> p,
                     Collectors.counting()
@@ -104,8 +104,13 @@ public class KillScoreBoard {
             .sorted((Map.Entry<Player, Long> a, Map.Entry<Player, Long> b) ->
                     (int) (a.getValue() - b.getValue())
             )
-            .forEach((Map.Entry<Player, Long> p) ->
-                    p.getKey().addPoints(Math.toIntExact(p.getValue()))
-            );
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
+
+    for (int i = 0; i < scoreboard.size(); i++) {
+      scoreboard.get(i).addPoints(
+              this.scoreBoardValue.get(i)
+      );
+    }
   }
 }
