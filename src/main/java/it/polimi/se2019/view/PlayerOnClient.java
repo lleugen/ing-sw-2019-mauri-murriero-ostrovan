@@ -30,10 +30,4 @@ public class PlayerOnClient  {
           throws MalformedURLException, RemoteException {
     Naming.rebind("//" + host + "/players/" + user, ui);
   }
-
-  @Override
-  public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
-    // TODO ricky
-    System.out.println("sendCharacterInfo");
-  }
 }

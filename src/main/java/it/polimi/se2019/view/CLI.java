@@ -389,4 +389,10 @@ public final class CLI extends UnicastRemoteObject
         // TODO
         System.out.println("sendKillScoreBoardInfo");
     }
+
+    @Override
+    public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
+        // TODO
+        System.out.println("sendCharacterInfo");
+    }
 }

@@ -1,17 +1,17 @@
-package it.polimi.se2019;
-
-import it.polimi.se2019.model.GameBoard;
-import it.polimi.se2019.model.KillScoreBoard;
-import it.polimi.se2019.model.map.UnknownMapTypeException;
-import it.polimi.se2019.model.player.Player;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static junit.framework.TestCase.assertTrue;
-
-public class TestKillScoreboard {
+//package it.polimi.se2019;
+//
+//import it.polimi.se2019.model.GameBoard;
+//import it.polimi.se2019.model.KillScoreBoard;
+//import it.polimi.se2019.model.map.UnknownMapTypeException;
+//import it.polimi.se2019.model.player.Player;
+//import org.junit.Test;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import static junit.framework.TestCase.assertTrue;
+//
+//public class TestKillScoreboard {
 //    @Test
 //    public void testScoreBoard() throws UnknownMapTypeException {
 //        GameBoard gameBoard = new GameBoard(0);
@@ -27,4 +27,4 @@ public class TestKillScoreboard {
 //        System.err.println(player2.getPoints());
 //        assertTrue(player1.getPoints() == 8);
 //    }
-}
+//}

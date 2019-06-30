@@ -210,4 +210,9 @@ public class GUI extends UnicastRemoteObject
     System.out.println("sendKillScoreBoardInfo");
   }
 
+  @Override
+  public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
+    // TODO ricky
+    System.out.println("sendKillScoreBoardInfo");
+  }
 }
