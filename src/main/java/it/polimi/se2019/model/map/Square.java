@@ -136,13 +136,6 @@ public abstract class Square {
   }
 
   /**
-   * Grab items from the square
-   *
-   * @return The grabbed items
-   */
-  //public abstract Grabbable grab();
-
-  /**
    * Refill the square
    */
   public abstract void refill();

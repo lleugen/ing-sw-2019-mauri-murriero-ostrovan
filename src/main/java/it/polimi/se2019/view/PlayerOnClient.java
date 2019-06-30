@@ -5,18 +5,8 @@ import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlayerOnClient  {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "PlayerOnClient";
-
   /**
    * Create a new Client
    *

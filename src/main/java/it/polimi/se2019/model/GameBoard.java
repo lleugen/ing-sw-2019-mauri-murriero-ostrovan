@@ -66,16 +66,6 @@ public class GameBoard {
     killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
 
-
-    /*
-    Integer i;
-    Player tmp;
-    for (i = 0; i < players.size(); i++){
-      tmp = players.get(i);
-      this.players.add(tmp);
-    }
-    */
-
     //create decks
     decks = new Decks(
             this.genWeaponDeck(),
@@ -159,7 +149,7 @@ public class GameBoard {
   }
 
   private List<Weapon> genWeaponDeck(){
-    List<Weapon> deck = new ArrayList<Weapon>();
+    List<Weapon> deck = new ArrayList<>();
 
     deck.add(
             new Weapon(

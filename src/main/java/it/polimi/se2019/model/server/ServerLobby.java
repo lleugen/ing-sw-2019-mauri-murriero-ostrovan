@@ -103,7 +103,6 @@ public class ServerLobby implements Remote {
       player.setController(currentPlayerController);
       playerControllers.add(currentPlayerController);
 
-      System.out.println("Added " + name + " to the serverlobby");
       if (this.checkRoomFull()){
         this.gameBoardController.startGame(playerControllers);
       }

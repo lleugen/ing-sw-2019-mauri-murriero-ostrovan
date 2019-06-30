@@ -1,7 +1,6 @@
 package it.polimi.se2019.RMI;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

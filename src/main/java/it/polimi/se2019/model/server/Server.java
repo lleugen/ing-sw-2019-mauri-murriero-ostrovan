@@ -69,7 +69,6 @@ public class Server implements ServerLobbyInterface, Serializable {
       }
 
       if (!this.lobbyes.isEmpty()) {
-        System.out.println("Connecting to lobby");
         this.lobbyes.get(0).connect(
                 p,
                 p.getName(),

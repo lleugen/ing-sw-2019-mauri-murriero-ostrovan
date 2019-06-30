@@ -38,7 +38,7 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
               )
       );
         for(int i = 0; i<2; i++){
-          if(possibleTargets.size()>0){
+          if(!possibleTargets.isEmpty()){
             targets.add
                     (i, gameBoardController.identifyPlayer
                             (client.chooseTargets

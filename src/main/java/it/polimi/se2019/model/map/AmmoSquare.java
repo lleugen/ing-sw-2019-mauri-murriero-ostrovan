@@ -5,11 +5,18 @@ import it.polimi.se2019.model.grabbable.Grabbable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An AmmoSquare represent a square where a player can grab Ammos, but not spawn
  */
 public class AmmoSquare extends Square {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "AmmoSquare";
+
   /**
    * Inits a new Spawn Square
    *
@@ -61,7 +68,10 @@ public class AmmoSquare extends Square {
         ammos = map.getGameBoard().getDecks().drawAmmoTile();
       }
       else{
-        System.err.println("decks is null");
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.WARNING,
+                "Deck is null"
+        );
       }
     }
   }

@@ -42,9 +42,9 @@ public class Decks {
           List<PowerUpCard> powerUps,
           List<AmmoTile> ammoTiles
   ) {
-    this.weaponDeck = new Deck<Weapon>(weapons);
-    this.ammoDeck = new Deck<AmmoTile>(ammoTiles);
-    this.powerUpDeck = new Deck<PowerUpCard>(powerUps);
+    this.weaponDeck = new Deck<>(weapons);
+    this.ammoDeck = new Deck<>(ammoTiles);
+    this.powerUpDeck = new Deck<>(powerUps);
   }
 
   /**
@@ -53,7 +53,7 @@ public class Decks {
    * @return the drawn weapon
    * @throws EmptyDeckException if no more card are available to draw
    */
-  public Weapon drawWeapon() throws EmptyDeckException {
+  public Weapon drawWeapon() {
     return this.weaponDeck.draw();
   }
 
@@ -63,7 +63,7 @@ public class Decks {
    * @return the drawn Ammos
    * @throws EmptyDeckException if no more card are available to draw
    */
-  public AmmoTile drawAmmoTile() throws EmptyDeckException {
+  public AmmoTile drawAmmoTile() {
     AmmoTile toReturn;
     toReturn = this.ammoDeck.draw();
     return toReturn;
@@ -75,7 +75,7 @@ public class Decks {
    * @return the drawn weapon
    * @throws EmptyDeckException if no more card are available to draw
    */
-  public PowerUpCard drawPowerUp() throws EmptyDeckException {
+  public PowerUpCard drawPowerUp() {
     return this.powerUpDeck.draw();
   }
 

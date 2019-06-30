@@ -4,6 +4,7 @@ import it.polimi.se2019.model.grabbable.*;
 import it.polimi.se2019.model.deck.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -54,7 +55,6 @@ public class Inventory {
    * @return a copy of the player's ammo box
    */
   public Ammo getAmmo() {
-    //return new Ammo(getAmmo().getRed(), getAmmo().getBlue(), getAmmo().getYellow());
     return ammo;
   }
 
@@ -62,24 +62,14 @@ public class Inventory {
    * @return a copy of the weapons in the player's inventory
    */
   public List<Weapon> getWeapons() {
-    /*
-    ArrayList<Weapon> weaponsCopy = null;
-    Collections.copy(weaponsCopy, weapons);
-    return weaponsCopy;
-    */
-    return weapons;
+    return new LinkedList<>(this.weapons);
   }
 
   /**
    * @return a copy of the powerUps in the player's inventory
    */
   public List<PowerUpCard> getPowerUps() {
-    /*
-    ArrayList<PowerUpCard> powerUpsCopy = null;
-    Collections.copy(powerUpsCopy, powerUps);
-    return powerUpsCopy;
-    */
-    return powerUps;
+    return new LinkedList<>(this.powerUps);
   }
 
   public void addItemToInventory(Grabbable item){

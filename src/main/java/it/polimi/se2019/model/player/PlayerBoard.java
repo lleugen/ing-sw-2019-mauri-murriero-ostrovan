@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class PlayerBoard {
   public PlayerBoard() {
-    marksAssigned = new ArrayList<Player>();
-    damageReceived = new ArrayList<Player>();
-    deathValues = new ArrayList<Integer>();
+    marksAssigned = new ArrayList<>();
+    damageReceived = new ArrayList<>();
+    deathValues = new ArrayList<>();
     deathValues.add(8);
     deathValues.add(6);
     deathValues.add(4);
@@ -89,7 +89,7 @@ public class PlayerBoard {
    */
   public void turnAround() {
     deathValues.clear();
-    deathValues = new ArrayList<Integer>(Arrays.asList(2, 1, 1, 1, 1, 1));
+    deathValues = new ArrayList<>(Arrays.asList(2, 1, 1, 1, 1, 1));
     isFrenzy = true;
   }
 
@@ -105,8 +105,9 @@ public class PlayerBoard {
      * @return the player who dealt more damage to this playerboard
      */
   public Player getMostWorthyPlayer(){
-      ArrayList<Player> distinctDamagers = new ArrayList<Player>();
-      int index = 0, count = 0;
+      ArrayList<Player> distinctDamagers = new ArrayList<>();
+      int index = 0;
+      int count = 0;
 
       //create a distinct list of players who dealt damages, in order of first blood first
       for(int i = 0; i < damageReceived.size(); i++) {

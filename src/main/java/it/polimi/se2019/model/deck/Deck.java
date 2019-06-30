@@ -35,8 +35,8 @@ public class Deck<G extends Grabbable> {
    *                              __WARN__ Elements are NOT cloned
    */
   public Deck(List<G> elements) {
-    this.discarded = new ArrayList<G>();
-    this.available = new ArrayList<G>();
+    this.discarded = new ArrayList<>();
+    this.available = new ArrayList<>();
 
     this.discarded.addAll(elements);
     this.available.clear();

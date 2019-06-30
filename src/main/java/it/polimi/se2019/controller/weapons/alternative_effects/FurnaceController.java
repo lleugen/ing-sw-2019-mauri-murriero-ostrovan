@@ -58,8 +58,7 @@ public class FurnaceController extends AlternativeEffectWeaponController {
         adjacentSquaresCoordinates.add(map.getSquareCoordinates(q));
       }
       //choose one square
-      List<Integer> targetSquareCoordinates = new ArrayList<>();
-      targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
+      List<Integer> targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
       Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
       //all players on the chosen square are targets
       for(Player p : gameBoardController.getPlayers()){

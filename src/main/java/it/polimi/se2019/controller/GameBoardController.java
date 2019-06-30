@@ -52,11 +52,11 @@ public class GameBoardController{
     powerUpControllers = new LinkedList<>();
     players = g.getPlayers();
 
-    mapInfo = new ArrayList<ArrayList<ArrayList<String>>>();
+    mapInfo = new ArrayList<>();
     for(int i = 0; i<3; i++){
-      mapInfo.add(new ArrayList<ArrayList<String>>());
+      mapInfo.add(new ArrayList<>());
       for(int k = 0; k<4; k++){
-          mapInfo.get(i).add(new ArrayList<String>());
+          mapInfo.get(i).add(new ArrayList<>());
       }
     }
     playerInfo = new ArrayList<>();
@@ -94,7 +94,6 @@ public class GameBoardController{
    * getter methods for each relevant attribute
    */
   public List<Player> getPlayers(){
-    //return players;
     return new LinkedList<>(this.players);
   }
 
@@ -173,30 +172,6 @@ public class GameBoardController{
       characterInfo.add(p.getName());
       characterInfo.add(p.getCharacter());
     }
-
-    /*
-    for(int i = 0; i<clients.size(); i++){
-      try{
-        clients.get(i).sendCharacterInfo(characterInfo);
-      }
-      catch(RemoteException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                Level.INFO,
-                "User Disconnected",
-                e
-        );
-      }
-      catch(UserTimeoutException f){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                Level.INFO,
-                "User Disconnected",
-                f
-        );
-      }
-    }
-    */
-
-
 
     while(gameBoard.getKillScoreBoard().gameRunning()){
       try {
