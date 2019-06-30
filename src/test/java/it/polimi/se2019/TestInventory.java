@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.fail;
 
 public class TestInventory {
 
@@ -89,5 +90,35 @@ public class TestInventory {
         assertTrue(inventory.getAmmo().getRed() == 3);
         assertTrue(inventory.getAmmo().getBlue() == 3);
         assertTrue(inventory.getAmmo().getYellow() == 3);
+    }
+
+
+    @Test
+    public void testUseAmmo(){
+        try{
+            GameBoard gameBoard = new GameBoard(0);
+            Player player = new Player("player", "character", gameBoard);
+            player.getInventory().useAmmo(new Ammo(1,1,1));
+            assertTrue(player.getInventory().getAmmo().getRed() == 0);
+            assertTrue(player.getInventory().getAmmo().getBlue() == 0);
+            assertTrue(player.getInventory().getAmmo().getYellow() == 0);
+        }
+        catch(UnknownMapTypeException e){
+            fail("could not create game board");
+        }
+    }
+
+    @Test
+    public void testDiscardWeapon(){
+        try{
+            GameBoard gameBoard = new GameBoard(0);
+            Player player = new Player("player", "character", gameBoard);
+            player.getInventory().addWeaponToInventory(new Weapon("weapon", new Ammo(1,1,1), new Ammo(1,1,1)));
+            player.getInventory().discardWeapon(player.getInventory().getWeapons().get(0));
+            assertTrue(player.getInventory().getWeapons().isEmpty());
+        }
+        catch(UnknownMapTypeException e){
+            fail("could not create game board");
+        }
     }
 }

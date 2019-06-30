@@ -1,5 +1,8 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.controller.weapons.WeaponController;
+import it.polimi.se2019.controller.weapons.simple.WhisperController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.fail;
 
 
 public class TestWeapon {
@@ -90,5 +94,30 @@ public class TestWeapon {
         Weapon weapon = new Weapon("testWeapon", new Ammo(0,0,0), new Ammo(1,1,1));
         weapon.unload();
         assertTrue(!weapon.isLoaded());
+    }
+
+    @Test
+    public void testGetters(){
+        try{
+            GameBoard gameBoard = new GameBoard(0);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            WeaponController weaponController = new WhisperController(gameBoardController);
+            Weapon whisper = new Weapon("whisper", new Ammo(1,1,1), new Ammo(1,1,1));
+            whisper.setController(weaponController);
+            assertTrue(weaponController.equals(whisper.getController()));
+            assertTrue(whisper.getGrabCost().getRed() == 1);
+            assertTrue(whisper.getGrabCost().getBlue() == 1);
+            assertTrue(whisper.getGrabCost().getYellow() == 1);
+            assertTrue(whisper.getReloadCost().getRed() == 1);
+            assertTrue(whisper.getReloadCost().getBlue() == 1);
+            assertTrue(whisper.getReloadCost().getYellow() == 1);
+
+            whisper.reload(null, new Ammo(1,1,1));
+            assertTrue(whisper.isLoaded());
+        }
+        catch(UnknownMapTypeException e){
+            fail("could not build game board");
+        }
+
     }
 }
