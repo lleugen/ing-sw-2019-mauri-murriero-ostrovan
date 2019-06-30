@@ -342,6 +342,17 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
     );
   }
 
+  @Override
+  public void sendCharacterInfo(List<String> characterInfo)
+          throws UserTimeoutException, RemoteException {
+    WaitFor<List<String>, Void> wf = new WaitFor<>();
+    wf.waitForCons(
+            this,
+            this.connectedPlayer::sendCharacterInfo,
+            characterInfo
+    );
+  }
+
   /**
    * Wait for a call on the remote end, throwing an exception if the user is
    * disconnected, or a response can not be obtained in time

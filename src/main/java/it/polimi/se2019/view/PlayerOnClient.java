@@ -227,4 +227,10 @@ public class PlayerOnClient extends UnicastRemoteObject
     // TODO ricky
     System.out.println("sendKillScoreBoardInfo");
   }
+
+  @Override
+  public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
+    // TODO ricky
+    System.out.println("sendCharacterInfo");
+  }
 }
