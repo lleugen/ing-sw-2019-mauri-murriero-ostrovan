@@ -13,8 +13,14 @@ public class Direction {
    * @param b True if the next square is not accessible, false otherwise
    */
   public Direction(Square s, boolean b) {
-    square = s;
-    blocked = b;
+    if (s == null){
+      this.square = null;
+      blocked = true;
+    }
+    else {
+      this.square = s;
+      this.blocked = b;
+    }
   }
 
   /**

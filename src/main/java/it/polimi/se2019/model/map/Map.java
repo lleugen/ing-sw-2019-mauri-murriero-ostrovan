@@ -64,44 +64,54 @@ public class Map {
     this.yellowSpawnPoint = this.mapSquares[2][3];
 
     //add square adjacencies
-    List<Direction> currentAdjacencies = new ArrayList<>();
     for(int i = 0; i<3; i++){
       for(int j = 0; j<4; j++){
-        if(mapSquares[i][j] != null){
-          currentAdjacencies.clear();
-          //north adjacency
-          if(i!=0){
-            currentAdjacencies.add(0,new Direction(mapSquares[i - 1][j], false));
-          }
-          else{
-            currentAdjacencies.add(0,new Direction(null, true));
-          }
-          //east adjacency
-          if(j!=3){
-            currentAdjacencies.add(1,new Direction(mapSquares[i][j + 1], false));
-          }
-          else{
-            currentAdjacencies.add(1,new Direction(null, true));
-          }
-          //south adjacency
-          if(i!=2){
-            currentAdjacencies.add(2,new Direction(mapSquares[i + 1][j], false));
-          }
-          else{
-            currentAdjacencies.add(2,new Direction(null, true));
-          }
-          //west adjacency
-          if(j!=0){
-            currentAdjacencies.add(3,new Direction(mapSquares[i][j - 1], false));
-          }
-          else{
-            currentAdjacencies.add(3,new Direction(null, true));
-          }
-          mapSquares[i][j].setAdjacencies(currentAdjacencies);
-        }
+        updateAdjiacent(this.mapSquares, i, j);
       }
     }
     this.refillAll();
+  }
+
+  /**
+   * Update the adjacency for a square passed as paramater
+   *
+   * @param map Map to update adjacency onto
+   * @param x   X coordinate of the square in mapSquare
+   * @param y   Y coordinate of the square
+   */
+  private static void updateAdjiacent(Square[][] map, int y, int x){
+    List<Direction> currentAdjacencies = new ArrayList<>(4);
+    if(map[y][x] != null){
+      //north adjacency
+      if(y > 0){
+        currentAdjacencies.add(0,new Direction(map[y - 1][x] , false));
+      }
+      else{
+        currentAdjacencies.add(0,new Direction(null, true));
+      }
+      //east adjacency
+      if(x < (map[y].length - 1)){
+        currentAdjacencies.add(1,new Direction(map[y][x + 1] , false));
+      }
+      else{
+        currentAdjacencies.add(1,new Direction(null, true));
+      }
+      //south adjacency
+      if(y < (map.length - 1)){
+        currentAdjacencies.add(2,new Direction(map[y + 1][x] , false));
+      }
+      else{
+        currentAdjacencies.add(2,new Direction(null, true));
+      }
+      //west adjacency
+      if(x > 0){
+        currentAdjacencies.add(3,new Direction(map[y][x - 1] , false));
+      }
+      else{
+        currentAdjacencies.add(3,new Direction(null, true));
+      }
+      map[y][x].setAdjacencies(currentAdjacencies);
+    }
   }
 
   public Square[][]getMapSquares(){
