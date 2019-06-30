@@ -165,6 +165,7 @@ public class GameBoardController{
         sendInfo();
         playerControllers.get(currentPlayer).
                 playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
+        endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -292,5 +293,29 @@ public class GameBoardController{
       throw new UserTimeoutException(e);
     }
 
+  }
+
+
+  /**
+   * deal with player deaths at the end of each turn
+   */
+  private void endOfTurnDeathResolution() throws UserTimeoutException{
+    PlayerController currentPlayerController;
+    for(Player p : players){
+      if(p.getBoard().getDamageReceived().size() > 11){
+        p.resolveDeath();
+        for(PlayerController pc : playerControllers){
+          if(pc.getName().equals(p.getName())){
+            currentPlayerController = pc;
+            try{
+              currentPlayerController.getState().spawn();
+            }
+            catch (UserTimeoutException e){
+              throw new UserTimeoutException(e);
+            }
+          }
+        }
+      }
+    }
   }
 }
