@@ -50,7 +50,7 @@ public class GameBoardController{
     gameBoard = g;
     weaponControllers = new LinkedList<>();
     powerUpControllers = new LinkedList<>();
-    players = new LinkedList<>();
+    players = g.getPlayers();
 
     mapInfo = new ArrayList<ArrayList<ArrayList<String>>>();
     for(int i = 0; i<3; i++){
@@ -94,7 +94,12 @@ public class GameBoardController{
    * getter methods for each relevant attribute
    */
   public List<Player> getPlayers(){
+    //return players;
     return new LinkedList<>(this.players);
+  }
+
+  public List<PlayerController> getPlayerControllers(){
+    return new LinkedList<>(this.playerControllers);
   }
 
   public List<PlayerViewOnServer> getClients(){
@@ -124,6 +129,9 @@ public class GameBoardController{
             .collect(Collectors.toList());
     clientNames = c.stream()
             .map(PlayerController::getName)
+            .collect(Collectors.toList());
+    clients = c.stream()
+            .map(PlayerController::getClient)
             .collect(Collectors.toList());
   }
 
@@ -160,6 +168,36 @@ public class GameBoardController{
   int currentPlayer = 0;
   public void playTurns() {
     currentPlayer = 0;
+    List<String> characterInfo = new ArrayList<>();
+    for(Player p : players){
+      characterInfo.add(p.getName());
+      characterInfo.add(p.getCharacter());
+    }
+
+    /*
+    for(int i = 0; i<clients.size(); i++){
+      try{
+        clients.get(i).sendCharacterInfo(characterInfo);
+      }
+      catch(RemoteException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                e
+        );
+      }
+      catch(UserTimeoutException f){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                f
+        );
+      }
+    }
+    */
+
+
+
     while(gameBoard.getKillScoreBoard().gameRunning()){
       try {
         sendInfo();

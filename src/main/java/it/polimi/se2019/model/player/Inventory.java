@@ -100,7 +100,7 @@ public class Inventory {
    * Add a power up card to the inventory
    */
   public void addPowerUpToInventory(PowerUpCard item){
-    if(powerUps.size()<4){
+    if(powerUps.size()<3){
       powerUps.add(item);
     }
   }

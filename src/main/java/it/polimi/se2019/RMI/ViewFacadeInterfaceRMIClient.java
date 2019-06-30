@@ -110,4 +110,10 @@ public interface ViewFacadeInterfaceRMIClient extends Remote, Serializable {
      */
     void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException;
 
+    /**
+     *
+     * @param characterInfo contains information about player's characters
+     */
+    void sendCharacterInfo(List<String> characterInfo) throws RemoteException;
+
 }

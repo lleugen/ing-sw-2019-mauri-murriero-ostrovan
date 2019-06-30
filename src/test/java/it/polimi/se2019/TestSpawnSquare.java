@@ -21,8 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
+import static junit.framework.TestCase.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestSpawnSquare {
@@ -50,6 +49,6 @@ public class TestSpawnSquare {
         catch (UserTimeoutException e){
             fail();
         }
-        assert(!player.getInventory().getWeapons().isEmpty());
+        assertTrue(!player.getInventory().getWeapons().isEmpty());
     }
 }

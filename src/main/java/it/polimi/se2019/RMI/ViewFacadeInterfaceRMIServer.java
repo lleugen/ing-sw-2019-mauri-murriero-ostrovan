@@ -108,4 +108,10 @@ public interface ViewFacadeInterfaceRMIServer {
      * @param killScoreBoardInfo contains information about scored kills and double kills
      */
     void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws UserTimeoutException, RemoteException;
+
+    /**
+     *
+     * @param characterInfo contains information about player's characters
+     */
+    void sendCharacterInfo(List<String> characterInfo) throws UserTimeoutException, RemoteException;
 }

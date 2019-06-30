@@ -92,7 +92,7 @@ public abstract class Square {
   /**
    * set the adjacencies of a square
    */
-  protected void setAdjacencies(List<Direction> adj){
+  public void setAdjacencies(List<Direction> adj){
     adjacencies = new ArrayList<>();
     adjacencies.clear();
     if(adj.get(0) != null){

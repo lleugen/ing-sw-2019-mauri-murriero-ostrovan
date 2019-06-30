@@ -19,6 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.any;
 
@@ -26,19 +27,21 @@ import static org.mockito.Matchers.any;
 public class TestFreneticStates {
     @Mock
     PlayerViewOnServer client;
-    GameBoard gameBoard = new GameBoard(0);
-    Decks decksReference = gameBoard.getDecks();
-    Player player = new Player("playerName", "playerCharacter", gameBoard);
-    Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
-    GameBoardController gameBoardController = new GameBoardController(gameBoard);
-    PlayerController playerController = new PlayerController(gameBoardController, player, client);
 
-    public TestFreneticStates() throws UnknownMapTypeException {
-    }
+
 
     @Test
     public void grabStuffFirstFreneticTest(){
         try {
+            GameBoard gameBoard = new GameBoard(0);
+            Decks decksReference = gameBoard.getDecks();
+            Player player = new Player("playerName", "playerCharacter", gameBoard);
+            Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
+
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
 
             List<Square> twoMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 2);
@@ -56,29 +59,42 @@ public class TestFreneticStates {
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
                 Weapon weapon = (Weapon)item;
-                assert(player.getInventory().getWeapons().contains(weapon));
+                assertTrue(player.getInventory().getWeapons().contains(weapon));
             }
             else{
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(!player.getInventory().getPowerUps().isEmpty());
+                    assertTrue(!player.getInventory().getPowerUps().isEmpty());
                 }
-                assert(player.getInventory().getAmmo().getBlue().
+                assertTrue(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
-                assert(player.getInventory().getAmmo().getRed().
+                assertTrue(player.getInventory().getAmmo().getRed().
                         equals(1 + ammo.getRed()));
-                assert(player.getInventory().getAmmo().getYellow().
+                assertTrue(player.getInventory().getAmmo().getYellow().
                         equals(1 + ammo.getYellow()));
             }
         }
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");
         }
+        catch(UnknownMapTypeException f){
+            fail("could not create map");
+        }
     }
     @Test
     public void grabStuffSecondFreneticTest(){
         try {
+            GameBoard gameBoard = new GameBoard(0);
+            Decks decksReference = gameBoard.getDecks();
+            Player player = new Player("playerName", "playerCharacter", gameBoard);
+            Player shooter = new Player("shooterName", "shooterCharacter", gameBoard);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+
+
+
+
             player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
 
             List<Square> threeMovesAway = gameBoard.getMap().getReachableSquares(player.getPosition(), 3);
@@ -97,29 +113,32 @@ public class TestFreneticStates {
             playerController.getState().grabStuff();
             if(item instanceof Weapon){
                 Weapon weapon = (Weapon)item;
-                assert(player.getInventory().getWeapons().contains(weapon));
+                assertTrue(player.getInventory().getWeapons().contains(weapon));
             }
             else{
                 AmmoTile ammoTile = (AmmoTile)item;
                 Ammo ammo = ammoTile.getAmmo();
                 if(ammoTile.getPowerUp()){
-                    assert(player.getInventory().getPowerUps().contains(powerUpCard));
+                    assertTrue(player.getInventory().getPowerUps().size() == 2);
                 }
-                assert(player.getInventory().getAmmo().getBlue().
+                assertTrue(player.getInventory().getAmmo().getBlue().
                         equals(1 + ammo.getBlue()));
-                assert(player.getInventory().getAmmo().getRed().
+                assertTrue(player.getInventory().getAmmo().getRed().
                         equals(1 + ammo.getRed()));
-                assert(player.getInventory().getAmmo().getYellow().
+                assertTrue(player.getInventory().getAmmo().getYellow().
                         equals(1 + ammo.getYellow()));
             }
         }
         catch (UserTimeoutException e){
             fail("Network Timeout Reached");
         }
+        catch(UnknownMapTypeException f){
+            fail("could not create map");
+        }
     }
 
-    @Test
-    public void shootPeopleTest(){
-
-    }
+//    @Test
+//    public void shootPeopleTest(){
+//
+//    }
 }

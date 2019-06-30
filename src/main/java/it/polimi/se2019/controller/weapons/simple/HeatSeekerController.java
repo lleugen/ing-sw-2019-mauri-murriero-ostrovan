@@ -14,7 +14,7 @@ public class HeatSeekerController extends SimpleWeaponController {
     super(g);
     name = "HeatSeekerController";
   }
-  Map map = getGameBoardController().getGameBoard().getMap();
+  Map mapReference = getGameBoardController().getGameBoard().getMap();
 
   @Override
   public List<Boolean> selectFiringMode(PlayerViewOnServer client){
@@ -24,8 +24,8 @@ public class HeatSeekerController extends SimpleWeaponController {
   }
   @Override
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
-    List<Player> visiblePlayers = map.getPlayersOnSquares(
-            map.getVisibleSquares(
+    List<Player> visiblePlayers = mapReference.getPlayersOnSquares(
+            mapReference.getVisibleSquares(
                     shooter.getPosition()
             )
     );
