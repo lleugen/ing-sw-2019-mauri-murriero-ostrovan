@@ -54,7 +54,7 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
           }
           //if the damaged target has a tagback gredade, he/she can use it now
           useTagbackGrenade(targets.get(0));
-          target = foundTargets.get(0);
+
         }
         else if(chosenEffect == 1){
           for(int i = 0; i<2; i++){
@@ -63,6 +63,8 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
           }
         }
         else if(chosenEffect == 2){
+          List<Player> foundTargets = findTargets(shooter);
+          target = foundTargets.get(0);
           target.takeDamage(shooter, 1);
           //add one more point of damage if the player chooses to use a targeting scope
           if(useTargetingScope(shooter)){

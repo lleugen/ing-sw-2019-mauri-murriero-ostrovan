@@ -49,6 +49,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
       availableEffects.add("rocket jump");
     }
     Integer chosenEffect;
+    List<Player> internalTargets = targets;
 
     while(firingMode.contains(true)){
       //choose which effect to apply
@@ -56,19 +57,19 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
       firingMode.set(chosenEffect, false);
       if(chosenEffect == 0){
         //basic effect
-        targets = findTargets(shooter);
-        targets.get(0).takeDamage(shooter, 2);
+        internalTargets = findTargets(shooter);
+        internalTargets.get(0).takeDamage(shooter, 2);
         //add one more point of damage if the player chooses to use a targeting scope
         if(useTargetingScope(shooter)){
-          targets.get(0).takeDamage(shooter, 1);
+          internalTargets.get(0).takeDamage(shooter, 1);
         }
         //if the damaged target has a tagback gredade, he/she can use it now
-        useTagbackGrenade(targets.get(0));
+        useTagbackGrenade(internalTargets.get(0));
         if(firingMode.get(2)){
           //fragmenting warhead, has to take place during the first action and before moving the target(cfr:game rules)
           List<Player> t = map.getPlayersOnSquares(
                   map.getReachableSquares(
-                          targets.get(0).getPosition(),
+                          internalTargets.get(0).getPosition(),
                           0
                   )
           );
@@ -85,7 +86,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
         Integer direction = client.chooseDirection
                 (map.getOpenDirections(shooter.getPosition()));
         if(direction != -1){
-          targets.get(0).move(targets.get(0).getPosition().getAdjacencies().get(direction));
+          internalTargets.get(0).move(internalTargets.get(0).getPosition().getAdjacencies().get(direction));
         }
       }
       else if(chosenEffect == 1){
