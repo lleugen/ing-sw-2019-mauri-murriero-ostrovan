@@ -376,7 +376,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
     /**
      * Timeout (in second) before UserTimeoutException is raised
      */
-    private static final int TIMEOUT = 15;
+    private static final int TIMEOUT = 2;
 
     /**
      * TransferQueue for the object
@@ -447,13 +447,20 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
       ).start();
 
       try {
-        return this.tq.poll(
+        R toReturn = this.tq.poll(
                 TIMEOUT,
                 TimeUnit.SECONDS
         );
+
+        if (toReturn == null){
+          me.connected = false;
+          throw new UserTimeoutException();
+        }
+        else {
+          return toReturn;
+        }
       }
       catch (InterruptedException e){
-        me.connected = false;
         Thread.currentThread().interrupt();
         throw new UserTimeoutException(e);
       }

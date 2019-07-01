@@ -1,16 +1,10 @@
 package it.polimi.se2019.model.player;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
-import it.polimi.se2019.model.grabbable.PowerUpCard;
-import it.polimi.se2019.model.grabbable.Weapon;
+import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.model.map.Square;
 
-import it.polimi.se2019.model.GameBoard;
-import it.polimi.se2019.view.player.PlayerViewOnServer;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Player contains all the player data, and related collections (eg: Inventory)

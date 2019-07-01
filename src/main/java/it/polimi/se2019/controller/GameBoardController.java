@@ -151,11 +151,6 @@ public class GameBoardController{
   int currentPlayer = 0;
   public void playTurns() {
     this.currentPlayer = 0;
-    List<String> characterInfo = new ArrayList<>();
-    for(Player p : players){
-      characterInfo.add(p.getName());
-      characterInfo.add(p.getCharacter());
-    }
 
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {

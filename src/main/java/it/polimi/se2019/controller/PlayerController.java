@@ -132,7 +132,11 @@ public class PlayerController {
    */
   public void playTurn(Integer availableActions) throws UserTimeoutException{
     while (availableActions > 0){
-      switch (client.chooseAction(state.toString())) {
+      switch (
+              client.chooseAction(
+                      state.toString()
+              )
+      ) {
         case "run":
           state.runAround();
           availableActions--;
