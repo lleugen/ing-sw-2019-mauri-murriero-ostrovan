@@ -33,6 +33,11 @@ public class KillScoreBoard {
   private List<Integer> scoreBoardValue;
 
   /**
+   * Has one item for each kill and specifies whether that kills was an overkill
+   */
+  private List<Boolean> overKills;
+
+  /**
    *
    */
   private GameBoard gameBoard;
@@ -66,6 +71,14 @@ public class KillScoreBoard {
   }
 
   /**
+   * An overkill lets the player add one more mark on the scoreboard, but doesn't consume a skull
+   * @param overkill the player who scores the overkill
+   */
+  public synchronized void addOverKill(Boolean overkill){
+    this.overKills.add(overkill);
+  }
+
+  /**
    * Add a double kill to the scoreboard
    *
    * @param player the player who made the double kill
@@ -77,6 +90,10 @@ public class KillScoreBoard {
 
   public List<Player> getKills(){
     return kills;
+  }
+
+  public List<Boolean> getOverKills(){
+    return overKills;
   }
   public List<Player> getDoubleKills(){
     return doubleKills;
