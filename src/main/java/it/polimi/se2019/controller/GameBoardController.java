@@ -218,6 +218,7 @@ public class GameBoardController{
         sendInfo();
         playerControllers.get(currentPlayer).playTurn
               (playerControllers.get(currentPlayer).getState().getAvailableActions());
+        endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -231,6 +232,7 @@ public class GameBoardController{
         currentPlayer = 0;
       }
     }
+    gameBoard.getKillScoreBoard().resolveScoreboard();
   }
 
 
@@ -296,6 +298,7 @@ public class GameBoardController{
       }
       for (int i = 0; i < gameBoard.getKillScoreBoard().getKills().size(); i++) {
         killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getKills().get(i).getName());
+        killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getOverKills().get(i) ? "true" : "false");
       }
       for (int i = 0; i < gameBoard.getKillScoreBoard().getDoubleKills().size(); i++) {
         killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getDoubleKills().get(i).getName());
@@ -314,9 +317,15 @@ public class GameBoardController{
    */
   private void endOfTurnDeathResolution() throws UserTimeoutException{
     PlayerController currentPlayerController;
+    Integer numberOfDeaths = 0;
     for(Player p : players){
       if(p.getBoard().getDamageReceived().size() > 11){
+        if(numberOfDeaths > 0){
+          gameBoard.getKillScoreBoard().addDoubleKill(p.getBoard().getDamageReceived()
+                  .get(p.getBoard().getDamageReceived().size() -1));
+        }
         p.resolveDeath();
+        numberOfDeaths ++;
         for(PlayerController pc : playerControllers){
           if(pc.getName().equals(p.getName())){
             currentPlayerController = pc;
