@@ -1,28 +1,55 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.view.GUIcontrollers.*;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
+import java.io.IOException;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class GUI extends UnicastRemoteObject
-        implements ViewFacadeInterfaceRMIClient {
-  public GUI() throws RemoteException {
+        implements ViewFacadeInterfaceRMIClient{
 
+  private ActionSetView actionSetWindow;
+  private GUIWeaponLoader weaponLoaderWindow;
+  private GUIMapChooser mapChooserWindow;
+  private GUIPlayersNumber playersNumberWindow;
+  private GUISpawnLocation spawnLocationWindow;
+  private GUIWeaponChooser weaponChooserWindow;
+  private GUITargetChoose targetChooseWindow;
+  private GUIPowerUpsChooser powerUpsChooserWindow;
+
+  private String nickname, character, characterFolder;
+
+  public GUI(String nickname, String character) throws RemoteException {
+    this.nickname = nickname;
+    this.character = character;
+    for(int i = 0; i < GUILogin.charactersNames.length; i++)
+      if(GUILogin.charactersNames[i].equals(character))
+        characterFolder = "char" + i;
   }
-  
+
   /**
    *
    */
   @Override
   public String getName()  {
-    // TODO ricky
-    System.out.println("getName");
-    return System.console().readLine();
+    return nickname;
+  }
+
+  @Override
+  public String getCharacter(){
+    return character;
   }
 
   /**
@@ -30,9 +57,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseAction(String state)  {
-    // TODO ricky
-    System.out.println("chooseAction");
-    return System.console().readLine();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    actionSetWindow = new ActionSetView(state, characterFolder);
+    loader.setController(actionSetWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (String)secondaryStage.showAndGetResult(actionSetWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return "Trovato errore nella scelta dell'azione...";
+    }
   }
 
   /**
@@ -41,9 +80,21 @@ public class GUI extends UnicastRemoteObject
   @Override
   public int chooseSpawnLocation(List<String> powerUps)
   {
-    // TODO ricky
-    System.out.println("chooseSpawnLocation");
-    return Integer.parseInt(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    spawnLocationWindow = new GUISpawnLocation(powerUps);
+    loader.setController(spawnLocationWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (int)secondaryStage.showAndGetResult(spawnLocationWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return 0;
+    }
   }
 
   /**
@@ -51,9 +102,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseMap()  {
-    // TODO ricky
-    System.out.println("chooseMap");
-    return Integer.parseInt(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    mapChooserWindow = new GUIMapChooser();
+    loader.setController(mapChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (int)secondaryStage.showAndGetResult(mapChooserWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return -1;
+    }
   }
 
   /**
@@ -61,9 +124,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseNumberOfPlayers()  {
-    // TODO ricky
-    System.out.println("chooseNumberOfPlayers");
-    return Integer.parseInt(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    playersNumberWindow = new GUIPlayersNumber();
+    loader.setController(playersNumberWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (int)secondaryStage.showAndGetResult(playersNumberWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return 1;
+    }
   }
 
   /**
@@ -71,9 +146,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseWeapon(List<String> weapons)  {
-    // TODO ricky
-    System.out.println("chooseWeapon");
-    return System.console().readLine();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    weaponChooserWindow = new GUIWeaponChooser(weapons);
+    loader.setController(weaponChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (String)secondaryStage.showAndGetResult(weaponChooserWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return weapons.get(0);
+    }
   }
 
   /**
@@ -83,10 +170,25 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseTargets(List<String> possibleTargets)
-  {
-    // TODO ricky
-    System.out.println("chooseTargets");
-    return System.console().readLine();
+  {List<String> targetsFolders = new ArrayList<>();
+    for(int i = 0; i < possibleTargets.size(); i++)
+      targetsFolders.add("char" + GUILogin.indexOfCharacter(possibleTargets.get(i)));
+
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
+    loader.setController(targetChooseWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (String)secondaryStage.showAndGetResult(targetChooseWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return possibleTargets.get(0);
+    }
   }
 
   /**
@@ -96,9 +198,21 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseWeaponToReload(List<String> weapons)
   {
-    // TODO ricky
-    System.out.println("chooseWeaponToReload");
-    return System.console().readLine();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    weaponLoaderWindow = new GUIWeaponLoader(weapons);
+    loader.setController(weaponLoaderWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (String)secondaryStage.showAndGetResult(weaponLoaderWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return "";
+    }
   }
 
   /**
@@ -108,11 +222,33 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> choosePowerUpCardsForReload(List<String> powerUps)
   {
-    // TODO ricky
-    System.out.println("choosePowerUpCardsForReload");
-    return Arrays.stream(System.console().readLine().split(" "))
-            .map(Integer::parseInt)
-            .collect(Collectors.toList());
+    List<Integer> chosenInt = new ArrayList<>();
+    int lastAnswer = -1;
+    boolean keepAsking = true;
+
+    while ((keepAsking) && (chosenInt.size() < powerUps.size())){
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+      powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
+      loader.setController(powerUpsChooserWindow);
+
+      try {
+        Parent root = loader.load();
+        MyStage secondaryStage = new MyStage();
+        secondaryStage.setScene(new Scene(root));
+
+        lastAnswer = (int) secondaryStage.showAndGetResult(powerUpsChooserWindow);
+      } catch (IOException e) {
+        e.printStackTrace();
+        lastAnswer = -1;
+      }
+      if(lastAnswer != -1){
+        chosenInt.add(lastAnswer);
+      }else
+        keepAsking = false;
+    }
+    return chosenInt;
+
   }
 
   /**

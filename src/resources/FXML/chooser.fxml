@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="900.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="questionText" fx:id="questionLabel" alignment="TOP_CENTER" layoutX="11.0" layoutY="31.0" prefHeight="209.0" prefWidth="160.0" text="Witch weapon do you want to use?" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="729.0" AnchorPane.topAnchor="31.0">
+         <font>
+            <Font name="Segoe UI Bold" size="20.0" />
+         </font>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </Label>
+      <HBox id="choicesBox" fx:id="choicesBox" alignment="CENTER" layoutX="183.0" layoutY="4.0" prefHeight="244.0" prefWidth="707.0" spacing="10.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="4.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="192.0" prefWidth="113.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="183.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/characters/char0/icon.png" />
+                     </image>
+                  </ImageView>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-radius: 5;" text="Adrenalina (Red)" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="192.0" prefWidth="113.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="203.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/characters/char0/icon.png" />
+                     </image>
+                  </ImageView>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-radius: 5;" text="THIS" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="192.0" prefWidth="113.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="203.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/characters/char0/icon.png" />
+                     </image>
+                  </ImageView>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-radius: 5;" text="THIS" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="192.0" prefWidth="113.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="203.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/characters/char0/icon.png" />
+                     </image>
+                  </ImageView>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-radius: 5;" text="THIS" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="192.0" prefWidth="113.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="203.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/characters/char0/icon.png" />
+                     </image>
+                  </ImageView>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="140.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-radius: 5;" text="THIS" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Segoe UI Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button id="skipChoiceButton" fx:id="skipButton" layoutX="21.0" layoutY="192.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="141.0" style="-fx-background-color: #000000; -fx-border-color: #ff0000; -fx-border-radius: 5; -fx-border-width: 2;" text="SKIP CHOICE" textFill="RED">
+         <font>
+            <Font name="Segoe UI Bold" size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

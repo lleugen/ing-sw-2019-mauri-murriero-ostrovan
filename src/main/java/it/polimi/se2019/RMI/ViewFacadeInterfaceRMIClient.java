@@ -15,6 +15,11 @@ public interface ViewFacadeInterfaceRMIClient extends Remote, Serializable {
     /**
      *
      */
+    String getCharacter() throws RemoteException;
+
+    /**
+     *
+     */
     String chooseAction(String state) throws RemoteException;
 
     /**

@@ -1,7 +1,15 @@
 package it.polimi.se2019.view;
 
+import com.sun.deploy.util.FXLoader;
 import it.polimi.se2019.RMI.ServerLobbyInterface;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.view.GUIcontrollers.GUILogin;
+import it.polimi.se2019.view.GUIcontrollers.MyStage;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
@@ -11,11 +19,12 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Client {
+public class Client extends Application {
   /**
    * Namespace this class logs to
    */
   private static final String LOG_NAMESPACE = "App";
+  private String nickname, character;
 
   /**
    * Init a new client
@@ -33,7 +42,10 @@ public class Client {
 
       switch (ui){
         case "gui":
-          generatedUi = new GUI();
+          launch();
+          generateLoginWindow(name);
+          generatedUi = new GUI(nickname, character);
+          name = nickname;
           break;
         case "cli":
           generatedUi = new CLI();
@@ -60,6 +72,31 @@ public class Client {
               e
       );
     }
+  }
+
+  private void generateLoginWindow(String firstName){
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/login.fxml"));
+    GUILogin loginController = new GUILogin(firstName);
+    MyStage loginStage = new MyStage();
+
+    try {
+      loader.setController(loginController);
+      Parent log = loader.load();
+      loginStage.setScene(new Scene(log));
+    } catch (Exception e){
+      e.printStackTrace();
+    }
+    String info = (String)loginStage.showAndGetResult(loginController);
+    nickname = info.split("%")[0];
+    character = info.split("%")[1];
+  }
+
+  public void start(Stage primaryStage) throws Exception{
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/mainwindow.fxml"));
+    Parent root = loader.load();
+    primaryStage.setScene(new Scene(root));
+
+    primaryStage.show();
   }
 
   private void findLobby(String host, String client){

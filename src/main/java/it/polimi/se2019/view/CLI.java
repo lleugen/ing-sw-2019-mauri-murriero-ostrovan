@@ -175,6 +175,9 @@ public final class CLI extends UnicastRemoteObject
         return name;
     }
 
+    @Override
+    public String getCharacter() { return ""; }
+
     public void inputName(){
         markSection("What is your name?");
         displayRender();
