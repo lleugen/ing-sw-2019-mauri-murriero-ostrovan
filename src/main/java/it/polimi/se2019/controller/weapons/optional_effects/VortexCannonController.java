@@ -39,7 +39,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
       targets.add(
               gameBoardController.identifyPlayer(
                       client.chooseTargets(
-                              gameBoardController.getPlayerNames(
+                              GameBoardController.getPlayerNames(
                                       map.getPlayersOnSquares(
                                               map.getReachableSquares(
                                                       vortex,
@@ -69,7 +69,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
       if(firingMode.get(1)){
         Player target1 = gameBoardController.identifyPlayer
                 (client.chooseTargets
-                        (gameBoardController.getPlayerNames(oneMoveAwayFromvortex)));
+                        (GameBoardController.getPlayerNames(oneMoveAwayFromvortex)));
         target1.moveToSquare(vortex);
         target1.takeDamage(shooter, 1);
         //add one more point of damage if the player chooses to use a targeting scope
@@ -82,7 +82,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
 
         Player target2 = gameBoardController.identifyPlayer
                 (client.chooseTargets
-                        (gameBoardController.getPlayerNames(oneMoveAwayFromvortex)));
+                        (GameBoardController.getPlayerNames(oneMoveAwayFromvortex)));
         target2.moveToSquare(vortex);
         target2.takeDamage(shooter, 2);
         //add one more point of damage if the player chooses to use a targeting scope

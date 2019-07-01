@@ -49,7 +49,7 @@ public class TractorBeamController extends OptionalEffectWeaponController {
     }
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
-                      (gameBoardController.getPlayerNames(possibletargets))));
+                      (GameBoardController.getPlayerNames(possibletargets))));
 
 
     return targets;

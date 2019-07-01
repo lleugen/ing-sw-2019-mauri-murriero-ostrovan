@@ -7,7 +7,6 @@ import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,11 +70,9 @@ public abstract class WeaponController {
    * Create a list of valid targets, choose targets and shoot them.
    */
   public void fire(Player player, PlayerViewOnServer client) throws UserTimeoutException {
-    List<Player> chosenTargets = new ArrayList<>();
+    this.firingMode = selectFiringMode(client);
 
-    firingMode = selectFiringMode(client);
-
-    chosenTargets = findTargets(player);
+    List<Player> chosenTargets = findTargets(player);
 
     shootTargets(player, chosenTargets);
   }
@@ -89,7 +86,7 @@ public abstract class WeaponController {
       Player p = null;
       PlayerViewOnServer client = identifyClient(shooter);
       p = gameBoardController.identifyPlayer
-              (client.chooseTargets(gameBoardController.getPlayerNames(possibleTargets)));
+              (client.chooseTargets(GameBoardController.getPlayerNames(possibleTargets)));
 
       return p;
   }
@@ -100,12 +97,6 @@ public abstract class WeaponController {
    * Find all possible targets
    */
   public abstract List<Player> findTargets(Player shooter) throws UserTimeoutException;
-
-  /*
-   * Choose targets from the list of possible targets
-   *
-  public abstract List<Player> chooseTargets(List<Player> possibleTargets);
-  */
 
   /**
    * Apply the weapon's effects on selected targets.

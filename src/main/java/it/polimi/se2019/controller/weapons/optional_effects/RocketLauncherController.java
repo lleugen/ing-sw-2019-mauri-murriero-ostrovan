@@ -36,7 +36,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
     List<Player> targets = new ArrayList<>();
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
-                      (gameBoardController.getPlayerNames(possibleTargets))));
+                      (GameBoardController.getPlayerNames(possibleTargets))));
 
     return targets;
   }

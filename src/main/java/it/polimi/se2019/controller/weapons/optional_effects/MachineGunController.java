@@ -27,11 +27,10 @@ public class MachineGunController extends OptionalEffectWeaponController {
                     shooter.getPosition()
             )
     );
-    List<String> possibleTargetNames = gameBoardController.getPlayerNames(visiblePlayers);
+    List<String> possibleTargetNames = GameBoardController.getPlayerNames(visiblePlayers);
 
     targets.add(gameBoardController.identifyPlayer
             (client.chooseTargets(possibleTargetNames)));
-    //possibleTargetNames.remove(targets.get(0).getName());
     targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets(possibleTargetNames)));
 
@@ -48,7 +47,7 @@ public class MachineGunController extends OptionalEffectWeaponController {
                     shooter.getPosition()
             )
     );
-    List<String> targetNames = gameBoardController.getPlayerNames(targets);
+    List<String> targetNames = GameBoardController.getPlayerNames(targets);
     for(Player p : targets){
       p.takeDamage(shooter, 1);
       //add one more point of damage if the player chooses to use a targeting scope
@@ -84,7 +83,7 @@ public class MachineGunController extends OptionalEffectWeaponController {
       //if the damaged target has a tagback gredade, he/she can use it now
       useTagbackGrenade(gameBoardController.identifyPlayer(secondTarget));
       Player thirdTargetPlayer = gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets(gameBoardController.getPlayerNames(visiblePlayers)));
+              (identifyClient(shooter).chooseTargets(GameBoardController.getPlayerNames(visiblePlayers)));
       thirdTargetPlayer.takeDamage(shooter, 1);
       //add one more point of damage if the player chooses to use a targeting scope
       if(useTargetingScope(shooter)){

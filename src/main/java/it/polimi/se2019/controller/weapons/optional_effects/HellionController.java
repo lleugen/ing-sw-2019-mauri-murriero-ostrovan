@@ -7,6 +7,7 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HellionController extends OptionalEffectWeaponController {
   public HellionController(GameBoardController g) {
@@ -21,24 +22,27 @@ public class HellionController extends OptionalEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     //choose one target player at least one move away
-    List<Player> possibleTargets = map.getPlayersOnSquares(
+    List<Player> selectedPlayers = map.getPlayersOnSquares(
             map.getVisibleSquares(
                     shooter.getPosition()
             )
     );
-    List<Player> toRemove = new ArrayList<>();
-    for(Player p : possibleTargets){
-      if(p.getPosition().equals(shooter.getPosition())){
-        toRemove.add(p);
-      }
-    }
-    possibleTargets.remove(toRemove);
-    List<Player> targets = new ArrayList<>();
-      targets.add(gameBoardController.identifyPlayer
-              (identifyClient(shooter).chooseTargets
-                      (gameBoardController.getPlayerNames(possibleTargets))));
 
-    return targets;
+    selectedPlayers = selectedPlayers.stream()
+            .filter((Player p) ->
+                    !(p.getPosition().equals(shooter.getPosition()))
+            )
+            .collect(Collectors.toList());
+
+    List<Player> toReturn = new ArrayList<>();
+    toReturn.add(
+            gameBoardController.identifyPlayer(
+                    identifyClient(shooter).chooseTargets(
+                            GameBoardController.getPlayerNames(selectedPlayers)
+                    )
+            )
+    );
+    return toReturn;
   }
 
   @Override

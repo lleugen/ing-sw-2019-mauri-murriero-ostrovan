@@ -44,7 +44,7 @@ public class WhisperController extends SimpleWeaponController {
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);
       targets.add(gameBoardController.identifyPlayer(client.chooseTargets
-              (gameBoardController.getPlayerNames(visiblePlayers))));
+              (GameBoardController.getPlayerNames(visiblePlayers))));
 
 
     return targets;

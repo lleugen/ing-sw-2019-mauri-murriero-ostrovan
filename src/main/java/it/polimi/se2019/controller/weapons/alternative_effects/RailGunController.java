@@ -43,7 +43,7 @@ public class RailGunController extends AlternativeEffectWeaponController {
       currentSquare = currentSquare.getAdjacencies().get(direction).getSquare();
     }
     //get their names
-    List<String> possibleTargetNames = gameBoardController.getPlayerNames(possibleTargets);
+    List<String> possibleTargetNames = GameBoardController.getPlayerNames(possibleTargets);
     //choose targets
     targets = new ArrayList<>();
     firingMode = selectFiringMode(client);

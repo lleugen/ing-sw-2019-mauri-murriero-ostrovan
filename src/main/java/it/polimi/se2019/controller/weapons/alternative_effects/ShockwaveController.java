@@ -38,7 +38,7 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
         //choose one player from all those on the square and add it to the target list
         targets.add(gameBoardController.identifyPlayer
                 (client.chooseTargets
-                        (gameBoardController.getPlayerNames
+                        (GameBoardController.getPlayerNames
                                 (map.getPlayersOnSquares(
                                         map.getReachableSquares(
                                                 targetSquares.get(i),

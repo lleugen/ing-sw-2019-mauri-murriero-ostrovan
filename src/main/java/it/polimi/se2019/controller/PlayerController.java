@@ -9,6 +9,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +22,11 @@ import java.util.stream.Collectors;
  * complex actions that a player can make during a turn
  */
 public class PlayerController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "PlayerController";
+
   private PlayerViewOnServer client;
   private Player player;
   private PlayerStateController state;
@@ -124,28 +131,34 @@ public class PlayerController {
    * Take turn
    */
   public void playTurn(Integer availableActions) throws UserTimeoutException{
-    //use power up
-    for(int i = 0; i<availableActions; i++){
-      String chosenAction;
-      chosenAction = client.chooseAction(state.toString());
-
-      if(chosenAction.equals("run")){
-        state.runAround();
-      }
-      else if(chosenAction.equals("grab")){
-        state.grabStuff();
-      }
-      else if(chosenAction.equals("shoot")){
-        state.shootPeople();
-      }
-      else if(chosenAction.equals("powerUp")){
-        i--;
-        state.usePowerUp();
+    while (availableActions > 0){
+      switch (client.chooseAction(state.toString())) {
+        case "run":
+          state.runAround();
+          availableActions--;
+          break;
+        case "grab":
+          state.grabStuff();
+          availableActions--;
+          break;
+        case "shoot":
+          state.shootPeople();
+          availableActions--;
+          break;
+        case "powerUp":
+          state.usePowerUp();
+          break;
+        default:
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "User selected a wrong action {0}",
+                  state
+          );
       }
     }
   }
 
   public PlayerViewOnServer getClient(){
-    return client;
+    return this.client;
   }
 }
