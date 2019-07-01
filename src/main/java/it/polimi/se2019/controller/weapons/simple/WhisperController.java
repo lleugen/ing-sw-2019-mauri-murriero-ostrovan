@@ -30,14 +30,16 @@ public class WhisperController extends SimpleWeaponController {
             )
     );
     List<Integer> positionCoordinates = map.getSquareCoordinates(shooter.getPosition());
+    List<Player> toRemove = new ArrayList<>();
     for(Player p : visiblePlayers){
       if((map.getSquareCoordinates(p.getPosition()).get(0) > positionCoordinates.get(0) - 1) ||
               (map.getSquareCoordinates(p.getPosition()).get(0) < positionCoordinates.get(0) + 1) ||
               (map.getSquareCoordinates(p.getPosition()).get(1) > positionCoordinates.get(1) - 1) ||
               (map.getSquareCoordinates(p.getPosition()).get(1) < positionCoordinates.get(1) + 1)){
-        visiblePlayers.remove(p);
+        toRemove.add(p);
       }
     }
+    visiblePlayers.removeAll(toRemove);
     //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);

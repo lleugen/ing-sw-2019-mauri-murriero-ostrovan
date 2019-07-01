@@ -20,7 +20,7 @@ public class ThorController extends OrderedEffectsWeaponController {
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
     PlayerViewOnServer client = identifyClient(shooter);
-
+    firingMode = selectFiringMode(client);
     int chainLength = 0;
     for(int i = 0; i<numberOfOptionalEffects; i++){
       if(firingMode.get(i)){
