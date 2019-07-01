@@ -69,8 +69,5 @@ public class SpawnSquare extends Square {
         weaponList.add(newWeapon);
       }
     }
-    else{
-      System.err.println("decks is null");
-    }
   }
 }

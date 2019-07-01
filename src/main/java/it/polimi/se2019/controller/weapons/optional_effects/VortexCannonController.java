@@ -23,7 +23,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
   @Override
   public List<Player> findTargets(Player shooter) throws UserTimeoutException{
     client = identifyClient(shooter);
-    List<Integer> vortexCoordinates = new ArrayList<>();
+    List<Integer> vortexCoordinates;
     List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
     List<List<Integer>> visibleSquareCoordinates = new ArrayList<>();
     for(Square q : visibleSquares){

@@ -51,7 +51,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
       availableEffects.add("rocket jump");
     }
     Integer chosenEffect;
-    List<Player> internalTargets = targets;
+    List<Player> internalTargets;
 
     while(firingMode.contains(true)){
       //choose which effect to apply

@@ -376,7 +376,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
     /**
      * Timeout (in second) before UserTimeoutException is raised
      */
-    private static final int TIMEOUT = 2;
+    private static final int TIMEOUT = 5;
 
     /**
      * TransferQueue for the object

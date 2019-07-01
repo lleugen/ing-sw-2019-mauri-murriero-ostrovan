@@ -17,11 +17,6 @@ public abstract class Square {
   /**
    *
    */
-  private Grabbable item;
-
-  /**
-   *
-   */
   private Decks decks;
 
   /**

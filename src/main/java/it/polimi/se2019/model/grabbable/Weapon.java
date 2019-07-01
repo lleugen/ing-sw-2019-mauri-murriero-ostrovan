@@ -93,19 +93,18 @@ public class Weapon extends Grabbable {
         }
         powerUpCardsToDiscard.add(powerUp);
       }
-      for(PowerUpCard p : powerUpCardsToDiscard){
-        this.owner.getInventory().discardPowerUp(p);
-      }
-      if(playerAmmoBox.getRed() >= (reloadCost.getRed() - redPowerUpCards)){
-        if(playerAmmoBox.getBlue() >= (reloadCost.getBlue() - bluePowerUpCards)){
-          if(playerAmmoBox.getYellow() >= (reloadCost.getYellow() - yellowPowerUpCards)){
-            playerAmmoBox.useRed(reloadCost.getRed() - redPowerUpCards);
-            playerAmmoBox.useBlue(reloadCost.getBlue() - bluePowerUpCards);
-            playerAmmoBox.useYellow(reloadCost.getYellow() - yellowPowerUpCards);
-            this.loaded = true;
-            result = true;
-          }
-        }
+      powerUpCardsToDiscard.forEach(this.owner.getInventory()::discardPowerUp);
+
+      if(
+              playerAmmoBox.getRed() >= (reloadCost.getRed() - redPowerUpCards) &&
+              playerAmmoBox.getBlue() >= (reloadCost.getBlue() - bluePowerUpCards) &&
+              playerAmmoBox.getYellow() >= (reloadCost.getYellow() - yellowPowerUpCards)
+      ){
+        playerAmmoBox.useRed(reloadCost.getRed() - redPowerUpCards);
+        playerAmmoBox.useBlue(reloadCost.getBlue() - bluePowerUpCards);
+        playerAmmoBox.useYellow(reloadCost.getYellow() - yellowPowerUpCards);
+        this.loaded = true;
+        result = true;
       }
     }
     return result;
