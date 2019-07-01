@@ -10,11 +10,13 @@ import it.polimi.se2019.model.grabbable.*;
 import it.polimi.se2019.model.map.*;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -24,8 +26,12 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class TestMoveAndGrab {
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
     @Mock
     PlayerViewOnServer client;
     @Mock

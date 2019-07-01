@@ -12,10 +12,12 @@ import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.jws.soap.SOAPBinding;
@@ -23,8 +25,12 @@ import javax.jws.soap.SOAPBinding;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.fail;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class TestAmmoSquare {
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
     @Test
     public void checkRefill() throws UnknownMapTypeException {
         GameBoard gameBoard = new GameBoard(0);

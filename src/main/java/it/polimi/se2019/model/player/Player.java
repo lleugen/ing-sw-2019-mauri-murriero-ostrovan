@@ -61,10 +61,14 @@ public class Player {
   private int state;
 
   /**
-   *
+   * The reference to the game board that this player is playing on
    */
   private GameBoard gameBoardReference;
 
+  /**
+   *
+   * @return the state that this player is currently in
+   */
   public int getState(){
     return state;
   }
@@ -149,12 +153,16 @@ public class Player {
   }
 
   /**
-   * Move the player
+   * Move the player in the specified direction
    */
   public void move(Direction direction) {
     this.position = direction.getSquare();
   }
 
+  /**
+   * Move the player to the argument square
+   * @param destination the square where the player will move
+   */
   public void moveToSquare(Square destination){
     position = destination;
   }

@@ -14,35 +14,55 @@ import java.util.stream.Collectors;
  */
 public class Map {
   /**
-   *
+   * The top left square of the map
    */
   private Square root;
 
   /**
-   * the game board this map belongs to
+   * The game board this map belongs to
    */
   private GameBoard gameBoard;
 
   /**
-   *
+   * The matrix of all the squares that make the map
    */
   private Square[][] mapSquares;
 
   /**
-   *
+   * Points to the square that is the red spawn point
    */
   private Square redSpawnPoint;
+  /**
+   * Points to the square that is the blue spawn point
+   */
   private Square blueSpawnPoint;
+  /**
+   * Points to the square that is the yellow spawn point
+   */
   private Square yellowSpawnPoint;
+
+  /**
+   * @return a pointer to the red spawn point
+   */
   public Square getRedSpawnPoint(){
     return redSpawnPoint;
   }
+  /**
+   * @return a pointer to the blue spawn point
+   */
   public Square getBlueSpawnPoint(){
     return blueSpawnPoint;
   }
+  /**
+   * @return a pointer to the yellow spawn point
+   */
   public Square getYellowSpawnPoint(){
     return yellowSpawnPoint;
   }
+
+  /**
+   * @return a pointer to the game board that this map belongs to
+   */
   public GameBoard getGameBoard(){
     return gameBoard;
   }
@@ -114,6 +134,10 @@ public class Map {
     }
   }
 
+  /**
+   *
+   * @return the matrix of all the squares of the map
+   */
   public Square[][]getMapSquares(){
     return mapSquares;
   }
