@@ -24,14 +24,19 @@ public class TestDecks {
             List<Weapon> weapons = new ArrayList<>();
             List<PowerUpCard> powerUpCards = new ArrayList<>();
             List<AmmoTile> ammoTiles = new ArrayList<>();
-            for(int i = 0; i<3; i++){
-                weapons.add(decks.drawWeapon());
-                powerUpCards.add(decks.drawPowerUp());
-                ammoTiles.add(decks.drawAmmoTile());
-            }
-            Deck weaponDeck = new Deck(weapons);
-            Deck powerDeck = new Deck(powerUpCards);
-            Deck ammoDeck = new Deck(ammoTiles);
+            weapons.add(decks.drawWeapon());
+            powerUpCards.add(decks.drawPowerUp());
+            ammoTiles.add(decks.drawAmmoTile());
+            Decks testDecks = new Decks(weapons, powerUpCards, ammoTiles);
+            Weapon drawnWeapon = testDecks.drawWeapon();
+            PowerUpCard drawnPower = testDecks.drawPowerUp();
+            AmmoTile drawAmmo = testDecks.drawAmmoTile();
+            testDecks.discardWeapon(drawnWeapon);
+            testDecks.discardPowerUp(drawnPower);
+            testDecks.discardAmmoTile(drawAmmo);
+            assertTrue(drawnWeapon.equals(testDecks.drawWeapon()));
+            assertTrue(drawnPower.equals(testDecks.drawPowerUp()));
+            assertTrue(drawAmmo.equals(testDecks.drawAmmoTile()));
 
 
         }
