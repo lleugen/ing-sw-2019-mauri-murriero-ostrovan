@@ -26,11 +26,13 @@ public class HellionController extends OptionalEffectWeaponController {
                     shooter.getPosition()
             )
     );
+    List<Player> toRemove = new ArrayList<>();
     for(Player p : possibleTargets){
       if(p.getPosition().equals(shooter.getPosition())){
-        possibleTargets.remove(p);
+        toRemove.add(p);
       }
     }
+    possibleTargets.remove(toRemove);
     List<Player> targets = new ArrayList<>();
       targets.add(gameBoardController.identifyPlayer
               (identifyClient(shooter).chooseTargets

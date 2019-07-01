@@ -21,6 +21,7 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
+    firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       //choose target squares
       List<Square> targetSquares = new ArrayList<>();

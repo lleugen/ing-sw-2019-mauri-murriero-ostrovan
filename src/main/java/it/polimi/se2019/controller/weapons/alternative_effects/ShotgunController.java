@@ -21,6 +21,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
+    firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       //basic mode, shoot one target on your square
       targets.add(gameBoardController.identifyPlayer
