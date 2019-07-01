@@ -28,8 +28,12 @@ public class GUI extends UnicastRemoteObject
   private GUIWeaponChooser weaponChooserWindow;
   private GUITargetChoose targetChooseWindow;
   private GUIPowerUpsChooser powerUpsChooserWindow;
+  private GUIEffectChooser effectChooserWindow;
+  private GUIDirectionChooser directionChooserWindow;
+  private GUIBooleanQuestion booleanQuestionWindow;
 
   private String nickname, character, characterFolder;
+  private String lastWeaponSelected, lastMapSelected;
 
   public GUI(String nickname, String character) throws RemoteException {
     this.nickname = nickname;
@@ -112,7 +116,9 @@ public class GUI extends UnicastRemoteObject
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
 
-      return (int)secondaryStage.showAndGetResult(mapChooserWindow);
+      int res = (int)secondaryStage.showAndGetResult(mapChooserWindow);
+      lastMapSelected = "map" + res;
+      return res;
     }catch(IOException e){
       e.printStackTrace();
       return -1;
@@ -124,7 +130,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseNumberOfPlayers()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/playernumberchooser.fxml"));
 
     playersNumberWindow = new GUIPlayersNumber();
     loader.setController(playersNumberWindow);
@@ -156,7 +162,8 @@ public class GUI extends UnicastRemoteObject
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
 
-      return (String)secondaryStage.showAndGetResult(weaponChooserWindow);
+      lastWeaponSelected = (String)secondaryStage.showAndGetResult(weaponChooserWindow);
+      return lastWeaponSelected;
     }catch(IOException e){
       e.printStackTrace();
       return weapons.get(0);
@@ -170,7 +177,9 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseTargets(List<String> possibleTargets)
-  {List<String> targetsFolders = new ArrayList<>();
+  {
+    // TODO: Modificare con una lettura del character corrispondente, ora si aspetta i character anzichè i players
+    List<String> targetsFolders = new ArrayList<>();
     for(int i = 0; i < possibleTargets.size(); i++)
       targetsFolders.add("char" + GUILogin.indexOfCharacter(possibleTargets.get(i)));
 
@@ -257,9 +266,21 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseIndex(List<String> availableEffects)
   {
-    // TODO ricky
-    System.out.println("chooseIndex");
-    return Integer.parseInt(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/effectchooser.fxml"));
+
+    effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
+    loader.setController(effectChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (int)secondaryStage.showAndGetResult(effectChooserWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return -1;
+    }
   }
 
   /**
@@ -278,9 +299,21 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Boolean chooseFiringMode(String description)
   {
-    // TODO ricky
-    System.out.println("chooseFiringMode");
-    return Boolean.parseBoolean(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/booleanquestion.fxml"));
+
+    booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
+    loader.setController(booleanQuestionWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (Boolean)secondaryStage.showAndGetResult(booleanQuestionWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return false;
+    }
   }
 
   /**
@@ -288,9 +321,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public Boolean chooseBoolean(String description)  {
-    // TODO ricky
-    System.out.println("chooseBoolean");
-    return Boolean.parseBoolean(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/booleanquestion.fxml"));
+
+    booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
+    loader.setController(booleanQuestionWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (Boolean)secondaryStage.showAndGetResult(booleanQuestionWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return false;
+    }
   }
 
   /**
@@ -323,9 +368,22 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections)
   {
-    // TODO ricky
-    System.out.println("chooseDirection");
-    return Integer.parseInt(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/movement.fxml"));
+
+    directionChooserWindow = new GUIDirectionChooser(possibleDirections);
+    loader.setController(directionChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      int res = (int)secondaryStage.showAndGetResult(directionChooserWindow);
+      return res;
+    }catch(IOException e){
+      e.printStackTrace();
+      return -1;
+    }
   }
 
   @Override

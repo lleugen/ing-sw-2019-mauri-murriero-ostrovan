@@ -26,7 +26,7 @@ public class GUIMapChooser extends GUIGenericWindow {
      */
     public GUIMapChooser() {
         super();
-        btnsNames = new String[] {"0", "1", "2", "3"};
+        btnsNames = new String[] {"Ottima per 3/4 giocatori", "Buona per qualsiasi numero di giocatori", "Perfetta per 4/5 giocatori", "Mappa bonus"};
         result = "";
     }
 
@@ -37,7 +37,7 @@ public class GUIMapChooser extends GUIGenericWindow {
             if(i < btnsNames.length){
                 ((ImageView)currentChoiceObj.getChildren().get(0)).setImage(new Image(getURLOfImage("images/maps/map" + btnsNames[i] + "/map.png")));
                 ((Button)currentChoiceObj.getChildren().get(1)).setText(btnsNames[i]);
-                setOnActionEffect(((Button)currentChoiceObj.getChildren().get(1)), ((Button)currentChoiceObj.getChildren().get(1)).getText());
+                setOnActionEffect(((Button)currentChoiceObj.getChildren().get(1)), String.valueOf(i));
                 currentChoiceObj.setVisible(true);
             }else{
                 currentChoiceObj.setVisible(false);
