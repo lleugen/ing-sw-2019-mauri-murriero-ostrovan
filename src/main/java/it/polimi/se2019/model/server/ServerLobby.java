@@ -9,22 +9,21 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.rmi.Remote;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ServerLobby implements Remote {
-  /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "ServerLobby";
-
   private Map<String, PlayerData> playersData;
   private Integer maxPlayers;
   private GameBoardController gameBoardController;
 
-  ServerLobby(Integer playerCount, Integer mapType) throws UnknownMapTypeException {
+  ServerLobby(Integer playerCount, Integer mapType)
+          throws UnknownMapTypeException {
     this.maxPlayers = playerCount;
     GameBoard gameBoard = new GameBoard(mapType);
+    gameBoard.createKillScoreBoard(
+            5,
+            new Integer[]{8, 6, 4, 2, 1, 1}
+    );
     this.gameBoardController = new GameBoardController(gameBoard);
     this.playersData = Collections.synchronizedMap(new HashMap<>());
   }
@@ -34,27 +33,17 @@ public class ServerLobby implements Remote {
    * current game
    *
    * @param name nickname of the player
+   * @param data PlayerData of the player
    *
-   * @return a reference to the created player, to be initialized
-   *         null if the player already exists
-   *
-   * @throws RoomFullException if the player can't be added cause the room
-   *                           is full
+   * @return true if the player was added with success, false otherwise
    */
-  private synchronized PlayerData addPlayer(String name)
-          throws RoomFullException {
-    if (this.checkRoomFull()){
-      throw new RoomFullException();
+  private synchronized boolean addPlayer(String name, PlayerData data){
+    if (this.playersData.containsKey(name)){
+      return false;
     }
     else {
-      if (this.checkPlayerExists(name)){
-        return null;
-      }
-      else {
-        PlayerData toReturn = new PlayerData();
-        this.playersData.put(name, toReturn);
-        return toReturn;
-      }
+      this.playersData.put(name, data);
+      return true;
     }
   }
 
@@ -68,50 +57,41 @@ public class ServerLobby implements Remote {
   }
 
   /**
-   * Check if a player is already registered to the lobby
-   *
-   * @param name name of the player to check
-   *
-   * @return true if the player is already registered, false otherwise
-   */
-  private boolean checkPlayerExists(String name){
-    return this.playersData.containsKey(name);
-  }
-
-  /**
    * Handle connections of players.
    * A player must call this method to connect to to the server
    *
    * @param client player's view
    * @param name name of the player
    * @param character id of the player's character
-   *
-   * @throws RoomFullException if the room is full
    */
-  public void connect(PlayerViewOnServer client, String name, String character)
-          throws RoomFullException {
-    PlayerData player;
-    List<PlayerController> playerControllers = new ArrayList<>();
-    PlayerController currentPlayerController;
+  public void connect(PlayerViewOnServer client, String name, String character) {
+    PlayerData player = new PlayerData();
+    Player playerModel = new Player(
+            name,
+            character,
+            this.gameBoardController.getGameBoard()
+    );
+    player.setModel(playerModel);
+    player.setController(
+            new PlayerController(
+                    this.gameBoardController,
+                    playerModel,
+                    client
+            )
+    );
+    player.setView(client);
 
-    player = this.addPlayer(name);
 
-    if (player != null) {
-      player.setModel(new Player(name, character, this.gameBoardController.getGameBoard()));
-      player.setView(client);
-      currentPlayerController = new PlayerController(this.gameBoardController, player.getModel(), player.getView());
-      player.setController(currentPlayerController);
-      playerControllers.add(currentPlayerController);
-
-      if (this.checkRoomFull()){
-        this.gameBoardController.startGame(playerControllers);
-      }
-    }
-    else {
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.INFO,
-              "<{0}> is already registered to this game",
-              name
+    if (this.addPlayer(name, player) && (this.checkRoomFull())){
+      this.gameBoardController.getGameBoard().addPlayers(
+              this.playersData.values().stream()
+                      .map(PlayerData::getModel)
+                      .collect(Collectors.toList())
+      );
+      this.gameBoardController.startGame(
+              this.playersData.values().stream()
+                      .map(PlayerData::getController)
+                      .collect(Collectors.toList())
       );
     }
   }

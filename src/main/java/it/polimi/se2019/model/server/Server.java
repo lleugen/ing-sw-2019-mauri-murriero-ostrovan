@@ -83,9 +83,6 @@ public class Server implements ServerLobbyInterface, Serializable {
               e
       );
     }
-    catch (ServerLobby.RoomFullException e){
-      // Checked before, never happens
-    }
   }
 
   /**

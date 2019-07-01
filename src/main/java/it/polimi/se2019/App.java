@@ -51,6 +51,7 @@ public class App {
   private static void initParams(String[] args){
     params = Arrays.stream(args)
             .map((String param) -> param.split("="))
+            .filter((String[] a) -> a.length == 2)
             .collect(Collectors.toMap(
                     (String[] item) -> item[0],
                     (String[] item) -> item[1]
