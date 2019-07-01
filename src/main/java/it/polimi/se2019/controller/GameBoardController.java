@@ -299,6 +299,9 @@ public class GameBoardController{
                       .collect(Collectors.toList())
       );
     }
+    else {
+      toReturn.add("Spawn");
+    }
 
     return toReturn;
   }
