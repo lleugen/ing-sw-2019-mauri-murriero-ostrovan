@@ -34,6 +34,9 @@ public class GUI extends UnicastRemoteObject
   private GUISquareChooser squareChooserWindow;
   private GUIRoomChooser roomChooserWindow;
 
+  private GUIPlayersBoard playersBoardWindow;
+  private MyStage playersStage;
+
   private String nickname, character, characterFolder;
   private String lastWeaponSelected, lastMapSelected;
 
@@ -180,10 +183,9 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseTargets(List<String> possibleTargets)
   {
-    // TODO: Modificare con una lettura del character corrispondente, ora si aspetta i character anzichè i players
     List<String> targetsFolders = new ArrayList<>();
     for(int i = 0; i < possibleTargets.size(); i++)
-      targetsFolders.add("char" + GUILogin.indexOfCharacter(possibleTargets.get(i)));
+      targetsFolders.add(playersBoardWindow.getCharacterFolder(possibleTargets.get(i)));
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
 
@@ -424,8 +426,9 @@ public class GUI extends UnicastRemoteObject
 
   @Override
   public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
-    // TODO ricky
-    System.out.println("sendPlayerInfo");
+    if(playersBoardWindow == null)
+      launchPlayersBoard();
+    playersBoardWindow.setPlayerInfo(playerInfo);
   }
 
   @Override
@@ -436,7 +439,25 @@ public class GUI extends UnicastRemoteObject
 
   @Override
   public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
-    // TODO ricky
-    System.out.println("sendKillScoreBoardInfo");
+    if(playersBoardWindow == null)
+      launchPlayersBoard();
+    playersBoardWindow.setCharacterInfo(characterInfo);
+  }
+
+  private void launchPlayersBoard(){
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/groupsheets.fxml"));
+
+    playersBoardWindow = new GUIPlayersBoard(getName());
+    loader.setController(playersBoardWindow);
+
+    try {
+      Parent root = loader.load();
+      playersStage = new MyStage();
+      playersStage.setScene(new Scene(root));
+
+      playersStage.show();
+    }catch(IOException e){
+      e.printStackTrace();
+    }
   }
 }
