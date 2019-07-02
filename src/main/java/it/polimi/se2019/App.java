@@ -65,9 +65,14 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    if (args.containsKey("host")) {
+    if (args.containsKey("host") && args.containsKey("lobbyTimeout")) {
       try {
-        new Server(args.get("host"));
+        new Server(
+                args.get("host"),
+                Integer.parseInt(
+                        args.get("lobbyTimeout")
+                )
+        );
       }
       catch (RemoteException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -77,9 +82,17 @@ public class App {
         );
         throw new WrongArguments("Unable to start RMI server");
       }
+      catch (NumberFormatException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while parsing lobbyTimeout",
+                e
+        );
+        throw new WrongArguments("Unable to parse lobbyTimeout param");
+      }
     }
     else {
-      throw new WrongArguments("Host param is required");
+      throw new WrongArguments("Host and lobbyTimeout params are required");
     }
   }
 
