@@ -36,25 +36,37 @@ public class Weapon extends Grabbable {
    */
   private String name;
 
+  /**
+   * The weapon controller associated to this weapon
+   */
   private WeaponController controller;
+  /**
+   * The description of the weapon
+   */
   private String description;
 
+  /**
+   *
+   * @return the weapon controller associated to the weapon
+   */
   public WeaponController getController() {
     return controller;
   }
 
+  /**
+   *
+   * @param controller the weapon controller associated to the weapon
+   */
   public void setController(WeaponController controller) {
     this.controller = controller;
   }
 
   /**
-   * Inits a new Weapon
+   * Initializes a new Weapon, new weapons are always loaded.
    *
-   * @param n
+   * @param n the name of the weapon
    * @param gCost   Cost to be paid for grabbing the weapon from a square
    * @param rCost Cost to pay for reloading the weapon
-   *                   <p>
-   *                   __WARN__ A weapon is ALWAYS initialized as loaded
    */
   public Weapon(String n, Ammo gCost, Ammo rCost) {
     this.grabCost = gCost;

@@ -33,7 +33,7 @@ public class KillScoreBoard {
   private List<Integer> scoreBoardValue;
 
   /**
-   *
+   * The game board that this kill score board belongs to
    */
   private GameBoard gameBoard;
 
@@ -75,9 +75,18 @@ public class KillScoreBoard {
     this.doubleKills.add(player);
   }
 
+  /**
+   *
+   * @return the list of players who have scored kills, in order
+   */
   public List<Player> getKills(){
     return kills;
   }
+
+  /**
+   *
+   * @return the list of players who have scored double kills, in order
+   */
   public List<Player> getDoubleKills(){
     return doubleKills;
   }
