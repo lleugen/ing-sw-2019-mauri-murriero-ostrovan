@@ -4,6 +4,7 @@ import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.controller.weapons.alternative_effects.ElectroscytheController;
+import it.polimi.se2019.controller.weapons.alternative_effects.ShotgunController;
 import it.polimi.se2019.controller.weapons.optional_effects.RocketLauncherController;
 import it.polimi.se2019.controller.weapons.optional_effects.VortexCannonController;
 import it.polimi.se2019.controller.weapons.ordered_effects.ThorController;
@@ -56,7 +57,9 @@ public class TestShootTargets {
             gameBoard = new GameBoard(0);
             gameBoardController = new GameBoardController(gameBoard);
             shooter = new Player("shooter", "character", gameBoard);
+            shooter.getInventory().discardPowerUp(shooter.getInventory().getPowerUps().get(0));
             target = new Player("target", "character", gameBoard);
+            target.getInventory().discardPowerUp(target.getInventory().getPowerUps().get(0));
             players = new ArrayList<>();
             players.add(shooter);
             players.add(target);
@@ -81,8 +84,8 @@ public class TestShootTargets {
 
         try{
             heatSeekerController.shootTargets(shooter, targets);
-            Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
-            Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
+            //Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
+            //Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
             assertTrue(target.getBoard().getDamageReceived().size() == 3);
             assertTrue(target.getBoard().getDamageReceived().get(0).equals(shooter));
             assertTrue(target.getBoard().getDamageReceived().get(1).equals(shooter));
@@ -98,8 +101,8 @@ public class TestShootTargets {
         WhisperController whisperController = new WhisperController(gameBoardController);
 
         try{
-            Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
-            Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
+            //Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
+            //Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
             whisperController.shootTargets(shooter, targets);
             assertTrue(target.getBoard().getDamageReceived().size() == 3);
             assertTrue(target.getBoard().getDamageReceived().get(0).equals(shooter));
@@ -116,8 +119,8 @@ public class TestShootTargets {
         ThorController thorController = new ThorController(gameBoardController);
 
         try{
-            Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
-            Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
+            //Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
+            //Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
             thorController.shootTargets(shooter, targets);
             assertTrue(target.getBoard().getDamageReceived().size() == 2);
             assertTrue(target.getBoard().getDamageReceived().get(0).equals(shooter));
@@ -163,12 +166,28 @@ public class TestShootTargets {
 //    public void testElectroscythe(){
 //        ElectroscytheController electroscytheController = new ElectroscytheController(gameBoardController);
 //        try{
-//            Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
-//            Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
+//            //Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
+//            //Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
+//            Mockito.when(client.chooseFiringMode(any())).thenReturn(false);
+//            //Mockito.when(electroscytheController.identifyClient(any())).thenReturn(client);
 //            electroscytheController.shootTargets(shooter, targets);
 //        }
 //        catch(UserTimeoutException f){
 //            fail("exception f");
 //        }
 //    }
+
+    @Test
+    public void testShotgun(){
+        ShotgunController shotgunController= new ShotgunController(gameBoardController);
+
+        try{
+            Mockito.when(client.getName()).thenReturn("target");
+            Mockito.when(shooterClient.getName()).thenReturn("shooter");
+            shotgunController.shootTargets(shooter, targets);
+        }
+        catch(UserTimeoutException f){
+            fail("exception f");
+        }
+    }
 }

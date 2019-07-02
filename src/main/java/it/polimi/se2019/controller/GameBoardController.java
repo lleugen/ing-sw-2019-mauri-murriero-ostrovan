@@ -9,6 +9,7 @@ import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
 import it.polimi.se2019.model.KillScoreBoard;
 import it.polimi.se2019.model.grabbable.AmmoTile;
+import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.map.AmmoSquare;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -293,15 +294,20 @@ public class GameBoardController{
       if (currentAmmoTile.getPowerUp()) {
         toReturn.add("power up");
       }
-      toReturn.addAll(
-              this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
-                      .map(Player::getName)
-                      .collect(Collectors.toList())
-      );
     }
     else {
-      toReturn.add("Spawn");
+        toReturn.add(Integer.toString(square.getItem().size()));
+        for(int i = 0; i<square.getItem().size(); i++){
+            if(square.getItem().get(i) != null){
+                toReturn.add(square.getItem().get(i).toString());
+            }
+        }
     }
+    toReturn.addAll(
+            this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toList())
+    );
 
     return toReturn;
   }
