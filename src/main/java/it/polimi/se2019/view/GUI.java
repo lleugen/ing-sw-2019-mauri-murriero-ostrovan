@@ -31,6 +31,8 @@ public class GUI extends UnicastRemoteObject
   private GUIEffectChooser effectChooserWindow;
   private GUIDirectionChooser directionChooserWindow;
   private GUIBooleanQuestion booleanQuestionWindow;
+  private GUISquareChooser squareChooserWindow;
+  private GUIRoomChooser roomChooserWindow;
 
   private String nickname, character, characterFolder;
   private String lastWeaponSelected, lastMapSelected;
@@ -343,9 +345,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseRoom(List<String> rooms)  {
-    // TODO ricky
-    System.out.println("chooseRoom");
-    return System.console().readLine();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
+    loader.setController(roomChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      return (String)secondaryStage.showAndGetResult(roomChooserWindow);
+    }catch(IOException e){
+      e.printStackTrace();
+      return rooms.get(0);
+    }
   }
 
   /**
@@ -355,11 +369,27 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
   {
-    // TODO ricky
-    System.out.println("chooseTargetSquare");
-    return Arrays.stream(System.console().readLine().split(" "))
-            .map(Integer::parseInt)
-            .collect(Collectors.toList());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/squarechooser.fxml"));
+
+    squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
+    loader.setController(squareChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+
+      String coordStr = (String)secondaryStage.showAndGetResult(squareChooserWindow);
+      String[] coordVet = coordStr.split("_");
+      List<Integer> coords = new ArrayList<>();
+      coords.add(Integer.getInteger(coordVet[0]));
+      coords.add(Integer.getInteger(coordVet[1]));
+
+      return coords;
+    }catch(IOException e){
+      e.printStackTrace();
+      return null;
+    }
   }
 
   /**
