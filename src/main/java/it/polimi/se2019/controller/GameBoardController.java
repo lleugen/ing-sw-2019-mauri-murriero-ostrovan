@@ -15,6 +15,7 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -170,7 +171,7 @@ public class GameBoardController{
         );
       }
       currentPlayer++;
-      if(currentPlayer == players.size()){
+      if(currentPlayer >= players.size()){
         currentPlayer = 0;
       }
     }
@@ -226,11 +227,10 @@ public class GameBoardController{
       PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
       client.sendMapInfo(this.genMapInfo());
-      client.sendPlayerInfo(
-              this.genPlayerInfo(
-                      playerControllers.get(currentPlayer).getPlayer()
-              )
-      );
+      for(Player p : players){
+        client.sendPlayerInfo(this.genPlayerInfo(p));
+      }
+
       client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }
     catch (RemoteException e){
@@ -333,6 +333,11 @@ public class GameBoardController{
                     .map(String::valueOf)
                     .collect(Collectors.toCollection(ArrayList::new))
     );
+    // adding board state
+    ArrayList<String> state = new ArrayList<>();
+    state.add(0, curPlayer.getName());
+    state.add(1, curPlayer.getBoard().getIfIsFrenzy() ? "frenzy" : "normal");
+    toReturn.add(3, state);
 
     return toReturn;
   }

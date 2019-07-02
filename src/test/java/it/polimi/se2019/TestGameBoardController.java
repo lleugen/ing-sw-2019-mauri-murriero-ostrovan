@@ -109,6 +109,30 @@ public class TestGameBoardController {
         catch(UnknownMapTypeException e){
             fail("could not create game board");
         }
+    }
 
+
+
+
+    @Test
+    public void testGenerateInformation(){
+        try{
+            GameBoard gameBoard = new GameBoard(0);
+            GameBoardController gameBoardController = new GameBoardController(gameBoard);
+            Player player = new Player("player", "character", gameBoard);
+            List<Player> players = new ArrayList<>();
+            players.add(player);
+            PlayerController playerController = new PlayerController(gameBoardController, player, client);
+            List<PlayerController> playerControllers = new ArrayList<>();
+            playerControllers.add(playerController);
+            gameBoardController.addPlayerControllers(playerControllers);
+            Integer [] scores = {8,6,4,2,1,1};
+            gameBoard.createKillScoreBoard(1, scores);
+
+            gameBoardController.playTurns();
+        }
+        catch(UnknownMapTypeException e){
+            fail("could not build game board");
+        }
     }
 }

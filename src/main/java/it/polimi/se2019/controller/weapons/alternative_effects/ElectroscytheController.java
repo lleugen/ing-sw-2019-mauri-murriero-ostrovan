@@ -22,6 +22,7 @@ public class ElectroscytheController extends OptionalEffectWeaponController {
 
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
+    firingMode = selectFiringMode(identifyClient(shooter));
     if(firingMode.get(0)){
       for(Player p : targets){
         p.takeDamage(shooter, 1);

@@ -4,6 +4,8 @@ import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.controller.weapons.WeaponController;
+import it.polimi.se2019.controller.weapons.simple.HeatSeekerController;
+import it.polimi.se2019.controller.weapons.simple.WhisperController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
@@ -27,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 
 //@RunWith(MockitoJUnitRunner.class)
-public class TestWeapons {
+public class TestFindTargets {
     @Mock
     PlayerViewOnServer client;
 
