@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
@@ -96,6 +97,8 @@ public class Client extends Application {
     Parent root = loader.load();
     primaryStage.setScene(new Scene(root));
 
+    primaryStage.setFullScreen(true);
+    primaryStage.setResizable(false);
     primaryStage.show();
   }
 

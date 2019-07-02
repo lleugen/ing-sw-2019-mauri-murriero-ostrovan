@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -27,15 +28,16 @@ public class GUIPlayersBoard extends GUIGenericWindow{
 
     private String localPlayerName;
 
-    public GUIPlayersBoard(String localPlayerName){
+    public GUIPlayersBoard(String localPlayerName, PlayersNamesKeeper playersCharacters){
         this.localPlayerName = localPlayerName;
-
+        this.playersCharacters = playersCharacters;
     }
 
     @Override
     void initialize(){
         for(Node n : playersSheets.getChildren())
             n.setVisible(false);
+
         //updateGraphic();
     }
 
@@ -82,29 +84,15 @@ public class GUIPlayersBoard extends GUIGenericWindow{
         }
 
         currentBoardElements.get(7).setVisible(currentData.getName().equals(localPlayerName));
+        currentBoardElements.get(8).setVisible(false); //<TURN> string, per ora non la utiliziamo
 
         currentPlayer.setVisible(true);
-    }
-
-    public void setCharacterInfo(List<String> characterInfo){
-        playersCharacters = new PlayersNamesKeeper();
-        for(int i = 0; i < characterInfo.size(); i+=2){
-            playersCharacters.addPlayer(characterInfo.get(i), characterInfo.get(i+1));
-        }
-    }
-
-    public String getCharacterFolder(String userKey){
-        return playersCharacters.findFolder(userKey);
     }
 
     public void setPlayerInfo(List<ArrayList<String>> playerInfo){
         this.playerInfo = playerInfo;
         updateGraphic();
     }
-
-    /*public Boolean readyToShow(){
-        return (playersCharacters != null) && (playerInfo != null);
-    }*/
 
     @Override
     public Object getResult(){

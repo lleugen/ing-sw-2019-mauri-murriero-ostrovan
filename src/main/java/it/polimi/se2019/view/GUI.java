@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,10 +36,12 @@ public class GUI extends UnicastRemoteObject
   private GUIRoomChooser roomChooserWindow;
 
   private GUIPlayersBoard playersBoardWindow;
-  private MyStage playersStage;
+  private GUIGameBoard gameBoardWindow;
+  private MyStage playersStage, boardStage;
 
   private String nickname, character, characterFolder;
   private String lastWeaponSelected, lastMapSelected;
+  private PlayersNamesKeeper playersInfo;
 
   public GUI(String nickname, String character) throws RemoteException {
     this.nickname = nickname;
@@ -75,6 +78,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (String)secondaryStage.showAndGetResult(actionSetWindow);
     }catch(IOException e){
@@ -98,8 +102,11 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
-      return (int)secondaryStage.showAndGetResult(spawnLocationWindow);
+      int res = (int)secondaryStage.showAndGetResult(spawnLocationWindow);
+      gameBoardWindow.setLocalPlayerCoords(powerUps.get(res));
+      return res;
     }catch(IOException e){
       e.printStackTrace();
       return 0;
@@ -120,6 +127,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       int res = (int)secondaryStage.showAndGetResult(mapChooserWindow);
       lastMapSelected = "map" + res;
@@ -144,6 +152,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (int)secondaryStage.showAndGetResult(playersNumberWindow);
     }catch(IOException e){
@@ -166,6 +175,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       lastWeaponSelected = (String)secondaryStage.showAndGetResult(weaponChooserWindow);
       return lastWeaponSelected;
@@ -185,7 +195,7 @@ public class GUI extends UnicastRemoteObject
   {
     List<String> targetsFolders = new ArrayList<>();
     for(int i = 0; i < possibleTargets.size(); i++)
-      targetsFolders.add(playersBoardWindow.getCharacterFolder(possibleTargets.get(i)));
+      targetsFolders.add(playersInfo.findFolder(possibleTargets.get(i)));
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
 
@@ -196,6 +206,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (String)secondaryStage.showAndGetResult(targetChooseWindow);
     }catch(IOException e){
@@ -220,6 +231,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (String)secondaryStage.showAndGetResult(weaponLoaderWindow);
     }catch(IOException e){
@@ -249,6 +261,7 @@ public class GUI extends UnicastRemoteObject
         Parent root = loader.load();
         MyStage secondaryStage = new MyStage();
         secondaryStage.setScene(new Scene(root));
+        secondaryStage.initStyle(StageStyle.UNDECORATED);
 
         lastAnswer = (int) secondaryStage.showAndGetResult(powerUpsChooserWindow);
       } catch (IOException e) {
@@ -279,6 +292,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (int)secondaryStage.showAndGetResult(effectChooserWindow);
     }catch(IOException e){
@@ -312,6 +326,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (Boolean)secondaryStage.showAndGetResult(booleanQuestionWindow);
     }catch(IOException e){
@@ -334,6 +349,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (Boolean)secondaryStage.showAndGetResult(booleanQuestionWindow);
     }catch(IOException e){
@@ -356,6 +372,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       return (String)secondaryStage.showAndGetResult(roomChooserWindow);
     }catch(IOException e){
@@ -380,6 +397,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       String coordStr = (String)secondaryStage.showAndGetResult(squareChooserWindow);
       String[] coordVet = coordStr.split("_");
@@ -409,6 +427,7 @@ public class GUI extends UnicastRemoteObject
       Parent root = loader.load();
       MyStage secondaryStage = new MyStage();
       secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
 
       int res = (int)secondaryStage.showAndGetResult(directionChooserWindow);
       return res;
@@ -420,8 +439,9 @@ public class GUI extends UnicastRemoteObject
 
   @Override
   public void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws RemoteException {
-    // TODO ricky
-    System.out.println("sendMapInfo");
+    if(gameBoardWindow == null)
+      launchGameBoard();
+    gameBoardWindow.setMapInfo(mapInfo);
   }
 
   @Override
@@ -433,27 +453,51 @@ public class GUI extends UnicastRemoteObject
 
   @Override
   public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
-    // TODO ricky
-    System.out.println("sendKillScoreBoardInfo");
+    if(gameBoardWindow == null)
+      launchGameBoard();
+    gameBoardWindow.setKillScoreBoardInfo(killScoreBoardInfo);
   }
 
   @Override
   public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
+    if(playersInfo == null){
+      playersInfo = new PlayersNamesKeeper();
+      for(int i = 0; i < characterInfo.size(); i+=2)
+        playersInfo.addPlayer(characterInfo.get(i), characterInfo.get(i+1));
+    }
     if(playersBoardWindow == null)
       launchPlayersBoard();
-    playersBoardWindow.setCharacterInfo(characterInfo);
+  }
+
+  private void launchGameBoard(){
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/" + lastMapSelected + ".fxml"));
+
+    gameBoardWindow = new GUIGameBoard(playersInfo);
+    loader.setController(gameBoardWindow);
+
+    try {
+      Parent root = loader.load();
+      boardStage = new MyStage();
+      boardStage.setScene(new Scene(root));
+      boardStage.initStyle(StageStyle.UNDECORATED);
+
+      boardStage.show();
+    }catch(IOException e){
+      e.printStackTrace();
+    }
   }
 
   private void launchPlayersBoard(){
     FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/groupsheets.fxml"));
 
-    playersBoardWindow = new GUIPlayersBoard(getName());
+    playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
     loader.setController(playersBoardWindow);
 
     try {
       Parent root = loader.load();
       playersStage = new MyStage();
       playersStage.setScene(new Scene(root));
+      playersStage.initStyle(StageStyle.UNDECORATED);
 
       playersStage.show();
     }catch(IOException e){

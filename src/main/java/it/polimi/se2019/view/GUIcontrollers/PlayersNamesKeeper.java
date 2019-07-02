@@ -62,4 +62,11 @@ public class PlayersNamesKeeper {
                 return i;
         return 0;
     }
+
+    public Boolean isPresent(String playerName){
+        for(PlayerNamesData p : players)
+            if(p.getName().equals(playerName))
+                return true;
+        return false;
+    }
 }
