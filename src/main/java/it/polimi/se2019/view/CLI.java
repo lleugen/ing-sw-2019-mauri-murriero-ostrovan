@@ -136,25 +136,25 @@ public final class CLI extends UnicastRemoteObject
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
                     stringBuilder.append("[]");
-                    if(!mapInfo.get(o).get(l).get(0).equals("NR")){
-                        if(m < mapInfo.get(o).get(l).size()){
-                            stringBuilder.append(mapInfo.get(o).get(l).get(m));
-                            for(int k = 0; k< 16 - mapInfo.get(o).get(l).get(m).length(); k++){
-                                stringBuilder.append(" ");
+                    if (mapInfo != null && mapInfo.get(o) != null && mapInfo.get(o).get(l) != null && mapInfo.get(o).get(l).get(0) != null) {
+                        if (!mapInfo.get(o).get(l).get(0).equals("NR")) {
+                            if (m < mapInfo.get(o).get(l).size()) {
+                                stringBuilder.append(mapInfo.get(o).get(l).get(m));
+                                for (int k = 0; k < 16 - mapInfo.get(o).get(l).get(m).length(); k++) {
+                                    stringBuilder.append(" ");
+                                }
+                            } else {
+                                for (int k = 0; k < 16; k++) {
+                                    stringBuilder.append(" ");
+                                }
+                            }
+                        } else {
+                            for (int n = 0; n < 8; n++) {
+                                stringBuilder.append("[]");
                             }
                         }
-                        else{
-                            for(int k = 0; k< 16; k++){
-                                stringBuilder.append(" ");
-                            }
-                        }
+                        stringBuilder.append("[]");
                     }
-                    else{
-                        for(int n = 0; n<8; n++){
-                            stringBuilder.append("[]");
-                        }
-                    }
-                    stringBuilder.append("[]");
                 }
                 stringBuilder.append("\n");
             }

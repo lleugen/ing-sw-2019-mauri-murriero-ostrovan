@@ -42,7 +42,13 @@ public class NormalStateController extends PlayerStateController {
   public void grabStuff() throws UserTimeoutException {
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(direction != -1){
-      player.move(player.getPosition().getAdjacencies().get(direction));
+      if (
+              player.getPosition() != null &&
+              player.getPosition().getAdjacencies() != null &&
+              player.getPosition().getAdjacencies().get(direction) != null
+      ) {
+        player.move(player.getPosition().getAdjacencies().get(direction));
+      }
     }
     Square position = player.getPosition();
     int pickUpIndex = client.chooseItemToGrab();
@@ -50,7 +56,9 @@ public class NormalStateController extends PlayerStateController {
       player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
     }
     else{
-      player.getInventory().addAmmoTileToInventory(position.grab(0));
+      if (position != null) {
+        player.getInventory().addAmmoTileToInventory(position.grab(0));
+      }
     }
   }
 

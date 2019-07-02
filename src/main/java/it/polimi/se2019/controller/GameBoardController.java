@@ -276,17 +276,19 @@ public class GameBoardController{
 
     if (square instanceof AmmoSquare) {
       currentAmmoTile = (AmmoTile) square.getItem().get(0);
-      for (int l = 0; l < currentAmmoTile.getAmmo().getRed(); l++) {
-        toReturn.add("red");
-      }
-      for (int l = 0; l < currentAmmoTile.getAmmo().getBlue(); l++) {
-        toReturn.add("blue");
-      }
-      for (int l = 0; l < currentAmmoTile.getAmmo().getYellow(); l++) {
-        toReturn.add("yellow");
-      }
-      if (currentAmmoTile.getPowerUp()) {
-        toReturn.add("power up");
+      if (currentAmmoTile != null) {
+        for (int l = 0; l < currentAmmoTile.getAmmo().getRed(); l++) {
+          toReturn.add("red");
+        }
+        for (int l = 0; l < currentAmmoTile.getAmmo().getBlue(); l++) {
+          toReturn.add("blue");
+        }
+        for (int l = 0; l < currentAmmoTile.getAmmo().getYellow(); l++) {
+          toReturn.add("yellow");
+        }
+        if (currentAmmoTile.getPowerUp()) {
+          toReturn.add("power up");
+        }
       }
       toReturn.addAll(
               this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()

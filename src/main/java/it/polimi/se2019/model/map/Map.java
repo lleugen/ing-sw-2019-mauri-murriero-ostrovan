@@ -144,20 +144,6 @@ public class Map {
     return positionCoordinates;
   }
 
-  /**
-   * get directions that are not blocked
-   */
-  public List<Integer> getOpenDirections(Square position){
-    List<Integer> openDirections = new ArrayList<>();
-    for(int i = 0; i<4; i++){
-      if(!position.getAdjacencies().get(i).isBlocked()){
-        openDirections.add(i);
-      }
-    }
-    return openDirections;
-  }
-
-
   // -----
 
   /**
@@ -421,18 +407,34 @@ public class Map {
    * __WARN__ The returned list may contains duplicates
    */
   private List<Square> getAdjacients(Collection<Square> b){
-    List<Square> toReturn = new LinkedList<>();
-    b.stream()
+    return b.stream()
             .filter(Objects::nonNull)
             .map(Square::getAdjacencies)
-            .filter(s -> {System.out.println(s);return true;})
-//            .flatMap(List::stream)
-//            .filter(Objects::nonNull)
-//            .filter(Direction::isAccessible)
-//            .map(Direction::getSquare)
-//            .filter(Objects::nonNull)
+            .flatMap(List::stream)
+            .filter(Objects::nonNull)
+            .filter(Direction::isAccessible)
+            .map(Direction::getSquare)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+  }
 
-            .forEach(System.out::println);
-    return toReturn;
+  /**
+   * Get the list of directions accessible from the square passed as parameter
+   *
+   * @param position Square to calculate accessible directions from
+   *
+   * @return the list of accessible directions
+   */
+  public List<Integer> getOpenDirections(Square position){
+    List<Integer> openDirections = new ArrayList<>();
+    if (position != null) {
+      for (int i = 0; i < 4; i++) {
+        Direction dir = position.getAdjacencies().get(i);
+        if ((dir != null) && (!dir.isBlocked())) {
+          openDirections.add(i);
+        }
+      }
+    }
+    return openDirections;
   }
 }
