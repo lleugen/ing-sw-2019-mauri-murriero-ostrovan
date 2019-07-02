@@ -20,6 +20,21 @@ public final class CLI extends UnicastRemoteObject
     private static final String LOG_NAMESPACE = "CLI";
 
     /**
+     * Information about player deaths and marks
+     */
+    List<ArrayList<String>> playerInfo;
+
+    /**
+     * Information about the state on the kill scoreboard, number of kills, whether they were overkills and double kills
+     */
+    List<ArrayList<String>> killScoreBoardInfo;
+
+    /**
+     * Information about which player has which character
+     */
+    List<String> characterInfo;
+
+    /**
      * Contains data to print to screen on render
      */
     private StringBuilder pendingUpdate = new StringBuilder();
@@ -379,20 +394,17 @@ public final class CLI extends UnicastRemoteObject
     }
 
     @Override
-    public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendPlayerInfo");
+    public void sendPlayerInfo(List<ArrayList<String>> pInfo) throws RemoteException {
+        this.playerInfo = pInfo;
     }
 
     @Override
-    public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendKillScoreBoardInfo");
+    public void sendKillScoreBoardInfo(List<ArrayList<String>> killBoardInfo) throws RemoteException {
+        this.killScoreBoardInfo = killBoardInfo;
     }
 
     @Override
-    public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendCharacterInfo");
+    public void sendCharacterInfo(List<String> cInfo) throws RemoteException {
+        characterInfo = cInfo;
     }
 }
