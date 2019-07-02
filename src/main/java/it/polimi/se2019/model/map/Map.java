@@ -377,11 +377,13 @@ public class Map {
    */
   public List<Square> getVisibleSquares(Square b){
     List<Square.RoomColor> visibleRooms = this.getReachableSquares(b, 1).stream()
+            .filter(Objects::nonNull)
             .map(Square::getIdRoom)
             .distinct()
             .collect(Collectors.toList());
 
     return Arrays.stream(mapSquares)
+            .filter(Objects::nonNull)
             .flatMap(Arrays::stream)
             .filter(Objects::nonNull)
             .filter((Square s) ->
@@ -402,6 +404,7 @@ public class Map {
    */
   public List<Player> getPlayersOnSquares(List<Square> b){
     return this.gameBoard.getPlayers().stream()
+            .filter(Objects::nonNull)
             .filter((Player p) -> b.contains(p.getPosition()))
             .distinct()
             .collect(Collectors.toList());
@@ -418,13 +421,18 @@ public class Map {
    * __WARN__ The returned list may contains duplicates
    */
   private List<Square> getAdjacients(Collection<Square> b){
-    return b.stream()
+    List<Square> toReturn = new LinkedList<>();
+    b.stream()
+            .filter(Objects::nonNull)
             .map(Square::getAdjacencies)
-            .flatMap(List::stream)
-            .filter(Objects::nonNull)
-            .filter(Direction::isAccessible)
-            .map(Direction::getSquare)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .filter(s -> {System.out.println(s);return true;})
+//            .flatMap(List::stream)
+//            .filter(Objects::nonNull)
+//            .filter(Direction::isAccessible)
+//            .map(Direction::getSquare)
+//            .filter(Objects::nonNull)
+
+            .forEach(System.out::println);
+    return toReturn;
   }
 }
