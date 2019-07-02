@@ -11,6 +11,7 @@ public class ElectroscytheController extends OptionalEffectWeaponController {
   public ElectroscytheController(GameBoardController g) {
     super(g);
     name = "ElectroscytheController";
+    numberOfOptionalEffects = 2;
   }
 
   @Override

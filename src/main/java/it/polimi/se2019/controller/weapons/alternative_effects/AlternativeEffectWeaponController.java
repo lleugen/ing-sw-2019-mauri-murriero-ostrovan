@@ -31,10 +31,12 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
     Boolean clientChoice = client.chooseFiringMode("insert 0 for basic, 1 for powered");
 
     if(clientChoice){
+      firingMode.clear();
       firingMode.add(false);
       firingMode.add(true);
     }
     else{
+      firingMode.clear();
       firingMode.add(true);
       firingMode.add(false);
     }

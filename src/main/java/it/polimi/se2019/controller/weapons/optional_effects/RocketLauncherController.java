@@ -44,7 +44,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     List<String> availableEffects = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(identifyClient(shooter));
     if(firingMode.get(0)){
       availableEffects.add("basic effect");
     }
@@ -89,7 +89,13 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
         Integer direction = client.chooseDirection
                 (map.getOpenDirections(shooter.getPosition()));
         if(direction != -1){
-          internalTargets.get(0).move(internalTargets.get(0).getPosition().getAdjacencies().get(direction));
+          internalTargets
+                  .get(0)
+                  .move(internalTargets
+                          .get(0)
+                          .getPosition()
+                          .getAdjacencies()
+                          .get(direction));
         }
       }
       else if(chosenEffect == 1){
