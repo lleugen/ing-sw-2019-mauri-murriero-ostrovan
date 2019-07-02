@@ -157,13 +157,13 @@ public class TestShootTargets {
         try{
             //Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
             //Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
-            Mockito.when(client.chooseFiringMode(anyString())).thenReturn(true);
+            //Mockito.when(client.chooseFiringMode(anyString())).thenReturn(true);
             Mockito.when(shooterClient.chooseFiringMode(anyString())).thenReturn(false);
             Mockito.when(client.getName()).thenReturn("target");
             Mockito.when(shooterClient.getName()).thenReturn("shooter");
             //Mockito.when(client.chooseIndex()).thenReturn(0);
             Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
-            Mockito.when(shooterClient.chooseDirection(any())).thenReturn(-1);
+            //Mockito.when(shooterClient.chooseDirection(any())).thenReturn(-1);
 
             rocketLauncherController.fire(shooter, shooterClient);
 
@@ -213,7 +213,7 @@ public class TestShootTargets {
             Mockito.when(client.getName()).thenReturn("target");
             Mockito.when(shooterClient.getName()).thenReturn("shooter");
             Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
-            Mockito.when(shooterClient.chooseFiringMode("insert 0 for basic, 1 for powered")).thenReturn(false);
+            //Mockito.when(shooterClient.chooseFiringMode("insert 0 for basic, 1 for powered")).thenReturn(false);
             tractorBeamController.fire(shooter, shooterClient);
             assertTrue(target.getBoard().getDamageReceived().size() == 3);
         }
@@ -260,7 +260,7 @@ public class TestShootTargets {
         try{
             Mockito.when(client.getName()).thenReturn("target");
             Mockito.when(shooterClient.getName()).thenReturn("shooter");
-            Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
+            //Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
             Mockito.when(shooterClient.chooseRoom(any())).thenReturn("BLUE");
             furnaceController.fire(shooter, shooterClient);
             assertTrue(target.getBoard().getDamageReceived().size() == 1);
