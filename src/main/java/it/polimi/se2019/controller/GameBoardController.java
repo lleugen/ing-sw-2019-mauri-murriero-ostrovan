@@ -151,6 +151,7 @@ public class GameBoardController{
   int currentPlayer = 0;
   public void playTurns() {
     this.currentPlayer = 0;
+    Integer numberOfTurns = 0;
 
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
@@ -170,8 +171,12 @@ public class GameBoardController{
         );
       }
       currentPlayer++;
-      if(currentPlayer == players.size()){
+      if(currentPlayer >= players.size()){
         currentPlayer = 0;
+      }
+      numberOfTurns++;
+      if(numberOfTurns > 50){
+        break;
       }
     }
   }
@@ -226,11 +231,10 @@ public class GameBoardController{
       PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
       client.sendMapInfo(this.genMapInfo());
-      client.sendPlayerInfo(
-              this.genPlayerInfo(
-                      playerControllers.get(currentPlayer).getPlayer()
-              )
-      );
+      for(Player p : players){
+        client.sendPlayerInfo(this.genPlayerInfo(p));
+      }
+
       client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }
     catch (RemoteException e){
@@ -335,6 +339,11 @@ public class GameBoardController{
                     .map(String::valueOf)
                     .collect(Collectors.toCollection(ArrayList::new))
     );
+    // adding board state
+    ArrayList<String> state = new ArrayList<>();
+    state.add(0, curPlayer.getName());
+    state.add(1, curPlayer.getBoard().getIfIsFrenzy() ? "frenzy" : "normal");
+    toReturn.add(3, state);
 
     return toReturn;
   }
