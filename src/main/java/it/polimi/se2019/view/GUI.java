@@ -34,6 +34,7 @@ public class GUI extends UnicastRemoteObject
   private GUIBooleanQuestion booleanQuestionWindow;
   private GUISquareChooser squareChooserWindow;
   private GUIRoomChooser roomChooserWindow;
+  private GUIItemToGrabChooser itemToGrabChooserWindow;
 
   private GUIPlayersBoard playersBoardWindow;
   private GUIGameBoard gameBoardWindow;
@@ -306,9 +307,23 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseItemToGrab()  {
-    // TODO ricky
-    System.out.println("chooseItemToGrab");
-    return Integer.parseInt(System.console().readLine());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+
+    itemToGrabChooserWindow = new GUIItemToGrabChooser();
+    loader.setController(itemToGrabChooserWindow);
+
+    try {
+      Parent root = loader.load();
+      MyStage secondaryStage = new MyStage();
+      secondaryStage.setScene(new Scene(root));
+      secondaryStage.initStyle(StageStyle.UNDECORATED);
+
+      int res = (int)secondaryStage.showAndGetResult(itemToGrabChooserWindow);
+      return res;
+    }catch(IOException e){
+      e.printStackTrace();
+      return 0;
+    }
   }
 
   /**
