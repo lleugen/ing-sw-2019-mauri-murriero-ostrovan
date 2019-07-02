@@ -152,6 +152,7 @@ public class GameBoardController{
   int currentPlayer = 0;
   public void playTurns() {
     this.currentPlayer = 0;
+    Integer numberOfTurns = 0;
 
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
@@ -173,6 +174,10 @@ public class GameBoardController{
       currentPlayer++;
       if(currentPlayer >= players.size()){
         currentPlayer = 0;
+      }
+      numberOfTurns++;
+      if(numberOfTurns > 50){
+        break;
       }
     }
   }

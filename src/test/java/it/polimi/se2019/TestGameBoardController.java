@@ -1,5 +1,6 @@
 package it.polimi.se2019;
 
+import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;
@@ -7,14 +8,20 @@ import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
+import static org.mockito.ArgumentMatchers.any;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TestGameBoardController {
     @Mock
     PlayerViewOnServer client;
@@ -115,19 +122,38 @@ public class TestGameBoardController {
 
 
     @Test
-    public void testGenerateInformation(){
+    public void testGameLoop(){
         try{
             GameBoard gameBoard = new GameBoard(0);
             GameBoardController gameBoardController = new GameBoardController(gameBoard);
             Player player = new Player("player", "character", gameBoard);
+            player.moveToSquare(gameBoard.getMap().getMapSquares()[0][0]);
             List<Player> players = new ArrayList<>();
             players.add(player);
+            gameBoard.addPlayers(players);
             PlayerController playerController = new PlayerController(gameBoardController, player, client);
             List<PlayerController> playerControllers = new ArrayList<>();
             playerControllers.add(playerController);
             gameBoardController.addPlayerControllers(playerControllers);
             Integer [] scores = {8,6,4,2,1,1};
             gameBoard.createKillScoreBoard(1, scores);
+
+            List<Integer> coordinates = new ArrayList<>();
+            coordinates.add(0);
+            coordinates.add(0);
+
+            try{
+                Mockito.doNothing().when(client).sendMapInfo(any());
+                Mockito.when(client.chooseAction(any())).thenReturn("run");
+                Mockito.when(client.chooseTargetSquare(any())).thenReturn(coordinates);
+            }
+            catch(UserTimeoutException f){
+                fail("exception f");
+            }
+            catch(RemoteException g){
+                fail("exception f");
+            }
+
 
             gameBoardController.playTurns();
         }
