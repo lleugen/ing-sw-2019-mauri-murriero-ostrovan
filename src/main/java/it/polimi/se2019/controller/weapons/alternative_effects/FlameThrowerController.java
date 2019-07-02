@@ -37,7 +37,10 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
 
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
-    targetSquares.add(targetSquares.get(0).getAdjacencies().get(direction).getSquare());
+    targetSquares.add(targetSquares.get(0)
+            .getAdjacencies()
+            .get(direction)
+            .getSquare());
     List<Player> targets = new ArrayList<>();
     firingMode = selectFiringMode(client);
     if(firingMode.get(1)){
