@@ -39,17 +39,26 @@ public class GUI extends UnicastRemoteObject
   private String lastWeaponSelected, lastMapSelected;
   private PlayersNamesKeeper playersInfo;
 
-  public GUI() throws RemoteException {
-
-  }
-
-  public void setLocalPlayerName(String nickname, String character){
-    this.nickname = nickname;
+  /**
+   * Initialize a new GUI Player Interface
+   *
+   * @param user      Username of the player
+   * @param character Character of the player
+   *
+   * @throws RemoteException if something goes wrong with RMI
+   */
+  public GUI(String user, String character) throws RemoteException {
+    this.nickname = user;
     this.character = character;
-    for(int i = 0; i < GUILogin.charactersNames.length; i++)
-      if(GUILogin.charactersNames[i].equals(character))
-        characterFolder = "char" + i;
   }
+
+//  public void setLocalPlayerName(String nickname, String character){
+//    this.nickname = nickname;
+//    this.character = character;
+//    for(int i = 0; i < GUILogin.charactersNames.length; i++)
+//      if(GUILogin.charactersNames[i].equals(character))
+//        characterFolder = "char" + i;
+//  }
 
   /**
    *

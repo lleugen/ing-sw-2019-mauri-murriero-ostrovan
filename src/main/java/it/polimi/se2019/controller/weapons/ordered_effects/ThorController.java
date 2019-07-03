@@ -20,7 +20,7 @@ public class ThorController extends OrderedEffectsWeaponController {
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
     PlayerViewOnServer client = identifyClient(shooter);
-
+    firingMode = selectFiringMode(client);
     int chainLength = 0;
     for(int i = 0; i<numberOfOptionalEffects; i++){
       if(firingMode.get(i)){
@@ -29,7 +29,7 @@ public class ThorController extends OrderedEffectsWeaponController {
     }
     for(int k = 1; k<chainLength; k++){
         targets.add(k, gameBoardController.identifyPlayer
-                (client.chooseTargets(gameBoardController.getPlayerNames
+                (client.chooseTargets(GameBoardController.getPlayerNames
                         (map.getPlayersOnSquares(
                                 map.getVisibleSquares(
                                         targets.get(k-1).getPosition()
@@ -41,26 +41,14 @@ public class ThorController extends OrderedEffectsWeaponController {
 
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
-    targets.get(0).takeDamage(shooter, 2);
-    //add one more point of damage if the player chooses to use a targeting scope
-    if(useTargetingScope(shooter)){
-      targets.get(0).takeDamage(shooter, 1);
+    for(int i = 0; i<targets.size(); i++){
+      targets.get(i).takeDamage(shooter, 2);
+      //add one more point of damage if the player chooses to use a targeting scope
+      if(useTargetingScope(shooter)){
+        targets.get(i).takeDamage(shooter, 1);
+      }
+      //if the damaged target has a tagback gredade, he/she can use it now
+      useTagbackGrenade(targets.get(i));
     }
-    //if the damaged target has a tagback gredade, he/she can use it now
-    useTagbackGrenade(targets.get(0));
-
-    targets.get(1).takeDamage(shooter, 1);
-    //add one more point of damage if the player chooses to use a targeting scope
-    if(useTargetingScope(shooter)){
-      targets.get(1).takeDamage(shooter, 1);
-    }
-    useTagbackGrenade(targets.get(1));
-
-    targets.get(2).takeDamage(shooter, 2);
-    //add one more point of damage if the player chooses to use a targeting scope
-    if(useTargetingScope(shooter)){
-      targets.get(2).takeDamage(shooter, 1);
-    }
-    useTagbackGrenade(targets.get(2));
   }
 }

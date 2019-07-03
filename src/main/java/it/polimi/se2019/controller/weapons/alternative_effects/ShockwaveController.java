@@ -21,26 +21,26 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
+    firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       //choose target squares
       List<Square> targetSquares = new ArrayList<>();
-      Integer chosenDirection = null;
+      Integer chosenDirection;
       for(int i = 0; i<2; i++){
         chosenDirection = client.chooseDirection(map.getOpenDirections(shooter.getPosition()));
         if(!targetSquares.contains(shooter.getPosition().getAdjacencies().get(chosenDirection).getSquare())){
           targetSquares.add(shooter.getPosition().getAdjacencies().get(chosenDirection).getSquare());
         }
-        chosenDirection = null;
       }
       //choose one target player for each target square
-      for(int i = 0; i<targetSquares.size(); i++){
+      for (Square targetSquare : targetSquares) {
         //choose one player from all those on the square and add it to the target list
         targets.add(gameBoardController.identifyPlayer
                 (client.chooseTargets
-                        (gameBoardController.getPlayerNames
+                        (GameBoardController.getPlayerNames
                                 (map.getPlayersOnSquares(
                                         map.getReachableSquares(
-                                                targetSquares.get(i),
+                                                targetSquare,
                                                 0
                                         )
                                 )))));

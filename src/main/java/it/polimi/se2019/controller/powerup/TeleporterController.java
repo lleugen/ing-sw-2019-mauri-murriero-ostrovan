@@ -12,9 +12,6 @@ import java.util.List;
  * on the map, regardless of distance or obstacles in the way.
  */
 public class TeleporterController extends PowerUpController {
-  public TeleporterController() {
-  }
-
   PlayerViewOnServer client;
 
   /**

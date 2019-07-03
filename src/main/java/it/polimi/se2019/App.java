@@ -4,9 +4,8 @@ package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
 import it.polimi.se2019.view.Client;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,6 +52,7 @@ public class App {
   private static void initParams(String[] args){
     params = Arrays.stream(args)
             .map((String param) -> param.split("="))
+            .filter((String[] a) -> a.length == 2)
             .collect(Collectors.toMap(
                     (String[] item) -> item[0],
                     (String[] item) -> item[1]
@@ -66,9 +66,14 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    if (args.containsKey("host")) {
+    if (args.containsKey("host") && args.containsKey("lobbyTimeout")) {
       try {
-        new Server(args.get("host"));
+        new Server(
+                args.get("host"),
+                Integer.parseInt(
+                        args.get("lobbyTimeout")
+                )
+        );
       }
       catch (RemoteException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -78,9 +83,17 @@ public class App {
         );
         throw new WrongArguments("Unable to start RMI server");
       }
+      catch (NumberFormatException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while parsing lobbyTimeout",
+                e
+        );
+        throw new WrongArguments("Unable to parse lobbyTimeout param");
+      }
     }
     else {
-      throw new WrongArguments("Host param is required");
+      throw new WrongArguments("Host and lobbyTimeout params are required");
     }
   }
 
@@ -88,23 +101,35 @@ public class App {
    * Spawn a new client
    *
    * @param args Args array received from the command line
+   *
+   * @throws RemoteException if an error is found while using RMI
    */
-  private static void spawnClient(Map<String, String> args){
+  private static void spawnClient(Map<String, String> args) {
     if (args.containsKey("host") && args.containsKey("ui")) {
 
-      switch (args.get("ui")){
-        case "gui":
-          Application.launch(Client.class, args.get("host"));
-          break;
-        case "cli":
-          new Client(args.get("host"), args.get("ui"));
-          break;
-        default:
-          Logger.getLogger(LOG_NAMESPACE).log(
-                  Level.SEVERE,
-                  "Unknown UI param, supported are <cli> and <gui>"
-          );
-          break;
+//      switch (args.get("ui")){
+//        case "gui":
+//          ;
+//          break;
+//        case "cli":
+//          new Client(args.get("host"), args.get("ui"));
+//          break;
+//        default:
+//          Logger.getLogger(LOG_NAMESPACE).log(
+//                  Level.SEVERE,
+//                  "Unknown UI param, supported are <cli> and <gui>"
+//          );
+//          break;
+//      }
+      try {
+        new Client(args.get("host"), args.get("ui"));
+      }
+      catch (RemoteException  | NotBoundException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Unable to start network",
+                e
+        );
       }
     }
     else {
@@ -115,11 +140,15 @@ public class App {
   /**
    * Type: server, client
    * @param args type: client|server
-   *             ui: cli|gui
+   *             ui: cli
    *
-   * @throws WrongArguments If passed args are invalid
+   * @throws WrongArguments  If passed args are invalid
    */
   public static void main(String[] args) {
+    if (System.getSecurityManager() == null) {
+      System.setSecurityManager(new SecurityManager());
+    }
+
     params = new HashMap<>();
     initMapping();
 
@@ -141,7 +170,7 @@ public class App {
    * The toString method may contain additional informations about the error
    */
   public static class WrongArguments extends RuntimeException {
-    WrongArguments(String message){
+    public WrongArguments(String message){
       super(message);
     }
   }

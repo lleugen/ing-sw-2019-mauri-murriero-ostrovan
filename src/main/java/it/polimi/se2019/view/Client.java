@@ -1,122 +1,67 @@
 package it.polimi.se2019.view;
 
+import it.polimi.se2019.App;
 import it.polimi.se2019.RMI.ServerLobbyInterface;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
-import it.polimi.se2019.view.GUIcontrollers.GUILogin;
-import it.polimi.se2019.view.GUIcontrollers.MyStage;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Client extends Application {
+public class Client {
   /**
    * Namespace this class logs to
    */
-  private static final String LOG_NAMESPACE = "App";
-  private String nickname, character, host;
+  private static final String LOG_NAMESPACE = "Client";
 
   /**
    * Init a new client
    *
    * @param host Hostname of the RMI registry
    * @param ui   cli|gui
+   *
+   * @throws RemoteException if an error is found while using RMI
+   * @throws NotBoundException If the server is not bound to the RMI registry
    */
-  public Client(String host, String ui){
-    this.host = host;
-    Scanner scanner = new Scanner(System.in);
-    System.console().writer().println("Choose name.");
-    String name = scanner.nextLine();
+  public Client(String host, String ui)
+          throws RemoteException, NotBoundException {
+    ViewFacadeInterfaceRMIClient generatedUi;
+    switch (ui) {
+      case "gui":
+        Application.launch(GUILoader.class);
+        if (GUILoader.alreadyInitialized()) {
+          generatedUi = new GUI(GUILoader.getName(), GUILoader.getCharacter());
+        }
+        else {
+          throw new App.WrongArguments("Launcher was closed");
+        }
+        break;
+      case "cli":
+        generatedUi = new CLI();
+        break;
+      default:
+        throw new App.WrongArguments("Wrong ui param. Valid are <gui> and <cli>");
+    }
 
-    try {
-      ViewFacadeInterfaceRMIClient generatedUi = new CLI();
-      new PlayerOnClient(name, host, generatedUi);
-      this.findLobby(host, name);
-    }
-    catch (RemoteException | MalformedURLException e) {
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.SEVERE,
-              "Error while connecting to server",
-              e
-      );
-    }
+    this.findLobby(host, generatedUi);
   }
 
-  public Client(){
-
-  }
-
-  private void generateLoginWindow(String firstName){
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LogIn.fxml"));
-    GUILogin loginController = new GUILogin(firstName);
-    MyStage loginStage = new MyStage();
-
-    try {
-      loader.setController(loginController);
-      Parent log = loader.load();
-      loginStage.setScene(new Scene(log));
-
-      String info = (String)(loginStage).showAndGetResult(loginController);
-      nickname = info.split("%")[0];
-      character = info.split("%")[1];
-    } catch (Exception e){
-      e.printStackTrace();
-    }
-  }
-
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    host = getParameters().getRaw().get(0);
-
-    //FXMLLoader loader =
-    Parent root = new FXMLLoader(getClass().getResource("/gui/MainWindow.fxml")).load();
-    primaryStage.setScene(new Scene(root));
-
-    //primaryStage.setFullScreen(true);
-    primaryStage.setResizable(false);
-    primaryStage.show();
-
-    try{
-      ViewFacadeInterfaceRMIClient generatedUI = new GUI();
-      generateLoginWindow("nickname123");
-      ((GUI) generatedUI).setLocalPlayerName(nickname, character);
-      new PlayerOnClient(nickname, host, generatedUI);
-      this.findLobby(host, nickname);
-    }catch (RemoteException | MalformedURLException e) {
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.SEVERE,
-              "Error while connecting to server",
-              e
-      );
-    }
-  }
-
-  private void findLobby(String host, String client){
-    if (System.getSecurityManager() == null) {
-      System.setSecurityManager(new SecurityManager());
-    }
-    try {
-      Registry registry = LocateRegistry.getRegistry(host);
-      ServerLobbyInterface lobby = (ServerLobbyInterface) registry.lookup(
-              "//" + host + "/server"
-      );
-      lobby.connect(client);
-    }
-    catch (Exception e) {
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.SEVERE,
-              "Error while starting RMI server",
-              e
-      );
-    }
+  /**
+   * Connect to the server and finds an available lobby
+   *
+   * @param host        Host to connect to
+   * @param viewClient  PlayerView to bind
+   *
+   * @throws RemoteException   If an error is found while using RMI
+   * @throws NotBoundException If the server is not bound to the RMI registry
+   */
+  private void findLobby(String host, ViewFacadeInterfaceRMIClient viewClient)
+          throws RemoteException, NotBoundException {
+    System.out.println("Finding Lobby");
+    Registry registry = LocateRegistry.getRegistry(host);
+    ServerLobbyInterface lobby = (ServerLobbyInterface) registry.lookup("server");
+    lobby.connect(viewClient);
   }
 }

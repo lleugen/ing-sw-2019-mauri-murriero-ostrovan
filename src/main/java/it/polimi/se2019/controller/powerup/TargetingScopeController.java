@@ -13,9 +13,6 @@ import java.util.List;
  * add one damage to an attack.
  */
 public class TargetingScopeController extends PowerUpController {
-  public TargetingScopeController() {
-  }
-
   PlayerViewOnServer client;
 
   /**

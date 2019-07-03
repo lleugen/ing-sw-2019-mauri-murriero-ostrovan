@@ -24,9 +24,31 @@ public final class CLI extends UnicastRemoteObject
      */
     private StringBuilder pendingUpdate = new StringBuilder();
 
-    public CLI() throws RemoteException {
+    /**
+     * Contains information about the map received from the server
+     */
+    private List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
 
+    /**
+     * Contain the name of the player currently playing
+     */
+    private String name;
+
+    /**
+     * Contain the character of the player
+     */
+    private String character;
+
+    public CLI() throws RemoteException {
+        this.writeLn("Insert Username");
+        this.displayRender();
+        this.name = this.readLine();
+
+        this.writeLn("Insert Character");
+        this.displayRender();
+        this.character = this.readLine();
     }
+
     /**
      * Physically print to screen buffered data
      */
@@ -69,11 +91,20 @@ public final class CLI extends UnicastRemoteObject
     }
 
     /**
+     * Buffer a line
+     *
+     * @param data Line to buffer
+     */
+    private void writeLn(String data){
+        this.pendingUpdate.append(data);
+    }
+
+    /**
      * Read a text line from the terminal
      *
      * @return The read line
      */
-    private static String readLine() {
+    private String readLine() {
         StringBuilder sb = new StringBuilder();
         int c;
 
@@ -136,25 +167,30 @@ public final class CLI extends UnicastRemoteObject
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
                     stringBuilder.append("[]");
-                    if(!mapInfo.get(o).get(l).get(0).equals("NR")){
-                        if(m < mapInfo.get(o).get(l).size()){
-                            stringBuilder.append(mapInfo.get(o).get(l).get(m));
-                            for(int k = 0; k< 16 - mapInfo.get(o).get(l).get(m).length(); k++){
-                                stringBuilder.append(" ");
+                    if (
+                            mapInfo != null && (mapInfo.size() > o) &&
+                            mapInfo.get(o) != null && (mapInfo.get(o).size() > l) &&
+                            mapInfo.get(o).get(l) != null && (!mapInfo.get(o).get(l).isEmpty()) &&
+                            mapInfo.get(o).get(l).get(0) != null
+                    ) {
+                        if (!mapInfo.get(o).get(l).get(0).equals("NR")) {
+                            if (m < mapInfo.get(o).get(l).size()) {
+                                stringBuilder.append(mapInfo.get(o).get(l).get(m));
+                                for (int k = 0; k < 16 - mapInfo.get(o).get(l).get(m).length(); k++) {
+                                    stringBuilder.append(" ");
+                                }
+                            } else {
+                                for (int k = 0; k < 16; k++) {
+                                    stringBuilder.append(" ");
+                                }
+                            }
+                        } else {
+                            for (int n = 0; n < 8; n++) {
+                                stringBuilder.append("[]");
                             }
                         }
-                        else{
-                            for(int k = 0; k< 16; k++){
-                                stringBuilder.append(" ");
-                            }
-                        }
+                        stringBuilder.append("[]");
                     }
-                    else{
-                        for(int n = 0; n<8; n++){
-                            stringBuilder.append("[]");
-                        }
-                    }
-                    stringBuilder.append("[]");
                 }
                 stringBuilder.append("\n");
             }
@@ -166,17 +202,13 @@ public final class CLI extends UnicastRemoteObject
         System.console().writer().write(stringBuilder.toString());
     }
 
-    List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
-
-    private String name;
-
     @Override
     public String getName(){
-        return name;
+        return this.name;
     }
 
     @Override
-    public String getCharacter() { return ""; }
+    public String getCharacter() { return this.character; }
 
     public void inputName(){
         markSection("What is your name?");
@@ -382,20 +414,23 @@ public final class CLI extends UnicastRemoteObject
     }
 
     @Override
-    public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendPlayerInfo");
+    public void sendPlayerInfo(List<ArrayList<String>> pInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 
     @Override
-    public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendKillScoreBoardInfo");
+    public void sendKillScoreBoardInfo(List<ArrayList<String>> killBoardInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 
     @Override
-    public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendCharacterInfo");
+    public void sendCharacterInfo(List<String> cInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 }

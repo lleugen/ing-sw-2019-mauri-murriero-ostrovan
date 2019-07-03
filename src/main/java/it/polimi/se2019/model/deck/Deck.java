@@ -69,6 +69,10 @@ public class Deck<G extends Grabbable> {
     return card;
   }
 
+  /**
+   * Discard the selected card
+   * @param card the card to be discarded
+   */
   public void discard(G card){
     discarded.add(card);
   }

@@ -3,6 +3,7 @@ package it.polimi.se2019.model;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,9 +34,9 @@ public class KillScoreBoard {
   private List<Integer> scoreBoardValue;
 
   /**
-   *
+   * Has one item for each kill and specifies whether that kills was an overkill
    */
-  private GameBoard gameBoard;
+  private List<Boolean> overKills;
 
   /**
    * Init a new KillScoreBoard
@@ -43,16 +44,14 @@ public class KillScoreBoard {
    * @param skulls  Number of available skulls
    * @param scores  Array containing the scores of the board
    */
-  public KillScoreBoard(GameBoard g, Integer skulls, Integer[] scores) {
-    gameBoard = g;
+  public KillScoreBoard(Integer skulls, Integer[] scores) {
     scoreBoardValue = new ArrayList<>();
     this.remainingSkulls = skulls;
     this.kills = new ArrayList<>();
     this.doubleKills = new ArrayList<>();
+    this.overKills = new ArrayList<>();
 
-    for(int i = 0; i<scores.length; i++){
-      scoreBoardValue.add(scores[i]);
-    }
+    Collections.addAll(scoreBoardValue, scores);
   }
 
   /**
@@ -66,6 +65,14 @@ public class KillScoreBoard {
   }
 
   /**
+   * An overkill lets the player add one more mark on the scoreboard, but doesn't consume a skull
+   * @param overkill the player who scores the overkill
+   */
+  public synchronized void addOverKill(Boolean overkill){
+    this.overKills.add(overkill);
+  }
+
+  /**
    * Add a double kill to the scoreboard
    *
    * @param player the player who made the double kill
@@ -75,9 +82,23 @@ public class KillScoreBoard {
     this.doubleKills.add(player);
   }
 
+  /**
+   *
+   * @return the list of players who have scored kills, in order
+   */
   public List<Player> getKills(){
     return kills;
   }
+
+
+  public List<Boolean> getOverKills(){
+    return overKills;
+  }
+
+  /**
+   *
+   * @return the list of players who have scored double kills, in order
+   */
   public List<Player> getDoubleKills(){
     return doubleKills;
   }

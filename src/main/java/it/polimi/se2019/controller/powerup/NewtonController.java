@@ -1,6 +1,7 @@
 package it.polimi.se2019.controller.powerup;
 
 import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
@@ -31,7 +32,7 @@ public class NewtonController extends PowerUpController {
 
     //choose target
     Player target = gameBoardController.identifyPlayer(client.chooseTargets
-            (gameBoardController.getPlayerNames(gameBoardController.getPlayers())));
+            (GameBoardController.getPlayerNames(gameBoardController.getPlayers())));
 
     //choose where to move the target
     List<List<Integer>> possibleSquares = new ArrayList<>();

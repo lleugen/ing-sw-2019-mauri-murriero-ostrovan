@@ -7,6 +7,7 @@ import it.polimi.se2019.controller.weapons.alternative_effects.*;
 import it.polimi.se2019.controller.weapons.optional_effects.*;
 import it.polimi.se2019.controller.weapons.ordered_effects.*;
 import it.polimi.se2019.controller.weapons.simple.*;
+import it.polimi.se2019.model.KillScoreBoard;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.map.AmmoSquare;
 import it.polimi.se2019.model.map.Square;
@@ -37,57 +38,43 @@ public class GameBoardController{
   private List<Player> players;
   private List<PlayerController> playerControllers;
   private List<PlayerViewOnServer> clients;
-  private List<String> clientNames;
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
 
-  private List<ArrayList<ArrayList<String>>> mapInfo;
-  private List<ArrayList<String>> playerInfo;
-  private List<ArrayList<String>> killScoreBoardInfo;
 
   public GameBoardController(GameBoard g) {
-    gameBoard = g;
-    weaponControllers = new LinkedList<>();
-    powerUpControllers = new LinkedList<>();
-    players = g.getPlayers();
+    this.gameBoard = g;
+    this.weaponControllers = new LinkedList<>();
+    this.powerUpControllers = new LinkedList<>();
+    this.players = g.getPlayers();
 
-    mapInfo = new ArrayList<>();
-    for(int i = 0; i<3; i++){
-      mapInfo.add(new ArrayList<>());
-      for(int k = 0; k<4; k++){
-          mapInfo.get(i).add(new ArrayList<>());
-      }
-    }
-    playerInfo = new ArrayList<>();
-    killScoreBoardInfo = new ArrayList<>();
+    this.weaponControllers.add(new CyberBladeController(this));
+    this.weaponControllers.add(new ElectroscytheController(this));
+    this.weaponControllers.add(new PlasmaGunController(this));
+    this.weaponControllers.add(new GrenadeLauncherController(this));
+    this.weaponControllers.add(new RocketLauncherController(this));
+    this.weaponControllers.add(new HellionController(this));
+    this.weaponControllers.add(new TractorBeamController(this));
+    this.weaponControllers.add(new LockRifleController(this));
+    this.weaponControllers.add(new VortexCannonController(this));
+    this.weaponControllers.add(new MachineGunController(this));
+    this.weaponControllers.add(new ThorController(this));
+    this.weaponControllers.add(new HeatSeekerController(this));
+    this.weaponControllers.add(new WhisperController(this));
+    this.weaponControllers.add(new FurnaceController(this));
+    this.weaponControllers.add(new RailGunController(this));
+    this.weaponControllers.add(new ShotgunController(this));
+    this.weaponControllers.add(new ZX2Controller(this));
+    this.weaponControllers.add(new FlameThrowerController(this));
+    this.weaponControllers.add(new PowerGloveController(this));
+    this.weaponControllers.add(new ShockwaveController(this));
+    this.weaponControllers.add(new SledgeHammerController(this));
 
-    weaponControllers.add(new CyberBladeController(this));
-    weaponControllers.add(new ElectroscytheController(this));
-    weaponControllers.add(new PlasmaGunController(this));
-    weaponControllers.add(new GrenadeLauncherController(this));
-    weaponControllers.add(new RocketLauncherController(this));
-    weaponControllers.add(new HellionController(this));
-    weaponControllers.add(new TractorBeamController(this));
-    weaponControllers.add(new LockRifleController(this));
-    weaponControllers.add(new VortexCannonController(this));
-    weaponControllers.add(new MachineGunController(this));
-    weaponControllers.add(new ThorController(this));
-    weaponControllers.add(new HeatSeekerController(this));
-    weaponControllers.add(new WhisperController(this));
-    weaponControllers.add(new FurnaceController(this));
-    weaponControllers.add(new RailGunController(this));
-    weaponControllers.add(new ShotgunController(this));
-    weaponControllers.add(new ZX2Controller(this));
-    weaponControllers.add(new FlameThrowerController(this));
-    weaponControllers.add(new PowerGloveController(this));
-    weaponControllers.add(new ShockwaveController(this));
-    weaponControllers.add(new SledgeHammerController(this));
-
-    powerUpControllers.add(new NewtonController());
-    powerUpControllers.add(new TagbackGrenadeController());
-    powerUpControllers.add(new TargetingScopeController());
-    powerUpControllers.add(new TeleporterController());
+    this.powerUpControllers.add(new NewtonController());
+    this.powerUpControllers.add(new TagbackGrenadeController());
+    this.powerUpControllers.add(new TargetingScopeController());
+    this.powerUpControllers.add(new TeleporterController());
   }
 
   /**
@@ -122,21 +109,18 @@ public class GameBoardController{
    * the game can start
    */
   public void addPlayerControllers(List<PlayerController> c){
-    playerControllers = new LinkedList<>(c);
-    players = c.stream()
+    this.playerControllers = new LinkedList<>(c);
+    this.players = c.stream()
             .map(PlayerController::getPlayer)
             .collect(Collectors.toList());
-    clientNames = c.stream()
-            .map(PlayerController::getName)
-            .collect(Collectors.toList());
-    clients = c.stream()
+    this.clients = c.stream()
             .map(PlayerController::getClient)
             .collect(Collectors.toList());
   }
 
   public Player identifyPlayer(String name){
     Player player = null;
-    for(Player p : players){
+    for(Player p : this.players){
       if(name.equals(p.getName())){
         player = p;
       }
@@ -144,8 +128,8 @@ public class GameBoardController{
     return player;
   }
 
-  public List<String> getPlayerNames(List<Player> players){
-      return new LinkedList<>(this.clientNames);
+  public static List<String> getPlayerNames(List<Player> players){
+      return players.stream().map(Player::getName).collect(Collectors.toList());
   }
 
   /**
@@ -166,18 +150,17 @@ public class GameBoardController{
    */
   int currentPlayer = 0;
   public void playTurns() {
-    currentPlayer = 0;
-    List<String> characterInfo = new ArrayList<>();
-    for(Player p : players){
-      characterInfo.add(p.getName());
-      characterInfo.add(p.getCharacter());
-    }
+    this.currentPlayer = 0;
+    Integer numberOfTurns = 0;
 
-    while(gameBoard.getKillScoreBoard().gameRunning()){
+    while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
         sendInfo();
-        playerControllers.get(currentPlayer).
-                playTurn(playerControllers.get(currentPlayer).getState().getAvailableActions());
+        this.playerControllers.get(this.currentPlayer).playTurn(
+                this.playerControllers.get(
+                        this.currentPlayer
+                ).getState().getAvailableActions()
+        );
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -188,8 +171,12 @@ public class GameBoardController{
         );
       }
       currentPlayer++;
-      if(currentPlayer == players.size()){
+      if(currentPlayer >= players.size()){
         currentPlayer = 0;
+      }
+      numberOfTurns++;
+      if(numberOfTurns > 50){
+        break;
       }
     }
   }
@@ -218,6 +205,7 @@ public class GameBoardController{
         sendInfo();
         playerControllers.get(currentPlayer).playTurn
               (playerControllers.get(currentPlayer).getState().getAvailableActions());
+        endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -231,6 +219,7 @@ public class GameBoardController{
         currentPlayer = 0;
       }
     }
+    gameBoard.getKillScoreBoard().resolveScoreboard();
   }
 
 
@@ -241,66 +230,14 @@ public class GameBoardController{
    */
   private void sendInfo() throws UserTimeoutException {
     try {
-      AmmoTile currentAmmoTile = null;
-      List<Player> playersOnSquare = new ArrayList<>();
-      List<Square> currentSquare = new ArrayList<>();
-      for (int i = 0; i < 3; i++) {
-        for (int k = 0; k < 4; k++) {
+      PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
-          if (gameBoard.getMap().getMapSquares()[i][k] != null) {
-            if (gameBoard.getMap().getMapSquares()[i][k] instanceof AmmoSquare) {
-              currentAmmoTile = (AmmoTile) gameBoard.getMap().getMapSquares()[i][k].getItem().get(0);
-              for (int l = 0; l < currentAmmoTile.getAmmo().getRed(); l++) {
-                mapInfo.get(i).get(k).add("red");
-              }
-              for (int l = 0; l < currentAmmoTile.getAmmo().getBlue(); l++) {
-                mapInfo.get(i).get(k).add("blue");
-              }
-              for (int l = 0; l < currentAmmoTile.getAmmo().getYellow(); l++) {
-                mapInfo.get(i).get(k).add("yellow");
-              }
-              if (currentAmmoTile.getPowerUp()) {
-                mapInfo.get(i).get(k).add("power up");
-              }
-              currentSquare.clear();
-              currentSquare.add(gameBoard.getMap().getMapSquares()[i][k]);
-              playersOnSquare = gameBoard.getMap().getPlayersOnSquares(currentSquare);
-              for (Player p : playersOnSquare) {
-                mapInfo.get(i).get(k).add(p.getName());
-              }
-            }
-          } else {
-            mapInfo.get(i).get(k).add("NR");
-          }
-        }
+      client.sendMapInfo(this.genMapInfo());
+      for(Player p : players){
+        client.sendPlayerInfo(this.genPlayerInfo(p));
       }
-      playerControllers.get(currentPlayer).getClient().sendMapInfo(mapInfo);
 
-      for (int i = 0; i < 3; i++) {
-        playerInfo.get(i).clear();
-      }
-      for (int i = 0; i < gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().size(); i++) {
-        playerInfo.get(0)
-                .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDamageReceived().get(i).getName());
-      }
-      for (int i = 0; i < gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().size(); i++) {
-        playerInfo.get(1)
-                .add(gameBoard.getPlayers().get(currentPlayer).getBoard().getMarksAssigned().get(i).getName());
-      }
-      playerInfo.get(3).add(gameBoard.getPlayers().get(currentPlayer).getBoard().getDeathValue().get(0).toString());
-      playerControllers.get(currentPlayer).getClient().sendPlayerInfo(playerInfo);
-
-
-      for (int i = 0; i < 2; i++) {
-        killScoreBoardInfo.get(i).clear();
-      }
-      for (int i = 0; i < gameBoard.getKillScoreBoard().getKills().size(); i++) {
-        killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getKills().get(i).getName());
-      }
-      for (int i = 0; i < gameBoard.getKillScoreBoard().getDoubleKills().size(); i++) {
-        killScoreBoardInfo.get(0).add(gameBoard.getKillScoreBoard().getDoubleKills().get(i).getName());
-      }
-      playerControllers.get(currentPlayer).getClient().sendKillScoreBoardInfo(killScoreBoardInfo);
+      client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }
     catch (RemoteException e){
       throw new UserTimeoutException(e);
@@ -308,15 +245,162 @@ public class GameBoardController{
 
   }
 
+  /**
+   * Gen mapInfo to send down to the client
+   *
+   * @return Generated MapInfo
+   */
+  private List<ArrayList<ArrayList<String>>> genMapInfo(){
+    List<ArrayList<ArrayList<String>>> toReturn = new ArrayList<>();
 
+    for (int i = 0; i < 3; i++) {
+      toReturn.add(i, new ArrayList<>());
+      for (int k = 0; k < 4; k++) {
+        Square square = this.gameBoard.getMap().getMapSquares()[i][k];
+        toReturn.get(i).add(k, new ArrayList<>());
+        if (square != null) {
+          toReturn.get(i).get(k).addAll(this.getMapSquareInfo(square));
+        }
+        else {
+          toReturn.get(i).get(k).add("NR");
+        }
+      }
+    }
+
+    return toReturn;
+  }
+
+  /**
+   * Get the info for a single square of the map
+   *
+   * @param square Square to generate info about
+   */
+  private List<String> getMapSquareInfo(Square square){
+    List<String> toReturn = new ArrayList<>();
+    AmmoTile currentAmmoTile;
+    List<Square> currentSquare = new ArrayList<>();
+
+    if (square instanceof AmmoSquare) {
+      currentAmmoTile = (AmmoTile) square.getItem().get(0);
+      if (currentAmmoTile != null) {
+        for (int l = 0; l < currentAmmoTile.getAmmo().getRed(); l++) {
+          toReturn.add("red");
+        }
+        for (int l = 0; l < currentAmmoTile.getAmmo().getBlue(); l++) {
+          toReturn.add("blue");
+        }
+        for (int l = 0; l < currentAmmoTile.getAmmo().getYellow(); l++) {
+          toReturn.add("yellow");
+        }
+        if (currentAmmoTile.getPowerUp()) {
+          toReturn.add("power up");
+        }
+      }
+    }
+    else {
+        toReturn.add(Integer.toString(square.getItem().size()));
+        for(int i = 0; i<square.getItem().size(); i++){
+            if(square.getItem().get(i) != null){
+                toReturn.add(square.getItem().get(i).toString());
+            }
+        }
+    }
+    toReturn.addAll(
+            this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toList())
+    );
+
+    return toReturn;
+  }
+
+  /**
+   * Gen PlayerInfo to send down to the client
+   *
+   * @param curPlayer Player to gen info about
+   *
+   * @return The generated PlayerInfo
+   */
+  private List<ArrayList<String>> genPlayerInfo(Player curPlayer){
+    List<ArrayList<String>> toReturn = new ArrayList<>();
+
+    // adding damages
+    toReturn.add(
+            0,
+            curPlayer.getBoard().getDamageReceived().stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toCollection(ArrayList::new))
+    );
+    // adding marks
+    toReturn.add(
+            1,
+            curPlayer.getBoard().getMarksAssigned().stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toCollection(ArrayList::new))
+    );
+    // adding deaths
+    toReturn.add(
+            2,
+            curPlayer.getBoard().getDeathValue().stream()
+                    .limit(1)
+                    .map(String::valueOf)
+                    .collect(Collectors.toCollection(ArrayList::new))
+    );
+    // adding board state
+    ArrayList<String> state = new ArrayList<>();
+    state.add(0, curPlayer.getName());
+    state.add(1, curPlayer.getBoard().getIfIsFrenzy() ? "frenzy" : "normal");
+    toReturn.add(3, state);
+
+    return toReturn;
+  }
+
+  /**
+   * Gen KillScoreboardInfo to send down to the player
+   *
+   * @return The generated KillScoreboardInfo
+   */
+  private List<ArrayList<String>> genKillScoreboardInfo(){
+    List<ArrayList<String>> toReturn = new ArrayList<>();
+
+    KillScoreBoard curKillBoard = this.gameBoard.getKillScoreBoard();
+
+    // Adding kills
+    ArrayList<String> tmp = new ArrayList<>();
+    for (int i = 0; i < curKillBoard.getKills().size(); i++) {
+      tmp.add(curKillBoard.getKills().get(i).getName());
+      tmp.add(curKillBoard.getOverKills().get(i) ? "true" : "false");
+    }
+
+    toReturn.add(
+            0,
+            tmp
+    );
+
+    // Adding double kills
+    toReturn.add(
+            1,
+            curKillBoard.getDoubleKills().stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toCollection(ArrayList::new))
+    );
+
+    return toReturn;
+  }
   /**
    * deal with player deaths at the end of each turn
    */
   private void endOfTurnDeathResolution() throws UserTimeoutException{
     PlayerController currentPlayerController;
+    Integer numberOfDeaths = 0;
     for(Player p : players){
       if(p.getBoard().getDamageReceived().size() > 11){
+        if(numberOfDeaths > 0){
+          gameBoard.getKillScoreBoard().addDoubleKill(p.getBoard().getDamageReceived()
+                  .get(p.getBoard().getDamageReceived().size() -1));
+        }
         p.resolveDeath();
+        numberOfDeaths ++;
         for(PlayerController pc : playerControllers){
           if(pc.getName().equals(p.getName())){
             currentPlayerController = pc;

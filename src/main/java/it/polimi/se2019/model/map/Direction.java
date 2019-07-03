@@ -34,7 +34,7 @@ public class Direction {
   private Square square;
 
   /**
-   *
+   * @param isBlocked specifies whether there is a wall in this direction
    */
   protected void setBlocked(boolean isBlocked){
     blocked = isBlocked;

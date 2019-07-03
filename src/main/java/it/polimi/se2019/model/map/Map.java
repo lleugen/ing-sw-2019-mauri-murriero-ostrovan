@@ -14,35 +14,55 @@ import java.util.stream.Collectors;
  */
 public class Map {
   /**
-   *
+   * The top left square of the map
    */
   private Square root;
 
   /**
-   * the game board this map belongs to
+   * The game board this map belongs to
    */
   private GameBoard gameBoard;
 
   /**
-   *
+   * The matrix of all the squares that make the map
    */
   private Square[][] mapSquares;
 
   /**
-   *
+   * Points to the square that is the red spawn point
    */
   private Square redSpawnPoint;
+  /**
+   * Points to the square that is the blue spawn point
+   */
   private Square blueSpawnPoint;
+  /**
+   * Points to the square that is the yellow spawn point
+   */
   private Square yellowSpawnPoint;
+
+  /**
+   * @return a pointer to the red spawn point
+   */
   public Square getRedSpawnPoint(){
     return redSpawnPoint;
   }
+  /**
+   * @return a pointer to the blue spawn point
+   */
   public Square getBlueSpawnPoint(){
     return blueSpawnPoint;
   }
+  /**
+   * @return a pointer to the yellow spawn point
+   */
   public Square getYellowSpawnPoint(){
     return yellowSpawnPoint;
   }
+
+  /**
+   * @return a pointer to the game board that this map belongs to
+   */
   public GameBoard getGameBoard(){
     return gameBoard;
   }
@@ -114,6 +134,10 @@ public class Map {
     }
   }
 
+  /**
+   *
+   * @return the matrix of all the squares of the map
+   */
   public Square[][]getMapSquares(){
     return mapSquares;
   }
@@ -143,20 +167,6 @@ public class Map {
     positionCoordinates.add(yCoordinate);
     return positionCoordinates;
   }
-
-  /**
-   * get directions that are not blocked
-   */
-  public List<Integer> getOpenDirections(Square position){
-    List<Integer> openDirections = new ArrayList<>();
-    for(int i = 0; i<4; i++){
-      if(!position.getAdjacencies().get(i).isBlocked()){
-        openDirections.add(i);
-      }
-    }
-    return openDirections;
-  }
-
 
   // -----
 
@@ -377,11 +387,13 @@ public class Map {
    */
   public List<Square> getVisibleSquares(Square b){
     List<Square.RoomColor> visibleRooms = this.getReachableSquares(b, 1).stream()
+            .filter(Objects::nonNull)
             .map(Square::getIdRoom)
             .distinct()
             .collect(Collectors.toList());
 
     return Arrays.stream(mapSquares)
+            .filter(Objects::nonNull)
             .flatMap(Arrays::stream)
             .filter(Objects::nonNull)
             .filter((Square s) ->
@@ -402,6 +414,7 @@ public class Map {
    */
   public List<Player> getPlayersOnSquares(List<Square> b){
     return this.gameBoard.getPlayers().stream()
+            .filter(Objects::nonNull)
             .filter((Player p) -> b.contains(p.getPosition()))
             .distinct()
             .collect(Collectors.toList());
@@ -419,6 +432,7 @@ public class Map {
    */
   private List<Square> getAdjacients(Collection<Square> b){
     return b.stream()
+            .filter(Objects::nonNull)
             .map(Square::getAdjacencies)
             .flatMap(List::stream)
             .filter(Objects::nonNull)
@@ -426,5 +440,25 @@ public class Map {
             .map(Direction::getSquare)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
+  }
+
+  /**
+   * Get the list of directions accessible from the square passed as parameter
+   *
+   * @param position Square to calculate accessible directions from
+   *
+   * @return the list of accessible directions
+   */
+  public List<Integer> getOpenDirections(Square position){
+    List<Integer> openDirections = new ArrayList<>();
+    if (position != null) {
+      for (int i = 0; i < 4; i++) {
+        Direction dir = position.getAdjacencies().get(i);
+        if ((dir != null) && (!dir.isBlocked())) {
+          openDirections.add(i);
+        }
+      }
+    }
+    return openDirections;
   }
 }
