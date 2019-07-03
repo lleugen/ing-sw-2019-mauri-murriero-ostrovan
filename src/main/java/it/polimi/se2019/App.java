@@ -4,6 +4,8 @@ package it.polimi.se2019;
 
 import it.polimi.se2019.model.server.Server;
 import it.polimi.se2019.view.Client;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
@@ -89,7 +91,21 @@ public class App {
    */
   private static void spawnClient(Map<String, String> args){
     if (args.containsKey("host") && args.containsKey("ui")) {
-      new Client(args.get("host"), args.get("ui"));
+
+      switch (args.get("ui")){
+        case "gui":
+          Application.launch(Client.class, args.get("host"));
+          break;
+        case "cli":
+          new Client(args.get("host"), args.get("ui"));
+          break;
+        default:
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.SEVERE,
+                  "Unknown UI param, supported are <cli> and <gui>"
+          );
+          break;
+      }
     }
     else {
       throw new WrongArguments("Host and UI params are required");

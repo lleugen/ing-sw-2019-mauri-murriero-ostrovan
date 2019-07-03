@@ -1,6 +1,5 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-import com.sun.xml.internal.xsom.util.DeferedCollection;
 import it.polimi.se2019.model.grabbable.Ammo;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

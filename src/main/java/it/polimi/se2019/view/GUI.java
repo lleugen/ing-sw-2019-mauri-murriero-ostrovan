@@ -3,20 +3,15 @@ package it.polimi.se2019.view;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.view.GUIcontrollers.*;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class GUI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient{
@@ -44,7 +39,11 @@ public class GUI extends UnicastRemoteObject
   private String lastWeaponSelected, lastMapSelected;
   private PlayersNamesKeeper playersInfo;
 
-  public GUI(String nickname, String character) throws RemoteException {
+  public GUI() throws RemoteException {
+
+  }
+
+  public void setLocalPlayerName(String nickname, String character){
     this.nickname = nickname;
     this.character = character;
     for(int i = 0; i < GUILogin.charactersNames.length; i++)
@@ -70,7 +69,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseAction(String state)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     actionSetWindow = new ActionSetView(state, characterFolder);
     loader.setController(actionSetWindow);
@@ -94,7 +93,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public int chooseSpawnLocation(List<String> powerUps)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     spawnLocationWindow = new GUISpawnLocation(powerUps);
     loader.setController(spawnLocationWindow);
@@ -119,7 +118,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseMap()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     mapChooserWindow = new GUIMapChooser();
     loader.setController(mapChooserWindow);
@@ -144,7 +143,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseNumberOfPlayers()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/playernumberchooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/playernumberchooser.fxml"));
 
     playersNumberWindow = new GUIPlayersNumber();
     loader.setController(playersNumberWindow);
@@ -167,7 +166,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseWeapon(List<String> weapons)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     weaponChooserWindow = new GUIWeaponChooser(weapons);
     loader.setController(weaponChooserWindow);
@@ -198,7 +197,7 @@ public class GUI extends UnicastRemoteObject
     for(int i = 0; i < possibleTargets.size(); i++)
       targetsFolders.add(playersInfo.findFolder(possibleTargets.get(i)));
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
     loader.setController(targetChooseWindow);
@@ -223,7 +222,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseWeaponToReload(List<String> weapons)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     weaponLoaderWindow = new GUIWeaponLoader(weapons);
     loader.setController(weaponLoaderWindow);
@@ -253,7 +252,7 @@ public class GUI extends UnicastRemoteObject
     boolean keepAsking = true;
 
     while ((keepAsking) && (chosenInt.size() < powerUps.size())){
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
       powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
       loader.setController(powerUpsChooserWindow);
@@ -284,7 +283,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseIndex(List<String> availableEffects)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/effectchooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/effectchooser.fxml"));
 
     effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
     loader.setController(effectChooserWindow);
@@ -307,7 +306,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseItemToGrab()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     itemToGrabChooserWindow = new GUIItemToGrabChooser();
     loader.setController(itemToGrabChooserWindow);
@@ -332,7 +331,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Boolean chooseFiringMode(String description)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/booleanquestion.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/booleanquestion.fxml"));
 
     booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
     loader.setController(booleanQuestionWindow);
@@ -355,7 +354,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public Boolean chooseBoolean(String description)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/booleanquestion.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/booleanquestion.fxml"));
 
     booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
     loader.setController(booleanQuestionWindow);
@@ -378,7 +377,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseRoom(List<String> rooms)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/chooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
 
     roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
     loader.setController(roomChooserWindow);
@@ -403,7 +402,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/squarechooser.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/squarechooser.fxml"));
 
     squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
     loader.setController(squareChooserWindow);
@@ -433,7 +432,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/movement.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/movement.fxml"));
 
     directionChooserWindow = new GUIDirectionChooser(possibleDirections);
     loader.setController(directionChooserWindow);
@@ -485,7 +484,7 @@ public class GUI extends UnicastRemoteObject
   }
 
   private void launchGameBoard(){
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/" + lastMapSelected + ".fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + lastMapSelected + ".fxml"));
 
     gameBoardWindow = new GUIGameBoard(playersInfo);
     loader.setController(gameBoardWindow);
@@ -503,7 +502,7 @@ public class GUI extends UnicastRemoteObject
   }
 
   private void launchPlayersBoard(){
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/groupsheets.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/groupsheets.fxml"));
 
     playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
     loader.setController(playersBoardWindow);
