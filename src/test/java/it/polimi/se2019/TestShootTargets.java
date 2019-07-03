@@ -17,16 +17,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestShootTargets {
@@ -34,11 +33,6 @@ public class TestShootTargets {
     PlayerViewOnServer client;
     @Mock
     PlayerViewOnServer shooterClient;
-
-//    @Before
-//    public void init() {
-//        MockitoAnnotations.initMocks(this);
-//    }
 
     GameBoard gameBoard;
     GameBoardController gameBoardController;
@@ -425,4 +419,32 @@ public class TestShootTargets {
         }
     }
 
+//    @Test
+//    public void testElectroscythe(){
+//        ElectroscytheController electroscytheController = new ElectroscytheController(gameBoardController);
+//        try{
+//            //Mockito.when(client.chooseBoolean("Do you want to use a targeting scope?")).thenReturn(false);
+//            //Mockito.when(client.chooseBoolean("Do you want to use a tagback grenade?")).thenReturn(false);
+//            Mockito.when(client.chooseFiringMode(any())).thenReturn(false);
+//            //Mockito.when(electroscytheController.identifyClient(any())).thenReturn(client);
+//            electroscytheController.shootTargets(shooter, targets);
+//        }
+//        catch(UserTimeoutException f){
+//            fail("exception f");
+//        }
+//    }
+
+//    @Test
+//    public void testShotgun(){
+//        ShotgunController shotgunController= new ShotgunController(gameBoardController);
+//
+//        try{
+//            Mockito.when(client.getName()).thenReturn("target");
+//            Mockito.when(shooterClient.getName()).thenReturn("shooter");
+//            shotgunController.shootTargets(shooter, targets);
+//        }
+//        catch(UserTimeoutException f){
+//            fail("exception f");
+//        }
+//    }
 }

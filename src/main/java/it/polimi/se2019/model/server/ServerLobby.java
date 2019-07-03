@@ -54,10 +54,6 @@ public class ServerLobby implements Remote {
    */
   ServerLobby(Integer mapType, int timeout) throws UnknownMapTypeException {
     GameBoard gameBoard = new GameBoard(mapType);
-    gameBoard.createKillScoreBoard(
-            5,
-            new Integer[]{8, 6, 4, 2, 1, 1}
-    );
     this.gameBoardController = new GameBoardController(gameBoard);
     this.playersData = Collections.synchronizedMap(new HashMap<>());
     Executors.newScheduledThreadPool(1)
@@ -101,7 +97,7 @@ public class ServerLobby implements Remote {
    * @return true if the player was added with success (or was already
    *         registered to the server), false otherwise
    */
-  public synchronized boolean addPlayer(PlayerViewOnServer client, String name, String character) {
+  synchronized boolean addPlayer(PlayerViewOnServer client, String name, String character) {
     if (
             (this.playersData.size() < MAX_PLAYERS) &&
             (!this.gameStarted)

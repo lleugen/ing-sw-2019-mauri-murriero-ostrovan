@@ -16,7 +16,6 @@ public class TestKillScoreboard {
     public void testScoreBoard() throws UnknownMapTypeException {
         GameBoard gameBoard = new GameBoard(0);
         Integer scores [] = {8, 6, 4, 2, 1, 1};
-        gameBoard.createKillScoreBoard(1, scores);
         KillScoreBoard killScoreBoard = gameBoard.getKillScoreBoard();
         assert(killScoreBoard != null);
         Player player1 = new Player("player1", "character1", gameBoard);

@@ -54,19 +54,6 @@ public class GameBoard {
   private boolean isFrenzy;
 
   /**
-   * Specifies whether the kill score board has been created
-   */
-  private boolean killScoreBoardCreated;
-
-  /**
-   *
-   * @return whether the kill score board has been created
-   */
-  public boolean isKillScoreBoardCreated(){
-    return killScoreBoardCreated;
-  }
-
-  /**
    * Inits the gameBoard
    *
    * @param mapType Type of the map to generate
@@ -77,7 +64,6 @@ public class GameBoard {
   public GameBoard(int mapType) throws UnknownMapTypeException {
     isFrenzy = false;
     playersAdded = false;
-    killScoreBoardCreated = false;
     this.currentPlayer = firstPlayer;
 
     //create decks
@@ -86,7 +72,10 @@ public class GameBoard {
             this.genPowerUpDeck(),
             this.genAmmoDeck()
     );
-
+    this.createKillScoreBoard(
+            5,
+            new Integer[]{8, 6, 4, 2, 1, 1}
+    );
     this.map = new Map(mapType, this);
   }
 
@@ -366,7 +355,7 @@ public class GameBoard {
    * @param skulls number of kills that will be scored before frenzy mode starts
    * @param scores the numbers of points that will be assigned to players based on the number of kills they have scored
    */
-  public void createKillScoreBoard(Integer skulls, Integer[] scores){
+  private void createKillScoreBoard(Integer skulls, Integer[] scores){
     this.killScoreBoard = new KillScoreBoard(skulls, scores);
   }
 

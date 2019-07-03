@@ -135,8 +135,6 @@ public class TestGameBoardController {
             List<PlayerController> playerControllers = new ArrayList<>();
             playerControllers.add(playerController);
             gameBoardController.addPlayerControllers(playerControllers);
-            Integer [] scores = {8,6,4,2,1,1};
-            gameBoard.createKillScoreBoard(1, scores);
 
             List<Integer> coordinates = new ArrayList<>();
             coordinates.add(0);
@@ -148,10 +146,10 @@ public class TestGameBoardController {
                 Mockito.when(client.chooseTargetSquare(any())).thenReturn(coordinates);
             }
             catch(UserTimeoutException f){
-                fail("exception f");
+                fail("exception UserTimeoutException");
             }
             catch(RemoteException g){
-                fail("exception f");
+                fail("exception RemoteException");
             }
 
 

@@ -296,15 +296,20 @@ public class GameBoardController{
           toReturn.add("power up");
         }
       }
-      toReturn.addAll(
-              this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
-                      .map(Player::getName)
-                      .collect(Collectors.toList())
-      );
     }
     else {
-      toReturn.add("Spawn");
+        toReturn.add(Integer.toString(square.getItem().size()));
+        for(int i = 0; i<square.getItem().size(); i++){
+            if(square.getItem().get(i) != null){
+                toReturn.add(square.getItem().get(i).toString());
+            }
+        }
     }
+    toReturn.addAll(
+            this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toList())
+    );
 
     return toReturn;
   }

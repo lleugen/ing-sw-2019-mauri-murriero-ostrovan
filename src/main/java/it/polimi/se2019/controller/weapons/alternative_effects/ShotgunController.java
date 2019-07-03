@@ -59,6 +59,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
+    firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       targets.get(0).takeDamage(shooter, 3);
       //add one more point of damage if the player chooses to use a targeting scope
