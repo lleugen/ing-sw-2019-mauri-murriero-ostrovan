@@ -3,8 +3,8 @@ package it.polimi.se2019.view;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 public class PlayerOnClient  {
   /**
@@ -18,6 +18,6 @@ public class PlayerOnClient  {
    */
   public PlayerOnClient(String user, String host, ViewFacadeInterfaceRMIClient ui)
           throws MalformedURLException, RemoteException {
-    Naming.rebind("//" + host + "/players/" + user, ui);
+    LocateRegistry.getRegistry(host).rebind("players/" + user, ui);
   }
 }

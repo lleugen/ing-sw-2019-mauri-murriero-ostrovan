@@ -2,6 +2,7 @@ package it.polimi.se2019.model.server;
 
 import it.polimi.se2019.RMI.ServerLobbyInterface;
 import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
@@ -27,11 +28,6 @@ public class Server implements ServerLobbyInterface, Serializable {
   private transient List<ServerLobby> lobbyes = new LinkedList<>();
 
   /**
-   * Hostname the registry is located to
-   */
-  private final String hostname;
-
-  /**
    * Timeout (in seconds) before starting games in ServerLobby
    */
   private int lobbyTimeout;
@@ -44,11 +40,10 @@ public class Server implements ServerLobbyInterface, Serializable {
    */
   public Server(String host, int lobbyTimeout) throws RemoteException {
     Registry registry = LocateRegistry.getRegistry(host);
-    registry.rebind("//" + host + "/server",
+    registry.rebind("server",
             UnicastRemoteObject.exportObject(this, 0)
     );
 
-    this.hostname = host;
     this.lobbyTimeout = lobbyTimeout;
     if (System.getSecurityManager() == null) {
       System.setSecurityManager(new SecurityManager());
@@ -61,14 +56,12 @@ public class Server implements ServerLobbyInterface, Serializable {
    * @param user User id of the connected player
    */
   @Override
-  public synchronized void connect(String user){
+  public synchronized void connect(String user, String character, ViewFacadeInterfaceRMIClient userView){
     try {
-      PlayerViewOnServer p = new PlayerViewOnServer(user, this.hostname);
-      p.setName(user);
-
+      PlayerViewOnServer p = new PlayerViewOnServer(user, character, userView);
       this.registerPlayer(p);
     }
-    catch (PlayerViewOnServer.InitializationError | UserTimeoutException e){
+    catch (UserTimeoutException e){
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.WARNING,
               "Unable to initialize user",
