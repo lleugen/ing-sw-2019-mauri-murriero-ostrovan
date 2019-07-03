@@ -20,28 +20,25 @@ public final class CLI extends UnicastRemoteObject
     private static final String LOG_NAMESPACE = "CLI";
 
     /**
-     * Information about player deaths and marks
-     */
-    List<ArrayList<String>> playerInfo;
-
-    /**
-     * Information about the state on the kill scoreboard, number of kills, whether they were overkills and double kills
-     */
-    List<ArrayList<String>> killScoreBoardInfo;
-
-    /**
-     * Information about which player has which character
-     */
-    List<String> characterInfo;
-
-    /**
      * Contains data to print to screen on render
      */
     private StringBuilder pendingUpdate = new StringBuilder();
 
-    public CLI() throws RemoteException {
+    /**
+     * Contains information about the map received from the server
+     */
+    private List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
 
+    /**
+     * Contain the name of the player currently playing
+     */
+    private String name;
+
+    public CLI() throws RemoteException {
+        // Standard Constructor.
+        // Needed only to handle RemoteException as defined in RMI specs
     }
+
     /**
      * Physically print to screen buffered data
      */
@@ -180,10 +177,6 @@ public final class CLI extends UnicastRemoteObject
         }
         System.console().writer().write(stringBuilder.toString());
     }
-
-    transient List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
-
-    private String name;
 
     @Override
     public String getName(){
@@ -394,17 +387,23 @@ public final class CLI extends UnicastRemoteObject
     }
 
     @Override
-    public void sendPlayerInfo(List<ArrayList<String>> pInfo) throws RemoteException {
-        this.playerInfo = pInfo;
+    public void sendPlayerInfo(List<ArrayList<String>> pInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 
     @Override
-    public void sendKillScoreBoardInfo(List<ArrayList<String>> killBoardInfo) throws RemoteException {
-        this.killScoreBoardInfo = killBoardInfo;
+    public void sendKillScoreBoardInfo(List<ArrayList<String>> killBoardInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 
     @Override
-    public void sendCharacterInfo(List<String> cInfo) throws RemoteException {
-        characterInfo = cInfo;
+    public void sendCharacterInfo(List<String> cInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 }

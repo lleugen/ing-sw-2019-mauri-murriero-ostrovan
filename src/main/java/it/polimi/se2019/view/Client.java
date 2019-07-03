@@ -31,15 +31,11 @@ public class Client {
     try {
       ViewFacadeInterfaceRMIClient generatedUi;
 
-      switch (ui){
-        case "gui":
-          generatedUi = new GUI();
-          break;
-        case "cli":
-          generatedUi = new CLI();
-          break;
-        default:
-          generatedUi = null;
+      if ("cli".equals(ui)) {
+        generatedUi = new CLI();
+      }
+      else {
+        generatedUi = null;
       }
 
       if (generatedUi != null){
@@ -49,7 +45,7 @@ public class Client {
       else {
         Logger.getLogger(LOG_NAMESPACE).log(
                 Level.SEVERE,
-                "Unknown UI param, supported are <cli> and <gui>"
+                "Unknown UI param, supported are <cli>"
         );
       }
     }

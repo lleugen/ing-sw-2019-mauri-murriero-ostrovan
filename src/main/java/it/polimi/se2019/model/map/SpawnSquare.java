@@ -60,12 +60,6 @@ public class SpawnSquare extends Square {
     return weaponCopy;
   }
 
-  /*
-  public boolean isSpawnPoint(){
-    return true;
-  }
-  */
-
   /**
    * If the square has less than three weapons, draw from the decks to replace those that were picked up.
    */

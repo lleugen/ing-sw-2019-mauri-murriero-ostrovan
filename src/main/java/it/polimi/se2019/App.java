@@ -113,7 +113,7 @@ public class App {
   /**
    * Type: server, client
    * @param args type: client|server
-   *             ui: cli|gui
+   *             ui: cli
    *
    * @throws WrongArguments If passed args are invalid
    */

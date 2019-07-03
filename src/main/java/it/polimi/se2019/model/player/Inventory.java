@@ -76,12 +76,6 @@ public class Inventory {
     return new LinkedList<>(this.powerUps);
   }
 
-  /*
-  public void addItemToInventory(Grabbable item){
-
-  }
-  */
-
   /**
    * Add a new weapon to the inventory
    */

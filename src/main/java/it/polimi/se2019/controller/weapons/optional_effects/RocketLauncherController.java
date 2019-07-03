@@ -44,7 +44,6 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     List<String> availableEffects = new ArrayList<>();
-    //firingMode = selectFiringMode(identifyClient(shooter));
     if(firingMode.get(0)){
       availableEffects.add("basic effect");
     }

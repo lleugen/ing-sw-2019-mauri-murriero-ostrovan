@@ -79,10 +79,6 @@ public abstract class Square {
    */
   public abstract <T extends Grabbable> T grab(int index);
 
-  /*
-  public abstract boolean isSpawnPoint();
-  */
-
   /**
    * set the adjacencies of a square
    */

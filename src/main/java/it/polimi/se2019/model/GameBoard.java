@@ -367,7 +367,7 @@ public class GameBoard {
    * @param scores the numbers of points that will be assigned to players based on the number of kills they have scored
    */
   public void createKillScoreBoard(Integer skulls, Integer[] scores){
-    killScoreBoard = new KillScoreBoard(this, skulls, scores);
+    this.killScoreBoard = new KillScoreBoard(skulls, scores);
   }
 
   /**
