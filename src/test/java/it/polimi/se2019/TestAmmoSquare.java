@@ -22,7 +22,9 @@ import javax.jws.soap.SOAPBinding;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.fail;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestAmmoSquare {
     @Test

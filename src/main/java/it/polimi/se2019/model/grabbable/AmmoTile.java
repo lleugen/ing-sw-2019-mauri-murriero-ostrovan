@@ -2,6 +2,9 @@ package it.polimi.se2019.model.grabbable;
 
 /**
  * Ammo tile represents an ammo tile that can be picked up from a square. It contains an ammo box and optionally a power up card
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class AmmoTile extends Grabbable{
   /**

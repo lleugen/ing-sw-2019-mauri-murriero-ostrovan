@@ -6,7 +6,9 @@ import org.junit.Test;
 import static it.polimi.se2019.model.grabbable.Ammo.compare;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestAmmo {
     @Test
     public void testCompareShouldReturn1(){

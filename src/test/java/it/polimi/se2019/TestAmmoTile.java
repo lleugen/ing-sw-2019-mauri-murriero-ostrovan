@@ -5,7 +5,9 @@ import it.polimi.se2019.model.grabbable.AmmoTile;
 import org.junit.Test;
 
 import static org.junit.Assert.fail;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestAmmoTile {
 
   @Test

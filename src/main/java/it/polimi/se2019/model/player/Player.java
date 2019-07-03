@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Player contains all the player data, and related collections (eg: Inventory)
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Player {
   public Player(String name, String character, GameBoard g) {
@@ -100,6 +102,11 @@ public class Player {
 
   /**
    * Move the player in the specified direction
+   * @param direction the direction towards which to move:
+   *                  0 : north
+   *                  1 : east
+   *                  2 : south
+   *                  3 : west
    */
   public void move(Direction direction) {
     this.position = direction.getSquare();
@@ -162,6 +169,10 @@ public class Player {
   /**
    * Bring the player back into the game : set damage to 0, draw a power up card, discard a power up card
    * and spawn in the spawn point of the card's equivalent ammo colour
+   * @param spawnPoint the spawn square on which to respawn, possible values are
+   *                   map.getRedSpawnPoint
+   *                   map.getBlueSpawnPoint
+   *                   map.getYellowSpawnPoint
    */
   public void respawn(Square spawnPoint) {
     board.getDamageReceived().clear();
@@ -204,7 +215,7 @@ public class Player {
   }
 
   /**
-   * @return the current position of the player
+   *
    *
    * @param value: the amount of points just collected
    */

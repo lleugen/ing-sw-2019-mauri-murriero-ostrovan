@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.*;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestSpawnSquare {
     @Mock

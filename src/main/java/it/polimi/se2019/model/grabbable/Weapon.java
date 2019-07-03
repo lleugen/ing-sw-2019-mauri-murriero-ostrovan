@@ -9,6 +9,9 @@ import java.util.List;
 /**
  * WeaponController represent the model for a physical WeaponController card.
  * The effect of the card will be implemented in the controller of the weapon
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Weapon extends Grabbable {
   /**
@@ -84,6 +87,9 @@ public class Weapon extends Grabbable {
 
   /**
    * Reload a weapon (a weapon reloaded can be used)
+   * @param powerUpCards the list of power up cards to use for reloading
+   * @param playerAmmoBox the ammo box from which to subtract the cost of reloading
+   * @return the result of the execution
    */
   public boolean reload(List<PowerUpCard> powerUpCards, Ammo playerAmmoBox) {
     boolean result = false;

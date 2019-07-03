@@ -20,7 +20,9 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestInventory {
 
     static Inventory inventory;

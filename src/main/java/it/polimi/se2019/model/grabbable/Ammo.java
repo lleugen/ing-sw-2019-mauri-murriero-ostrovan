@@ -2,6 +2,9 @@ package it.polimi.se2019.model.grabbable;
 
 /**
  * The ammo class represents a box of ammunition cubes
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Ammo extends Grabbable {
   /**
@@ -105,6 +108,7 @@ public class Ammo extends Grabbable {
   }
 
   /**
+   * @return the result of the execution
    * @param amount subtract amount red ammunition cubes from the ammo box
    */
   public boolean useRed(int amount){
@@ -118,6 +122,7 @@ public class Ammo extends Grabbable {
   }
 
   /**
+   * @return the result of the execution
    *
    * @param amount subtract amount of blue ammunition cubes from the ammo box
    */
@@ -132,7 +137,7 @@ public class Ammo extends Grabbable {
   }
 
   /**
-   *
+   * @return the result of the execution
    * @param amount subtract amount of yellow ammunition cubes from the ammo box
    */
   public boolean useYellow(int amount){

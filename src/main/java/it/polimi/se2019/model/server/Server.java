@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * @author Fabio Mauri
+ */
 public class Server implements ServerLobbyInterface, Serializable {
   /**
    * Namespace this class logs to
@@ -37,6 +39,7 @@ public class Server implements ServerLobbyInterface, Serializable {
    *
    * @param host          Hostname the registry is located to
    * @param lobbyTimeout  Timeout (in seconds) before starting a game
+   * @throws RemoteException if there is an error in the RMI connection
    */
   public Server(String host, int lobbyTimeout) throws RemoteException {
     Registry registry = LocateRegistry.getRegistry(host);

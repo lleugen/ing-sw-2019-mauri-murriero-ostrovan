@@ -6,7 +6,9 @@ import it.polimi.se2019.model.map.UnknownMapTypeException;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestGameBoard {
     @Test
     public void testDeckCreation() throws UnknownMapTypeException {

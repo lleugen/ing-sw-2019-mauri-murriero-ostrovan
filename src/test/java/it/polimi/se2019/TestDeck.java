@@ -13,7 +13,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestDeck {
 
   @Test

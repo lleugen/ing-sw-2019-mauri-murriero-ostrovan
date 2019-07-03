@@ -8,7 +8,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class HellionController extends OptionalEffectWeaponController {
   public HellionController(GameBoardController g) {
     super(g);

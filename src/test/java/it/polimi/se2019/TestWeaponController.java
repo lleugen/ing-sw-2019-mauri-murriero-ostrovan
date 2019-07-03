@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.fail;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestWeaponController {
     @Mock

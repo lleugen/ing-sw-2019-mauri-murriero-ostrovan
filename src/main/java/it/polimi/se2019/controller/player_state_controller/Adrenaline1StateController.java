@@ -10,6 +10,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class Adrenaline1StateController extends PlayerStateController {
   public Adrenaline1StateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);

@@ -9,7 +9,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class FlameThrowerController extends AlternativeEffectWeaponController {
   public FlameThrowerController(GameBoardController g) {
     super(g);

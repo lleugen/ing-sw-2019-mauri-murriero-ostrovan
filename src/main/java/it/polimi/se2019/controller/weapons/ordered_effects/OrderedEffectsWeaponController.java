@@ -14,6 +14,9 @@ import java.util.List;
  * work.
  * Ordered effects weapons have a primary effect and one or more effects that
  * can be applied only if they satisfy particular conditions.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public abstract class OrderedEffectsWeaponController extends WeaponController {
   public OrderedEffectsWeaponController(GameBoardController g) {

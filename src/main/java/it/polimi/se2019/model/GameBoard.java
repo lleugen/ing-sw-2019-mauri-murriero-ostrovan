@@ -16,7 +16,11 @@ import java.util.List;
  * The game board is the root class of each game.
  * It contains and initializes every element of the game, and is responsible
  * for managing the highest tasks of the match (AKA the game manager)
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
+
 public class GameBoard {
   /**
    * Contains a reference to the Kill Scoreboard for the current game

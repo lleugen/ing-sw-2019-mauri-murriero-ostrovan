@@ -6,7 +6,10 @@ import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class LockRifleController extends OptionalEffectWeaponController {
   public LockRifleController(GameBoardController g) {
     super(g);

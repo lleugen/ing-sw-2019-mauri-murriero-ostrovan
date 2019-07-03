@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestKillScoreboard {
     @Test
     public void testScoreBoard() throws UnknownMapTypeException {

@@ -27,7 +27,9 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 //@RunWith(MockitoJUnitRunner.class)
 public class TestFindTargets {
     @Mock

@@ -11,6 +11,9 @@ import java.util.List;
 /**
  * A spawn square represent a square where a player can spawn/respawn or
  * grab a weapon
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class SpawnSquare extends Square {
 
@@ -19,6 +22,7 @@ public class SpawnSquare extends Square {
    *
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
+   * @param m the map that this square belongs to
    */
   public SpawnSquare(Map m, RoomColor roomId, List<Direction> adjacencies) {
     super(m, roomId, adjacencies);
