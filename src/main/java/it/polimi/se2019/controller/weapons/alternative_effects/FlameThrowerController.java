@@ -37,8 +37,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
 
     List<Square> targetSquares = new ArrayList<>();
     targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
-    targetSquares.add(targetSquares.get(0).getAdjacencies().get(direction).getSquare());
+    targetSquares.add(targetSquares.get(0)
+            .getAdjacencies()
+            .get(direction)
+            .getSquare());
     List<Player> targets = new ArrayList<>();
+    firingMode = selectFiringMode(client);
     if(firingMode.get(1)){
       //choose one adjacent square, deal 2 damage to everybody in it and deal 1 damage to everybody on the next square in the same direction
       for(Player p : getGameBoardController().getPlayers()){

@@ -17,11 +17,6 @@ public abstract class Square {
   /**
    *
    */
-  private Grabbable item;
-
-  /**
-   *
-   */
   private Decks decks;
 
   /**
@@ -80,14 +75,9 @@ public abstract class Square {
   private List<Direction> adjacencies;
 
   /**
-   *
+   * Take the item from the square
    */
   public abstract <T extends Grabbable> T grab(int index);
-
-  /**
-   *
-   */
-  public abstract boolean isSpawnPoint();
 
   /**
    * set the adjacencies of a square
@@ -109,6 +99,9 @@ public abstract class Square {
     }
   }
 
+  /**
+   * For each direction, specify whether there is a wall that way
+   */
   protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
     adjacencies.get(0).setBlocked(north);
     adjacencies.get(1).setBlocked(east);

@@ -23,6 +23,10 @@ public class Inventory {
     addPowerUpToInventory(decks.drawPowerUp());
   }
 
+  /**
+   *
+   * @return the reference to the decks
+   */
   public Decks getDecksReference() {
     return decksReference;
   }
@@ -37,7 +41,7 @@ public class Inventory {
   private Ammo ammo;
 
   /**
-   *
+   * The owner of this inventory
    */
   private Player owner;
 
@@ -70,10 +74,6 @@ public class Inventory {
    */
   public List<PowerUpCard> getPowerUps() {
     return new LinkedList<>(this.powerUps);
-  }
-
-  public void addItemToInventory(Grabbable item){
-
   }
 
   /**

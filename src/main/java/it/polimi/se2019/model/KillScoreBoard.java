@@ -33,18 +33,12 @@ public class KillScoreBoard {
   private List<Integer> scoreBoardValue;
 
   /**
-   *
-   */
-  private GameBoard gameBoard;
-
-  /**
    * Init a new KillScoreBoard
    *
    * @param skulls  Number of available skulls
    * @param scores  Array containing the scores of the board
    */
-  public KillScoreBoard(GameBoard g, Integer skulls, Integer[] scores) {
-    gameBoard = g;
+  public KillScoreBoard(Integer skulls, Integer[] scores) {
     scoreBoardValue = new ArrayList<>();
     this.remainingSkulls = skulls;
     this.kills = new ArrayList<>();
@@ -75,9 +69,18 @@ public class KillScoreBoard {
     this.doubleKills.add(player);
   }
 
+  /**
+   *
+   * @return the list of players who have scored kills, in order
+   */
   public List<Player> getKills(){
     return kills;
   }
+
+  /**
+   *
+   * @return the list of players who have scored double kills, in order
+   */
   public List<Player> getDoubleKills(){
     return doubleKills;
   }

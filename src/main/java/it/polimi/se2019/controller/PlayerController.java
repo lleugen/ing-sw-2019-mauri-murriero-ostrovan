@@ -2,11 +2,16 @@ package it.polimi.se2019.controller;
 
 import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.player_state_controller.*;
+import it.polimi.se2019.model.grabbable.PowerUpCard;
+import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * This class controls player actions, it contains the player's current state
@@ -17,6 +22,11 @@ import java.util.List;
  * complex actions that a player can make during a turn
  */
 public class PlayerController {
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "PlayerController";
+
   private PlayerViewOnServer client;
   private Player player;
   private PlayerStateController state;
@@ -35,6 +45,56 @@ public class PlayerController {
     stateControllerList.add(3, new FirstFreneticStateController(g, p, c));
     stateControllerList.add(4, new SecondFreneticStateController(g, p, c));
     state = stateControllerList.get(0);
+  }
+
+  /**
+   * Ask a client if he wants to reload a weapon, and reload it
+   * Available weapons are referred to this user
+   *
+   * @param c Reference to the client
+   * @param p Model of the player
+   */
+  public static void reloadWeapon(PlayerViewOnServer c, Player p) throws UserTimeoutException {
+    if(c.chooseBoolean("Do you want to reload a weapon?")){
+      List<String> emptyWeapons = p.getInventory().getWeapons().stream()
+              .filter(Weapon::isUnloaded)
+              .map(Weapon::getName)
+              .collect(Collectors.toList());
+
+      String selectedWeapon = c.chooseWeaponToReload(emptyWeapons);
+
+      List<Weapon> weaponsToReload = p.getInventory().getWeapons().stream()
+              .filter((Weapon w) -> selectedWeapon.equals(w.getName()))
+              .collect(Collectors.toList());
+
+      for (Weapon w : weaponsToReload) {
+        w.reload(
+                getPowerUpsForReload(c, p),
+                p.getInventory().getAmmo()
+        );
+      }
+    }
+  }
+
+  /**
+   * Ask the client to select power ups for reload a weapon.
+   * Available powerups are referred to this client
+   *
+   * @param c Reference to the client
+   * @param p Model of the player
+   *
+   * @return The list of selected PowerUps
+   */
+  private static List<PowerUpCard> getPowerUpsForReload(PlayerViewOnServer c, Player p)
+          throws UserTimeoutException {
+
+    List<String> descs = p.getInventory().getPowerUps().stream()
+            .map(PowerUpCard::getDescription)
+            .collect(Collectors.toList());
+
+    return c.choosePowerUpCardsForReload(descs).stream()
+            .map(p.getInventory().getPowerUps()::get)
+            .collect(Collectors.toList());
   }
 
   /**
@@ -71,28 +131,38 @@ public class PlayerController {
    * Take turn
    */
   public void playTurn(Integer availableActions) throws UserTimeoutException{
-    //use power up
-    for(int i = 0; i<availableActions; i++){
-      String chosenAction;
-      chosenAction = client.chooseAction(state.toString());
-
-      if(chosenAction.equals("run")){
-        state.runAround();
-      }
-      else if(chosenAction.equals("grab")){
-        state.grabStuff();
-      }
-      else if(chosenAction.equals("shoot")){
-        state.shootPeople();
-      }
-      else if(chosenAction.equals("powerUp")){
-        i--;
-        state.usePowerUp();
+    while (availableActions > 0){
+      switch (
+              client.chooseAction(
+                      state.toString()
+              )
+      ) {
+        case "run":
+          state.runAround();
+          availableActions--;
+          break;
+        case "grab":
+          state.grabStuff();
+          availableActions--;
+          break;
+        case "shoot":
+          state.shootPeople();
+          availableActions--;
+          break;
+        case "powerUp":
+          state.usePowerUp();
+          break;
+        default:
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "User selected a wrong action {0}",
+                  state
+          );
       }
     }
   }
 
   public PlayerViewOnServer getClient(){
-    return client;
+    return this.client;
   }
 }

@@ -24,9 +24,21 @@ public final class CLI extends UnicastRemoteObject
      */
     private StringBuilder pendingUpdate = new StringBuilder();
 
-    public CLI() throws RemoteException {
+    /**
+     * Contains information about the map received from the server
+     */
+    private List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
 
+    /**
+     * Contain the name of the player currently playing
+     */
+    private String name;
+
+    public CLI() throws RemoteException {
+        // Standard Constructor.
+        // Needed only to handle RemoteException as defined in RMI specs
     }
+
     /**
      * Physically print to screen buffered data
      */
@@ -136,25 +148,25 @@ public final class CLI extends UnicastRemoteObject
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
                     stringBuilder.append("[]");
-                    if(!mapInfo.get(o).get(l).get(0).equals("NR")){
-                        if(m < mapInfo.get(o).get(l).size()){
-                            stringBuilder.append(mapInfo.get(o).get(l).get(m));
-                            for(int k = 0; k< 16 - mapInfo.get(o).get(l).get(m).length(); k++){
-                                stringBuilder.append(" ");
+                    if (mapInfo != null && mapInfo.get(o) != null && mapInfo.get(o).get(l) != null && mapInfo.get(o).get(l).get(0) != null) {
+                        if (!mapInfo.get(o).get(l).get(0).equals("NR")) {
+                            if (m < mapInfo.get(o).get(l).size()) {
+                                stringBuilder.append(mapInfo.get(o).get(l).get(m));
+                                for (int k = 0; k < 16 - mapInfo.get(o).get(l).get(m).length(); k++) {
+                                    stringBuilder.append(" ");
+                                }
+                            } else {
+                                for (int k = 0; k < 16; k++) {
+                                    stringBuilder.append(" ");
+                                }
+                            }
+                        } else {
+                            for (int n = 0; n < 8; n++) {
+                                stringBuilder.append("[]");
                             }
                         }
-                        else{
-                            for(int k = 0; k< 16; k++){
-                                stringBuilder.append(" ");
-                            }
-                        }
+                        stringBuilder.append("[]");
                     }
-                    else{
-                        for(int n = 0; n<8; n++){
-                            stringBuilder.append("[]");
-                        }
-                    }
-                    stringBuilder.append("[]");
                 }
                 stringBuilder.append("\n");
             }
@@ -165,10 +177,6 @@ public final class CLI extends UnicastRemoteObject
         }
         System.console().writer().write(stringBuilder.toString());
     }
-
-    List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
-
-    private String name;
 
     @Override
     public String getName(){
@@ -379,20 +387,23 @@ public final class CLI extends UnicastRemoteObject
     }
 
     @Override
-    public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendPlayerInfo");
+    public void sendPlayerInfo(List<ArrayList<String>> pInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 
     @Override
-    public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendKillScoreBoardInfo");
+    public void sendKillScoreBoardInfo(List<ArrayList<String>> killBoardInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 
     @Override
-    public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
-        // TODO
-        System.out.println("sendCharacterInfo");
+    public void sendCharacterInfo(List<String> cInfo)
+            throws RemoteException {
+        // Implemented only because defined in the interface.
+        // Empty cause the gui doesn't needs those data
     }
 }

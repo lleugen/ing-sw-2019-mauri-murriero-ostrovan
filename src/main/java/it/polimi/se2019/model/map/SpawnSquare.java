@@ -30,6 +30,10 @@ public class SpawnSquare extends Square {
    */
   private List<Weapon> weaponList;
 
+  /**
+   *
+   * @return the list of weapons on this spawn square
+   */
   @Override
   public List<Grabbable> getItem(){
     return new LinkedList<>(weaponList);
@@ -56,10 +60,9 @@ public class SpawnSquare extends Square {
     return weaponCopy;
   }
 
-  public boolean isSpawnPoint(){
-    return true;
-  }
-
+  /**
+   * If the square has less than three weapons, draw from the decks to replace those that were picked up.
+   */
   public void refill(){
     //draw a weapon from the weapons cards deck
     //add the drawn weapon to weaponsList
@@ -68,9 +71,6 @@ public class SpawnSquare extends Square {
         Weapon newWeapon = getDecks().drawWeapon();
         weaponList.add(newWeapon);
       }
-    }
-    else{
-      System.err.println("decks is null");
     }
   }
 }

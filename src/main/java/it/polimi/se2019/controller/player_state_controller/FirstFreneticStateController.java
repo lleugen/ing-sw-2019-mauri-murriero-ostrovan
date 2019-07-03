@@ -2,6 +2,7 @@ package it.polimi.se2019.controller.player_state_controller;
 
 import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
+import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
@@ -80,7 +81,7 @@ public class FirstFreneticStateController extends PlayerStateController {
       player.move(player.getPosition().getAdjacencies().get(direction));
     }
 
-    player.reloadWeapon(client);
+    PlayerController.reloadWeapon(client, player);
 
     shoot();
   }

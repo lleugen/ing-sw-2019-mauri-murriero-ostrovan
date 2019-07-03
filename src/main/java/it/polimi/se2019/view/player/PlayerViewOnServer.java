@@ -312,10 +312,13 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo)
           throws UserTimeoutException, RemoteException {
-    WaitFor<List<ArrayList<ArrayList<String>>>, Void> wf = new WaitFor<>();
-    wf.waitForCons(
+    WaitFor<List<ArrayList<ArrayList<String>>>, Object> wf = new WaitFor<>();
+    wf.waitForFunc(
             this,
-            this.connectedPlayer::sendMapInfo,
+            (List<ArrayList<ArrayList<String>>> i) -> {
+              this.connectedPlayer.sendMapInfo(i);
+              return new Object();
+            },
             mapInfo
     );
   }
@@ -323,10 +326,13 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public void sendPlayerInfo(List<ArrayList<String>> playerInfo)
           throws UserTimeoutException, RemoteException {
-    WaitFor<List<ArrayList<String>>, Void> wf = new WaitFor<>();
-    wf.waitForCons(
+    WaitFor<List<ArrayList<String>>, Object> wf = new WaitFor<>();
+    wf.waitForFunc(
             this,
-            this.connectedPlayer::sendPlayerInfo,
+            (List<ArrayList<String>> i) -> {
+              this.connectedPlayer.sendPlayerInfo(i);
+              return new Object();
+            },
             playerInfo
     );
   }
@@ -334,10 +340,13 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo)
           throws UserTimeoutException, RemoteException {
-    WaitFor<List<ArrayList<String>>, Void> wf = new WaitFor<>();
-    wf.waitForCons(
+    WaitFor<List<ArrayList<String>>, Object> wf = new WaitFor<>();
+    wf.waitForFunc(
             this,
-            this.connectedPlayer::sendKillScoreBoardInfo,
+            (List<ArrayList<String>> i) -> {
+              this.connectedPlayer.sendKillScoreBoardInfo(i);
+              return new Object();
+            },
             killScoreBoardInfo
     );
   }
@@ -345,10 +354,13 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @Override
   public void sendCharacterInfo(List<String> characterInfo)
           throws UserTimeoutException, RemoteException {
-    WaitFor<List<String>, Void> wf = new WaitFor<>();
-    wf.waitForCons(
+    WaitFor<List<String>, Object> wf = new WaitFor<>();
+    wf.waitForFunc(
             this,
-            this.connectedPlayer::sendCharacterInfo,
+            (List<String> i) -> {
+              this.connectedPlayer.sendCharacterInfo(i);
+              return new Object();
+            },
             characterInfo
     );
   }
@@ -386,7 +398,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @throws UserTimeoutException If an item can not be obtained before
      *                              TIMEOUT expiration
      */
-    public R waitForFunc(PlayerViewOnServer me, RMIFunction<I, R> func, I i)
+    R waitForFunc(PlayerViewOnServer me, RMIFunction<I, R> func, I i)
             throws UserTimeoutException {
       return this.handler(
               me,
@@ -408,35 +420,12 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
      * @throws UserTimeoutException If an item can not be obtained before
      *                              TIMEOUT expiration
      */
-    public R waitForSupp(PlayerViewOnServer me, RMISupplier<R> supp)
+    R waitForSupp(PlayerViewOnServer me, RMISupplier<R> supp)
             throws UserTimeoutException {
       return this.handler(
               me,
               (I i) -> supp.get(),
               null
-      );
-    }
-
-    /**
-     * Delivers an item to the other end
-     *
-     * @param me   Reference to a PlayerViewOnServer to operate on.
-     *             If a timeout is reached, connected is set to false on this
-     *             reference
-     * @param cons Consumer function on the other end
-     * @param i    Item to deliver
-     *
-     * @return True on success
-     *
-     * @throws UserTimeoutException If an item can not be delivered before
-     *                              TIMEOUT expiration
-     */
-    public R waitForCons(PlayerViewOnServer me, RMIConsumer<I> cons, I i)
-            throws UserTimeoutException {
-      return this.handler(
-              me,
-              (I li) -> {cons.accept(li); return null;},
-              i
       );
     }
 
@@ -458,13 +447,20 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
       ).start();
 
       try {
-        return this.tq.poll(
+        R toReturn = this.tq.poll(
                 TIMEOUT,
                 TimeUnit.SECONDS
         );
+
+        if (toReturn == null){
+          me.connected = false;
+          throw new UserTimeoutException();
+        }
+        else {
+          return toReturn;
+        }
       }
       catch (InterruptedException e){
-        me.connected = false;
         Thread.currentThread().interrupt();
         throw new UserTimeoutException(e);
       }
@@ -485,10 +481,5 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   @FunctionalInterface
   public interface RMISupplier<R extends Object> {
     R get() throws RemoteException;
-  }
-
-  @FunctionalInterface
-  public interface RMIConsumer<I extends Object> {
-    void accept(I i) throws RemoteException;
   }
 }

@@ -51,6 +51,7 @@ public class App {
   private static void initParams(String[] args){
     params = Arrays.stream(args)
             .map((String param) -> param.split("="))
+            .filter((String[] a) -> a.length == 2)
             .collect(Collectors.toMap(
                     (String[] item) -> item[0],
                     (String[] item) -> item[1]
@@ -64,9 +65,14 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    if (args.containsKey("host")) {
+    if (args.containsKey("host") && args.containsKey("lobbyTimeout")) {
       try {
-        new Server(args.get("host"));
+        new Server(
+                args.get("host"),
+                Integer.parseInt(
+                        args.get("lobbyTimeout")
+                )
+        );
       }
       catch (RemoteException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -76,9 +82,17 @@ public class App {
         );
         throw new WrongArguments("Unable to start RMI server");
       }
+      catch (NumberFormatException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Error while parsing lobbyTimeout",
+                e
+        );
+        throw new WrongArguments("Unable to parse lobbyTimeout param");
+      }
     }
     else {
-      throw new WrongArguments("Host param is required");
+      throw new WrongArguments("Host and lobbyTimeout params are required");
     }
   }
 
@@ -99,7 +113,7 @@ public class App {
   /**
    * Type: server, client
    * @param args type: client|server
-   *             ui: cli|gui
+   *             ui: cli
    *
    * @throws WrongArguments If passed args are invalid
    */

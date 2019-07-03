@@ -123,17 +123,16 @@ public abstract class PlayerStateController {
      * and set the weapon as loaded.
      */
     public void reload() throws UserTimeoutException {
-        List<String> playersWeapons = new ArrayList<>();
-        String weaponToReloadName = null;
-        List<Integer> cardsToUseIndexes = new ArrayList<>();
+        List<Integer> cardsToUseIndexes;
         List<PowerUpCard> cardsToUse = new ArrayList<>();
 
         //make a list of the player's weapons
-        for(Weapon w : player.getInventory().getWeapons()){
-            playersWeapons.add(w.getName());
-        }
+        List<String> playersWeapons = player.getInventory().getWeapons().stream()
+                .map(Weapon::getName)
+                .collect(Collectors.toList());
+
         //choose which one to reload
-        weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
+        String weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
 
         //get the weapon given its name
         for(Weapon w : player.getInventory().getWeapons()){

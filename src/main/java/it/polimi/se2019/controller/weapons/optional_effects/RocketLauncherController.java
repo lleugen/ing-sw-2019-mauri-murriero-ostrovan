@@ -26,15 +26,17 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
                     shooter.getPosition()
             )
     );
+    List<Player> toRemove = new ArrayList<>();
     for(Player p : possibleTargets){
       if(p.getPosition().equals(shooter.getPosition())){
-        possibleTargets.remove(p);
+        toRemove.add(p);
       }
     }
+    possibleTargets.removeAll(toRemove);
     List<Player> targets = new ArrayList<>();
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
-                      (gameBoardController.getPlayerNames(possibleTargets))));
+                      (GameBoardController.getPlayerNames(possibleTargets))));
 
     return targets;
   }
@@ -49,7 +51,7 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
       availableEffects.add("rocket jump");
     }
     Integer chosenEffect;
-    List<Player> internalTargets = targets;
+    List<Player> internalTargets;
 
     while(firingMode.contains(true)){
       //choose which effect to apply
@@ -86,7 +88,13 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
         Integer direction = client.chooseDirection
                 (map.getOpenDirections(shooter.getPosition()));
         if(direction != -1){
-          internalTargets.get(0).move(internalTargets.get(0).getPosition().getAdjacencies().get(direction));
+          internalTargets
+                  .get(0)
+                  .move(internalTargets
+                          .get(0)
+                          .getPosition()
+                          .getAdjacencies()
+                          .get(direction));
         }
       }
       else if(chosenEffect == 1){

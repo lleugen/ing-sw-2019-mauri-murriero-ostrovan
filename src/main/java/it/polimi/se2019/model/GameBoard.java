@@ -43,11 +43,25 @@ public class GameBoard {
    */
   private Integer currentPlayer;
 
+  /**
+   * Specifies whether the players have been added to the game board
+   */
   private boolean playersAdded;
 
+  /**
+   * Specifies whether the game is in frenzy mode or not
+   */
   private boolean isFrenzy;
 
+  /**
+   * Specifies whether the kill score board has been created
+   */
   private boolean killScoreBoardCreated;
+
+  /**
+   *
+   * @return whether the kill score board has been created
+   */
   public boolean isKillScoreBoardCreated(){
     return killScoreBoardCreated;
   }
@@ -76,14 +90,25 @@ public class GameBoard {
     this.map = new Map(mapType, this);
   }
 
+  /**
+   *
+   * @return whether the game is in frenzy mode
+   */
   public boolean isFrenzy(){
     return isFrenzy;
   }
 
+  /**
+   * set the game to frenzy mode
+   */
   public void setFrenzy(){
     isFrenzy = true;
   }
 
+  /**
+   * Generate the deck of ammunition tiles
+   * @return a list of ammunition tiles
+   */
   private List<AmmoTile> genAmmoDeck(){
     List<AmmoTile> deck = new ArrayList<>();
 
@@ -129,6 +154,10 @@ public class GameBoard {
     return deck;
   }
 
+  /**
+   * Generate the deck of power up cards
+   * @return a list of power up cards
+   */
   private List<PowerUpCard> genPowerUpDeck(){
     List<PowerUpCard> deck = new ArrayList<>();
 
@@ -148,6 +177,10 @@ public class GameBoard {
     return deck;
   }
 
+  /**
+   * Generate the deck of weapons
+   * @return a list of weapons
+   */
   private List<Weapon> genWeaponDeck(){
     List<Weapon> deck = new ArrayList<>();
 
@@ -303,20 +336,38 @@ public class GameBoard {
     return deck;
   }
 
+  /**
+   *
+   * @return whether players have been added to the game board
+   */
   public boolean getPlayersAdded(){
     return playersAdded;
   }
+
+  /**
+   * add players to the game board
+   * @param p players to be added to the game board
+   */
   public void addPlayers(List<Player> p){
     players = p;
     playersAdded = true;
   }
 
+  /**
+   *
+   * @return the list of players playing on this game board
+   */
   public List<Player> getPlayers(){
     return players;
   }
 
+  /**
+   *
+   * @param skulls number of kills that will be scored before frenzy mode starts
+   * @param scores the numbers of points that will be assigned to players based on the number of kills they have scored
+   */
   public void createKillScoreBoard(Integer skulls, Integer[] scores){
-    killScoreBoard = new KillScoreBoard(this, skulls, scores);
+    this.killScoreBoard = new KillScoreBoard(skulls, scores);
   }
 
   /**

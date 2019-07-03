@@ -41,16 +41,24 @@ public class NormalStateController extends PlayerStateController {
   @Override
   public void grabStuff() throws UserTimeoutException {
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
-    if(direction != -1){
+    if(
+            direction != -1 &&
+            player.getPosition() != null &&
+            player.getPosition().getAdjacencies() != null &&
+            player.getPosition().getAdjacencies().get(direction) != null
+    ) {
       player.move(player.getPosition().getAdjacencies().get(direction));
     }
+
     Square position = player.getPosition();
     int pickUpIndex = client.chooseItemToGrab();
     if(position instanceof SpawnSquare){
       player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
     }
     else{
-      player.getInventory().addAmmoTileToInventory(position.grab(0));
+      if (position != null) {
+        player.getInventory().addAmmoTileToInventory(position.grab(0));
+      }
     }
   }
 

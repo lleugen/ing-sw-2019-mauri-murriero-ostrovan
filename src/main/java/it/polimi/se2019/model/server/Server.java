@@ -10,7 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,18 +32,24 @@ public class Server implements ServerLobbyInterface, Serializable {
   private final String hostname;
 
   /**
+   * Timeout (in seconds) before starting games in ServerLobby
+   */
+  private int lobbyTimeout;
+
+  /**
    * Creates a new Server
    *
-   * @param host Hostname the registry is located to
+   * @param host          Hostname the registry is located to
+   * @param lobbyTimeout  Timeout (in seconds) before starting a game
    */
-  public Server(String host) throws RemoteException {
+  public Server(String host, int lobbyTimeout) throws RemoteException {
     Registry registry = LocateRegistry.getRegistry(host);
     registry.rebind("//" + host + "/server",
             UnicastRemoteObject.exportObject(this, 0)
     );
 
     this.hostname = host;
-
+    this.lobbyTimeout = lobbyTimeout;
     if (System.getSecurityManager() == null) {
       System.setSecurityManager(new SecurityManager());
     }
@@ -59,22 +66,7 @@ public class Server implements ServerLobbyInterface, Serializable {
       PlayerViewOnServer p = new PlayerViewOnServer(user, this.hostname);
       p.setName(user);
 
-      if (this.lobbyes.isEmpty() || this.lobbyes.get(0).checkRoomFull()) {
-        while (!this.addLobby(p)) {
-          Logger.getLogger(LOG_NAMESPACE).log(
-                  Level.INFO,
-                  "Recreating lobby"
-          );
-        }
-      }
-
-      if (!this.lobbyes.isEmpty()) {
-        this.lobbyes.get(0).connect(
-                p,
-                p.getName(),
-                p.getCharacter()
-        );
-      }
+      this.registerPlayer(p);
     }
     catch (PlayerViewOnServer.InitializationError | UserTimeoutException e){
       Logger.getLogger(LOG_NAMESPACE).log(
@@ -83,38 +75,40 @@ public class Server implements ServerLobbyInterface, Serializable {
               e
       );
     }
-    catch (ServerLobby.RoomFullException e){
-      // Checked before, never happens
-    }
   }
 
   /**
-   * Add a new lobby to the server
+   * Register a new player to the server.
    *
-   * @param p User that should initialize the map
+   * If an open lobby is available, it is added to that lobby.
+   * If there are no lobbies availables, a new lobby is created and the player
+   * is added to the newly created lobby
    *
-   * @return true on success (the lobby will be add at place 0), false on error
+   * @param p VirtualView of the player to add to the lobby
    *
-   * @throws UserTimeoutException If the user does not respond on time
+   * @throws UserTimeoutException if the user doesn't answer on time to a server
+   *                              request.
+   *                              If this exception is raised, the player is
+   *                              not added to the lobby
    */
-  private boolean addLobby(PlayerViewOnServer p) throws UserTimeoutException {
-    try {
-      this.lobbyes.add(
-              0,
-              new ServerLobby(
-                      p.chooseNumberOfPlayers(),
-                      p.chooseMap()
-              )
-      );
-      return true;
-    }
-    catch (UnknownMapTypeException e){
-      Logger.getLogger(LOG_NAMESPACE).log(
-              Level.WARNING,
-              "Unknown Map Type",
-              e
-      );
-      return false;
+  private synchronized void registerPlayer(PlayerViewOnServer p)
+          throws UserTimeoutException {
+    while (
+            (this.lobbyes.isEmpty()) ||
+            !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
+    ) {
+      Integer selectedMap = 0;
+      try {
+        selectedMap = p.chooseMap();
+        this.lobbyes.add(new ServerLobby(selectedMap, this.lobbyTimeout));
+      }
+      catch (UnknownMapTypeException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User choose an unknown map type <{0}>",
+                selectedMap
+        );
+      }
     }
   }
 }

@@ -57,10 +57,9 @@ public class AmmoSquare extends Square {
     return ammoTileCopy;
   }
 
-  public boolean isSpawnPoint(){
-    return false;
-  }
-
+  /**
+   * If the square doesn't contain the necessary items, draw from the decks to refill them
+   */
   public void refill(){
     //draw an ammo tile from the ammo tile deck
     if(ammos == null){

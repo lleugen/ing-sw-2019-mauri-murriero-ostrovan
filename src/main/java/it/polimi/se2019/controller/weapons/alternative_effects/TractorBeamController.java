@@ -14,6 +14,7 @@ public class TractorBeamController extends OptionalEffectWeaponController {
   public TractorBeamController(GameBoardController g) {
     super(g);
     name = "TractorBeamController";
+    numberOfOptionalEffects = 1;
   }
 
   PlayerViewOnServer client;
@@ -24,6 +25,7 @@ public class TractorBeamController extends OptionalEffectWeaponController {
     List<Player> possibletargets = new ArrayList<>();
     List<Player> currentSquareTwoMovesAway = new ArrayList<>();
     List<Player> targets = new ArrayList<>();
+    firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       List<Square> visibleSquares = map.getVisibleSquares(shooter.getPosition());
       for(Square q : visibleSquares){
@@ -47,7 +49,7 @@ public class TractorBeamController extends OptionalEffectWeaponController {
     }
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
-                      (gameBoardController.getPlayerNames(possibletargets))));
+                      (GameBoardController.getPlayerNames(possibletargets))));
 
 
     return targets;

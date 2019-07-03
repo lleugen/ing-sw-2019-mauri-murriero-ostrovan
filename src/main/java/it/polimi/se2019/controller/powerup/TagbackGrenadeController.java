@@ -9,19 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * The tagback grenade can be used when taking damage to assign a mark
+ * to the offender.
+ */
 public class TagbackGrenadeController extends PowerUpController {
   /**
    * Namespace this class logs to
    */
   private static final String LOG_NAMESPACE = "TagbackGrenadeController";
-
-  /**
-   * The tagback grenade can be used when taking damage to assign a mark
-   * to the offender.
-   */
-  public TagbackGrenadeController() {
-  }
 
   PlayerViewOnServer client;
 
