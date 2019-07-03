@@ -21,7 +21,9 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestPlayer {
     @Test
     public void testCreate()throws UnknownMapTypeException {

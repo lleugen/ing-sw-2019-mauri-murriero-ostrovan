@@ -11,7 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestPlayerBoard {
     @Test
     public void testCreation() throws UnknownMapTypeException {

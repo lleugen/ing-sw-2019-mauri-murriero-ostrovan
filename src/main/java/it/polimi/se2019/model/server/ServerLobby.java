@@ -14,7 +14,9 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
+/**
+ * @author Fabio Mauri
+ */
 public class ServerLobby implements Remote {
   /**
    * Maximum number of player that can join a room

@@ -12,10 +12,13 @@ import java.util.List;
  * implementation when generating the map or moving the player.
  * Few funcitons are exposed, which allows for abs operations on squares and
  * are implemented in specific extensions of this class
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public abstract class Square {
   /**
-   *
+   * reference to the decks from which items can be drawn
    */
   private Decks decks;
 
@@ -31,6 +34,10 @@ public abstract class Square {
     PURPLE
   }
 
+  /**
+   *
+   * @return the reference to the decks
+   */
   public Decks getDecks(){
     if(decks != null){
       return decks;
@@ -41,6 +48,9 @@ public abstract class Square {
     }
   }
 
+  /**
+   * the map to which the square belongs
+   */
   protected Map map;
 
   /**
@@ -79,6 +89,7 @@ public abstract class Square {
    * Take the item from the square
    * @param index int specifying which item to grab
    * @return the item grabbed
+   * @param <T> is anything that is grabbable
    */
   public abstract <T extends Grabbable> T grab(int index);
 

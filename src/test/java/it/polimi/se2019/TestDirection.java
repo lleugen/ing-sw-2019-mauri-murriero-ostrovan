@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestDirection {
 
   @Test

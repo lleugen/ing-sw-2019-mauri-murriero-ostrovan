@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class FurnaceController extends AlternativeEffectWeaponController {
   public FurnaceController(GameBoardController g) {
     super(g);

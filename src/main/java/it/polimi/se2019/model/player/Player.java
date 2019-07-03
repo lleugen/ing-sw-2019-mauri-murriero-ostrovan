@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Player contains all the player data, and related collections (eg: Inventory)
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Player {
   public Player(String name, String character, GameBoard g) {

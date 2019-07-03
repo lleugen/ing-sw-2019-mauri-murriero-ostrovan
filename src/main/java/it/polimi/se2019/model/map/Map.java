@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
  * A map is a virtual collection of squares, linked together.
  * In reality, only one square is inserted in this class, cause all square are
  * linked together, and therefore the list of squares can easily be retrived
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Map {
   /**
@@ -72,6 +75,8 @@ public class Map {
    * Init a new map
    *
    * @param mapType The type of the map to generate
+   * @param g the game board to which the map belongs
+   * @throws UnknownMapTypeException if the user asks for a non existent map
    */
   public Map(Integer mapType, GameBoard g) throws UnknownMapTypeException {
     this.gameBoard = g;
@@ -143,6 +148,7 @@ public class Map {
   }
   /**
    * Gets the root square
+   * @return the root square of the map, mapSquares[0][0]
    */
   public Square getRoot() {
     return this.root;
@@ -150,6 +156,8 @@ public class Map {
 
   /**
    * get the coordinates of a square
+   * @return a list of two integers representing the row and the column that identify the square
+   * @param position the square of which the coordinates are to be calculated
    */
   public List<Integer> getSquareCoordinates(Square position){
     int xCoordinate = 0;
@@ -187,6 +195,7 @@ public class Map {
    * @param type         Type of the map to generate
    *
    * @return The generated map
+   * @throws UnknownMapTypeException if the user specifies a non existing map
    */
   private static Square[][] genMap(Map mapReference, String type)
           throws UnknownMapTypeException {

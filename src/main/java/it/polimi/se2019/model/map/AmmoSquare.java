@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 
 /**
  * An AmmoSquare represent a square where a player can grab Ammos, but not spawn
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class AmmoSquare extends Square {
   /**
@@ -22,6 +25,7 @@ public class AmmoSquare extends Square {
    *
    * @param roomId      The id of the room this Square belongs to
    * @param adjacencies The list of adjacents squares
+   * @param m the map to which the square belongs
    */
   public AmmoSquare(Map m, RoomColor roomId, List<Direction> adjacencies) {
     super(m, roomId, adjacencies);

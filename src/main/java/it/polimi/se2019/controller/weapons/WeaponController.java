@@ -12,6 +12,9 @@ import java.util.List;
 /**
  * WeaponController is an abstract class with a template "fire" method
  * and non implemented findTargets and shootTargets
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public abstract class WeaponController {
   protected GameBoardController gameBoardController;
@@ -112,11 +115,13 @@ public abstract class WeaponController {
    * Find all possible targets
    * @return the list of chosen target players
    * @param shooter the player who is shooting the weapon
+   *@throws UserTimeoutException if the user takes too long to respond or disconnects
    */
   public abstract List<Player> findTargets(Player shooter) throws UserTimeoutException;
 
   /**
    * Apply the weapon's effects on selected targets.
+   * @throws UserTimeoutException if the user takes too long to respond or disconnects
    * @param shooter the player who is shooting the weapon
    * @param targets the list of targets to shoot
    */

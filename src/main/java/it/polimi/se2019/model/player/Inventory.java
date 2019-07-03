@@ -12,6 +12,9 @@ import java.util.List;
  * Every Ammo, WeaponController or power-up he has, is in this class.
  * In addition, methods for easily add elements to the inventory are exposed,
  * using the same interface Grabbable
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Inventory {
   public Inventory(Player p, Decks decks) {
@@ -78,6 +81,7 @@ public class Inventory {
 
   /**
    * Add a new weapon to the inventory
+   * @param item the weapon to add to the inventory
    */
   public void addWeaponToInventory(Weapon item){
     if(weapons.size()<3){
@@ -88,6 +92,7 @@ public class Inventory {
 
   /**
    * Add a power up card to the inventory
+   * @param item the power up card to add to the inventory
    */
   public void addPowerUpToInventory(PowerUpCard item){
     if(powerUps.size()<3){
@@ -97,6 +102,7 @@ public class Inventory {
 
   /**
    * Add ammo tile to inventory
+   * @param item the ammo tile to add to the inventory
    */
   public void addAmmoTileToInventory(AmmoTile item){
     ammo.addRed(item.getAmmo().getRed());

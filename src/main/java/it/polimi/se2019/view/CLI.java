@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Scanner;
-
+/**
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
+ */
 public final class CLI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient {
     /**

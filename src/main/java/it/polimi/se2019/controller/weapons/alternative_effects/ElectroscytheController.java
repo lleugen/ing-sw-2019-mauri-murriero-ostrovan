@@ -6,7 +6,10 @@ import it.polimi.se2019.controller.weapons.optional_effects.OptionalEffectWeapon
 import it.polimi.se2019.model.player.Player;
 
 import java.util.List;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class ElectroscytheController extends OptionalEffectWeaponController {
   public ElectroscytheController(GameBoardController g) {
     super(g);

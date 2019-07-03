@@ -8,6 +8,9 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 /**
  * Powerups are cards that can be used to produce an effect
  * or to pay an ammo cost.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public abstract class PowerUpController {
   public PowerUpController() {

@@ -13,6 +13,9 @@ import java.util.List;
  * or attributes and is used to group the weapons in the game based on how they
  * work.
  * Simple weapons only have one possible effect.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public abstract class SimpleWeaponController extends WeaponController {
     public SimpleWeaponController(GameBoardController g){

@@ -10,7 +10,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class SecondFreneticStateController extends PlayerStateController {
   public SecondFreneticStateController(GameBoardController g, Player p, PlayerViewOnServer c) {
     super(g, p, c);

@@ -15,7 +15,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public abstract class PlayerStateController {
     protected Player player;
     protected PlayerViewOnServer client;

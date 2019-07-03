@@ -5,7 +5,9 @@ import it.polimi.se2019.model.grabbable.PowerUpCard;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 public class TestPowerUpCard {
 
   @Test

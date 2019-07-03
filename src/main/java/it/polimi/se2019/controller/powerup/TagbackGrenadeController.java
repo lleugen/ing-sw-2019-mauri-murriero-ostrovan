@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 /**
  * The tagback grenade can be used when taking damage to assign a mark
  * to the offender.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public class TagbackGrenadeController extends PowerUpController {
   /**
