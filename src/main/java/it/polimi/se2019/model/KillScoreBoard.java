@@ -3,6 +3,7 @@ package it.polimi.se2019.model;
 import it.polimi.se2019.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +34,11 @@ public class KillScoreBoard {
   private List<Integer> scoreBoardValue;
 
   /**
+   * Has one item for each kill and specifies whether that kills was an overkill
+   */
+  private List<Boolean> overKills;
+
+  /**
    * Init a new KillScoreBoard
    *
    * @param skulls  Number of available skulls
@@ -43,10 +49,9 @@ public class KillScoreBoard {
     this.remainingSkulls = skulls;
     this.kills = new ArrayList<>();
     this.doubleKills = new ArrayList<>();
+    this.overKills = new ArrayList<>();
 
-    for(int i = 0; i<scores.length; i++){
-      scoreBoardValue.add(scores[i]);
-    }
+    Collections.addAll(scoreBoardValue, scores);
   }
 
   /**
@@ -57,6 +62,14 @@ public class KillScoreBoard {
   public synchronized void addKill(Player player) {
     this.kills.add(player);
     this.remainingSkulls--;
+  }
+
+  /**
+   * An overkill lets the player add one more mark on the scoreboard, but doesn't consume a skull
+   * @param overkill the player who scores the overkill
+   */
+  public synchronized void addOverKill(Boolean overkill){
+    this.overKills.add(overkill);
   }
 
   /**
@@ -75,6 +88,11 @@ public class KillScoreBoard {
    */
   public List<Player> getKills(){
     return kills;
+  }
+
+
+  public List<Boolean> getOverKills(){
+    return overKills;
   }
 
   /**

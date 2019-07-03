@@ -120,10 +120,19 @@ public class Player {
     List<Integer> pointsList = board.getDeathValue();
 
     //*** death to be resolved
-    if(damages.size() > 11){
-      int playerAlreadyPaid = 0; //how many player the routine has already paid with points
+    if(damages.size() > 10){
+      gameBoardReference.getKillScoreBoard().addKill(this.board.getDamageReceived()
+              .get(this.board.getDamageReceived().size()-1));
+      if(damages.size()>11){
+        gameBoardReference.getKillScoreBoard().addOverKill(true);
+      }
+      else{
+        gameBoardReference.getKillScoreBoard().addOverKill(false);
+      }
+      //how many player the routine has already paid with points
+      int playerAlreadyPaid = 0;
 
-      //first blood avaiilable only in non-frenzy mode
+      //first blood available only in non-frenzy mode
       if(!board.getIfIsFrenzy()){
         damages.get(0).addPoints(1);
       }
