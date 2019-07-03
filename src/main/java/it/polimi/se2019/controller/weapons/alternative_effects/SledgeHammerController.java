@@ -8,7 +8,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class SledgeHammerController extends AlternativeEffectWeaponController {
   public SledgeHammerController(GameBoardController g) {
     super(g);

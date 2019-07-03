@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * Player board contains all the logic related to damages, marks and scores
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class PlayerBoard {
   public PlayerBoard() {

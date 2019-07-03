@@ -5,6 +5,7 @@ package it.polimi.se2019;
 import it.polimi.se2019.model.server.Server;
 import it.polimi.se2019.view.Client;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -100,10 +101,36 @@ public class App {
    * Spawn a new client
    *
    * @param args Args array received from the command line
+   *
+   * @throws RemoteException if an error is found while using RMI
    */
-  private static void spawnClient(Map<String, String> args){
+  private static void spawnClient(Map<String, String> args) {
     if (args.containsKey("host") && args.containsKey("ui")) {
-      new Client(args.get("host"), args.get("ui"));
+
+//      switch (args.get("ui")){
+//        case "gui":
+//          ;
+//          break;
+//        case "cli":
+//          new Client(args.get("host"), args.get("ui"));
+//          break;
+//        default:
+//          Logger.getLogger(LOG_NAMESPACE).log(
+//                  Level.SEVERE,
+//                  "Unknown UI param, supported are <cli> and <gui>"
+//          );
+//          break;
+//      }
+      try {
+        new Client(args.get("host"), args.get("ui"));
+      }
+      catch (RemoteException  | NotBoundException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Unable to start network",
+                e
+        );
+      }
     }
     else {
       throw new WrongArguments("Host and UI params are required");
@@ -115,9 +142,13 @@ public class App {
    * @param args type: client|server
    *             ui: cli
    *
-   * @throws WrongArguments If passed args are invalid
+   * @throws WrongArguments  If passed args are invalid
    */
   public static void main(String[] args) {
+    if (System.getSecurityManager() == null) {
+      System.setSecurityManager(new SecurityManager());
+    }
+
     params = new HashMap<>();
     initMapping();
 
@@ -139,7 +170,7 @@ public class App {
    * The toString method may contain additional informations about the error
    */
   public static class WrongArguments extends RuntimeException {
-    WrongArguments(String message){
+    public WrongArguments(String message){
       super(message);
     }
   }

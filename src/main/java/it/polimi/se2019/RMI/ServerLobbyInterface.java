@@ -4,5 +4,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ServerLobbyInterface extends Remote {
-    void connect(String client, String character, ViewFacadeInterfaceRMIClient clientView) throws RemoteException;
+    void connect(ViewFacadeInterfaceRMIClient clientView) throws RemoteException;
 }

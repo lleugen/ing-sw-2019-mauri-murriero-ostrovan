@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
  * generating a map and instantiating the players, it then runs the turns until
  * the number of skulls reaches 0, after that it runs the final frenzy round and
  * ends the game.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public class GameBoardController{
   /**
@@ -79,27 +82,48 @@ public class GameBoardController{
 
   /**
    * getter methods for each relevant attribute
+   * @return the list of players in this game
    */
   public List<Player> getPlayers(){
     return new LinkedList<>(this.players);
   }
 
+  /**
+   *
+   * @return the list of player controllers in this game
+   */
   public List<PlayerController> getPlayerControllers(){
     return new LinkedList<>(this.playerControllers);
   }
 
+  /**
+   *
+   * @return the list of clients in this game
+   */
   public List<PlayerViewOnServer> getClients(){
     return new LinkedList<>(this.clients);
   }
 
+  /**
+   *
+   * @return the reference to the game's board
+   */
   public GameBoard getGameBoard(){
     return this.gameBoard;
   }
 
+  /**
+   *
+   * @return the list of weapon controllers in the game
+   */
   public List<WeaponController> getWeaponControllers(){
     return new LinkedList<>(this.weaponControllers);
   }
 
+  /**
+   *
+   * @return the list of all power up controllers
+   */
   public List<PowerUpController> getPowerUpControllers(){
     return new LinkedList<>(this.powerUpControllers);
   }
@@ -107,6 +131,7 @@ public class GameBoardController{
   /**
    * add the player controllers to the game and set isReady to true so that
    * the game can start
+   * @param c the list of player controllers to add to the game
    */
   public void addPlayerControllers(List<PlayerController> c){
     this.playerControllers = new LinkedList<>(c);
@@ -118,6 +143,11 @@ public class GameBoardController{
             .collect(Collectors.toList());
   }
 
+  /**
+   * get the player who has argument name
+   * @param name the name of the player to identify
+   * @return the player with argument name
+   */
   public Player identifyPlayer(String name){
     Player player = null;
     for(Player p : this.players){
@@ -128,6 +158,11 @@ public class GameBoardController{
     return player;
   }
 
+  /**
+   *
+   * @param players the list of players who's names will be returned
+   * @return the list of names of the given players
+   */
   public static List<String> getPlayerNames(List<Player> players){
       return players.stream().map(Player::getName).collect(Collectors.toList());
   }
@@ -135,6 +170,7 @@ public class GameBoardController{
   /**
    * This method starts the game by generating a map, initializing players
    * and starting the main game loop
+   * @param p the list of player controllers who will be playing the game
    */
   public void startGame(List<PlayerController> p) {
     addPlayerControllers(p);

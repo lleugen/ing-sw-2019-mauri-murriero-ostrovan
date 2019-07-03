@@ -14,6 +14,9 @@ import java.util.List;
  * work.
  * Optional effect weapons have one primary effect and one or more optional
  * effects that can be applied in no particular order.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public abstract class OptionalEffectWeaponController extends WeaponController {
   public OptionalEffectWeaponController(GameBoardController g) {

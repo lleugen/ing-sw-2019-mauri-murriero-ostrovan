@@ -21,6 +21,9 @@ public abstract class AlternativeEffectWeaponController extends WeaponController
   }
   /**
    * Make a list of all possible targets.
+   *
+   * @author Eugenio OStrovan
+   * @author Fabio Mauri
    */
   @Override
   public abstract List<Player> findTargets(Player shooter) throws UserTimeoutException ;

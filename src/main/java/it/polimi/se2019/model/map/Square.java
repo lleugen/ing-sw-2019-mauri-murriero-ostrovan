@@ -12,10 +12,13 @@ import java.util.List;
  * implementation when generating the map or moving the player.
  * Few funcitons are exposed, which allows for abs operations on squares and
  * are implemented in specific extensions of this class
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public abstract class Square {
   /**
-   *
+   * reference to the decks from which items can be drawn
    */
   private Decks decks;
 
@@ -31,6 +34,10 @@ public abstract class Square {
     PURPLE
   }
 
+  /**
+   *
+   * @return the reference to the decks
+   */
   public Decks getDecks(){
     if(decks != null){
       return decks;
@@ -41,10 +48,13 @@ public abstract class Square {
     }
   }
 
+  /**
+   * the map to which the square belongs
+   */
   protected Map map;
 
   /**
-   *
+   * @return the list of items on the square
    */
   public abstract List<Grabbable> getItem();
   /**
@@ -52,6 +62,7 @@ public abstract class Square {
    *
    * @param roomId      The id of the room this Square belongs to
    * @param a The list of adjacents squares
+   * @param m the map that this square belongs to
    */
   public Square(Map m, RoomColor roomId, List<Direction> a) {
     map = m;
@@ -70,17 +81,21 @@ public abstract class Square {
   }
 
   /**
-   * The list of adjacencies squares
+   * The list of adjacent squares
    */
   private List<Direction> adjacencies;
 
   /**
    * Take the item from the square
+   * @param index int specifying which item to grab
+   * @return the item grabbed
+   * @param <T> is anything that is grabbable
    */
   public abstract <T extends Grabbable> T grab(int index);
 
   /**
    * set the adjacencies of a square
+   * @param adj the list of adjacencies to set for the square
    */
   public void setAdjacencies(List<Direction> adj){
     adjacencies = new ArrayList<>();
@@ -101,6 +116,10 @@ public abstract class Square {
 
   /**
    * For each direction, specify whether there is a wall that way
+   * @param north whether the north side is blocked by a wall
+   * @param east whether the east side is blocked by a wall
+   * @param south whether the south side is blocked by a wall
+   * @param west whether the west side is blocked by a wall
    */
   protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
     adjacencies.get(0).setBlocked(north);

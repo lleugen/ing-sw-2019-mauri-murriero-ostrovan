@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * @author Fabio Mauri
+ */
 public class Server implements ServerLobbyInterface, Serializable {
   /**
    * Namespace this class logs to
@@ -37,6 +39,7 @@ public class Server implements ServerLobbyInterface, Serializable {
    *
    * @param host          Hostname the registry is located to
    * @param lobbyTimeout  Timeout (in seconds) before starting a game
+   * @throws RemoteException if there is an error in the RMI connection
    */
   public Server(String host, int lobbyTimeout) throws RemoteException {
     Registry registry = LocateRegistry.getRegistry(host);
@@ -53,12 +56,16 @@ public class Server implements ServerLobbyInterface, Serializable {
   /**
    * Handle connection of an user to the server
    *
-   * @param user User id of the connected player
+   * @param userView View of the user that is joining the server (already
+   *                 initialized)
+   *
+   * @throws RemoteException if an error occurs with RMI
    */
   @Override
-  public synchronized void connect(String user, String character, ViewFacadeInterfaceRMIClient userView){
+  public synchronized void connect(ViewFacadeInterfaceRMIClient userView)
+          throws RemoteException {
     try {
-      PlayerViewOnServer p = new PlayerViewOnServer(user, character, userView);
+      PlayerViewOnServer p = new PlayerViewOnServer(userView);
       this.registerPlayer(p);
     }
     catch (UserTimeoutException e){

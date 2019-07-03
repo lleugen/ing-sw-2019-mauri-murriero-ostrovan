@@ -4,6 +4,9 @@ package it.polimi.se2019.model.map;
  * A Direction is an attribute of square containing information about adjacent
  * elements in one of four cardinal direction.
  * It contains a reference to the next square in that direction
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Direction {
   /**

@@ -26,7 +26,9 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestShootTargets {
     @Mock

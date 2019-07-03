@@ -35,14 +35,18 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   private ViewFacadeInterfaceRMIClient connectedPlayer;
 
   /**
+   * Create a new wrapper for a player on the server.
+   * The wrapper allows to call syncronous operation on the client with a
+   * timeout
    *
-   * @param user      Nickname of the user
-   * @param character Character of the player
-   * @param view      View of the player
+   * @param view      View of the player (already initialized)
+   *
+   * @throws RemoteException If an error occurs while utilizing RMI
    */
-  public PlayerViewOnServer(String user, String character, ViewFacadeInterfaceRMIClient view) {
-    this.name = user;
-    this.character = character;
+  public PlayerViewOnServer(ViewFacadeInterfaceRMIClient view)
+          throws RemoteException {
+    this.name = view.getName();
+    this.character = view.getCharacter();
     this.connectedPlayer = view;
   }
 

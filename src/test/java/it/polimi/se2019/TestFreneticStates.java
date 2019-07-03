@@ -22,7 +22,9 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.Matchers.any;
-
+/**
+ * @author Eugenio Ostrovan
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestFreneticStates {
     @Mock

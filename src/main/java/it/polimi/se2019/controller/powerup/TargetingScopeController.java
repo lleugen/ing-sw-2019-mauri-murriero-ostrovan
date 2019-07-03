@@ -11,6 +11,9 @@ import java.util.List;
 /**
  * The targeting scope allows a player to spend one ammo of any kind to
  * add one damage to an attack.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public class TargetingScopeController extends PowerUpController {
   PlayerViewOnServer client;

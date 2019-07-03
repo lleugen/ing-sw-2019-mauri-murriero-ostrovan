@@ -11,6 +11,9 @@ import java.util.stream.Stream;
 
 /**
  * KillScoreBoard contains all data related to global deaths and scores
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class KillScoreBoard {
   /**

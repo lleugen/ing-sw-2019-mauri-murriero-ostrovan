@@ -14,6 +14,9 @@ import java.util.List;
  * discarded area of the deck).
  * When drawing a card from an empty available deck, the discarded deck is
  * shuffled and placed as the available deck
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public class Deck<G extends Grabbable> {
 

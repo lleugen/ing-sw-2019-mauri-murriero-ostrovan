@@ -15,6 +15,7 @@ public class PlayerOnClient  {
    *
    * @throws RemoteException        if an error occurs while initialization
    * @throws MalformedURLException  if we cannot bind to the RMI Registry
+   * @param ui the type of user interface, can be cli of gui
    */
   public PlayerOnClient(String user, String host, ViewFacadeInterfaceRMIClient ui)
           throws MalformedURLException, RemoteException {

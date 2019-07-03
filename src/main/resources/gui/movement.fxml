@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="180.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="12.0" layoutY="10.0" prefHeight="55.0" prefWidth="196.0" text="Seleziona in che direzione vuoi muoverti." textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="Segoe UI Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="stayButton" alignment="CENTER" layoutX="65.0" layoutY="112.0" mnemonicParsing="false" onAction="#doNotMove" prefHeight="49.0" prefWidth="53.0" style="-fx-background-color: #000000;" text="RESTA FERMO" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Segoe UI Bold Italic" size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="northButton" layoutX="62.0" layoutY="71.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveNorth" prefHeight="40.0" prefWidth="60.0" style="-fx-background-color: #000000;" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold Italic" size="9.0" />
+         </font>
+         <graphic>
+            <ImageView scaleX="0.8" scaleY="0.8">
+               <image>
+                  <Image url="@../images/general/arrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="southButton" layoutX="59.0" layoutY="165.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveSouth" prefHeight="40.0" prefWidth="60.0" rotate="180.0" style="-fx-background-color: #000000;" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold Italic" size="9.0" />
+         </font>
+         <graphic>
+            <ImageView scaleX="0.8" scaleY="0.8">
+               <image>
+                  <Image url="@../images/general/arrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="westButton" layoutX="14.0" layoutY="117.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveWest" prefHeight="40.0" prefWidth="60.0" rotate="-90.0" style="-fx-background-color: #000000;" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold Italic" size="9.0" />
+         </font>
+         <graphic>
+            <ImageView scaleX="0.8" scaleY="0.8">
+               <image>
+                  <Image url="@../images/general/arrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="estButton" layoutX="107.0" layoutY="118.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveEst" prefHeight="40.0" prefWidth="60.0" rotate="90.0" style="-fx-background-color: #000000;" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Bold Italic" size="9.0" />
+         </font>
+         <graphic>
+            <ImageView scaleX="0.8" scaleY="0.8">
+               <image>
+                  <Image url="@../images/general/arrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

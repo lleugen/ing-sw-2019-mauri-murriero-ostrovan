@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Scanner;
-
+/**
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
+ */
 public final class CLI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient {
     /**
@@ -34,9 +37,19 @@ public final class CLI extends UnicastRemoteObject
      */
     private String name;
 
+    /**
+     * Contain the character of the player
+     */
+    private String character;
+
     public CLI() throws RemoteException {
-        // Standard Constructor.
-        // Needed only to handle RemoteException as defined in RMI specs
+        this.writeLn("Insert Username");
+        this.displayRender();
+        this.name = this.readLine();
+
+        this.writeLn("Insert Character");
+        this.displayRender();
+        this.character = this.readLine();
     }
 
     /**
@@ -81,11 +94,20 @@ public final class CLI extends UnicastRemoteObject
     }
 
     /**
+     * Buffer a line
+     *
+     * @param data Line to buffer
+     */
+    private void writeLn(String data){
+        this.pendingUpdate.append(data);
+    }
+
+    /**
      * Read a text line from the terminal
      *
      * @return The read line
      */
-    private static String readLine() {
+    private String readLine() {
         StringBuilder sb = new StringBuilder();
         int c;
 
@@ -185,8 +207,11 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String getName(){
-        return name;
+        return this.name;
     }
+
+    @Override
+    public String getCharacter() { return this.character; }
 
     public void inputName(){
         markSection("What is your name?");

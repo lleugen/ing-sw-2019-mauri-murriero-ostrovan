@@ -8,6 +8,9 @@ import java.util.List;
 
 /**
  * Contains the implementation of the Decks' zone on the physical game board
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
 public class Decks {
   /**

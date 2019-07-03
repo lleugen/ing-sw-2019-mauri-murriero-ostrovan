@@ -7,7 +7,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public class PlasmaGunController extends OptionalEffectWeaponController {
   public PlasmaGunController(GameBoardController g) {
     super(g);

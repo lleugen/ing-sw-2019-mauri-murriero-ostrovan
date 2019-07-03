@@ -15,7 +15,10 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
+ */
 public abstract class PlayerStateController {
     protected Player player;
     protected PlayerViewOnServer client;
@@ -45,6 +48,7 @@ public abstract class PlayerStateController {
      *                  1 = east
      *                  2 = south
      *                  3 = west
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void move() throws UserTimeoutException{
         int direction = 0;
@@ -64,6 +68,7 @@ public abstract class PlayerStateController {
      * Make the player spawn at the start of the game or after being killed.
      * The player has to draw a power up card, then discard one and spawns in
      * the square corresponding to the discarded card's equivalent ammo colour.
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void spawn() throws UserTimeoutException {
         player.getInventory().addPowerUpToInventory(player.getInventory().getDecksReference().drawPowerUp());
@@ -97,6 +102,7 @@ public abstract class PlayerStateController {
      * Make the player choose a weapon from his or her inventory and fire it.
      * Once the weapon is chosen, weapon specific methods will be invoked to
      * choose targets and fire.
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void shoot() throws UserTimeoutException {
       List<String> weapons = player.getInventory().getWeapons().stream()
@@ -121,6 +127,7 @@ public abstract class PlayerStateController {
      * Spend ammo to reload an unloaded weapon from the player's inventory.
      * Choose which weapon to reload, subtract the reload cost from inventory
      * and set the weapon as loaded.
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void reload() throws UserTimeoutException {
         List<Integer> cardsToUseIndexes;
@@ -156,6 +163,7 @@ public abstract class PlayerStateController {
     /**
      * Grab the ammo tile or a weapon from the current square and add
      * the corresponding resources to the inventory.
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void grab() throws UserTimeoutException{
         Square position = player.getPosition();
@@ -172,6 +180,7 @@ public abstract class PlayerStateController {
 
     /**
      * Use a power up from the inventory
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void usePowerUp() throws UserTimeoutException {
         List<String> powerUpCardsInInventory = new ArrayList<>();

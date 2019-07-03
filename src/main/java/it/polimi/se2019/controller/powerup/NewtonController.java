@@ -13,6 +13,9 @@ import java.util.List;
 /**
  * The newton powerup moves the targeted enemy player one or two squares
  * in any direction.
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public class NewtonController extends PowerUpController {
   public NewtonController() {

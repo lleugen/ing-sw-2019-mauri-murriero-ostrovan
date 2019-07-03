@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
  * The class contains the implementation of all basic possible actions
  * (move, grab, shoot, reload, respawn) which are combined into different
  * complex actions that a player can make during a turn
+ *
+ * @author Eugenio OStrovan
+ * @author Fabio Mauri
  */
 public class PlayerController {
   /**
@@ -34,6 +37,9 @@ public class PlayerController {
 
   /**
    *
+   * @param g the controller of the board that the player is playing on
+   * @param p the player associated to this controller
+   * @param c the client that commands the player
    */
   public PlayerController(GameBoardController g, Player p, PlayerViewOnServer c) {
     client = c;
@@ -53,6 +59,7 @@ public class PlayerController {
    *
    * @param c Reference to the client
    * @param p Model of the player
+   * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
   public static void reloadWeapon(PlayerViewOnServer c, Player p) throws UserTimeoutException {
     if(c.chooseBoolean("Do you want to reload a weapon?")){
@@ -84,6 +91,7 @@ public class PlayerController {
    * @param p Model of the player
    *
    * @return The list of selected PowerUps
+   * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
   private static List<PowerUpCard> getPowerUpsForReload(PlayerViewOnServer c, Player p)
           throws UserTimeoutException {
@@ -109,6 +117,10 @@ public class PlayerController {
     state = stateControllerList.get(index);
   }
 
+  /**
+   *
+   * @return the state of the player which determines the available actions
+   */
   public PlayerStateController getState(){
     return state;
   }
@@ -129,6 +141,8 @@ public class PlayerController {
 
   /**
    * Take turn
+   * @param availableActions the number of actions that the player can take on his or her turn
+   * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
   public void playTurn(Integer availableActions) throws UserTimeoutException{
     while (availableActions > 0){
@@ -162,6 +176,10 @@ public class PlayerController {
     }
   }
 
+  /**
+   *
+   * @return the client that is commanding this player
+   */
   public PlayerViewOnServer getClient(){
     return this.client;
   }

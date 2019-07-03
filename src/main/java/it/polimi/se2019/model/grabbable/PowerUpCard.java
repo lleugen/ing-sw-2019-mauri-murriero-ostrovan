@@ -3,7 +3,11 @@ package it.polimi.se2019.model.grabbable;
 /**
  * PowerUpCard represent a PowerUp, AKA an object that modifies the normal
  * flow of in-game operations
+ *
+ * @author Eugenio Ostrovan
+ * @author Fabio Mauri
  */
+
 public class PowerUpCard extends Grabbable {
   /**
    * Generates a new PowerUpCard
