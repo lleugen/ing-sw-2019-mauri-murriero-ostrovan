@@ -68,6 +68,9 @@ public abstract class WeaponController {
 
   /**
    * Create a list of valid targets, choose targets and shoot them.
+   * @param client the client who is firing the weapon
+   * @param player the player who is firing the weapon
+   * @throws UserTimeoutException if the user takes too long to respond or disconnects
    */
   public void fire(Player player, PlayerViewOnServer client) throws UserTimeoutException {
     this.firingMode = selectFiringMode(client);
@@ -77,6 +80,12 @@ public abstract class WeaponController {
     shootTargets(player, chosenTargets);
   }
 
+    /**
+     *
+     * @param shooter the player who is shooting the weapon
+     * @return the chosen player
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
+     */
   protected Player chooseOneVisiblePlayer(Player shooter) throws UserTimeoutException{
       List<Player> possibleTargets = map.getPlayersOnSquares(
               map.getVisibleSquares(
@@ -91,15 +100,25 @@ public abstract class WeaponController {
       return p;
   }
 
+    /**
+     *
+     * @param client the client that will choose the firing mode
+     * @return a list of booleans specifying which effects were chosen
+     * @throws UserTimeoutException if the user takes too long to respond or disconnects
+     */
   public abstract List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException;
 
   /**
    * Find all possible targets
+   * @return the list of chosen target players
+   * @param shooter the player who is shooting the weapon
    */
   public abstract List<Player> findTargets(Player shooter) throws UserTimeoutException;
 
   /**
    * Apply the weapon's effects on selected targets.
+   * @param shooter the player who is shooting the weapon
+   * @param targets the list of targets to shoot
    */
   public abstract void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException;
 
