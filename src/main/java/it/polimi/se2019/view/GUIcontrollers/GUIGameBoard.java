@@ -83,7 +83,7 @@ public class GUIGameBoard extends GUIGenericWindow{
         for(int i = 0; i < cells.size(); i++){
             int x = GridPane.getRowIndex(cells.get(i));
             int y = GridPane.getColumnIndex(cells.get(i));
-            if(!mapInfo.get(x).get(y).get(0).equals("NR")){
+            if((mapInfo.get(x).get(y).size() > 0) && (!mapInfo.get(x).get(y).get(0).equals("NR"))){
                 AnchorPane pane = (AnchorPane)cells.get(i);
                 Pane inRoomPane = (Pane)pane.getChildren().get(0);
 
@@ -95,7 +95,7 @@ public class GUIGameBoard extends GUIGenericWindow{
                     String[] ammoAmount = {"0", "0", "0", "0"};
                     for(int z = 0; z < 3; z++){
                         int index = ammosTypes.indexOf(mapInfo.get(x).get(y).get(z));
-                        ammoAmount[index] = String.valueOf(Integer.getInteger(ammoAmount[index])+1);
+                        ammoAmount[index] = String.valueOf(Integer.parseInt(ammoAmount[index])+1);
                     }
                     String ammoName = ammoAmount[0]+ammoAmount[1]+ammoAmount[2]+ammoAmount[3];
                     ImageView ammoImage = (ImageView)pane.getChildren().get(1);
@@ -172,8 +172,8 @@ public class GUIGameBoard extends GUIGenericWindow{
             Pane currentPane = (Pane)killsSegs.get(i);
             if(shownDeaths < killScoreBoardInfo.get(0).size()){
                 //kills in range of maxDeaths
-                ((ImageView)currentPane.getChildren().get(1)).setImage(new Image(getURLOfImage("/images/" + playersInfo.findFolder(killScoreBoardInfo.get(0).get(shownDeaths)) + "/damage.png")));
-                ((ImageView)currentPane.getChildren().get(2)).setImage(new Image(getURLOfImage("/images/" + playersInfo.findFolder(killScoreBoardInfo.get(0).get(shownDeaths)) + "/damage.png")));
+                ((ImageView)currentPane.getChildren().get(1)).setImage(new Image(getURLOfImage("images/" + playersInfo.findFolder(killScoreBoardInfo.get(0).get(shownDeaths)) + "/damage.png")));
+                ((ImageView)currentPane.getChildren().get(2)).setImage(new Image(getURLOfImage("images/" + playersInfo.findFolder(killScoreBoardInfo.get(0).get(shownDeaths)) + "/damage.png")));
                 currentPane.getChildren().get(0).setVisible(false);
                 currentPane.getChildren().get(1).setVisible(true);
                 currentPane.getChildren().get(2).setVisible(Boolean.valueOf(killScoreBoardInfo.get(0).get(shownDeaths+1)));
@@ -188,7 +188,7 @@ public class GUIGameBoard extends GUIGenericWindow{
         if(shownDeaths < killScoreBoardInfo.get(0).size()-1){
             for(int i = 0; i < killScoreBoardInfo.get(0).size(); i++){
                 if(i+shownDeaths < killScoreBoardInfo.get(0).size()){
-                    ((ImageView)((Pane)(killsSegs.get(killsSegs.size()-1))).getChildren().get(i)).setImage(new Image(getURLOfImage("/images/" + playersInfo.findFolder(killScoreBoardInfo.get(0).get(shownDeaths+i)) + "/damage.png")));
+                    ((ImageView)((Pane)(killsSegs.get(killsSegs.size()-1))).getChildren().get(i)).setImage(new Image(getURLOfImage("images/" + playersInfo.findFolder(killScoreBoardInfo.get(0).get(shownDeaths+i)) + "/damage.png")));
                     ((Pane)(killsSegs.get(killsSegs.size()-1))).getChildren().get(i).setVisible(true);
                 }else
                     ((Pane)(killsSegs.get(killsSegs.size()-1))).getChildren().get(i).setVisible(false);
@@ -201,7 +201,7 @@ public class GUIGameBoard extends GUIGenericWindow{
 
         for(int i = 0; i < doubleKillPane.getChildren().size(); i++){
             if(i < killScoreBoardInfo.get(1).size()){
-                ((ImageView)doubleKillPane.getChildren().get(i)).setImage(new Image(getURLOfImage("/images/" + playersInfo.findFolder(killScoreBoardInfo.get(1).get(i)) + "/damage.png")));
+                ((ImageView)doubleKillPane.getChildren().get(i)).setImage(new Image(getURLOfImage("images/" + playersInfo.findFolder(killScoreBoardInfo.get(1).get(i)) + "/damage.png")));
                 doubleKillPane.getChildren().get(i).setVisible(true);
             }else
                 doubleKillPane.getChildren().get(i).setVisible(false);
