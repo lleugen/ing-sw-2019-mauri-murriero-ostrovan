@@ -188,7 +188,18 @@ public class GameBoardController{
   public void playTurns() {
     this.currentPlayer = 0;
     Integer numberOfTurns = 0;
-
+    for(int i = 0; i<players.size(); i++){
+      try{
+        playerControllers.get(i).getState().spawn();
+      }
+      catch (UserTimeoutException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.INFO,
+                "User Disconnected",
+                e
+        );
+      }
+    }
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
         sendInfo();
