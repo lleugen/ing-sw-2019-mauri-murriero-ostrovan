@@ -194,6 +194,11 @@ public class Weapon extends Grabbable {
   public void setOwner(Player player) {
     this.owner = player;
   }
+
+  @Override
+  public String toString(){
+    return name;
+  }
 }
 
 
