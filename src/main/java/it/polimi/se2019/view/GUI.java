@@ -131,7 +131,7 @@ public class GUI extends UnicastRemoteObject
               Object result = loadChooser(mapChooserWindow);
               if (result != null) {
                 lastMapSelected = "map" + result.toString();
-                return (int) result;
+                return Integer.parseInt(result.toString());
               }
               else {
                 throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
@@ -154,7 +154,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
               if(result != null)
-                return (int)result;
+                return Integer.parseInt(result.toString());
               else
                 throw new InvalidClosedGUIException("GUIError: chooseNumberOfPlayers non è andato a buon fine.");
             }
@@ -260,7 +260,7 @@ public class GUI extends UnicastRemoteObject
                 if(result == null)
                   throw new InvalidClosedGUIException("GUIError: choosePowerUpCardsForReload non è andato a buon fine.");
 
-                lastAnswer = (int)result;
+                lastAnswer = Integer.parseInt(result.toString());
                 if(lastAnswer != -1){
                   chosenInt.add(lastAnswer);
                 }else
@@ -286,7 +286,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
               if(result != null)
-                return (int)result;
+                return Integer.parseInt(result.toString());
               else
                 throw new InvalidClosedGUIException("GUIError: chooseIndex non è andato a buon fine.");
             }
@@ -307,7 +307,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadChooser(itemToGrabChooserWindow);
               if(result != null)
-                return (int)result;
+                return Integer.parseInt(result.toString());
               else
                 throw new InvalidClosedGUIException("GUIError: chooseItemToGrab non è andato a buon fine.");
             }
@@ -403,8 +403,8 @@ public class GUI extends UnicastRemoteObject
                 String coordStr = (String)result;
                 String[] coordVet = coordStr.split("_");
                 List<Integer> coords = new ArrayList<>();
-                coords.add(Integer.getInteger(coordVet[0]));
-                coords.add(Integer.getInteger(coordVet[1]));
+                coords.add(Integer.parseInt(coordVet[0]));
+                coords.add(Integer.parseInt(coordVet[1]));
 
                 return coords;
               }else
@@ -428,7 +428,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("movement", new MyStage(), directionChooserWindow);
               if(result != null)
-                return (int)result;
+                return Integer.parseInt(result.toString());
               else
                 throw new InvalidClosedGUIException("GUIError: chooseDirection non è andato a buon fine.");
             }
