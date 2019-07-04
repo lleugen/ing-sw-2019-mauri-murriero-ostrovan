@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of a particular map square from the given ones
+ *
+ * @author Riccardo Murriero
+ */
 public class GUISquareChooser extends GUIGenericWindow {
 
     @FXML
@@ -38,7 +43,8 @@ public class GUISquareChooser extends GUIGenericWindow {
         ObservableList<Node> nodes = squaresGrid.getChildren();
         for(int i = 0; i < nodes.size(); i++){
             Pane currentPane = (Pane)nodes.get(i);
-            Integer x = GridPane.getRowIndex(currentPane), y = GridPane.getColumnIndex(currentPane);
+            Integer x = GridPane.getRowIndex(currentPane);
+            Integer y = GridPane.getColumnIndex(currentPane);
             if(squaresMat[x][y]){
                 Button btn = (Button)currentPane.getChildren().get(1);
                 setOnActionEffect(btn, x.toString() + "_" + y.toString());

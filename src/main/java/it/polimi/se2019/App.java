@@ -106,21 +106,6 @@ public class App {
    */
   private static void spawnClient(Map<String, String> args) {
     if (args.containsKey("host") && args.containsKey("ui")) {
-
-//      switch (args.get("ui")){
-//        case "gui":
-//          ;
-//          break;
-//        case "cli":
-//          new Client(args.get("host"), args.get("ui"));
-//          break;
-//        default:
-//          Logger.getLogger(LOG_NAMESPACE).log(
-//                  Level.SEVERE,
-//                  "Unknown UI param, supported are <cli> and <gui>"
-//          );
-//          break;
-//      }
       try {
         new Client(args.get("host"), args.get("ui"));
       }

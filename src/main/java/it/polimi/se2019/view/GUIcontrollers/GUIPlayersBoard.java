@@ -1,23 +1,24 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
-import javafx.stage.StageStyle;
-import javafx.util.Pair;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Window controller for player board. It shows the damage, marks, deaths of every player that is playing
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIPlayersBoard extends GUIGenericWindow{
 
     @FXML
@@ -37,8 +38,6 @@ public class GUIPlayersBoard extends GUIGenericWindow{
     void initialize(){
         for(Node n : playersSheets.getChildren())
             n.setVisible(false);
-
-        //updateGraphic();
     }
 
     private void updateGraphic(){

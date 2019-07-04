@@ -1,6 +1,5 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-import it.polimi.se2019.view.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +9,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Window controller for the login interface
+ *
+ * @author Riccardo Murriero
+ */
 public class GUILogin extends GUIGenericWindow {
     @FXML
     private TextField nickname;
@@ -20,7 +24,7 @@ public class GUILogin extends GUIGenericWindow {
     @FXML
     private Button connectButton;
 
-    public static String[] charactersNames = {"Banshee", ":D-STRUTT-OR3", "Dozer", "Sprog", "Violetta"};
+    private static final String[] charactersNames = {"Banshee", ":D-STRUTT-OR3", "Dozer", "Sprog", "Violetta"};
     private String nicknameFirstValue;
     private ObservableList<String> comboItems = FXCollections.observableArrayList(charactersNames);
 

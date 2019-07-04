@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of witch weapons the user want to use to shoot
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIWeaponChooser extends GUIGenericWindow {
 
     @FXML
@@ -24,12 +29,14 @@ public class GUIWeaponChooser extends GUIGenericWindow {
 
     private String[] btnsNames;
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of available weapons and make select which weapon the user want to shoot with
+     *
+     * @param availableWeapons  list of available weapons names
+     *
      */
     public GUIWeaponChooser(List<String> availableWeapons) {
         super();
-        btnsNames = (String[])availableWeapons.toArray();
-        result = "";
+        btnsNames = availableWeapons.toArray(new String[0]);
     }
 
     @Override

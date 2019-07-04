@@ -1,17 +1,16 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.List;
-
+/**
+ * Window controller for the chooser of a generic boolean
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIBooleanQuestion extends GUIGenericWindow {
 
     @FXML
@@ -23,12 +22,13 @@ public class GUIBooleanQuestion extends GUIGenericWindow {
     @FXML
     private Button delentButton;
 
-    private String question, confirmString, delentString;
+    private String question;
+    private String confirmString;
+    private String delentString;
 
     public GUIBooleanQuestion(String question, String confirmString, String delentString) {
         super();
         this.question = question; this.confirmString = confirmString; this.delentString = delentString;
-        result = false;
     }
 
     @Override

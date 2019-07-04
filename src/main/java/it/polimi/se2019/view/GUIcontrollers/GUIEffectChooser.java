@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of a weapon effect to use
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIEffectChooser extends GUIGenericWindow {
 
     @FXML
@@ -22,13 +27,16 @@ public class GUIEffectChooser extends GUIGenericWindow {
     private String[] btnsNames;
     private String weaponName;
     /**
+     *  Make the player choose witch of the given effects he wants to be used
+     *
+     * @param weaponName    name of the selected weapon
+     * @param effectsList   list of the available effects of the weapon
      *
      */
     public GUIEffectChooser(String weaponName, List<String> effectsList) {
         super();
-        btnsNames = (String[])effectsList.toArray();
+        btnsNames = effectsList.toArray(new String[0]);
         this.weaponName = weaponName;
-        result = 0;
     }
 
     @Override

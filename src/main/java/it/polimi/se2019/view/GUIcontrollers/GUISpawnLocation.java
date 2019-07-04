@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of spawn location of the player
+ *
+ * @author Riccardo Murriero
+ */
 public class GUISpawnLocation extends GUIGenericWindow {
 
     @FXML
@@ -24,12 +29,14 @@ public class GUISpawnLocation extends GUIGenericWindow {
 
     private String[] btnsNames;
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of available powerUps that can be discarded to spawn and wait for a selection
+     *
+     * @param powerUps  list of the available powerUps that can be discarded by the user
+     *
      */
     public GUISpawnLocation(List<String> powerUps) {
         super();
-        btnsNames = (String[])powerUps.toArray();
-        result = "";
+        btnsNames = powerUps.toArray(new String[0]);
     }
 
     @Override
@@ -37,7 +44,7 @@ public class GUISpawnLocation extends GUIGenericWindow {
         for(int i = 0; i < choicesBox.getChildren().size(); i++){
             VBox currentChoiceObj = ((VBox)(choicesBox.getChildren().get(i)));
             if(i < btnsNames.length){
-                String currentName = btnsNames[i];//.substring(btnsNames[i].indexOf('_') + 1);
+                String currentName = btnsNames[i];
                 ((ImageView)currentChoiceObj.getChildren().get(0)).setImage(new Image(getURLOfImage("images/cards/" + btnsNames[i] + ".png")));
                 ((Button)currentChoiceObj.getChildren().get(1)).setText(currentName);
                 setOnActionEffect(((Button)currentChoiceObj.getChildren().get(1)), String.valueOf(i));
