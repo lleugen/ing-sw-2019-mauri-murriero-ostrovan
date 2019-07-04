@@ -48,7 +48,6 @@ public class ActionSetView extends GUIGenericWindow{
     }else{
       btnsNames = new String[] {"shoot5", "grab5"};
     }
-    result = "";
   }
 
   @Override

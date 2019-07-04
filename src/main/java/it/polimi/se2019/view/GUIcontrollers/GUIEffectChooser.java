@@ -37,7 +37,6 @@ public class GUIEffectChooser extends GUIGenericWindow {
         super();
         btnsNames = effectsList.toArray(new String[0]);
         this.weaponName = weaponName;
-        result = 0;
     }
 
     @Override

@@ -40,7 +40,6 @@ public class GUITargetChoose extends GUIGenericWindow {
         super();
         btnsNames = targets.toArray(new String[0]);
         foldersNames = folders.toArray(new String[0]);
-        result = "";
     }
 
     @Override

@@ -31,7 +31,6 @@ public class GUIItemToGrabChooser extends GUIGenericWindow {
     public GUIItemToGrabChooser() {
         super();
         btnsNames = new String[] {"1", "2", "3"};
-        result = "";
     }
 
     @Override

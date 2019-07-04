@@ -37,7 +37,6 @@ public class GUIWeaponLoader extends GUIGenericWindow {
     public GUIWeaponLoader(List<String> availableWeapons) {
         super();
         btnsNames = availableWeapons.toArray(new String[0]);
-        result = "";
     }
 
     @Override

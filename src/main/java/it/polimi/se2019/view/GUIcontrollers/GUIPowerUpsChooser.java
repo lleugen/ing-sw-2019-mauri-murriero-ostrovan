@@ -40,7 +40,6 @@ public class GUIPowerUpsChooser extends GUIGenericWindow {
         super();
         btnsNames = powerUps.toArray(new String[0]);
         this.taken = taken;
-        result = "";
     }
 
     @Override

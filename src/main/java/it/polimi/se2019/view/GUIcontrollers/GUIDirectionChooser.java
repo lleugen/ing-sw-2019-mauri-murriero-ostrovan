@@ -34,7 +34,6 @@ public class GUIDirectionChooser extends GUIGenericWindow {
     public GUIDirectionChooser(List<Integer> availableDirections) {
         super();
         this.availableDirections = availableDirections;
-        result = -1;
     }
 
     @Override

@@ -37,7 +37,6 @@ public class GUISpawnLocation extends GUIGenericWindow {
     public GUISpawnLocation(List<String> powerUps) {
         super();
         btnsNames = powerUps.toArray(new String[0]);
-        result = "";
     }
 
     @Override

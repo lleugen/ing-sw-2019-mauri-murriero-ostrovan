@@ -32,7 +32,6 @@ public class GUIMapChooser extends GUIGenericWindow {
     public GUIMapChooser() {
         super();
         btnsNames = new String[] {"Ottima per 3/4 giocatori", "Buona per qualsiasi numero di giocatori", "Perfetta per 4/5 giocatori", "Mappa bonus"};
-        result = "";
     }
 
     @Override

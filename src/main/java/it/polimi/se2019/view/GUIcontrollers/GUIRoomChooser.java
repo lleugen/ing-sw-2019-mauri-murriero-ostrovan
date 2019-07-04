@@ -41,7 +41,6 @@ public class GUIRoomChooser extends GUIGenericWindow {
         super();
         btnsNames = availableRooms.toArray(new String[0]);
         this.mapName = mapName;
-        result = "";
     }
 
     @Override

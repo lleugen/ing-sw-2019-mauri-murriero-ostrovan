@@ -19,7 +19,7 @@ public abstract class GUIGenericWindow implements Initializable{
     protected Object result;
 
     public GUIGenericWindow(){
-
+        result = null;
     }
 
     public abstract Object getResult();

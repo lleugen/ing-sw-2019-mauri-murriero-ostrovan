@@ -22,7 +22,6 @@ public class GUIPlayersNumber extends GUIGenericWindow {
      */
     public GUIPlayersNumber() {
         super();
-        result = 1;
     }
 
     @Override

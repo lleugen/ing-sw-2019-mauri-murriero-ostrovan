@@ -29,7 +29,6 @@ public class GUIBooleanQuestion extends GUIGenericWindow {
     public GUIBooleanQuestion(String question, String confirmString, String delentString) {
         super();
         this.question = question; this.confirmString = confirmString; this.delentString = delentString;
-        result = false;
     }
 
     @Override
