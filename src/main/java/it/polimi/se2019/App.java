@@ -5,6 +5,7 @@ package it.polimi.se2019;
 import it.polimi.se2019.model.server.Server;
 import it.polimi.se2019.view.Client;
 
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
@@ -90,6 +91,14 @@ public class App {
                 e
         );
         throw new WrongArguments("Unable to parse lobbyTimeout param");
+      }
+      catch (UnknownHostException e){
+        Logger.getLogger(LOG_NAMESPACE).log(
+                Level.SEVERE,
+                "Hostname cannot be resolved",
+                e
+        );
+        throw new WrongArguments("Hostname <" + args.get("host") + "> cannot be resolved");
       }
     }
     else {
