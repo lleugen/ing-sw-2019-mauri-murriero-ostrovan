@@ -2,6 +2,7 @@ package it.polimi.se2019.view;
 
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.view.GUIcontrollers.*;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,13 +77,21 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseAction(String state)
   {
-    ActionSetView actionSetWindow = new ActionSetView(state, playersInfo.findFolder(getName()));
 
-    Object result = loadChooser(actionSetWindow);
-    if(result != null)
-      return (String)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseAction non è andato a buon fine.");
+    FxScheduler<String> scheduler = new FxScheduler<>();
+
+    return scheduler.schedule(
+            () -> {
+              ActionSetView actionSetWindow = new ActionSetView(state, playersInfo.findFolder(getName()));
+
+              Object result = loadChooser(actionSetWindow);
+              if(result != null)
+                return (String)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseAction non è andato a buon fine.");
+
+            }
+    );
   }
 
   /**
@@ -91,15 +101,20 @@ public class GUI extends UnicastRemoteObject
    * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
-  public int chooseSpawnLocation(List<String> powerUps)
-  {
-    GUISpawnLocation spawnLocationWindow = new GUISpawnLocation(powerUps);
+  public int chooseSpawnLocation(List<String> powerUps) {
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
 
-    Object result = loadChooser(spawnLocationWindow);
-    if(result != null)
-      return (int)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseSpawnLocation non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUISpawnLocation spawnLocationWindow = new GUISpawnLocation(powerUps);
+
+              Object result = loadChooser(spawnLocationWindow);
+              if (result != null)
+                return (int) result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseSpawnLocation non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -108,15 +123,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseMap() {
-    GUIMapChooser mapChooserWindow = new GUIMapChooser();
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
 
-    Object result = loadChooser(mapChooserWindow);
-    if (result != null) {
-      lastMapSelected = "map" + result.toString();
-      return (int) result;
-    } else {
-      throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
-    }
+    return scheduler.schedule(
+            () -> {
+              GUIMapChooser mapChooserWindow = new GUIMapChooser();
+              Object result = loadChooser(mapChooserWindow);
+              if (result != null) {
+                lastMapSelected = "map" + result.toString();
+                return (int) result;
+              }
+              else {
+                throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
+              }
+            }
+    );
   }
 
   /**
@@ -125,13 +146,19 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseNumberOfPlayers()  {
-    GUIPlayersNumber playersNumberWindow = new GUIPlayersNumber();
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
 
-    Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
-    if(result != null)
-      return (int)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseNumberOfPlayers non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIPlayersNumber playersNumberWindow = new GUIPlayersNumber();
+
+              Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
+              if(result != null)
+                return (int)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseNumberOfPlayers non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -142,14 +169,20 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseWeapon(List<String> weapons)  {
-    GUIWeaponChooser weaponChooserWindow = new GUIWeaponChooser(weapons);
+    FxScheduler<String> scheduler = new FxScheduler<>();
 
-    Object result = loadChooser(weaponChooserWindow);
-    lastWeaponSelected = (String)result;
-    if(result != null)
-      return (String)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseWeapon non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIWeaponChooser weaponChooserWindow = new GUIWeaponChooser(weapons);
+
+              Object result = loadChooser(weaponChooserWindow);
+              lastWeaponSelected = (String)result;
+              if(result != null)
+                return (String)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseWeapon non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -161,18 +194,24 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseTargets(List<String> possibleTargets)
   {
-    List<String> targetsFolders = new ArrayList<>();
-    for (String possibleTarget : possibleTargets) {
-      targetsFolders.add(playersInfo.findFolder(possibleTarget));
-    }
+    FxScheduler<String> scheduler = new FxScheduler<>();
 
-    GUITargetChoose targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
+    return scheduler.schedule(
+            () -> {
+              List<String> targetsFolders = new ArrayList<>();
+              for (String possibleTarget : possibleTargets) {
+                targetsFolders.add(playersInfo.findFolder(possibleTarget));
+              }
 
-    Object result = loadChooser(targetChooseWindow);
-    if(result != null)
-      return (String)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseTargets non è andato a buon fine.");
+              GUITargetChoose targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
+
+              Object result = loadChooser(targetChooseWindow);
+              if(result != null)
+                return (String)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseTargets non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -183,13 +222,19 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseWeaponToReload(List<String> weapons)
   {
-    GUIWeaponLoader weaponLoaderWindow = new GUIWeaponLoader(weapons);
+    FxScheduler<String> scheduler = new FxScheduler<>();
 
-    Object result = loadChooser(weaponLoaderWindow);
-    if(result != null)
-      return (String)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseWeaponToReload non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+            GUIWeaponLoader weaponLoaderWindow = new GUIWeaponLoader(weapons);
+
+            Object result = loadChooser(weaponLoaderWindow);
+            if(result != null)
+              return (String)result;
+            else
+              throw new InvalidClosedGUIException("GUIError: chooseWeaponToReload non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -200,24 +245,30 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> choosePowerUpCardsForReload(List<String> powerUps)
   {
-    List<Integer> chosenInt = new ArrayList<>();
-    int lastAnswer;
-    boolean keepAsking = true;
+    FxScheduler<List<Integer>> scheduler = new FxScheduler<>();
 
-    while ((keepAsking) && (chosenInt.size() < powerUps.size())){
-      GUIPowerUpsChooser powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
-      Object result = loadChooser(powerUpsChooserWindow);
+    return scheduler.schedule(
+            () -> {
+              List<Integer> chosenInt = new ArrayList<>();
+              int lastAnswer;
+              boolean keepAsking = true;
 
-      if(result == null)
-        throw new InvalidClosedGUIException("GUIError: choosePowerUpCardsForReload non è andato a buon fine.");
+              while ((keepAsking) && (chosenInt.size() < powerUps.size())){
+                GUIPowerUpsChooser powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
+                Object result = loadChooser(powerUpsChooserWindow);
 
-      lastAnswer = (int)result;
-      if(lastAnswer != -1){
-        chosenInt.add(lastAnswer);
-      }else
-        keepAsking = false;
-    }
-    return chosenInt;
+                if(result == null)
+                  throw new InvalidClosedGUIException("GUIError: choosePowerUpCardsForReload non è andato a buon fine.");
+
+                lastAnswer = (int)result;
+                if(lastAnswer != -1){
+                  chosenInt.add(lastAnswer);
+                }else
+                  keepAsking = false;
+              }
+              return chosenInt;
+            }
+    );
   }
 
   /**
@@ -227,13 +278,19 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseIndex(List<String> availableEffects)
   {
-    GUIEffectChooser effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
 
-    Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
-    if(result != null)
-      return (int)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseIndex non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIEffectChooser effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
+
+              Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
+              if(result != null)
+                return (int)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseIndex non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -242,13 +299,19 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseItemToGrab()  {
-    GUIItemToGrabChooser itemToGrabChooserWindow = new GUIItemToGrabChooser();
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
 
-    Object result = loadChooser(itemToGrabChooserWindow);
-    if(result != null)
-      return (int)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseItemToGrab non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIItemToGrabChooser itemToGrabChooserWindow = new GUIItemToGrabChooser();
+
+              Object result = loadChooser(itemToGrabChooserWindow);
+              if(result != null)
+                return (int)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseItemToGrab non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -258,17 +321,23 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Boolean chooseFiringMode(String description)
   {
-    GUIBooleanQuestion booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
+    FxScheduler<Boolean> scheduler = new FxScheduler<>();
 
-    Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
-    if(result != null)
-      return (Boolean) result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseFiring non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIBooleanQuestion booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
+
+              Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
+              if(result != null)
+                return (Boolean) result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseFiring non è andato a buon fine.");
+            }
+    );
   }
 
   /**
-   *  choose to answer from a yes/no question from the server
+   *  choose to answer from a yes/no question from thfinale server
    *
    * @param description   question asked
    * @return true/false choice
@@ -276,13 +345,19 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public Boolean chooseBoolean(String description)  {
-    GUIBooleanQuestion booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
+    FxScheduler<Boolean> scheduler = new FxScheduler<>();
 
-    Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
-    if(result != null)
-      return (Boolean) result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseBoolean non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIBooleanQuestion booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
+
+              Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
+              if(result != null)
+                return (Boolean) result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseBoolean non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -291,13 +366,21 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseRoom(List<String> rooms)  {
-    GUIRoomChooser roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
+      FxScheduler<String> scheduler = new FxScheduler<>();
 
-    Object result = loadChooser(roomChooserWindow);
-    if(result != null)
-      return (String)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseRoom non è andato a buon fine.");
+      return scheduler.schedule(
+              () -> {
+                GUIRoomChooser roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
+
+                Object result = loadChooser(roomChooserWindow);
+                if(result != null) {
+                  return (String) result;
+                }
+                else {
+                  throw new InvalidClosedGUIException("GUIError: chooseRoom non è andato a buon fine.");
+                }
+              }
+      );
   }
 
   /**
@@ -308,20 +391,26 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
   {
-    GUISquareChooser squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
+    FxScheduler<List<Integer>> scheduler = new FxScheduler<>();
 
-    Object result = loadPopUpWindow("squarechooser", new MyStage(), squareChooserWindow);
+    return scheduler.schedule(
+            () -> {
+              GUISquareChooser squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
 
-    if(result != null){
-      String coordStr = (String)result;
-      String[] coordVet = coordStr.split("_");
-      List<Integer> coords = new ArrayList<>();
-      coords.add(Integer.getInteger(coordVet[0]));
-      coords.add(Integer.getInteger(coordVet[1]));
+              Object result = loadPopUpWindow("squarechooser", new MyStage(), squareChooserWindow);
 
-      return coords;
-    }else
-      throw new InvalidClosedGUIException("GUIError: chooseTargetSquare non è andato a buon fine.");
+              if(result != null){
+                String coordStr = (String)result;
+                String[] coordVet = coordStr.split("_");
+                List<Integer> coords = new ArrayList<>();
+                coords.add(Integer.getInteger(coordVet[0]));
+                coords.add(Integer.getInteger(coordVet[1]));
+
+                return coords;
+              }else
+                throw new InvalidClosedGUIException("GUIError: chooseTargetSquare non è andato a buon fine.");
+            }
+    );
   }
 
   /**
@@ -331,53 +420,91 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections)
   {
-    GUIDirectionChooser directionChooserWindow = new GUIDirectionChooser(possibleDirections);
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
 
-    Object result = loadPopUpWindow("movement", new MyStage(), directionChooserWindow);
-    if(result != null)
-      return (int)result;
-    else
-      throw new InvalidClosedGUIException("GUIError: chooseDirection non è andato a buon fine.");
+    return scheduler.schedule(
+            () -> {
+              GUIDirectionChooser directionChooserWindow = new GUIDirectionChooser(possibleDirections);
+
+              Object result = loadPopUpWindow("movement", new MyStage(), directionChooserWindow);
+              if(result != null)
+                return (int)result;
+              else
+                throw new InvalidClosedGUIException("GUIError: chooseDirection non è andato a buon fine.");
+            }
+    );
   }
 
   @Override
   public void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws RemoteException {
-    if(gameBoardWindow == null){
-      gameBoardWindow = new GUIGameBoard(playersInfo);
-      launchMainBoard(lastMapSelected, false, gameBoardWindow);
-    }
-    gameBoardWindow.setMapInfo(mapInfo);
+
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
+
+    scheduler.schedule(
+            () -> {
+              if(gameBoardWindow == null){
+                gameBoardWindow = new GUIGameBoard(playersInfo);
+                launchMainBoard(lastMapSelected, false, gameBoardWindow);
+              }
+              gameBoardWindow.setMapInfo(mapInfo);
+              return null;
+            }
+    );
   }
 
   @Override
   public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
-    if(playersBoardWindow == null){
-      playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
-      launchMainBoard("groupsheets", true, playersBoardWindow);
-    }
-    playersBoardWindow.setPlayerInfo(playerInfo);
+
+      FxScheduler<Integer> scheduler = new FxScheduler<>();
+
+      scheduler.schedule(
+              () -> {
+                if(playersBoardWindow == null){
+                  playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
+                  launchMainBoard("groupsheets", true, playersBoardWindow);
+                }
+                playersBoardWindow.setPlayerInfo(playerInfo);
+                return null;
+              }
+      );
   }
 
   @Override
   public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
-    if(gameBoardWindow == null){
-      gameBoardWindow = new GUIGameBoard(playersInfo);
-      launchMainBoard(lastMapSelected, false, gameBoardWindow);
-    }
-    gameBoardWindow.setKillScoreBoardInfo(killScoreBoardInfo);
+
+        FxScheduler<Integer> scheduler = new FxScheduler<>();
+
+        scheduler.schedule(
+                () -> {
+                  if(gameBoardWindow == null){
+                    gameBoardWindow = new GUIGameBoard(playersInfo);
+                    launchMainBoard(lastMapSelected, false, gameBoardWindow);
+                  }
+                  gameBoardWindow.setKillScoreBoardInfo(killScoreBoardInfo);
+                  return null;
+                }
+        );
   }
 
   @Override
   public void sendCharacterInfo(List<String> characterInfo) throws RemoteException {
-    if(playersInfo == null){
-      playersInfo = new PlayersNamesKeeper();
-      for(int i = 0; i < characterInfo.size(); i+=2)
-        playersInfo.addPlayer(characterInfo.get(i), characterInfo.get(i+1));
-    }
-    if(playersBoardWindow == null){
-      playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
-      launchMainBoard("groupsheets", true, playersBoardWindow);
-    }
+
+    FxScheduler<Integer> scheduler = new FxScheduler<>();
+
+    scheduler.schedule(
+            () -> {
+              if (playersInfo == null) {
+                playersInfo = new PlayersNamesKeeper();
+                for (int i = 0; i < characterInfo.size(); i += 2)
+                  playersInfo.addPlayer(characterInfo.get(i), characterInfo.get(i + 1));
+              }
+              if (playersBoardWindow == null) {
+                playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
+                launchMainBoard("groupsheets", true, playersBoardWindow);
+              }
+              return null;
+            }
+    );
   }
 
   private void launchMainBoard(String fxmlName, Boolean isPlayerStage, GUIGenericWindow controller){
@@ -444,6 +571,75 @@ public class GUI extends UnicastRemoteObject
   public static class InvalidClosedGUIException extends RuntimeException {
     public InvalidClosedGUIException(String message){
       super(message);
+    }
+  }
+
+  /**
+   * JavaFX doesn't allow to render something outside the render thread,
+   * and doesn't allow access to the render thread.
+   * In addition it is difficult to send data out from the render thread.
+   * This clashes with the implementation of the communication for the game,
+   * where the server asks something to the view, and the view, synchronously,
+   * answer the request.
+   *
+   * This class fixes this problem, by asynchronously scheduling actions on
+   * the render thread, and grabbing answer, asyncronously, while leaving the
+   * server thread blocked (thus letting the server experience a single-thread
+   * environment)
+   *
+   * @param <R> Type of the return
+   */
+  public static class FxScheduler<R extends Object> {
+    /**
+     * Namespace this class logs to
+     */
+    private static final String LOG_NAMESPACE = "FxScheduler";
+
+    /**
+     * Used for syncronization and notify/wait handling
+     */
+    private final Object lock = new Object();
+
+    /**
+     * Returned data
+     */
+    R toReturn;
+
+    /**
+     * Schedule a request on the gui
+     *
+     * @param supp Request to schedule
+     *
+     * @return The return of supp
+     */
+    public R schedule(Supplier<R> supp){
+      Platform.runLater(
+              () -> {
+                R ret = supp.get();
+                synchronized (lock){
+                  toReturn = ret;
+                  lock.notifyAll();
+                }
+              }
+      );
+
+      synchronized (lock){
+        try {
+          while (toReturn == null) {
+            lock.wait();
+          }
+        }
+        catch (InterruptedException e){
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "Interruped!",
+                  e
+          );
+          Thread.currentThread().interrupt();
+        }
+      }
+
+      return toReturn;
     }
   }
 }
