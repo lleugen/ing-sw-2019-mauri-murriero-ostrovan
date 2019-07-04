@@ -77,7 +77,10 @@ public class Weapon extends Grabbable {
     this.loaded = true;
     name = n;
   }
-
+  @Override
+  public String toString(){
+    return name;
+  }
   /**
    * Unload a weapon (a weapon unloaded cannot be used)
    */
