@@ -52,14 +52,6 @@ public class GUI extends UnicastRemoteObject
     this.character = character;
   }
 
-//  public void setLocalPlayerName(String nickname, String character){
-//    this.nickname = nickname;
-//    this.character = character;
-//    for(int i = 0; i < GUILogin.charactersNames.length; i++)
-//      if(GUILogin.charactersNames[i].equals(character))
-//        characterFolder = "char" + i;
-//  }
-
   /**
    *
    */
@@ -128,7 +120,17 @@ public class GUI extends UnicastRemoteObject
   @Override
   public int chooseMap()  {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
+//    URL[] urls = ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs();
+//    for (URL url : urls) {
+//      System.out.println(url);
+//    }
+//            for (File file : new File(Thread.currentThread().getContextClassLoader().getResource("").getPath()).listFiles()) {
+//              System.out.println(file);
+//            }
+//    System.out.println("new loader");
+//    FXMLLoader loader = new FXMLLoader(
+//                    getClass().getResource("/gui/MainWindow.fxml")
+//            );
     mapChooserWindow = new GUIMapChooser();
     loader.setController(mapChooserWindow);
 

@@ -35,7 +35,7 @@ public class GUIMapChooser extends GUIGenericWindow {
         for(int i = 0; i < choicesBox.getChildren().size(); i++){
             VBox currentChoiceObj = ((VBox)(choicesBox.getChildren().get(i)));
             if(i < btnsNames.length){
-                ((ImageView)currentChoiceObj.getChildren().get(0)).setImage(new Image(getURLOfImage("images/maps/map" + btnsNames[i] + "/map.png")));
+                ((ImageView)currentChoiceObj.getChildren().get(0)).setImage(new Image(getURLOfImage("images/maps/map" + i + "/map.png")));
                 ((Button)currentChoiceObj.getChildren().get(1)).setText(btnsNames[i]);
                 setOnActionEffect(((Button)currentChoiceObj.getChildren().get(1)), String.valueOf(i));
                 currentChoiceObj.setVisible(true);

@@ -12,11 +12,6 @@ import java.rmi.registry.Registry;
 
 public class Client {
   /**
-   * Namespace this class logs to
-   */
-  private static final String LOG_NAMESPACE = "Client";
-
-  /**
    * Init a new client
    *
    * @param host Hostname of the RMI registry
@@ -30,13 +25,10 @@ public class Client {
     ViewFacadeInterfaceRMIClient generatedUi;
     switch (ui) {
       case "gui":
-        Application.launch(GUILoader.class);
-        if (GUILoader.alreadyInitialized()) {
-          generatedUi = new GUI(GUILoader.getName(), GUILoader.getCharacter());
-        }
-        else {
-          throw new App.WrongArguments("Launcher was closed");
-        }
+        new Thread(
+                () -> Application.launch(GUILoader.class)
+        ).start();
+        generatedUi = GUILoader.getRmi();
         break;
       case "cli":
         generatedUi = new CLI();
@@ -59,7 +51,7 @@ public class Client {
    */
   private void findLobby(String host, ViewFacadeInterfaceRMIClient viewClient)
           throws RemoteException, NotBoundException {
-    System.out.println("Finding Lobby");
+    System.out.println("finding Lobby");
     Registry registry = LocateRegistry.getRegistry(host);
     ServerLobbyInterface lobby = (ServerLobbyInterface) registry.lookup("server");
     lobby.connect(viewClient);
