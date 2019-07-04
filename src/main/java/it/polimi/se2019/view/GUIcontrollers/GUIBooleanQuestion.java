@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of a generic boolean
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIBooleanQuestion extends GUIGenericWindow {
 
     @FXML

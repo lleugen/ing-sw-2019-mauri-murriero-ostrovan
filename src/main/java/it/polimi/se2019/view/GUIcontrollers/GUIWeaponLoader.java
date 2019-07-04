@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of witch of the given unload weapons the user wants to reload
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIWeaponLoader extends GUIGenericWindow {
 
     @FXML
@@ -24,7 +29,10 @@ public class GUIWeaponLoader extends GUIGenericWindow {
 
     private String[] btnsNames;
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of unload weapons that can be reloaded and wait for a selection
+     *
+     * @param availableWeapons  a list of available unload weapons
+     *
      */
     public GUIWeaponLoader(List<String> availableWeapons) {
         super();

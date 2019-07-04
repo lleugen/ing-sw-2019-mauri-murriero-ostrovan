@@ -3,6 +3,11 @@ package it.polimi.se2019.view.GUIcontrollers;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains every playing users, with his nickname, character and folder (for GUI)
+ *
+ * @author Riccardo Murriero
+ */
 public class PlayersNamesKeeper {
 
     public class PlayerNamesData{

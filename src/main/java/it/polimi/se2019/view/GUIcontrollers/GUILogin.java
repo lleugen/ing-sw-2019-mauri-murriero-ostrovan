@@ -10,6 +10,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Window controller for the login interface
+ *
+ * @author Riccardo Murriero
+ */
 public class GUILogin extends GUIGenericWindow {
     @FXML
     private TextField nickname;

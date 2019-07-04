@@ -9,6 +9,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Window controller for the chooser of the map type
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIMapChooser extends GUIGenericWindow {
 
     @FXML

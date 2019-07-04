@@ -6,6 +6,11 @@ import javafx.scene.control.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Generic window controller used to implement other specific controllers
+ *
+ * @author Riccardo Murriero
+ */
 public abstract class GUIGenericWindow implements Initializable{
 
     /**

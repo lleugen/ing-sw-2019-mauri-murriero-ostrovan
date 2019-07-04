@@ -13,6 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Window controller for the chooser of how many players will be in the game
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIPlayersNumber extends GUIGenericWindow {
 
     @FXML

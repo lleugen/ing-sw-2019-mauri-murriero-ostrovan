@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Window controller for player board. It shows the damage, marks, deaths of every player that is playing
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIPlayersBoard extends GUIGenericWindow{
 
     @FXML
