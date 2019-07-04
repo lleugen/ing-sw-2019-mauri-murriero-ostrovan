@@ -50,15 +50,6 @@ public class GUI extends UnicastRemoteObject
   }
 
   /**
-   * Helper function. Load a new Chooser PopUp Windows
-   *
-   * @param controller Controller for the popup
-   */
-  private Object loadChooser(GUIGenericWindow controller){
-    return this.loadPopUpWindow("chooser", new MyStage(), controller);
-  }
-
-  /**
    * @return the player nickname
    */
   @Override
@@ -120,8 +111,8 @@ public class GUI extends UnicastRemoteObject
     GUIMapChooser mapChooserWindow = new GUIMapChooser();
 
     Object result = loadChooser(mapChooserWindow);
-    lastMapSelected = "map" + result.toString();
     if (result != null) {
+      lastMapSelected = "map" + result.toString();
       return (int) result;
     } else {
       throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
@@ -439,6 +430,15 @@ public class GUI extends UnicastRemoteObject
       );
     }
     return null;
+  }
+
+  /**
+   * Helper function. Load a new Chooser PopUp Windows
+   *
+   * @param controller Controller for the popup
+   */
+  private Object loadChooser(GUIGenericWindow controller){
+    return this.loadPopUpWindow("chooser", new MyStage(), controller);
   }
 
   public static class InvalidClosedGUIException extends RuntimeException {
