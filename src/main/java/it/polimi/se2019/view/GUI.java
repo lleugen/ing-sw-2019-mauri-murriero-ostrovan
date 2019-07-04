@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Main GUI class, it contains every method called from the server
@@ -20,28 +22,18 @@ import java.util.List;
  */
 public class GUI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient{
-
-  private ActionSetView actionSetWindow;
-  private GUIWeaponLoader weaponLoaderWindow;
-  private GUIMapChooser mapChooserWindow;
-  private GUIPlayersNumber playersNumberWindow;
-  private GUISpawnLocation spawnLocationWindow;
-  private GUIWeaponChooser weaponChooserWindow;
-  private GUITargetChoose targetChooseWindow;
-  private GUIPowerUpsChooser powerUpsChooserWindow;
-  private GUIEffectChooser effectChooserWindow;
-  private GUIDirectionChooser directionChooserWindow;
-  private GUIBooleanQuestion booleanQuestionWindow;
-  private GUISquareChooser squareChooserWindow;
-  private GUIRoomChooser roomChooserWindow;
-  private GUIItemToGrabChooser itemToGrabChooserWindow;
+  /**
+   * Namespace this class logs to
+   */
+  private static final String LOG_NAMESPACE = "GUI";
 
   private GUIPlayersBoard playersBoardWindow;
   private GUIGameBoard gameBoardWindow;
-  private MyStage playersStage, boardStage;
 
-  private String nickname, character;
-  private String lastWeaponSelected, lastMapSelected;
+  private String nickname;
+  private String character;
+  private String lastWeaponSelected;
+  private String lastMapSelected;
   private PlayersNamesKeeper playersInfo;
 
   /**
@@ -55,6 +47,15 @@ public class GUI extends UnicastRemoteObject
   public GUI(String user, String character) throws RemoteException {
     this.nickname = user;
     this.character = character;
+  }
+
+  /**
+   * Helper function. Load a new Chooser PopUp Windows
+   *
+   * @param controller Controller for the popup
+   */
+  private Object loadChooser(GUIGenericWindow controller){
+    return this.loadPopUpWindow("chooser", new MyStage(), controller);
   }
 
   /**
@@ -83,9 +84,9 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseAction(String state)
   {
-    actionSetWindow = new ActionSetView(state, playersInfo.findFolder(getName()));
+    ActionSetView actionSetWindow = new ActionSetView(state, playersInfo.findFolder(getName()));
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), actionSetWindow);
+    Object result = loadChooser(actionSetWindow);
     if(result != null)
       return (String)result;
     else
@@ -101,10 +102,9 @@ public class GUI extends UnicastRemoteObject
   @Override
   public int chooseSpawnLocation(List<String> powerUps)
   {
-    spawnLocationWindow = new GUISpawnLocation(powerUps);
+    GUISpawnLocation spawnLocationWindow = new GUISpawnLocation(powerUps);
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), spawnLocationWindow);
-    //gameBoardWindow.setLocalPlayerCoords(powerUps.get((int)result));
+    Object result = loadChooser(spawnLocationWindow);
     if(result != null)
       return (int)result;
     else
@@ -116,15 +116,16 @@ public class GUI extends UnicastRemoteObject
    * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
-  public int chooseMap()  {
-    mapChooserWindow = new GUIMapChooser();
+  public int chooseMap() {
+    GUIMapChooser mapChooserWindow = new GUIMapChooser();
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), mapChooserWindow);
+    Object result = loadChooser(mapChooserWindow);
     lastMapSelected = "map" + result.toString();
-    if(result != null)
-      return (int)result;
-    else
+    if (result != null) {
+      return (int) result;
+    } else {
       throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
+    }
   }
 
   /**
@@ -133,7 +134,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseNumberOfPlayers()  {
-    playersNumberWindow = new GUIPlayersNumber();
+    GUIPlayersNumber playersNumberWindow = new GUIPlayersNumber();
 
     Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
     if(result != null)
@@ -150,9 +151,9 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseWeapon(List<String> weapons)  {
-    weaponChooserWindow = new GUIWeaponChooser(weapons);
+    GUIWeaponChooser weaponChooserWindow = new GUIWeaponChooser(weapons);
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), weaponChooserWindow);
+    Object result = loadChooser(weaponChooserWindow);
     lastWeaponSelected = (String)result;
     if(result != null)
       return (String)result;
@@ -170,12 +171,13 @@ public class GUI extends UnicastRemoteObject
   public String chooseTargets(List<String> possibleTargets)
   {
     List<String> targetsFolders = new ArrayList<>();
-    for(int i = 0; i < possibleTargets.size(); i++)
-      targetsFolders.add(playersInfo.findFolder(possibleTargets.get(i)));
+    for (String possibleTarget : possibleTargets) {
+      targetsFolders.add(playersInfo.findFolder(possibleTarget));
+    }
 
-    targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
+    GUITargetChoose targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), targetChooseWindow);
+    Object result = loadChooser(targetChooseWindow);
     if(result != null)
       return (String)result;
     else
@@ -190,9 +192,9 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseWeaponToReload(List<String> weapons)
   {
-    weaponLoaderWindow = new GUIWeaponLoader(weapons);
+    GUIWeaponLoader weaponLoaderWindow = new GUIWeaponLoader(weapons);
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), weaponLoaderWindow);
+    Object result = loadChooser(weaponLoaderWindow);
     if(result != null)
       return (String)result;
     else
@@ -212,8 +214,8 @@ public class GUI extends UnicastRemoteObject
     boolean keepAsking = true;
 
     while ((keepAsking) && (chosenInt.size() < powerUps.size())){
-      powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
-      Object result = loadPopUpWindow("chooser", new MyStage(), powerUpsChooserWindow);
+      GUIPowerUpsChooser powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
+      Object result = loadChooser(powerUpsChooserWindow);
 
       if(result == null)
         throw new InvalidClosedGUIException("GUIError: choosePowerUpCardsForReload non è andato a buon fine.");
@@ -234,7 +236,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseIndex(List<String> availableEffects)
   {
-    effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
+    GUIEffectChooser effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
 
     Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
     if(result != null)
@@ -249,9 +251,9 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseItemToGrab()  {
-    itemToGrabChooserWindow = new GUIItemToGrabChooser();
+    GUIItemToGrabChooser itemToGrabChooserWindow = new GUIItemToGrabChooser();
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), itemToGrabChooserWindow);
+    Object result = loadChooser(itemToGrabChooserWindow);
     if(result != null)
       return (int)result;
     else
@@ -265,7 +267,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Boolean chooseFiringMode(String description)
   {
-    booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
+    GUIBooleanQuestion booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
 
     Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
     if(result != null)
@@ -283,7 +285,7 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public Boolean chooseBoolean(String description)  {
-    booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
+    GUIBooleanQuestion booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
 
     Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
     if(result != null)
@@ -298,9 +300,9 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseRoom(List<String> rooms)  {
-    roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
+    GUIRoomChooser roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
 
-    Object result = loadPopUpWindow("chooser", new MyStage(), roomChooserWindow);
+    Object result = loadChooser(roomChooserWindow);
     if(result != null)
       return (String)result;
     else
@@ -315,7 +317,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
   {
-    squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
+    GUISquareChooser squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
 
     Object result = loadPopUpWindow("squarechooser", new MyStage(), squareChooserWindow);
 
@@ -338,7 +340,7 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections)
   {
-    directionChooserWindow = new GUIDirectionChooser(possibleDirections);
+    GUIDirectionChooser directionChooserWindow = new GUIDirectionChooser(possibleDirections);
 
     Object result = loadPopUpWindow("movement", new MyStage(), directionChooserWindow);
     if(result != null)
@@ -353,7 +355,6 @@ public class GUI extends UnicastRemoteObject
       gameBoardWindow = new GUIGameBoard(playersInfo);
       launchMainBoard(lastMapSelected, false, gameBoardWindow);
     }
-     // launchGameBoard();
     gameBoardWindow.setMapInfo(mapInfo);
   }
 
@@ -363,7 +364,6 @@ public class GUI extends UnicastRemoteObject
       playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
       launchMainBoard("groupsheets", true, playersBoardWindow);
     }
-     // launchPlayersBoard();
     playersBoardWindow.setPlayerInfo(playerInfo);
   }
 
@@ -373,7 +373,6 @@ public class GUI extends UnicastRemoteObject
       gameBoardWindow = new GUIGameBoard(playersInfo);
       launchMainBoard(lastMapSelected, false, gameBoardWindow);
     }
-    //  launchGameBoard();
     gameBoardWindow.setKillScoreBoardInfo(killScoreBoardInfo);
   }
 
@@ -388,7 +387,6 @@ public class GUI extends UnicastRemoteObject
       playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
       launchMainBoard("groupsheets", true, playersBoardWindow);
     }
-    //  launchPlayersBoard();
   }
 
   private void launchMainBoard(String fxmlName, Boolean isPlayerStage, GUIGenericWindow controller){
@@ -398,21 +396,27 @@ public class GUI extends UnicastRemoteObject
     try {
       Parent root = loader.load();
       if(isPlayerStage){
-        playersStage = new MyStage();
+        MyStage playersStage = new MyStage();
         playersStage.setScene(new Scene(root));
         playersStage.initStyle(StageStyle.UNDECORATED);
 
         playersStage.show();
-      }else{
-        boardStage = new MyStage();
+      }
+      else{
+        MyStage boardStage = new MyStage();
         boardStage.setScene(new Scene(root));
         boardStage.initStyle(StageStyle.UNDECORATED);
 
         boardStage.show();
       }
 
-    }catch(IOException e){
-      e.printStackTrace();
+    }
+    catch(IOException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.SEVERE,
+              "Initialization failed",
+              e
+      );
     }
   }
 
@@ -426,8 +430,13 @@ public class GUI extends UnicastRemoteObject
       toLoad.initStyle(StageStyle.UNDECORATED);
 
       return toLoad.showAndGetResult(controller);
-    }catch(IOException e){
-      e.printStackTrace();
+    }
+    catch(IOException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.SEVERE,
+              "Initialization Error",
+              e
+      );
     }
     return null;
   }

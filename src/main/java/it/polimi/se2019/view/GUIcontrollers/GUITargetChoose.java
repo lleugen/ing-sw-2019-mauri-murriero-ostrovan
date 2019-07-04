@@ -38,8 +38,8 @@ public class GUITargetChoose extends GUIGenericWindow {
      */
     public GUITargetChoose(List<String> targets, List<String> folders) {
         super();
-        btnsNames = (String[])targets.toArray();
-        foldersNames = (String[])folders.toArray();
+        btnsNames = targets.toArray(new String[0]);
+        foldersNames = folders.toArray(new String[0]);
         result = "";
     }
 

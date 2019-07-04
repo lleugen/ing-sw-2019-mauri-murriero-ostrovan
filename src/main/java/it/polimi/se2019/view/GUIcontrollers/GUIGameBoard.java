@@ -1,6 +1,5 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-import it.polimi.se2019.model.grabbable.Ammo;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,10 +10,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,13 +40,12 @@ public class GUIGameBoard extends GUIGenericWindow{
     @FXML
     private Pane doubleKillPane;
 
-    private List<ArrayList<ArrayList<String>>> mapInfo;
-    private List<ArrayList<String>> killScoreBoardInfo;
-
     private PlayersNamesKeeper playersInfo;
 
-    private int[] blueCord = {0, 2}, redCord = {1, 0}, yellowCord = {2, 3}, localPlayerCoords;
-    private String[] blueWeapons, redWeapons, yellowWeapons;
+    private int[] blueCord = {0, 2};
+    private int[] redCord = {1, 0};
+    private int[]  yellowCord = {2, 3};
+    private int[]  localPlayerCoords;
 
     public GUIGameBoard(PlayersNamesKeeper playersInfo){
         this.playersInfo = playersInfo;
@@ -75,13 +72,17 @@ public class GUIGameBoard extends GUIGenericWindow{
 
     public void setMapInfo(List<ArrayList<ArrayList<String>>> mapInfo){
         //[x][y] -> [blue, red, yellow, powerUp, players...]
-        this.mapInfo = mapInfo;
+        String[] blueWeapons;
+        String[] redWeapons;
+        String[] yellowWeapons;
+
         List<String> ammosTypes = new ArrayList<>();
         ammosTypes.add("red"); ammosTypes.add("blue"); ammosTypes.add("yellow"); ammosTypes.add("powerUp");
 
         ObservableList<Node> cells = squaresGrid.getChildren();
         for(int i = 0; i < cells.size(); i++){
-            int x = GridPane.getRowIndex(cells.get(i)), y = GridPane.getColumnIndex(cells.get(i));
+            int x = GridPane.getRowIndex(cells.get(i));
+            int y = GridPane.getColumnIndex(cells.get(i));
             if(!mapInfo.get(x).get(y).get(0).equals("NR")){
                 AnchorPane pane = (AnchorPane)cells.get(i);
                 Pane inRoomPane = (Pane)pane.getChildren().get(0);
@@ -109,19 +110,19 @@ public class GUIGameBoard extends GUIGenericWindow{
                     playerFirstIndex = Integer.getInteger(mapInfo.get(x).get(y).get(0))+1;
                     HBox toUpdateWeaponsBox = null;
                     String[] toUpdateNames = null;
-                    if(blueCord == new int[] {x, y}){
+                    if(Arrays.equals(blueCord, new int[]{x, y})){
                         toUpdateWeaponsBox = blueWeaponsBox;
                         blueWeapons = new String[Integer.getInteger(mapInfo.get(x).get(y).get(0))];
                         for(int z = 0; z < Integer.getInteger(mapInfo.get(x).get(y).get(0)); i++)
                             blueWeapons[z] = mapInfo.get(x).get(y).get(z+1);
                         toUpdateNames = blueWeapons;
-                    }else if(redCord == new int[] {x, y}){
+                    }else if(Arrays.equals(redCord, new int[] {x, y})){
                         toUpdateWeaponsBox = redWeaponsBox;
                         redWeapons = new String[Integer.getInteger(mapInfo.get(x).get(y).get(0))];
                         for(int z = 0; z < Integer.getInteger(mapInfo.get(x).get(y).get(0)); i++)
                             redWeapons[z] = mapInfo.get(x).get(y).get(z+1);
                         toUpdateNames = redWeapons;
-                    }else if(yellowCord == new int[] {x, y}){
+                    }else if(Arrays.equals(yellowCord, new int[] {x, y})){
                         toUpdateWeaponsBox = yellowWeaponsBox;
                         yellowWeapons = new String[Integer.getInteger(mapInfo.get(x).get(y).get(0))];
                         for(int z = 0; z < Integer.getInteger(mapInfo.get(x).get(y).get(0)); i++)
@@ -129,11 +130,13 @@ public class GUIGameBoard extends GUIGenericWindow{
                         toUpdateNames = yellowWeapons;
                     }
 
-                    for(int z = 0; z < 3; z++){
-                        if(z < toUpdateNames.length)
-                            ((ImageView)toUpdateWeaponsBox.getChildren().get(z)).setImage(new Image(getURLOfImage("images/cards/" + toUpdateNames[z] + ".png")));
-                        else
-                            ((ImageView)toUpdateWeaponsBox.getChildren().get(z)).setImage(new Image(getURLOfImage("images/cards/AD_weapons_IT_0225.png")));
+                    if (toUpdateNames != null && toUpdateWeaponsBox != null) {
+                        for (int z = 0; z < 3; z++) {
+                            if (z < toUpdateNames.length)
+                                ((ImageView) toUpdateWeaponsBox.getChildren().get(z)).setImage(new Image(getURLOfImage("images/cards/" + toUpdateNames[z] + ".png")));
+                            else
+                                ((ImageView) toUpdateWeaponsBox.getChildren().get(z)).setImage(new Image(getURLOfImage("images/cards/AD_weapons_IT_0225.png")));
+                        }
                     }
                 }
 
@@ -157,8 +160,8 @@ public class GUIGameBoard extends GUIGenericWindow{
     public void setKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) {
         // [0] -> kill+overkill?
         // [1] -> doublekill
-        this.killScoreBoardInfo = killScoreBoardInfo;
-        Integer maxDeaths = 5, shownDeaths = 0;
+        Integer maxDeaths = 5;
+        Integer shownDeaths = 0;
         ObservableList<Node> killsSegs = deathsBox.getChildren();
 
         //DEATHS

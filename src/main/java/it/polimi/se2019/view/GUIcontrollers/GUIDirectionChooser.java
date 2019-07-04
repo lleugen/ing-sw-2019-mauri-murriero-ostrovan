@@ -1,12 +1,8 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.util.List;

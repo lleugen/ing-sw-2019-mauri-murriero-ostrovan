@@ -8,9 +8,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Scanner;
 /**
  * @author Eugenio Ostrovan
  * @author Fabio Mauri

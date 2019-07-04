@@ -35,7 +35,7 @@ public class GUIEffectChooser extends GUIGenericWindow {
      */
     public GUIEffectChooser(String weaponName, List<String> effectsList) {
         super();
-        btnsNames = (String[])effectsList.toArray();
+        btnsNames = effectsList.toArray(new String[0]);
         this.weaponName = weaponName;
         result = 0;
     }

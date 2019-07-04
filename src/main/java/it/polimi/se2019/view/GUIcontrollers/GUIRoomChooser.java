@@ -39,7 +39,7 @@ public class GUIRoomChooser extends GUIGenericWindow {
      */
     public GUIRoomChooser(String mapName, List<String> availableRooms) {
         super();
-        btnsNames = (String[])availableRooms.toArray();
+        btnsNames = availableRooms.toArray(new String[0]);
         this.mapName = mapName;
         result = "";
     }

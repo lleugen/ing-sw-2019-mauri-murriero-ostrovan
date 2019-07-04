@@ -1,7 +1,5 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
-//import com.sun.scenario.effect.impl.sw.java.JSWBlend_COLOR_BURNPeer;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,8 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +38,7 @@ public class GUIPowerUpsChooser extends GUIGenericWindow {
      */
     public GUIPowerUpsChooser(List<String> powerUps, List<Integer> taken) {
         super();
-        btnsNames = (String[])powerUps.toArray();
+        btnsNames = powerUps.toArray(new String[0]);
         this.taken = taken;
         result = "";
     }

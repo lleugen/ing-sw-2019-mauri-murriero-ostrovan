@@ -1,5 +1,6 @@
 package it.polimi.se2019.view.GUIcontrollers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +9,12 @@ import java.util.List;
  *
  * @author Riccardo Murriero
  */
-public class PlayersNamesKeeper {
+public class PlayersNamesKeeper implements Serializable {
 
-    public class PlayerNamesData{
-        private String name, character, folder;
+    public class PlayerNamesData implements Serializable {
+        private String name;
+        private String character;
+        private String folder;
 
         public PlayerNamesData(String name, String character){
             this.name = name; this.character = character; this.folder = "char" + GUILogin.indexOfCharacter(character);

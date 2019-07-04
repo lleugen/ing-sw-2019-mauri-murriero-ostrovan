@@ -36,7 +36,7 @@ public class GUISpawnLocation extends GUIGenericWindow {
      */
     public GUISpawnLocation(List<String> powerUps) {
         super();
-        btnsNames = (String[])powerUps.toArray();
+        btnsNames = powerUps.toArray(new String[0]);
         result = "";
     }
 
@@ -45,7 +45,7 @@ public class GUISpawnLocation extends GUIGenericWindow {
         for(int i = 0; i < choicesBox.getChildren().size(); i++){
             VBox currentChoiceObj = ((VBox)(choicesBox.getChildren().get(i)));
             if(i < btnsNames.length){
-                String currentName = btnsNames[i];//.substring(btnsNames[i].indexOf('_') + 1);
+                String currentName = btnsNames[i];
                 ((ImageView)currentChoiceObj.getChildren().get(0)).setImage(new Image(getURLOfImage("images/cards/" + btnsNames[i] + ".png")));
                 ((Button)currentChoiceObj.getChildren().get(1)).setText(currentName);
                 setOnActionEffect(((Button)currentChoiceObj.getChildren().get(1)), String.valueOf(i));
