@@ -9,6 +9,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Window controller for the chooser of a grabbable item
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIItemToGrabChooser extends GUIGenericWindow {
 
     @FXML

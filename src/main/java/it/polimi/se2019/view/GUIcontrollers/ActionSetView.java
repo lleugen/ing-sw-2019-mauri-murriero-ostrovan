@@ -10,6 +10,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Window controller for the chooser of the Action Set
+ *
+ * @author Riccardo Murriero
+ */
 public class ActionSetView extends GUIGenericWindow{
 
   @FXML
@@ -25,6 +30,10 @@ public class ActionSetView extends GUIGenericWindow{
   private String charFolder;
   /**
    * Shows the player the current actions that he can select and wait for a selection
+   *
+   * @param actionSetName   player current state
+   * @param charFolder      character images folder, necessary for showing images
+   *
    */
   public ActionSetView(String actionSetName, String charFolder) {
     super();

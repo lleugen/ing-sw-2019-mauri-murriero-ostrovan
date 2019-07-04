@@ -18,6 +18,11 @@ import java.util.ResourceBundle;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Generic window controller used to implement other specific controllers
+ *
+ * @author Riccardo Murriero
+ */
 public abstract class GUIGenericWindow implements Initializable{
 
     /**
@@ -34,7 +39,7 @@ public abstract class GUIGenericWindow implements Initializable{
     public abstract void closeWindow();
 
     protected String getURLOfImage(String linkAfterResourceFolder){
-        return getClass().getResource(linkAfterResourceFolder).toString();
+        return getClass().getResource("/" + linkAfterResourceFolder).toString();
     }
 
     protected void setOnActionEffect(Button button, String newResultValue){

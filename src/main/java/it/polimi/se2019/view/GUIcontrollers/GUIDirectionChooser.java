@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of a moving direction
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIDirectionChooser extends GUIGenericWindow {
 
     @FXML

@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of a specific room in the map
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIRoomChooser extends GUIGenericWindow {
 
     @FXML
@@ -24,8 +29,13 @@ public class GUIRoomChooser extends GUIGenericWindow {
 
     private String[] btnsNames;
     private String mapName;
+
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of available rooms in the given map and wait for a selection
+     *
+     * @param mapName           name of the selected map
+     * @param availableRooms    list of the available rooms colors
+     *
      */
     public GUIRoomChooser(String mapName, List<String> availableRooms) {
         super();

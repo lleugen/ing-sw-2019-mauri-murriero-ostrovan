@@ -15,13 +15,14 @@ public interface ViewFacadeInterfaceRMIClient extends Remote, Serializable {
 
     /**
      * @throws RemoteException if there is an error with the RMI connection
-     * @return the chosen action
-     * @param state the player's state which determines the available actions
+     * @return the character name of the client
      */
     String getCharacter() throws RemoteException;
 
-    /**
-     *
+     /**
+     * @throws RemoteException if there is an error with the RMI connection
+     * @return the chosen action
+     * @param state the player's state which determines the available actions
      */
     String chooseAction(String state) throws RemoteException;
 

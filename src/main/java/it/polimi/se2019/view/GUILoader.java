@@ -56,7 +56,7 @@ public class GUILoader extends Application {
 
   /**
    * @return The name of the player.
-   *         Null if not initialized {@see alreadtInitialized}
+   *         Null if not initialized {see alreadyInitialized}
    */
   public static synchronized String getName() {
     return name;
@@ -64,7 +64,7 @@ public class GUILoader extends Application {
 
   /**
    * @return The character of the player.
-   *         Null if not initialized {@see alreadtInitialized}
+   *         Null if not initialized {see alreadyInitialized}
    */
   public static synchronized String getCharacter() {
     return character;

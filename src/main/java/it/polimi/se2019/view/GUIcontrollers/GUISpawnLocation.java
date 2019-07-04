@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of spawn location of the player
+ *
+ * @author Riccardo Murriero
+ */
 public class GUISpawnLocation extends GUIGenericWindow {
 
     @FXML
@@ -24,7 +29,10 @@ public class GUISpawnLocation extends GUIGenericWindow {
 
     private String[] btnsNames;
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of available powerUps that can be discarded to spawn and wait for a selection
+     *
+     * @param powerUps  list of the available powerUps that can be discarded by the user
+     *
      */
     public GUISpawnLocation(List<String> powerUps) {
         super();

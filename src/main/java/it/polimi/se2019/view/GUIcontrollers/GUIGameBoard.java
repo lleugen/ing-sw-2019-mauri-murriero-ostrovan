@@ -17,6 +17,11 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Window controller for the game board visualization
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIGameBoard extends GUIGenericWindow{
 
     @FXML

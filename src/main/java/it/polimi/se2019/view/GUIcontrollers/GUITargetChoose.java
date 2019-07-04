@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of witch target the user wants to shoot at
+ *
+ * @author Riccardo Murriero
+ */
 public class GUITargetChoose extends GUIGenericWindow {
 
     @FXML
@@ -25,7 +30,11 @@ public class GUITargetChoose extends GUIGenericWindow {
     private String[] btnsNames;
     private String[] foldersNames;
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of available targets and wait for a selection
+     *
+     * @param targets   list of available targets names
+     * @param folders   list of available targets characters folders, needed to show their images
+     *
      */
     public GUITargetChoose(List<String> targets, List<String> folders) {
         super();

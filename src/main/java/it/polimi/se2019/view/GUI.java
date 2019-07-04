@@ -5,7 +5,6 @@ import it.polimi.se2019.view.GUIcontrollers.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
@@ -14,6 +13,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main GUI class, it contains every method called from the server
+ *
+ * @author Riccardo Murriero
+ */
 public class GUI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient{
 
@@ -54,20 +58,27 @@ public class GUI extends UnicastRemoteObject
   }
 
   /**
-   *
+   * @return the player nickname
    */
   @Override
   public String getName()  {
     return nickname;
   }
 
+    /**
+     *
+     * @return character name
+     */
   @Override
   public String getCharacter(){
     return character;
   }
 
   /**
+   * @param state    which player state are you
    *
+   * @return    one of the available actions of the given state
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public String chooseAction(String state)
@@ -77,11 +88,15 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("chooser", new MyStage(), actionSetWindow);
     if(result != null)
       return (String)result;
-    return "run";
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseAction non è andato a buon fine.");
   }
 
   /**
+   * @param powerUps: list of available powerUps names
+   *
    * @return index of the power up card to discard
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public int chooseSpawnLocation(List<String> powerUps)
@@ -92,11 +107,13 @@ public class GUI extends UnicastRemoteObject
     //gameBoardWindow.setLocalPlayerCoords(powerUps.get((int)result));
     if(result != null)
       return (int)result;
-    return 0;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseSpawnLocation non è andato a buon fine.");
   }
 
   /**
-   * Choose map type for the match
+   * @return witch map type for the match from 0 to 3
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public int chooseMap()  {
@@ -106,11 +123,13 @@ public class GUI extends UnicastRemoteObject
     lastMapSelected = "map" + result.toString();
     if(result != null)
       return (int)result;
-    return 0;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
   }
 
   /**
-   * choose how many players will be in the game
+   * @return how many players will be in the game
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public int chooseNumberOfPlayers()  {
@@ -119,11 +138,15 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
     if(result != null)
       return (int)result;
-    return 1;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseNumberOfPlayers non è andato a buon fine.");
   }
 
   /**
+   * @param weapons: list of available weapons
+   *
    * @return chosen weapon name
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public String chooseWeapon(List<String> weapons)  {
@@ -133,13 +156,15 @@ public class GUI extends UnicastRemoteObject
     lastWeaponSelected = (String)result;
     if(result != null)
       return (String)result;
-    return weapons.get(0);
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseWeapon non è andato a buon fine.");
   }
 
   /**
    * @param possibleTargets is a list of the players who can be
    *                        targeted(their names)
    * @return a list of chosen targets(names)
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public String chooseTargets(List<String> possibleTargets)
@@ -153,12 +178,14 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("chooser", new MyStage(), targetChooseWindow);
     if(result != null)
       return (String)result;
-    return possibleTargets.get(0);
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseTargets non è andato a buon fine.");
   }
 
   /**
    * @param weapons that can be reloaded
    * @return the name of the weapon to reload
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public String chooseWeaponToReload(List<String> weapons)
@@ -168,12 +195,14 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("chooser", new MyStage(), weaponLoaderWindow);
     if(result != null)
       return (String)result;
-    return weapons.get(0);
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseWeaponToReload non è andato a buon fine.");
   }
 
   /**
    * @return a list of integers indicating which cards from the player's
    * inventory to use when reloading
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public List<Integer> choosePowerUpCardsForReload(List<String> powerUps)
@@ -187,7 +216,7 @@ public class GUI extends UnicastRemoteObject
       Object result = loadPopUpWindow("chooser", new MyStage(), powerUpsChooserWindow);
 
       if(result == null)
-        result = -1;
+        throw new InvalidClosedGUIException("GUIError: choosePowerUpCardsForReload non è andato a buon fine.");
 
       lastAnswer = (int)result;
       if(lastAnswer != -1){
@@ -200,6 +229,7 @@ public class GUI extends UnicastRemoteObject
 
   /**
    * @return the integer relative to the availableEffects list
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public Integer chooseIndex(List<String> availableEffects)
@@ -209,11 +239,13 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
     if(result != null)
       return (int)result;
-    return 0;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseIndex non è andato a buon fine.");
   }
 
   /**
    * @return int indicating which item to pick up from those available
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public int chooseItemToGrab()  {
@@ -222,11 +254,13 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("chooser", new MyStage(), itemToGrabChooserWindow);
     if(result != null)
       return (int)result;
-    return 0;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseItemToGrab non è andato a buon fine.");
   }
 
   /**
    * choose whether to use a firing mode
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public Boolean chooseFiringMode(String description)
@@ -236,11 +270,16 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
     if(result != null)
       return (Boolean) result;
-    return false;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseFiring non è andato a buon fine.");
   }
 
   /**
+   *  choose to answer from a yes/no question from the server
    *
+   * @param description   question asked
+   * @return true/false choice
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public Boolean chooseBoolean(String description)  {
@@ -249,11 +288,13 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
     if(result != null)
       return (Boolean) result;
-    return false;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseBoolean non è andato a buon fine.");
   }
 
   /**
    * choose a room from those proposed
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public String chooseRoom(List<String> rooms)  {
@@ -262,12 +303,14 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("chooser", new MyStage(), roomChooserWindow);
     if(result != null)
       return (String)result;
-    return rooms.get(0);
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseRoom non è andato a buon fine.");
   }
 
   /**
    * @param targettableSquareCoordinates the coordinates of all targettable squares
    * @return the coordinates of one chosen square
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
@@ -285,11 +328,12 @@ public class GUI extends UnicastRemoteObject
 
       return coords;
     }else
-      return null;
+      throw new InvalidClosedGUIException("GUIError: chooseTargetSquare non è andato a buon fine.");
   }
 
   /**
    * @return 0 for north, 1 for east, 2 for south or 3 for west
+   * @throws InvalidClosedGUIException if the GUI closes without a valid result
    */
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections)
@@ -299,7 +343,8 @@ public class GUI extends UnicastRemoteObject
     Object result = loadPopUpWindow("movement", new MyStage(), directionChooserWindow);
     if(result != null)
       return (int)result;
-    return 0;
+    else
+      throw new InvalidClosedGUIException("GUIError: chooseDirection non è andato a buon fine.");
   }
 
   @Override
@@ -385,5 +430,11 @@ public class GUI extends UnicastRemoteObject
       e.printStackTrace();
     }
     return null;
+  }
+
+  public static class InvalidClosedGUIException extends RuntimeException {
+    public InvalidClosedGUIException(String message){
+      super(message);
+    }
   }
 }

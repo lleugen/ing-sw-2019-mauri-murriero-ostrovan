@@ -12,6 +12,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+/**
+ * Window controller for the chooser of a particular map square from the given ones
+ *
+ * @author Riccardo Murriero
+ */
 public class GUISquareChooser extends GUIGenericWindow {
 
     @FXML

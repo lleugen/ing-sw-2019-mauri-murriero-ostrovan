@@ -15,6 +15,11 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Window controller for the chooser of witch of the given powerUps the user want to use
+ *
+ * @author Riccardo Murriero
+ */
 public class GUIPowerUpsChooser extends GUIGenericWindow {
 
     @FXML
@@ -29,7 +34,11 @@ public class GUIPowerUpsChooser extends GUIGenericWindow {
     private String[] btnsNames;
     private List<Integer> taken;
     /**
-     * Shows the player the current actions that he can select and wait for a selection
+     * Shows the player a list of powerUps he can choose to use and wait for a selection
+     *
+     * @param powerUps  list of the available powerUps
+     * @param taken     list of integers that defines witch of the powerUps has been already chosen prev
+     *
      */
     public GUIPowerUpsChooser(List<String> powerUps, List<Integer> taken) {
         super();
