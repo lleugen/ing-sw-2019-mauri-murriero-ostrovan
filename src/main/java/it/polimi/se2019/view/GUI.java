@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.StageStyle;
 
+import javax.print.DocFlavor;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -110,7 +111,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadChooser(spawnLocationWindow);
               if (result != null)
-                return (int) result;
+                return Integer.parseInt((String)result);
               else
                 throw new InvalidClosedGUIException("GUIError: chooseSpawnLocation non è andato a buon fine.");
             }
@@ -130,8 +131,8 @@ public class GUI extends UnicastRemoteObject
               GUIMapChooser mapChooserWindow = new GUIMapChooser();
               Object result = loadChooser(mapChooserWindow);
               if (result != null) {
-                lastMapSelected = "map" + result.toString();
-                return Integer.parseInt(result.toString());
+                lastMapSelected = "map" + result;
+                return Integer.parseInt((String)result);
               }
               else {
                 throw new InvalidClosedGUIException("GUIError: chooseMap non è andato a buon fine.");
@@ -154,7 +155,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
               if(result != null)
-                return Integer.parseInt(result.toString());
+                return Integer.parseInt((String)result);
               else
                 throw new InvalidClosedGUIException("GUIError: chooseNumberOfPlayers non è andato a buon fine.");
             }
@@ -176,10 +177,10 @@ public class GUI extends UnicastRemoteObject
               GUIWeaponChooser weaponChooserWindow = new GUIWeaponChooser(weapons);
 
               Object result = loadChooser(weaponChooserWindow);
-              lastWeaponSelected = (String)result;
-              if(result != null)
-                return (String)result;
-              else
+              if(result != null) {
+                  lastWeaponSelected = (String)result;
+                  return (String) result;
+              }else
                 throw new InvalidClosedGUIException("GUIError: chooseWeapon non è andato a buon fine.");
             }
     );
@@ -260,7 +261,7 @@ public class GUI extends UnicastRemoteObject
                 if(result == null)
                   throw new InvalidClosedGUIException("GUIError: choosePowerUpCardsForReload non è andato a buon fine.");
 
-                lastAnswer = Integer.parseInt(result.toString());
+                lastAnswer = Integer.parseInt((String)result);
                 if(lastAnswer != -1){
                   chosenInt.add(lastAnswer);
                 }else
@@ -286,7 +287,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
               if(result != null)
-                return Integer.parseInt(result.toString());
+                return Integer.parseInt((String)result);
               else
                 throw new InvalidClosedGUIException("GUIError: chooseIndex non è andato a buon fine.");
             }
@@ -307,7 +308,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadChooser(itemToGrabChooserWindow);
               if(result != null)
-                return Integer.parseInt(result.toString());
+                return Integer.parseInt((String)result);
               else
                 throw new InvalidClosedGUIException("GUIError: chooseItemToGrab non è andato a buon fine.");
             }
@@ -329,7 +330,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
               if(result != null)
-                return (Boolean) result;
+                return Boolean.getBoolean((String)result);
               else
                 throw new InvalidClosedGUIException("GUIError: chooseFiring non è andato a buon fine.");
             }
@@ -353,7 +354,7 @@ public class GUI extends UnicastRemoteObject
 
               Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
               if(result != null)
-                return (Boolean) result;
+                return Boolean.getBoolean((String)result);
               else
                 throw new InvalidClosedGUIException("GUIError: chooseBoolean non è andato a buon fine.");
             }

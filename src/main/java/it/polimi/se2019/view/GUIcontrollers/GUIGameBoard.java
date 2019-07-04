@@ -107,7 +107,7 @@ public class GUIGameBoard extends GUIGenericWindow{
                     ammoImage.setImage(new Image(getURLOfImage("images/ammo/0000.png")));
                 }else{
                     //SPAWN SQUARE
-                    playerFirstIndex = Integer.getInteger(mapInfo.get(x).get(y).get(0))+1;
+                    playerFirstIndex = Integer.getInteger(mapInfo.get(x).get(y).get(0));
                     HBox toUpdateWeaponsBox = null;
                     String[] toUpdateNames = null;
                     if(Arrays.equals(blueCord, new int[]{x, y})){
