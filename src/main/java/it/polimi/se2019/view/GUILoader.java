@@ -107,8 +107,9 @@ public class GUILoader extends Application {
         updateUserCharacter(parsedInfo[0], parsedInfo[1]);
       }
 
-      loginStage.close();
-      primaryStage.close();
+      //it closes itself on showAndGetResult
+      //loginStage.close();
+      //primaryStage.close();
     }
   }
 }

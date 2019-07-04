@@ -5,6 +5,7 @@ import it.polimi.se2019.view.GUIcontrollers.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class GUI extends UnicastRemoteObject
   private GUIGameBoard gameBoardWindow;
   private MyStage playersStage, boardStage;
 
-  private String nickname, character, characterFolder;
+  private String nickname, character;
   private String lastWeaponSelected, lastMapSelected;
   private PlayersNamesKeeper playersInfo;
 
@@ -51,14 +52,6 @@ public class GUI extends UnicastRemoteObject
     this.nickname = user;
     this.character = character;
   }
-
-//  public void setLocalPlayerName(String nickname, String character){
-//    this.nickname = nickname;
-//    this.character = character;
-//    for(int i = 0; i < GUILogin.charactersNames.length; i++)
-//      if(GUILogin.charactersNames[i].equals(character))
-//        characterFolder = "char" + i;
-//  }
 
   /**
    *
@@ -77,23 +70,14 @@ public class GUI extends UnicastRemoteObject
    *
    */
   @Override
-  public String chooseAction(String state)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
+  public String chooseAction(String state)
+  {
+    actionSetWindow = new ActionSetView(state, playersInfo.findFolder(getName()));
 
-    actionSetWindow = new ActionSetView(state, characterFolder);
-    loader.setController(actionSetWindow);
-
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (String)secondaryStage.showAndGetResult(actionSetWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return "Trovato errore nella scelta dell'azione...";
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), actionSetWindow);
+    if(result != null)
+      return (String)result;
+    return "run";
   }
 
   /**
@@ -102,24 +86,13 @@ public class GUI extends UnicastRemoteObject
   @Override
   public int chooseSpawnLocation(List<String> powerUps)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     spawnLocationWindow = new GUISpawnLocation(powerUps);
-    loader.setController(spawnLocationWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      int res = (int)secondaryStage.showAndGetResult(spawnLocationWindow);
-      gameBoardWindow.setLocalPlayerCoords(powerUps.get(res));
-      return res;
-    }catch(IOException e){
-      e.printStackTrace();
-      return 0;
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), spawnLocationWindow);
+    //gameBoardWindow.setLocalPlayerCoords(powerUps.get((int)result));
+    if(result != null)
+      return (int)result;
+    return 0;
   }
 
   /**
@@ -127,24 +100,13 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseMap()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     mapChooserWindow = new GUIMapChooser();
-    loader.setController(mapChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      int res = (int)secondaryStage.showAndGetResult(mapChooserWindow);
-      lastMapSelected = "map" + res;
-      return res;
-    }catch(IOException e){
-      e.printStackTrace();
-      return -1;
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), mapChooserWindow);
+    lastMapSelected = "map" + result.toString();
+    if(result != null)
+      return (int)result;
+    return 0;
   }
 
   /**
@@ -152,22 +114,12 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseNumberOfPlayers()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/playernumberchooser.fxml"));
-
     playersNumberWindow = new GUIPlayersNumber();
-    loader.setController(playersNumberWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (int)secondaryStage.showAndGetResult(playersNumberWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return 1;
-    }
+    Object result = loadPopUpWindow("playernumberchooser", new MyStage(), playersNumberWindow);
+    if(result != null)
+      return (int)result;
+    return 1;
   }
 
   /**
@@ -175,23 +127,13 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseWeapon(List<String> weapons)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     weaponChooserWindow = new GUIWeaponChooser(weapons);
-    loader.setController(weaponChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      lastWeaponSelected = (String)secondaryStage.showAndGetResult(weaponChooserWindow);
-      return lastWeaponSelected;
-    }catch(IOException e){
-      e.printStackTrace();
-      return weapons.get(0);
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), weaponChooserWindow);
+    lastWeaponSelected = (String)result;
+    if(result != null)
+      return (String)result;
+    return weapons.get(0);
   }
 
   /**
@@ -206,22 +148,12 @@ public class GUI extends UnicastRemoteObject
     for(int i = 0; i < possibleTargets.size(); i++)
       targetsFolders.add(playersInfo.findFolder(possibleTargets.get(i)));
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     targetChooseWindow = new GUITargetChoose(possibleTargets, targetsFolders);
-    loader.setController(targetChooseWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (String)secondaryStage.showAndGetResult(targetChooseWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return possibleTargets.get(0);
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), targetChooseWindow);
+    if(result != null)
+      return (String)result;
+    return possibleTargets.get(0);
   }
 
   /**
@@ -231,22 +163,12 @@ public class GUI extends UnicastRemoteObject
   @Override
   public String chooseWeaponToReload(List<String> weapons)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     weaponLoaderWindow = new GUIWeaponLoader(weapons);
-    loader.setController(weaponLoaderWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (String)secondaryStage.showAndGetResult(weaponLoaderWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return "";
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), weaponLoaderWindow);
+    if(result != null)
+      return (String)result;
+    return weapons.get(0);
   }
 
   /**
@@ -257,33 +179,23 @@ public class GUI extends UnicastRemoteObject
   public List<Integer> choosePowerUpCardsForReload(List<String> powerUps)
   {
     List<Integer> chosenInt = new ArrayList<>();
-    int lastAnswer = -1;
+    int lastAnswer;
     boolean keepAsking = true;
 
     while ((keepAsking) && (chosenInt.size() < powerUps.size())){
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
       powerUpsChooserWindow = new GUIPowerUpsChooser(powerUps, chosenInt);
-      loader.setController(powerUpsChooserWindow);
+      Object result = loadPopUpWindow("chooser", new MyStage(), powerUpsChooserWindow);
 
-      try {
-        Parent root = loader.load();
-        MyStage secondaryStage = new MyStage();
-        secondaryStage.setScene(new Scene(root));
-        secondaryStage.initStyle(StageStyle.UNDECORATED);
+      if(result == null)
+        result = -1;
 
-        lastAnswer = (int) secondaryStage.showAndGetResult(powerUpsChooserWindow);
-      } catch (IOException e) {
-        e.printStackTrace();
-        lastAnswer = -1;
-      }
+      lastAnswer = (int)result;
       if(lastAnswer != -1){
         chosenInt.add(lastAnswer);
       }else
         keepAsking = false;
     }
     return chosenInt;
-
   }
 
   /**
@@ -292,22 +204,12 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseIndex(List<String> availableEffects)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/effectchooser.fxml"));
-
     effectChooserWindow = new GUIEffectChooser(lastWeaponSelected, availableEffects);
-    loader.setController(effectChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (int)secondaryStage.showAndGetResult(effectChooserWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return -1;
-    }
+    Object result = loadPopUpWindow("effectchooser", new MyStage(), effectChooserWindow);
+    if(result != null)
+      return (int)result;
+    return 0;
   }
 
   /**
@@ -315,23 +217,12 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public int chooseItemToGrab()  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     itemToGrabChooserWindow = new GUIItemToGrabChooser();
-    loader.setController(itemToGrabChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      int res = (int)secondaryStage.showAndGetResult(itemToGrabChooserWindow);
-      return res;
-    }catch(IOException e){
-      e.printStackTrace();
-      return 0;
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), itemToGrabChooserWindow);
+    if(result != null)
+      return (int)result;
+    return 0;
   }
 
   /**
@@ -340,22 +231,12 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Boolean chooseFiringMode(String description)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/booleanquestion.fxml"));
-
     booleanQuestionWindow = new GUIBooleanQuestion("Vuoi attivare l'effetto <" + description + "> ora?", "Sì, Attiva", "No, non ora");
-    loader.setController(booleanQuestionWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (Boolean)secondaryStage.showAndGetResult(booleanQuestionWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return false;
-    }
+    Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
+    if(result != null)
+      return (Boolean) result;
+    return false;
   }
 
   /**
@@ -363,22 +244,12 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public Boolean chooseBoolean(String description)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/booleanquestion.fxml"));
-
     booleanQuestionWindow = new GUIBooleanQuestion("DOMANDA: <" + description + ">?", "Va bene", "Non va bene");
-    loader.setController(booleanQuestionWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (Boolean)secondaryStage.showAndGetResult(booleanQuestionWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return false;
-    }
+    Object result = loadPopUpWindow("booleanquestion", new MyStage(), booleanQuestionWindow);
+    if(result != null)
+      return (Boolean) result;
+    return false;
   }
 
   /**
@@ -386,22 +257,12 @@ public class GUI extends UnicastRemoteObject
    */
   @Override
   public String chooseRoom(List<String> rooms)  {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/chooser.fxml"));
-
     roomChooserWindow = new GUIRoomChooser(lastMapSelected, rooms);
-    loader.setController(roomChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      return (String)secondaryStage.showAndGetResult(roomChooserWindow);
-    }catch(IOException e){
-      e.printStackTrace();
-      return rooms.get(0);
-    }
+    Object result = loadPopUpWindow("chooser", new MyStage(), roomChooserWindow);
+    if(result != null)
+      return (String)result;
+    return rooms.get(0);
   }
 
   /**
@@ -411,28 +272,20 @@ public class GUI extends UnicastRemoteObject
   @Override
   public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/squarechooser.fxml"));
-
     squareChooserWindow = new GUISquareChooser(lastMapSelected, targettableSquareCoordinates);
-    loader.setController(squareChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
+    Object result = loadPopUpWindow("squarechooser", new MyStage(), squareChooserWindow);
 
-      String coordStr = (String)secondaryStage.showAndGetResult(squareChooserWindow);
+    if(result != null){
+      String coordStr = (String)result;
       String[] coordVet = coordStr.split("_");
       List<Integer> coords = new ArrayList<>();
       coords.add(Integer.getInteger(coordVet[0]));
       coords.add(Integer.getInteger(coordVet[1]));
 
       return coords;
-    }catch(IOException e){
-      e.printStackTrace();
+    }else
       return null;
-    }
   }
 
   /**
@@ -441,43 +294,41 @@ public class GUI extends UnicastRemoteObject
   @Override
   public Integer chooseDirection(List<Integer> possibleDirections)
   {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/movement.fxml"));
-
     directionChooserWindow = new GUIDirectionChooser(possibleDirections);
-    loader.setController(directionChooserWindow);
 
-    try {
-      Parent root = loader.load();
-      MyStage secondaryStage = new MyStage();
-      secondaryStage.setScene(new Scene(root));
-      secondaryStage.initStyle(StageStyle.UNDECORATED);
-
-      int res = (int)secondaryStage.showAndGetResult(directionChooserWindow);
-      return res;
-    }catch(IOException e){
-      e.printStackTrace();
-      return -1;
-    }
+    Object result = loadPopUpWindow("movement", new MyStage(), directionChooserWindow);
+    if(result != null)
+      return (int)result;
+    return 0;
   }
 
   @Override
   public void sendMapInfo(List<ArrayList<ArrayList<String>>> mapInfo) throws RemoteException {
-    if(gameBoardWindow == null)
-      launchGameBoard();
+    if(gameBoardWindow == null){
+      gameBoardWindow = new GUIGameBoard(playersInfo);
+      launchMainBoard(lastMapSelected, false, gameBoardWindow);
+    }
+     // launchGameBoard();
     gameBoardWindow.setMapInfo(mapInfo);
   }
 
   @Override
   public void sendPlayerInfo(List<ArrayList<String>> playerInfo) throws RemoteException {
-    if(playersBoardWindow == null)
-      launchPlayersBoard();
+    if(playersBoardWindow == null){
+      playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
+      launchMainBoard("groupsheets", true, playersBoardWindow);
+    }
+     // launchPlayersBoard();
     playersBoardWindow.setPlayerInfo(playerInfo);
   }
 
   @Override
   public void sendKillScoreBoardInfo(List<ArrayList<String>> killScoreBoardInfo) throws RemoteException {
-    if(gameBoardWindow == null)
-      launchGameBoard();
+    if(gameBoardWindow == null){
+      gameBoardWindow = new GUIGameBoard(playersInfo);
+      launchMainBoard(lastMapSelected, false, gameBoardWindow);
+    }
+    //  launchGameBoard();
     gameBoardWindow.setKillScoreBoardInfo(killScoreBoardInfo);
   }
 
@@ -488,43 +339,51 @@ public class GUI extends UnicastRemoteObject
       for(int i = 0; i < characterInfo.size(); i+=2)
         playersInfo.addPlayer(characterInfo.get(i), characterInfo.get(i+1));
     }
-    if(playersBoardWindow == null)
-      launchPlayersBoard();
+    if(playersBoardWindow == null){
+      playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
+      launchMainBoard("groupsheets", true, playersBoardWindow);
+    }
+    //  launchPlayersBoard();
   }
 
-  private void launchGameBoard(){
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + lastMapSelected + ".fxml"));
-
-    gameBoardWindow = new GUIGameBoard(playersInfo);
-    loader.setController(gameBoardWindow);
+  private void launchMainBoard(String fxmlName, Boolean isPlayerStage, GUIGenericWindow controller){
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlName + ".fxml"));
+    loader.setController(controller);
 
     try {
       Parent root = loader.load();
-      boardStage = new MyStage();
-      boardStage.setScene(new Scene(root));
-      boardStage.initStyle(StageStyle.UNDECORATED);
+      if(isPlayerStage){
+        playersStage = new MyStage();
+        playersStage.setScene(new Scene(root));
+        playersStage.initStyle(StageStyle.UNDECORATED);
 
-      boardStage.show();
+        playersStage.show();
+      }else{
+        boardStage = new MyStage();
+        boardStage.setScene(new Scene(root));
+        boardStage.initStyle(StageStyle.UNDECORATED);
+
+        boardStage.show();
+      }
+
     }catch(IOException e){
       e.printStackTrace();
     }
   }
 
-  private void launchPlayersBoard(){
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/groupsheets.fxml"));
-
-    playersBoardWindow = new GUIPlayersBoard(getName(), playersInfo);
-    loader.setController(playersBoardWindow);
+  private Object loadPopUpWindow(String fxmlName, MyStage toLoad, GUIGenericWindow controller){
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlName + ".fxml"));
+    loader.setController(controller);
 
     try {
       Parent root = loader.load();
-      playersStage = new MyStage();
-      playersStage.setScene(new Scene(root));
-      playersStage.initStyle(StageStyle.UNDECORATED);
+      toLoad.setScene(new Scene(root));
+      toLoad.initStyle(StageStyle.UNDECORATED);
 
-      playersStage.show();
+      return toLoad.showAndGetResult(controller);
     }catch(IOException e){
       e.printStackTrace();
     }
+    return null;
   }
 }
