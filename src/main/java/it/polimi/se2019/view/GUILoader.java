@@ -1,6 +1,6 @@
 package it.polimi.se2019.view;
 
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.view.GUIcontrollers.GUILogin;
 import it.polimi.se2019.view.GUIcontrollers.MyStage;
 import javafx.application.Application;

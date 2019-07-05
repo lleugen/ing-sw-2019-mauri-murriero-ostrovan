@@ -1,26 +1,14 @@
 package it.polimi.se2019;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.GameBoard;
-import it.polimi.se2019.model.grabbable.Ammo;
-import it.polimi.se2019.model.grabbable.Weapon;
-import it.polimi.se2019.model.map.Map;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
-import it.polimi.se2019.view.player.PlayerViewOnServer;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+
 /**
  * @author Eugenio Ostrovan
  */

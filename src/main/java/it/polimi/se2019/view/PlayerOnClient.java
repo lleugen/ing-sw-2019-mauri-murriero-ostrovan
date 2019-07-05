@@ -1,6 +1,6 @@
 package it.polimi.se2019.view;
 
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;

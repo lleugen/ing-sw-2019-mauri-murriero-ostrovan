@@ -1,20 +1,26 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.RMI.ServerLobbyInterface;
-import it.polimi.se2019.RMI.UserTimeoutException;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ServerLobbyInterface;
+import it.polimi.se2019.rmi.UserTimeoutException;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.rmi.server.RemoteServer.getClientHost;
+
 /**
  * @author Fabio Mauri
  */
@@ -35,45 +41,85 @@ public class Server implements ServerLobbyInterface, Serializable {
   private int lobbyTimeout;
 
   /**
+   * Timeout (in seconds) before disconnecting an user
+   */
+  private int disconnectionTimeout;
+
+  /**
    * Creates a new Server
    *
-   * @param host          Hostname the registry is located to
-   * @param lobbyTimeout  Timeout (in seconds) before starting a game
-   * @throws RemoteException if there is an error in the RMI connection
+   * @param host                  Hostname the registry is located to
+   * @param lobbyTimeout          Timeout (in seconds) before starting a game
+   * @param disconnectionTimeout  Timeout (in seconds) before starting a game
+   * @throws RemoteException      if there is an error in the RMI connection
+   * @throws UnknownHostException if the hostname cannot be resolved
    */
-  public Server(String host, int lobbyTimeout) throws RemoteException {
-    Registry registry = LocateRegistry.getRegistry(host);
-    registry.rebind("server",
+  public Server(String host, int lobbyTimeout, int disconnectionTimeout) throws RemoteException, UnknownHostException {
+    System.setProperty(
+            "java.rmi.server.hostname",
+            InetAddress.getByName(host).getHostAddress()
+    );
+
+    LocateRegistry.createRegistry(1099).rebind("server",
             UnicastRemoteObject.exportObject(this, 0)
     );
 
     this.lobbyTimeout = lobbyTimeout;
+    this.disconnectionTimeout = disconnectionTimeout;
     if (System.getSecurityManager() == null) {
       System.setSecurityManager(new SecurityManager());
     }
   }
 
   /**
-   * Handle connection of an user to the server
+   * Make the connection to the server
+   * The server will lookup for an RMI registry on the ip the
+   * client used to connect (see {@link #getIp()}), on the port
+   * passed as parameter, at the reference passed as parameter.
    *
-   * @param userView View of the user that is joining the server (already
-   *                 initialized)
+   * @param ref  The reference the server should use to retrieve a view to
+   *             interact with.
+   * @param port Port the registry is exposed on
    *
-   * @throws RemoteException if an error occurs with RMI
+   * @throws RemoteException If something goes wrong with RMI
    */
   @Override
-  public synchronized void connect(ViewFacadeInterfaceRMIClient userView)
-          throws RemoteException {
+  public synchronized void connect(String ref, int port) throws RemoteException {
     try {
-      PlayerViewOnServer p = new PlayerViewOnServer(userView);
+      ViewFacadeInterfaceRMIClient userView = (ViewFacadeInterfaceRMIClient) LocateRegistry
+              .getRegistry(getClientHost(),port)
+              .lookup(ref);
+      PlayerViewOnServer p = new PlayerViewOnServer(userView, this.disconnectionTimeout);
       this.registerPlayer(p);
     }
-    catch (UserTimeoutException e){
+    catch (ServerNotActiveException | NotBoundException | UserTimeoutException e){
       Logger.getLogger(LOG_NAMESPACE).log(
               Level.WARNING,
               "Unable to initialize user",
               e
       );
+    }
+  }
+
+  /**
+   * @return The ip (viewed by the server) of the connecting client. This
+   *         can then be used to properly create an RMI Registry.
+   *         Null if for some reason the ip can not retrieved
+   *
+   * @throws RemoteException If something goes wrong with RMI
+   */
+  @Override
+  public String getIp() throws RemoteException {
+    try {
+      return getClientHost();
+    }
+    catch (ServerNotActiveException e){
+      Logger.getLogger(LOG_NAMESPACE).log(
+              Level.WARNING,
+              "The server is not active",
+              e
+      );
+      return null;
     }
   }
 
@@ -95,7 +141,7 @@ public class Server implements ServerLobbyInterface, Serializable {
           throws UserTimeoutException {
     while (
             (this.lobbyes.isEmpty()) ||
-            !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
+                    !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
     ) {
       Integer selectedMap = 0;
       try {
