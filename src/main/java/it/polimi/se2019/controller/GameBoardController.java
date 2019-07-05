@@ -176,15 +176,18 @@ public class GameBoardController{
     addPlayerControllers(p);
     playTurns();
     playFrenzyTurn();
-
   }
+
+  /**
+   * Id of the player currently playing on playerControllers
+   */
+  private int currentPlayer = 0;
 
   /**
    * This method is the main game loop, it makes players do actions on their
    * turn, replaces resources that have been picked up during a turn and
    * resolves player deaths.
    */
-  int currentPlayer = 0;
   public void playTurns() {
     this.currentPlayer = 0;
     Integer numberOfTurns = 0;
@@ -196,6 +199,8 @@ public class GameBoardController{
         handleDisconnection(e);
       }
     }
+
+    int activePlayers = this.playerControllers.size();
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
         sendInfo();
@@ -210,12 +215,13 @@ public class GameBoardController{
         handleDisconnection(e);
       }
       currentPlayer++;
-      if(currentPlayer >= players.size()){
-        currentPlayer = 0;
-      }
       numberOfTurns++;
-      if(numberOfTurns > 50){
+      if(numberOfTurns > 50 || activePlayers < 3){
         break;
+      }
+      if(currentPlayer >= players.size()){
+        activePlayers = this.playerControllers.size();
+        currentPlayer = 0;
       }
     }
   }

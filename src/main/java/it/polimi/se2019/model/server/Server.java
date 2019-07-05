@@ -41,14 +41,20 @@ public class Server implements ServerLobbyInterface, Serializable {
   private int lobbyTimeout;
 
   /**
+   * Timeout (in seconds) before disconnecting an user
+   */
+  private int disconnectionTimeout;
+
+  /**
    * Creates a new Server
    *
-   * @param host          Hostname the registry is located to
-   * @param lobbyTimeout  Timeout (in seconds) before starting a game
+   * @param host                  Hostname the registry is located to
+   * @param lobbyTimeout          Timeout (in seconds) before starting a game
+   * @param disconnectionTimeout  Timeout (in seconds) before starting a game
    * @throws RemoteException      if there is an error in the RMI connection
    * @throws UnknownHostException if the hostname cannot be resolved
    */
-  public Server(String host, int lobbyTimeout) throws RemoteException, UnknownHostException {
+  public Server(String host, int lobbyTimeout, int disconnectionTimeout) throws RemoteException, UnknownHostException {
     System.setProperty(
             "java.rmi.server.hostname",
             InetAddress.getByName(host).getHostAddress()
@@ -59,6 +65,7 @@ public class Server implements ServerLobbyInterface, Serializable {
     );
 
     this.lobbyTimeout = lobbyTimeout;
+    this.disconnectionTimeout = disconnectionTimeout;
     if (System.getSecurityManager() == null) {
       System.setSecurityManager(new SecurityManager());
     }
@@ -82,7 +89,7 @@ public class Server implements ServerLobbyInterface, Serializable {
       ViewFacadeInterfaceRMIClient userView = (ViewFacadeInterfaceRMIClient) LocateRegistry
               .getRegistry(getClientHost(),port)
               .lookup(ref);
-      PlayerViewOnServer p = new PlayerViewOnServer(userView);
+      PlayerViewOnServer p = new PlayerViewOnServer(userView, this.disconnectionTimeout);
       this.registerPlayer(p);
     }
     catch (ServerNotActiveException | NotBoundException | UserTimeoutException e){

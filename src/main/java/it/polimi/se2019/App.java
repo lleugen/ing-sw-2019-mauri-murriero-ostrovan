@@ -67,12 +67,15 @@ public class App {
    * @param args Args array received from the command line
    */
   private static void spawnServer(Map<String, String> args){
-    if (args.containsKey("host") && args.containsKey("lobbyTimeout")) {
+    if (args.containsKey("host") && args.containsKey("lobbyTimeout") && args.containsKey("disconnectionTimeout")) {
       try {
         new Server(
                 args.get("host"),
                 Integer.parseInt(
                         args.get("lobbyTimeout")
+                ),
+                Integer.parseInt(
+                        args.get("disconnectionTimeout")
                 )
         );
       }
@@ -87,10 +90,10 @@ public class App {
       catch (NumberFormatException e){
         Logger.getLogger(LOG_NAMESPACE).log(
                 Level.SEVERE,
-                "Error while parsing lobbyTimeout",
+                "Error while parsing lobbyTimeout or disconnectionTimeout",
                 e
         );
-        throw new WrongArguments("Unable to parse lobbyTimeout param");
+        throw new WrongArguments("Unable to parse lobbyTimeout or disconnectionTimeout param");
       }
       catch (UnknownHostException e){
         Logger.getLogger(LOG_NAMESPACE).log(
@@ -102,7 +105,7 @@ public class App {
       }
     }
     else {
-      throw new WrongArguments("Host and lobbyTimeout params are required");
+      throw new WrongArguments("Host, lobbyTimeout and  disconnectionTimeout params are required");
     }
   }
 

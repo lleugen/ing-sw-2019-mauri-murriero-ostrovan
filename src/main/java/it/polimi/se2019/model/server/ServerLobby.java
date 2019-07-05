@@ -46,6 +46,11 @@ public class ServerLobby implements Remote {
   private boolean gameStarted = false;
 
   /**
+   * Timeout for starting the game
+   */
+  private int timeout;
+
+  /**
    * Create a new lobby
    *
    * @param mapType Id of the map to generate
@@ -58,12 +63,7 @@ public class ServerLobby implements Remote {
     GameBoard gameBoard = new GameBoard(mapType);
     this.gameBoardController = new GameBoardController(gameBoard);
     this.playersData = Collections.synchronizedMap(new HashMap<>());
-    Executors.newScheduledThreadPool(1)
-            .schedule(
-                    this::startGame,
-                    timeout,
-                    TimeUnit.SECONDS
-            );
+    this.timeout = timeout;
   }
 
   /**
@@ -124,6 +124,14 @@ public class ServerLobby implements Remote {
         this.playersData.put(name, player);
       }
 
+      if (this.playersData.size() >= MIN_PLAYERS){
+        Executors.newScheduledThreadPool(1)
+                  .schedule(
+                          this::startGame,
+                          this.timeout,
+                          TimeUnit.SECONDS
+                  );
+      }
       if (this.playersData.size() == MAX_PLAYERS){
         this.startGame();
       }
@@ -136,7 +144,7 @@ public class ServerLobby implements Remote {
   }
 
   /**
-   * Contains MVC infos about a player
+   * Contains MVC info about a player
    */
   private static class PlayerData {
     /**
