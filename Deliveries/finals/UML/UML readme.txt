@@ -1,4 +1,4 @@
-I diagrammi UML sono stati realizzati usando l'estensione Object Aid di Eclipse.
+The UML diagrams were generated usign the ObjectAid Eclipse extension.
 https://www.objectaid.com/home
 https://www.objectaid.com/install-objectaid
-Lo strumento genera a partire dal codice gli oggetti UML: classi con tutti gli attributi e i metodi, interfacce e relazioni tra di essi, ma senza comporre il diagramma. Quest'ultimo passo è stato realizzato a mano componendo gli oggetti con drag and drop. Abbiamo preparato diagrammi su tutte le componenti dell'applicazione a vari livelli di dettaglio. Complessivamente i diagrammi descrivono tutte le classi del progetto. Nessuna relazione tra classi è stata eliminata o aggiunta agli oggetti auto generati.
+The tool generates UML elements from the source code: classes, interfaces and the relationships between them, but doesn't draw an actual diagram, this last step was done manually through drag and drop. We have prepared diagrams describing all components of the application at different levels of detail. Overall the diagrams describe all the classes of our project. No relationship between classes has been removed or added from those that were generated automatically.
