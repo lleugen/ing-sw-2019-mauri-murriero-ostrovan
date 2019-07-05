@@ -47,7 +47,6 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
           throws RemoteException {
     System.out.println("Creating PVOnServer2");
     System.out.println(view);
-    view.chooseMap();
     this.name = view.getName();
     this.character = view.getCharacter();
     this.connectedPlayer = view;

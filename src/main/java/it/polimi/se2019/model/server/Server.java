@@ -53,10 +53,9 @@ public class Server implements ServerLobbyInterface, Serializable {
             "java.rmi.server.hostname",
             InetAddress.getByName(host).getHostAddress()
     );
-    ServerLobbyInterface tmp = (ServerLobbyInterface) UnicastRemoteObject.exportObject(this, 0);
-    System.out.println(tmp);
+
     LocateRegistry.createRegistry(1099).rebind("server",
-            tmp
+            UnicastRemoteObject.exportObject(this, 0)
     );
 
     this.lobbyTimeout = lobbyTimeout;
@@ -135,6 +134,7 @@ public class Server implements ServerLobbyInterface, Serializable {
    */
   private synchronized void registerPlayer(PlayerViewOnServer p)
           throws UserTimeoutException {
+    System.out.println("Registering Player");
     while (
             (this.lobbyes.isEmpty()) ||
             !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
@@ -142,6 +142,7 @@ public class Server implements ServerLobbyInterface, Serializable {
       Integer selectedMap = 0;
       try {
         selectedMap = p.chooseMap();
+        System.out.println("Selected map " + selectedMap);
         this.lobbyes.add(new ServerLobby(selectedMap, this.lobbyTimeout));
       }
       catch (UnknownMapTypeException e){
