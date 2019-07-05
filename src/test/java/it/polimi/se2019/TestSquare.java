@@ -1,9 +1,7 @@
 package it.polimi.se2019;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.deck.Decks;
-import it.polimi.se2019.model.map.AmmoSquare;
 import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.map.UnknownMapTypeException;

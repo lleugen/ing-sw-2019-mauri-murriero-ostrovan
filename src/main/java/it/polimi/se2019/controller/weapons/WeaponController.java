@@ -1,6 +1,6 @@
 package it.polimi.se2019.controller.weapons;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.map.Map;

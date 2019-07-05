@@ -1,8 +1,8 @@
 package it.polimi.se2019.view;
 
 import it.polimi.se2019.App;
-import it.polimi.se2019.RMI.ServerLobbyInterface;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ServerLobbyInterface;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

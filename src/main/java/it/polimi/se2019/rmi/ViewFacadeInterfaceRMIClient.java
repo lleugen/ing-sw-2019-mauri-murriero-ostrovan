@@ -1,4 +1,4 @@
-package it.polimi.se2019.RMI;
+package it.polimi.se2019.rmi;
 
 import java.io.Serializable;
 import java.rmi.Remote;

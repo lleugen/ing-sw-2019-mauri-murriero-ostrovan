@@ -1,9 +1,8 @@
 package it.polimi.se2019;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
-import it.polimi.se2019.controller.player_state_controller.Adrenaline1StateController;
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.deck.Decks;
 import it.polimi.se2019.model.grabbable.*;
@@ -12,7 +11,6 @@ import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;

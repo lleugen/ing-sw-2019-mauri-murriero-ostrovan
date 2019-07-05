@@ -1,8 +1,8 @@
 package it.polimi.se2019.model.server;
 
-import it.polimi.se2019.RMI.ServerLobbyInterface;
-import it.polimi.se2019.RMI.UserTimeoutException;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ServerLobbyInterface;
+import it.polimi.se2019.rmi.UserTimeoutException;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
@@ -78,8 +78,6 @@ public class Server implements ServerLobbyInterface, Serializable {
    */
   @Override
   public synchronized void connect(String ref, int port) throws RemoteException {
-    System.out.println("Connection");
-
     try {
       ViewFacadeInterfaceRMIClient userView = (ViewFacadeInterfaceRMIClient) LocateRegistry
               .getRegistry(getClientHost(),port)
@@ -134,7 +132,6 @@ public class Server implements ServerLobbyInterface, Serializable {
    */
   private synchronized void registerPlayer(PlayerViewOnServer p)
           throws UserTimeoutException {
-    System.out.println("Registering Player");
     while (
             (this.lobbyes.isEmpty()) ||
             !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
@@ -142,7 +139,6 @@ public class Server implements ServerLobbyInterface, Serializable {
       Integer selectedMap = 0;
       try {
         selectedMap = p.chooseMap();
-        System.out.println("Selected map " + selectedMap);
         this.lobbyes.add(new ServerLobby(selectedMap, this.lobbyTimeout));
       }
       catch (UnknownMapTypeException e){

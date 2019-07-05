@@ -1,6 +1,5 @@
 package it.polimi.se2019;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;

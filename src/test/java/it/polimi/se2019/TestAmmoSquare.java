@@ -1,14 +1,12 @@
 package it.polimi.se2019;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
+import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.PlayerController;
 import it.polimi.se2019.model.GameBoard;
-import it.polimi.se2019.model.grabbable.Ammo;
 import it.polimi.se2019.model.grabbable.AmmoTile;
 import it.polimi.se2019.model.map.AmmoSquare;
 import it.polimi.se2019.model.map.Map;
-import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
@@ -17,8 +15,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.jws.soap.SOAPBinding;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.fail;

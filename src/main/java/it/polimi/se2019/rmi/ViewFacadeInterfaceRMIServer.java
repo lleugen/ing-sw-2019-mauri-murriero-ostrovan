@@ -1,4 +1,4 @@
-package it.polimi.se2019.RMI;
+package it.polimi.se2019.rmi;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

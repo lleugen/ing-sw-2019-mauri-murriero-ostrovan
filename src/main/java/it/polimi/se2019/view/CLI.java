@@ -1,6 +1,6 @@
 package it.polimi.se2019.view;
 
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -108,21 +108,6 @@ public final class CLI extends UnicastRemoteObject
      */
     private String readLine() {
         StringBuilder sb = new StringBuilder();
-        int c;
-
-//        try {
-//            while ((c = System.in.read()) != '\n') {
-//                sb.append((char) c);
-//            }
-//        }
-//        catch (IOException e){
-//            Logger.getLogger(LOG_NAMESPACE).log(
-//                    Level.SEVERE,
-//                    "Disconnected from terminal!",
-//                    e
-//            );
-//            System.console().writer().write("\n\n\n[!!!]Please restart the app\n\n");
-//        }
         Scanner scanner = new Scanner(System.in);
         sb.append(scanner.nextLine());
 

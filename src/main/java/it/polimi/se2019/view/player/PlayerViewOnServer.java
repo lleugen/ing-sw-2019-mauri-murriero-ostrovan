@@ -1,8 +1,8 @@
 package it.polimi.se2019.view.player;
 
-import it.polimi.se2019.RMI.UserTimeoutException;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
-import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIServer;
+import it.polimi.se2019.rmi.UserTimeoutException;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
+import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIServer;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -45,8 +45,6 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
    */
   public PlayerViewOnServer(ViewFacadeInterfaceRMIClient view)
           throws RemoteException {
-    System.out.println("Creating PVOnServer2");
-    System.out.println(view);
     this.name = view.getName();
     this.character = view.getCharacter();
     this.connectedPlayer = view;

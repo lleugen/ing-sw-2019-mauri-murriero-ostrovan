@@ -1,4 +1,4 @@
-package it.polimi.se2019.RMI;
+package it.polimi.se2019.rmi;
 
 /**
  * Thrown when we can not obtain a response from the user in time
