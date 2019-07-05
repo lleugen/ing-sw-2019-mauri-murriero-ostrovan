@@ -3,7 +3,6 @@ package it.polimi.se2019.view;
 import it.polimi.se2019.App;
 import it.polimi.se2019.RMI.ServerLobbyInterface;
 import it.polimi.se2019.RMI.ViewFacadeInterfaceRMIClient;
-import javafx.application.Application;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -19,7 +18,7 @@ public class Client {
    * Init a new client
    *
    * @param host Hostname of the RMI registry
-   * @param ui   cli|gui
+   * @param ui   cli
    *
    * @throws RemoteException if an error is found while using RMI
    * @throws NotBoundException If the server is not bound to the RMI registry
@@ -39,18 +38,11 @@ public class Client {
    */
   private ViewFacadeInterfaceRMIClient genUi(String ui) throws RemoteException {
     ViewFacadeInterfaceRMIClient generatedUi;
-    switch (ui) {
-      case "gui":
-        new Thread(
-                () -> Application.launch(GUILoader.class)
-        ).start();
-        generatedUi =  GUILoader.getRmi();
-        break;
-      case "cli":
-        generatedUi = new CLI();
-        break;
-      default:
-        throw new App.WrongArguments("Wrong ui param. Valid are <gui> and <cli>");
+    if ("cli".equals(ui)) {
+      generatedUi = new CLI();
+    }
+    else {
+      throw new App.WrongArguments("Wrong ui param. Valid are <cli>");
     }
     return generatedUi;
   }
