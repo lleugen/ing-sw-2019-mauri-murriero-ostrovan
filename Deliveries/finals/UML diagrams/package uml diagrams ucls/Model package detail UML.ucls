@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="it.polimi.se2019.model" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="1690" width="2456" x="177" y="158"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="it.polimi.se2019.model.deck" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/deck" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="280" width="557" x="2062" y="1034"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="3" language="java" name="it.polimi.se2019.model.deck.Decks" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/deck/Decks.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2456" y="1193"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="it.polimi.se2019.model.deck.Deck" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/deck/Deck.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2146" y="1188"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="5" language="java" name="it.polimi.se2019.model.grabbable" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="628" width="872" x="195" y="1056"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="6" language="java" name="it.polimi.se2019.model.grabbable.Weapon" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable/Weapon.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="325" y="1467"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="it.polimi.se2019.model.grabbable.PowerUpCard" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable/PowerUpCard.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="540" y="1332"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="it.polimi.se2019.model.grabbable.Grabbable" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable/Grabbable.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="625" y="1156"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="it.polimi.se2019.model.grabbable.AmmoTile" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable/AmmoTile.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="971" y="1349"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="it.polimi.se2019.model.grabbable.Ammo" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable/Ammo.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="800" y="1429"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="11" language="java" name="it.polimi.se2019.model.map" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="652" width="1287" x="396" y="216"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="12" language="java" name="it.polimi.se2019.model.map.Map" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map/Map.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1478" y="588"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="it.polimi.se2019.model.map.Square" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map/Square.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="994" y="618"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="it.polimi.se2019.model.map.Direction" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map/Direction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="990" y="392"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="it.polimi.se2019.model.map.SpawnSquare" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map/SpawnSquare.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="534" y="474"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="it.polimi.se2019.model.map.AmmoSquare" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map/AmmoSquare.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="534" y="742"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="17" language="java" name="it.polimi.se2019.model.player" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/player" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="850" width="595" x="1238" y="979"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="18" language="java" name="it.polimi.se2019.model.player.Player" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/player/Player.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1550" y="1250"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="it.polimi.se2019.model.player.PlayerBoard" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/player/PlayerBoard.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1350" y="1664"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="it.polimi.se2019.model.player.Inventory" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/player/Inventory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1688" y="1662"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="it.polimi.se2019.model.GameBoard" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/GameBoard.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2170" y="450"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="it.polimi.se2019.model.KillScoreBoard" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/KillScoreBoard.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2494" y="504"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <association id="25">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="26" name="players"/>      
+      <multiplicity id="27" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="29" name="available"/>      
+      <multiplicity id="30" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="32" name="weaponDeck"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="35" name="decks"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="38" name="inventory"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="41" name="reloadCost"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="44" name="square"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="47" name="gameBoard"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="50" name="gameBoardReference"/>      
+      <multiplicity id="51" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="52">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="53" name="owner"/>      
+      <multiplicity id="54" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="55">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="56" name="redSpawnPoint"/>      
+      <multiplicity id="57" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="58">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="59" name="weaponList"/>      
+      <multiplicity id="60" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="62" name="kills"/>      
+      <multiplicity id="63" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="64">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="65" name="mapSquares"/>      
+      <multiplicity id="66" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="67">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="68" name="ammoEquivalent"/>      
+      <multiplicity id="69" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="70">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="71" name="board"/>      
+      <multiplicity id="72" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="73">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="74" name="doubleKills"/>      
+      <multiplicity id="75" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="76">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="77" name="ammos"/>      
+      <multiplicity id="78" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="80" name="ammoDeck"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="83" name="killScoreBoard"/>      
+      <multiplicity id="84" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="86" name="decksReference"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="88">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="89" name="owner"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="91">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <association id="92">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="93" name="position"/>      
+      <multiplicity id="94" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="95">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="96" name="marksAssigned"/>      
+      <multiplicity id="97" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="98">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="99" name="powerUps"/>      
+      <multiplicity id="100" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="101">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="102" name="grabCost"/>      
+      <multiplicity id="103" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="104">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <association id="105">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="106" name="ammo"/>      
+      <multiplicity id="107" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="108">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="109" name="weapons"/>      
+      <multiplicity id="110" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="111">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="112" name="ammo"/>      
+      <multiplicity id="113" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="114">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="115" name="yellowSpawnPoint"/>      
+      <multiplicity id="116" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="117">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="118" name="decks"/>      
+      <multiplicity id="119" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="120">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="121" name="blueSpawnPoint"/>      
+      <multiplicity id="122" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="123">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="124">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <association id="125">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="126" name="map"/>      
+      <multiplicity id="127" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="128">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="129" name="discarded"/>      
+      <multiplicity id="130" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="131">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="132" name="powerUpDeck"/>      
+      <multiplicity id="133" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="134">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="135" name="root"/>      
+      <multiplicity id="136" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="137">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="138" name="map"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="140">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="141" name="adjacencies"/>      
+      <multiplicity id="142" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="143">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="144" name="damageReceived"/>      
+      <multiplicity id="145" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="it.polimi.se2019.controller" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="1402" width="1650" x="78" y="47"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="2" language="java" name="it.polimi.se2019.controller.PlayerController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/PlayerController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1482" y="443"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="it.polimi.se2019.controller.GameBoardController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/GameBoardController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="916" y="388"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="4" language="java" name="it.polimi.se2019.controller.weapons" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="630" width="748" x="94" y="761"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="5" language="java" name="it.polimi.se2019.controller.weapons.WeaponController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/WeaponController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="468" y="1028"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="6" language="java" name="it.polimi.se2019.controller.weapons.simple" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/simple" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="276" y="1242"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="it.polimi.se2019.controller.weapons.ordered_effects" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/ordered_effects" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="300" y="1334"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="it.polimi.se2019.controller.weapons.optional_effects" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="638" y="1338"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="9" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="628" y="1250"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="10" language="java" name="it.polimi.se2019.controller.powerup" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/powerup" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="266" width="305" x="895" y="759"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="11" language="java" name="it.polimi.se2019.controller.player_state_controller" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/player_state_controller" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="446" width="418" x="1215" y="777"/>    
+    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="12" language="java" name="it.polimi.se2019.controller.powerup.PowerUpController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/powerup/PowerUpController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="231" x="925" y="834"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="it.polimi.se2019.controller.player_state_controller.PlayerStateController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/player_state_controller/PlayerStateController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1424" y="1012"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="14">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="15" name="gameBoardController"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="17">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="18" name="powerUpControllers"/>      
+      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="20">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="21" name="stateControllerList"/>      
+      <multiplicity id="22" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="23">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="24" name="gameBoardController"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="27" name="state"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="29">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="30" name="gameBoardController"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="33" name="playerControllers"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="36" name="weaponControllers"/>      
+      <multiplicity id="37" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

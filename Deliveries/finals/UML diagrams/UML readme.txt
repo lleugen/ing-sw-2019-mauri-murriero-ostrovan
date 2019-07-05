@@ -1,0 +1,4 @@
+I diagrammi UML sono stati realizzati usando l'estensione Object Aid di Eclipse.
+https://www.objectaid.com/home
+https://www.objectaid.com/install-objectaid
+Lo strumento genera a partire dal codice gli oggetti UML: classi con tutti gli attributi e i metodi, interfacce e relazioni tra di essi, ma senza comporre il diagramma. Quest'ultimo passo è stato realizzato a mano componendo gli oggetti con drag and drop. Abbiamo preparato diagrammi su tutte le componenti dell'applicazione a vari livelli di dettaglio. Complessivamente i diagrammi descrivono tutte le classi del progetto. Nessuna relazione tra classi è stata eliminata o aggiunta agli oggetti auto generati.

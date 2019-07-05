@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" 
+    name="it.polimi.se2019.controller.weapons.alternative_effects.AlternativeEffectWeaponController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/AlternativeEffectWeaponController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="535" y="136"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.FlameThrowerController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/FlameThrowerController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="832" y="569"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.FurnaceController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/FurnaceController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="573" y="558"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.PowerGloveController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/PowerGloveController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="687" y="740"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.RailGunController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/RailGunController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="404" y="726"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.ShockwaveController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/ShockwaveController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="128" y="722"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.ShotgunController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/ShotgunController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1119" y="559"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.SledgeHammerController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/SledgeHammerController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="302" y="557"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="it.polimi.se2019.controller.weapons.alternative_effects.ZX2Controller" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/alternative_effects/ZX2Controller.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="986" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" 
+    name="it.polimi.se2019.controller.weapons.optional_effects.OptionalEffectWeaponController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/OptionalEffectWeaponController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="549" y="944"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.GrenadeLauncherController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/GrenadeLauncherController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="147" y="1242"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.HellionController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/HellionController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="480" y="1247"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.PlasmaGunController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/PlasmaGunController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1115" y="1246"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.CyberBladeController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/CyberBladeController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1037" y="1413"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.LockRifleController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/LockRifleController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="760" y="1414"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.MachineGunController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/MachineGunController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="212" y="1413"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.RocketLauncherController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/RocketLauncherController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="486" y="1416"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="it.polimi.se2019.controller.weapons.optional_effects.VortexCannonController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/optional_effects/VortexCannonController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="771" y="1248"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" 
+    name="it.polimi.se2019.controller.weapons.ordered_effects.OrderedEffectsWeaponController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/ordered_effects/OrderedEffectsWeaponController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="255" y="1608"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="it.polimi.se2019.controller.weapons.ordered_effects.ThorController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/ordered_effects/ThorController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="231" y="1887"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="it.polimi.se2019.controller.weapons.simple.SimpleWeaponController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/simple/SimpleWeaponController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="294" x="862" y="1559"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="it.polimi.se2019.controller.weapons.simple.HeatSeekerController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/simple/HeatSeekerController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="770" y="1869"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="it.polimi.se2019.controller.weapons.simple.WhisperController" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons/simple/WhisperController.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1229" y="1863"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="26">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="27">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="28">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="29">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="33">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="38">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="40">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="42">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

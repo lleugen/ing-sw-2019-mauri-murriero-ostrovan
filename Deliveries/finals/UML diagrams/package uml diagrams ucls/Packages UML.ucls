@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="it.polimi.se2019.controller" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="546" y="648"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="it.polimi.se2019.model" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="551" y="282"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="it.polimi.se2019.rmi" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/rmi" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="893" y="491"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="it.polimi.se2019.view" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/view" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1181" y="492"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="5" language="java" name="it.polimi.se2019.controller.player_state_controller" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/player_state_controller" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="250" y="565"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="6" language="java" name="it.polimi.se2019.controller.powerup" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/powerup" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="244" y="724"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="it.polimi.se2019.controller.weapons" 
+    project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/controller/weapons" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="251" y="642"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="it.polimi.se2019.model.deck" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/deck" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="252" y="273"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="9" language="java" name="it.polimi.se2019.model.grabbable" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/grabbable" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="253" y="343"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="10" language="java" name="it.polimi.se2019.model.map" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/map" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="251" y="406"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="11" language="java" name="it.polimi.se2019.model.player" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/player" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="251" y="212"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="12" language="java" name="it.polimi.se2019.model.server" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/model/server" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="250" y="146"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="13" language="java" name="it.polimi.se2019.view.player" project="ing-sw-2019-mauri-murriero-ostrovan" 
+    file="/ing-sw-2019-mauri-murriero-ostrovan/src/main/java/it/polimi/se2019/view/player" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1355" y="499"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
