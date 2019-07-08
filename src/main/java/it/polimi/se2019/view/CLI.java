@@ -16,6 +16,11 @@ import java.util.logging.Logger;
  */
 public final class CLI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient {
+
+    /**
+     * Information to display about players
+     */
+    List<ArrayList<String>> playerInfo;
     /**
      * Namespace this class logs to
      */
@@ -208,6 +213,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public String chooseAction(String state){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose your action!");
         markSection("You are in state " + state);
         if(!state.equals("Adrenaline2State")){
@@ -222,6 +228,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public int chooseSpawnLocation(List<String> powerUps){
         displayMap();
+        displayPlayerInfo();
         markSection("Discard a power up card to spawn.");
         for(String s : powerUps){
             markSection(s);
@@ -258,6 +265,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public String chooseTargets(List<String> possibleTargets){
         displayMap();
+        displayPlayerInfo();
         markSection("Who would you like to target?");
         for(String s : possibleTargets){
             markSection(s);
@@ -338,6 +346,7 @@ public final class CLI extends UnicastRemoteObject
 
     public String chooseRoom(List<String> rooms){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose target room");
         for(String s : rooms){
             markSection(s);
@@ -348,6 +357,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose target square");
         markSection("please choose from the following possible");
         int currentX;
@@ -367,6 +377,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public Integer chooseDirection(List<Integer> possibleDirections){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose which way you want to go");
         String[] availableDirections = new String[]{
                 "/north/",
@@ -397,6 +408,24 @@ public final class CLI extends UnicastRemoteObject
 
     }
 
+    public void displayPlayerInfo(){
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("damage taken: ");
+        for(int i = 0; i<playerInfo.get(0).size(); i++){
+            buffer.append(playerInfo.get(0).get(i));
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        buffer.append("marks assigned: ");
+        for(int i = 0; i<playerInfo.get(1).size(); i++){
+            buffer.append(playerInfo.get(1).get(i));
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        System.console().writer().write(buffer.toString());
+
+    }
+
     @Override
     public void sendMapInfo(List<ArrayList<ArrayList<String>>> m){
         mapInfo = m;
@@ -405,8 +434,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public void sendPlayerInfo(List<ArrayList<String>> pInfo)
             throws RemoteException {
-        // Implemented only because defined in the interface.
-        // Empty cause the gui doesn't needs those data
+        playerInfo = pInfo;
     }
 
     @Override
