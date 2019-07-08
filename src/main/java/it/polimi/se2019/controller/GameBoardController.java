@@ -190,6 +190,7 @@ public class GameBoardController{
    */
   public void playTurns() {
     this.currentPlayer = 0;
+    int currentPlayerAvailableActions;
     Integer numberOfTurns = 0;
     for(int i = 0; i<players.size(); i++){
       try{
@@ -201,14 +202,17 @@ public class GameBoardController{
     }
 
     int activePlayers = this.playerControllers.size();
+    boolean actionResult;
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
         sendInfo();
-        this.playerControllers.get(this.currentPlayer).playTurn(
-                this.playerControllers.get(
-                        this.currentPlayer
-                ).getState().getAvailableActions()
-        );
+        currentPlayerAvailableActions = playerControllers.get(currentPlayer).getState().getAvailableActions();
+        while(currentPlayerAvailableActions > 0){
+          actionResult = playerControllers.get(currentPlayer).playTurn();
+          if(actionResult){
+            currentPlayerAvailableActions --;
+          }
+        }
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -216,7 +220,7 @@ public class GameBoardController{
       }
       currentPlayer++;
       numberOfTurns++;
-      if(numberOfTurns > 50 || activePlayers < 3){
+      if(numberOfTurns > 50 || activePlayers < 1){
         break;
       }
       if(currentPlayer >= players.size()){
@@ -232,7 +236,10 @@ public class GameBoardController{
    * scoreboard will be resolved and the game will end
    */
   public void playFrenzyTurn() {
+
     //player the last turn and end the game
+    int currentPlayerAvailableActions;
+    boolean actionResult;
     gameBoard.setFrenzy();
     for(Player p : players){
       if(p.getBoard().getDamageReceived().isEmpty()){
@@ -248,8 +255,13 @@ public class GameBoardController{
     for(int i = 0; i<players.size(); i++){
       try {
         sendInfo();
-        playerControllers.get(currentPlayer).playTurn
-              (playerControllers.get(currentPlayer).getState().getAvailableActions());
+        currentPlayerAvailableActions = playerControllers.get(currentPlayer).getState().getAvailableActions();
+        while(currentPlayerAvailableActions > 0){
+          actionResult = playerControllers.get(currentPlayer).playTurn();
+          if(actionResult){
+            currentPlayerAvailableActions --;
+          }
+        }
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -346,6 +358,8 @@ public class GameBoardController{
             }
         }
     }
+    currentSquare.clear();
+    currentSquare.add(square);
     toReturn.addAll(
             this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
                     .map(Player::getName)

@@ -6,6 +6,7 @@ import it.polimi.se2019.model.GameBoard;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A map is a virtual collection of squares, linked together.
@@ -374,13 +375,16 @@ public class Map {
     List<Square> toReturn = new LinkedList<>();
     toReturn.add(b);
 
+    //List<Square> currentAdjacents = new ArrayList<>();
     for (int i = 0; i < d; i++){
       toReturn.addAll(this.getAdjacients(toReturn));
     }
 
-    return toReturn.stream()
-            .distinct()
-            .collect(Collectors.toList());
+    List<Square> l = toReturn.stream().distinct().collect(Collectors.toList());
+    //l.forEach(System.out::println);
+    //l.stream().map(this::getSquareCoordinates).forEach(System.out::println);
+
+    return l;
   }
 
   /**

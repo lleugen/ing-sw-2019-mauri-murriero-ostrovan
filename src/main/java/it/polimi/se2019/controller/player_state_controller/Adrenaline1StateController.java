@@ -28,7 +28,7 @@ public class Adrenaline1StateController extends PlayerStateController {
   /**
    *
    */
-  public void runAround() throws UserTimeoutException {
+  public boolean runAround() throws UserTimeoutException {
       List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
       List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
       for(Square q : threeMovesAway){
@@ -37,12 +37,13 @@ public class Adrenaline1StateController extends PlayerStateController {
       List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
 
+    return true;
   }
 
   /**
    *
    */
-  public void grabStuff() throws UserTimeoutException {
+  public boolean grabStuff() throws UserTimeoutException {
     List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
@@ -60,12 +61,15 @@ public class Adrenaline1StateController extends PlayerStateController {
     }
 
 
+    return true;
   }
 
   /**
    *
    */
-  public void shootPeople() throws UserTimeoutException {
+  public boolean shootPeople() throws UserTimeoutException {
     shoot();
+
+    return true;
   }
 }

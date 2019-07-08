@@ -29,7 +29,7 @@ public class SecondFreneticStateController extends PlayerStateController {
    *
    */
   @Override
-  public void grabStuff() throws UserTimeoutException {
+  public boolean grabStuff() throws UserTimeoutException {
     List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
@@ -46,21 +46,24 @@ public class SecondFreneticStateController extends PlayerStateController {
       else{
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
+
+    return true;
   }
 
   /**
    *
    */
   @Override
-  public void runAround(){
+  public boolean runAround(){
     // Not implemented in game
+    return false;
   }
 
   /**
    *
    */
   @Override
-  public void shootPeople() throws UserTimeoutException {
+  public boolean shootPeople() throws UserTimeoutException {
     List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
@@ -77,5 +80,7 @@ public class SecondFreneticStateController extends PlayerStateController {
     PlayerController.reloadWeapon(client, player);
 
     shoot();
+
+    return true;
   }
 }

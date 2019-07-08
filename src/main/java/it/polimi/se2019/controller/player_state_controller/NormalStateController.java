@@ -28,21 +28,23 @@ public class NormalStateController extends PlayerStateController {
    * Move three squares
    */
   @Override
-  public void runAround() throws UserTimeoutException {
+  public boolean runAround() throws UserTimeoutException {
     List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
+    System.out.println("the player is running around");
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
       threeMovesAwayCoordinates.add(map.getSquareCoordinates(q));
     }
     List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
     player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
+    return true;
   }
 
   /**
    * Grab what is on your square, optionally move one square
    */
   @Override
-  public void grabStuff() throws UserTimeoutException {
+  public boolean grabStuff() throws UserTimeoutException {
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(
             direction != -1 &&
@@ -63,13 +65,17 @@ public class NormalStateController extends PlayerStateController {
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
     }
+
+    return true;
   }
 
   /**
    * Use your action to fire a weapon
    */
   @Override
-  public void shootPeople() throws UserTimeoutException {
+  public boolean shootPeople() throws UserTimeoutException {
     shoot();
+
+    return true;
   }
 }

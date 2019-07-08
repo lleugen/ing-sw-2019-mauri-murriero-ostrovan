@@ -141,30 +141,27 @@ public class PlayerController {
 
   /**
    * Take turn
-   * @param availableActions the number of actions that the player can take on his or her turn
    * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
-  public void playTurn(Integer availableActions) throws UserTimeoutException{
-    while (availableActions > 0){
+  public boolean playTurn() throws UserTimeoutException{
+    boolean result = false;
       switch (
               client.chooseAction(
                       state.toString()
               )
       ) {
         case "run":
-          state.runAround();
-          availableActions--;
+          result = state.runAround();
           break;
         case "grab":
-          state.grabStuff();
-          availableActions--;
+          result = state.grabStuff();
           break;
         case "shoot":
-          state.shootPeople();
-          availableActions--;
+          result = state.shootPeople();
           break;
         case "powerUp":
-          state.usePowerUp();
+          result = state.usePowerUp();
+
           break;
         default:
           Logger.getLogger(LOG_NAMESPACE).log(
@@ -173,7 +170,7 @@ public class PlayerController {
                   state
           );
       }
-    }
+      return result;
   }
 
   /**

@@ -354,7 +354,7 @@ public final class CLI extends UnicastRemoteObject
         int currentY;
         for (List<Integer> targettableSquareCoordinate : targettableSquareCoordinates) {
             currentX = targettableSquareCoordinate.get(0);
-            currentY = targettableSquareCoordinate.get(0);
+            currentY = targettableSquareCoordinate.get(1);
             markSection("x : " + currentX + " " + " y : " + currentY);
         }
         displayRender();
