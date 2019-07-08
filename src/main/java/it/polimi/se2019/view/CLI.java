@@ -259,7 +259,16 @@ public final class CLI extends UnicastRemoteObject
             markSection(s);
         }
         displayRender();
-        return readLine();
+        Scanner scanner = new Scanner(System.in);
+        int result = 0;
+        boolean done = false;
+        while(!done){
+            result = scanner.nextInt();
+            if((result >= 0) && (result < weapons.size())){
+                done = true;
+            }
+        }
+        return weapons.get(result);
     }
 
     @Override
@@ -410,20 +419,21 @@ public final class CLI extends UnicastRemoteObject
 
     public void displayPlayerInfo(){
         StringBuilder buffer = new StringBuilder();
-        buffer.append("damage taken: ");
-        for(int i = 0; i<playerInfo.get(0).size(); i++){
-            buffer.append(playerInfo.get(0).get(i));
-            buffer.append(" ");
+        if(playerInfo != null){
+            buffer.append("damage taken: ");
+            for(int i = 0; i<playerInfo.get(0).size(); i++){
+                buffer.append(playerInfo.get(0).get(i));
+                buffer.append(" ");
+            }
+            buffer.append('\n');
+            buffer.append("marks assigned: ");
+            for(int i = 0; i<playerInfo.get(1).size(); i++){
+                buffer.append(playerInfo.get(1).get(i));
+                buffer.append(" ");
+            }
+            buffer.append('\n');
+            System.console().writer().write(buffer.toString());
         }
-        buffer.append('\n');
-        buffer.append("marks assigned: ");
-        for(int i = 0; i<playerInfo.get(1).size(); i++){
-            buffer.append(playerInfo.get(1).get(i));
-            buffer.append(" ");
-        }
-        buffer.append('\n');
-        System.console().writer().write(buffer.toString());
-
     }
 
     @Override

@@ -21,12 +21,12 @@ public class ServerLobby implements Remote {
   /**
    * Maximum number of player that can join a room
    */
-  private static final int MAX_PLAYERS = 2;
+  private static final int MAX_PLAYERS = 1;
 
   /**
    * Minimum players for starting the game
    */
-  private static final int MIN_PLAYERS = 2;
+  private static final int MIN_PLAYERS = 1;
 
   /**
    * Map of connected players, indexed by id

@@ -212,7 +212,7 @@ public class TestMoveAndGrab {
             }
             //Mockito.when(client.chooseTargetSquare(oneMoveAwayCoordinates)).thenReturn(oneMoveAwayCoordinates.get(0));
             Mockito.when(client.chooseItemToGrab()).thenReturn(0);
-            Mockito.when(client.chooseDirection(any())).thenReturn(-1);
+            Mockito.when(client.chooseDirection(any())).thenReturn(5);
             PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
             //Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
             playerController.setState(0);

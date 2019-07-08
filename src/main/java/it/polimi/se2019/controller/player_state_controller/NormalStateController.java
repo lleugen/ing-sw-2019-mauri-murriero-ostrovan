@@ -45,9 +45,10 @@ public class NormalStateController extends PlayerStateController {
    */
   @Override
   public boolean grabStuff() throws UserTimeoutException {
+    System.out.println("grabbing something");
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(
-            direction != -1 &&
+            direction != 5 &&
             player.getPosition() != null &&
             player.getPosition().getAdjacencies() != null &&
             player.getPosition().getAdjacencies().get(direction) != null
@@ -56,17 +57,41 @@ public class NormalStateController extends PlayerStateController {
     }
 
     Square position = player.getPosition();
-    int pickUpIndex = client.chooseItemToGrab();
-    if(position instanceof SpawnSquare){
-      player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
+    if(position != null){
+      int pickUpIndex = client.chooseItemToGrab();
+//    List<Square> spawnSquares = new ArrayList<>();
+//    spawnSquares.add(map.getRedSpawnPoint());
+//    spawnSquares.add(map.getBlueSpawnPoint());
+//    spawnSquares.add(map.getYellowSpawnPoint());
+      if(position!=null){
+        if(position instanceof SpawnSquare){
+          player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
+          if(player.getInventory().getWeapons().size()>0){
+            System.out.println("player grabbed " + player.getInventory().getWeapons().get(player.getInventory().getWeapons().size()-1).toString());
+          }
+          else{
+            System.out.println("something happen when grabbing a weapon");
+          }
+
+        }
+        else{
+          player.getInventory().addAmmoTileToInventory(position.grab(0));
+          System.out.println("grabbed an ammo tile");
+        }
+      }
+      System.out.println("grabbed something");
+      StringBuilder buffer = new StringBuilder();
+      for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
+        buffer.append(player.getInventory().getWeapons().get(i).toString());
+        buffer.append(" ");
+      }
+      return true;
     }
     else{
-      if (position != null) {
-        player.getInventory().addAmmoTileToInventory(position.grab(0));
-      }
+      System.out.println("something wrong with player position in grab normal state");
+      return false;
     }
 
-    return true;
   }
 
   /**

@@ -2,6 +2,7 @@ package it.polimi.se2019.model.player;
 
 import it.polimi.se2019.model.GameBoard;
 import it.polimi.se2019.model.map.Direction;
+import it.polimi.se2019.model.map.SpawnSquare;
 import it.polimi.se2019.model.map.Square;
 
 import java.util.List;
@@ -118,6 +119,13 @@ public class Player {
    */
   public void moveToSquare(Square destination){
     position = destination;
+    if(destination instanceof SpawnSquare){
+      System.out.println("moved to spawnsquare");
+    }
+    else{
+      System.out.println("moved to ammo sqaure");
+    }
+
   }
   /**
    * Give points to the players who dealt damage to the player
@@ -204,6 +212,7 @@ public class Player {
    * @return the current position of the player
    */
   public Square getPosition() {
+
     return position;
   }
 

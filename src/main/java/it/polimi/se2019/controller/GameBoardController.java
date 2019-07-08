@@ -192,6 +192,7 @@ public class GameBoardController{
     this.currentPlayer = 0;
     int currentPlayerAvailableActions;
     Integer numberOfTurns = 0;
+    //spawn all players
     for(int i = 0; i<players.size(); i++){
       try{
         playerControllers.get(i).getState().spawn();
@@ -213,6 +214,7 @@ public class GameBoardController{
             currentPlayerAvailableActions --;
           }
         }
+        refillSquares();
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -226,6 +228,19 @@ public class GameBoardController{
       if(currentPlayer >= players.size()){
         activePlayers = this.playerControllers.size();
         currentPlayer = 0;
+      }
+    }
+  }
+
+  /**
+   * Refill all squares
+   */
+  private void refillSquares(){
+    for(int i = 0; i<3; i++){
+      for(int k = 0; k<4; k++){
+        if(gameBoard.getMap().getMapSquares()[i][k] != null){
+          gameBoard.getMap().getMapSquares()[i][k].refill();
+        }
       }
     }
   }
@@ -349,12 +364,18 @@ public class GameBoardController{
           toReturn.add("power up");
         }
       }
+      else{
+        toReturn.add("no ammo tiles");
+      }
     }
     else {
         toReturn.add(Integer.toString(square.getItem().size()));
         for(int i = 0; i<square.getItem().size(); i++){
             if(square.getItem().get(i) != null){
                 toReturn.add(square.getItem().get(i).toString());
+            }
+            else{
+              toReturn.add("no weapon");
             }
         }
     }
