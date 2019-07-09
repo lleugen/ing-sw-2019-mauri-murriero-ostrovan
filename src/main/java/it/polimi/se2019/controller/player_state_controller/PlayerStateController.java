@@ -37,9 +37,9 @@ public abstract class PlayerStateController {
         return  availableActions;
     }
 
-    public abstract void runAround() throws UserTimeoutException;
-    public abstract void grabStuff() throws UserTimeoutException;
-    public abstract void shootPeople() throws UserTimeoutException;
+    public abstract boolean runAround() throws UserTimeoutException;
+    public abstract boolean grabStuff() throws UserTimeoutException;
+    public abstract boolean shootPeople() throws UserTimeoutException;
 
     /**
      * Move the player 1 square in one of four directions
@@ -182,7 +182,7 @@ public abstract class PlayerStateController {
      * Use a power up from the inventory
      * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
-    public void usePowerUp() throws UserTimeoutException {
+    public boolean usePowerUp() throws UserTimeoutException {
         List<String> powerUpCardsInInventory = new ArrayList<>();
         for(PowerUpCard p : player.getInventory().getPowerUps()){
             powerUpCardsInInventory.add(p.getDescription());
@@ -202,6 +202,7 @@ public abstract class PlayerStateController {
             }
 
         }
+        return false;
     }
 
     public static class InvalidMovementException extends RuntimeException{

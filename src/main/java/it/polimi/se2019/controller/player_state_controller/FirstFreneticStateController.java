@@ -29,7 +29,7 @@ public class FirstFreneticStateController extends PlayerStateController {
   /**
    *
    */
-  public void runAround() throws UserTimeoutException {
+  public boolean runAround() throws UserTimeoutException {
     List<Square> fourMovesAway = map.getReachableSquares(player.getPosition(), 3);
     for(Square q : fourMovesAway){
       for(Direction d : q.getAdjacencies()){
@@ -45,12 +45,13 @@ public class FirstFreneticStateController extends PlayerStateController {
     List<Integer> moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
     player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
 
+    return true;
   }
 
   /**
    *
    */
-  public void grabStuff() throws UserTimeoutException  {
+  public boolean grabStuff() throws UserTimeoutException  {
     List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
     List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
     for(Square q : twoMovesAway){
@@ -69,12 +70,14 @@ public class FirstFreneticStateController extends PlayerStateController {
       else{
         player.getInventory().addAmmoTileToInventory(position.grab(0));
       }
+
+    return true;
   }
 
   /**
    *
    */
-  public void shootPeople() throws UserTimeoutException {
+  public boolean shootPeople() throws UserTimeoutException {
     Integer direction = client.chooseDirection(
             map.getOpenDirections(
                     player.getPosition()
@@ -87,6 +90,8 @@ public class FirstFreneticStateController extends PlayerStateController {
     PlayerController.reloadWeapon(client, player);
 
     shoot();
+
+    return true;
   }
 
 }

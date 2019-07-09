@@ -111,7 +111,7 @@ public class KillScoreBoard {
    *          false otherwise
    */
   public boolean gameRunning(){
-    return this.remainingSkulls > 0;
+    return remainingSkulls>0;
   }
 
   /**
