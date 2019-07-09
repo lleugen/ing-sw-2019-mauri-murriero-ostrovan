@@ -179,6 +179,14 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
   }
 
   /**
+   * Send a string message to a client
+   */
+  @Override
+  public void sendGenericMessage(String message) throws RemoteException{
+    this.connectedPlayer.sendGenericMessage(message);
+  }
+
+  /**
    * @return int indicating which item to pick up from those available
    */
   @Override
