@@ -260,7 +260,7 @@ public class GameBoardController{
       }
       currentPlayer++;
       numberOfTurns++;
-      if(numberOfTurns > 500 || activePlayers < 1){
+      if(numberOfTurns > 500 || activePlayers < 3){
         break;
       }
       if(currentPlayer >= players.size()){
@@ -349,7 +349,6 @@ public class GameBoardController{
     catch (RemoteException e){
       throw new UserTimeoutException(e);
     }
-
   }
 
   /**

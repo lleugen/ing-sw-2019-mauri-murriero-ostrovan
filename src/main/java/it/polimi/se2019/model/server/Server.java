@@ -172,6 +172,7 @@ public class Server implements ServerLobbyInterface, Serializable {
         try {
           selectedMap = p.chooseMap();
           this.lobbyes.add(new ServerLobby(selectedMap, this.lobbyTimeout));
+          this.userLobbyMap.put(v.getName(), this.lobbyes.get(0));
         }
         catch (UnknownMapTypeException e){
           Logger.getLogger(LOG_NAMESPACE).log(
@@ -180,7 +181,6 @@ public class Server implements ServerLobbyInterface, Serializable {
                   selectedMap
           );
         }
-        this.userLobbyMap.put(v.getName(), this.lobbyes.get(0));
       }
     }
   }

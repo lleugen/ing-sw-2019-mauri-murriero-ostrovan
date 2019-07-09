@@ -206,7 +206,7 @@ public class PlayerViewOnServer implements ViewFacadeInterfaceRMIServer {
    */
   @Override
   public void sendGenericMessage(String message) throws RemoteException{
-    this.connectedPlayer.sendGenericMessage(message);
+    this.getPlayer().sendGenericMessage(message);
   }
 
   /**
