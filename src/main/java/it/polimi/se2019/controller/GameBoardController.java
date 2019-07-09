@@ -252,6 +252,10 @@ public class GameBoardController{
             currentPlayerAvailableActions --;
           }
         }
+        PlayerController.reloadWeapon(
+                clients.get(currentPlayer),
+                players.get(currentPlayer)
+        );
         refillSquares();
         endOfTurnDeathResolution();
       }
