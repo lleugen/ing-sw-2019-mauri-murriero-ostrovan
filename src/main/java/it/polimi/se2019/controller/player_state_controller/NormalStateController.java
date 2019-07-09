@@ -7,6 +7,7 @@ import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -45,6 +46,7 @@ public class NormalStateController extends PlayerStateController {
    */
   @Override
   public boolean grabStuff() throws UserTimeoutException {
+    boolean result = false;
     System.out.println("grabbing something");
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(
@@ -65,48 +67,72 @@ public class NormalStateController extends PlayerStateController {
 //    spawnSquares.add(map.getYellowSpawnPoint());
       if(position!=null){
         if(position instanceof SpawnSquare){
-          player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
-          if(player.getInventory().getWeapons().size()>0){
-            System.out.println("player grabbed " + player.getInventory().getWeapons().get(player.getInventory().getWeapons().size()-1).toString());
-          }
-          else{
-            System.out.println("something happened when grabbing a weapon");
-          }
+            boolean addWepResult = false;
+            addWepResult = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
+            if(addWepResult){
+                result = true;
+            }
+            //if(player.getInventory().getWeapons().size()>0){
+            //System.out.println("player grabbed " + player.getInventory().getWeapons().get(player.getInventory().getWeapons().size()-1).toString());
+            //}
+            //else{
+            //System.out.println("something happened when grabbing a weapon");
+            //}
         }
         else{
           player.getInventory().addAmmoTileToInventory(position.grab(0));
           System.out.println("grabbed an ammo tile");
+          result = true;
         }
       }
       System.out.println("grabbed something");
-      //print the player's inventory
-      StringBuilder buffer = new StringBuilder();
-      for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
-        buffer.append(player.getInventory().getWeapons().get(i).toString());
-        buffer.append(" ");
-      }
-      buffer.append('\n');
-      buffer.append(player.getInventory().getAmmo().getRed());
-      buffer.append(" ");
-      buffer.append(player.getInventory().getAmmo().getBlue());
-      buffer.append(" ");
-      buffer.append(player.getInventory().getAmmo().getYellow());
-      buffer.append(" ");
-      buffer.append('\n');
-      for(int i = 0; i<player.getInventory().getPowerUps().size(); i++){
-        buffer.append(player.getInventory().getPowerUps().toString());
-        buffer.append(" ");
-      }
-      buffer.append('\n');
-      System.console().writer().write(buffer.toString());
-      return true;
+
+      printInventory();
+
     }
     else{
       System.out.println("something wrong with player position in grab normal state");
-      return false;
+    }
+    try{
+        if(result){
+            client.sendGenericMessage("grab succesful");
+        }
+        else{
+            client.sendGenericMessage("failed to grab");
+        }
+    }
+    catch(RemoteException f){
+        //whatever
     }
 
+    return result;
   }
+
+    /**
+     * Print current player's inventory
+     */
+    private void printInventory(){
+        //print the player's inventory
+        StringBuilder buffer = new StringBuilder();
+        for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
+            buffer.append(player.getInventory().getWeapons().get(i).toString());
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        buffer.append(player.getInventory().getAmmo().getRed());
+        buffer.append(" ");
+        buffer.append(player.getInventory().getAmmo().getBlue());
+        buffer.append(" ");
+        buffer.append(player.getInventory().getAmmo().getYellow());
+        buffer.append(" ");
+        buffer.append('\n');
+        for(int i = 0; i<player.getInventory().getPowerUps().size(); i++){
+            buffer.append(player.getInventory().getPowerUps().toString());
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        System.console().writer().write(buffer.toString());
+    }
 
   /**
    * Use your action to fire a weapon

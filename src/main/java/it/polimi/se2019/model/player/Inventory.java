@@ -83,11 +83,17 @@ public class Inventory {
    * Add a new weapon to the inventory
    * @param item the weapon to add to the inventory
    */
-  public void addWeaponToInventory(Weapon item){
+  public boolean addWeaponToInventory(Weapon item){
+    boolean result = false;
     if(weapons.size()<3){
-      weapons.add(item);
-      item.setOwner(owner);
+      result = useAmmo(item.getGrabCost());
+      if(result){
+        weapons.add(item);
+        item.setOwner(owner);
+        return true;
+      }
     }
+    return false;
   }
 
   /**
@@ -123,10 +129,28 @@ public class Inventory {
   /**
    * @param ammunition is the ammo to be subtracted from the players inventory
    */
-  public void useAmmo(Ammo ammunition) {
-      this.ammo.useRed(ammunition.getRed());
-      this.ammo.useBlue(ammunition.getBlue());
-      this.ammo.useYellow(ammunition.getYellow());
+  public boolean useAmmo(Ammo ammunition) {
+    boolean red = false;
+    boolean blue = false;
+    boolean yellow = false;
+    red = this.ammo.useRed(ammunition.getRed());
+    blue = this.ammo.useBlue(ammunition.getBlue());
+    yellow = this.ammo.useYellow(ammunition.getYellow());
+    if(red && blue && yellow){
+      return true;
+    }
+    else{
+      if(red){
+        this.ammo.addRed(ammunition.getRed());
+      }
+      if(blue){
+        this.ammo.addRed(ammunition.getBlue());
+      }
+      if(yellow){
+        this.ammo.addRed(ammunition.getYellow());
+      }
+      return false;
+    }
   }
 
   /**
