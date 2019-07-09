@@ -283,7 +283,6 @@ public class GameBoardController{
     catch (RemoteException e){
       throw new UserTimeoutException(e);
     }
-
   }
 
   /**
