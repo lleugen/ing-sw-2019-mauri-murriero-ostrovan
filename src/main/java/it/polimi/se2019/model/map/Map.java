@@ -35,32 +35,32 @@ public class Map {
   /**
    * Points to the square that is the red spawn point
    */
-  private Square redSpawnPoint;
+  private SpawnSquare redSpawnPoint;
   /**
    * Points to the square that is the blue spawn point
    */
-  private Square blueSpawnPoint;
+  private SpawnSquare blueSpawnPoint;
   /**
    * Points to the square that is the yellow spawn point
    */
-  private Square yellowSpawnPoint;
+  private SpawnSquare yellowSpawnPoint;
 
   /**
    * @return a pointer to the red spawn point
    */
-  public Square getRedSpawnPoint(){
+  public SpawnSquare getRedSpawnPoint(){
     return redSpawnPoint;
   }
   /**
    * @return a pointer to the blue spawn point
    */
-  public Square getBlueSpawnPoint(){
+  public SpawnSquare getBlueSpawnPoint(){
     return blueSpawnPoint;
   }
   /**
    * @return a pointer to the yellow spawn point
    */
-  public Square getYellowSpawnPoint(){
+  public SpawnSquare getYellowSpawnPoint(){
     return yellowSpawnPoint;
   }
 
@@ -85,9 +85,9 @@ public class Map {
     this.mapSquares = genMap(this, mapType.toString());
 
     this.root = this.mapSquares[0][0];
-    this.redSpawnPoint = this.mapSquares[0][2];
-    this.blueSpawnPoint = this.mapSquares[1][0];
-    this.yellowSpawnPoint = this.mapSquares[2][3];
+    this.redSpawnPoint = (SpawnSquare)this.mapSquares[0][2];
+    this.blueSpawnPoint = (SpawnSquare)this.mapSquares[1][0];
+    this.yellowSpawnPoint = (SpawnSquare)this.mapSquares[2][3];
 
     //add square adjacencies
     for(int i = 0; i<3; i++){
@@ -96,6 +96,18 @@ public class Map {
       }
     }
     this.refillAll();
+    for(int i = 0; i<3; i++){
+      for(int k = 0; k<4; k++){
+        if(getMapSquares()[i][k] != null){
+          if(getMapSquares()[i][k] instanceof SpawnSquare){
+            System.out.println("spawn");
+          }
+          else{
+            System.out.println("ammo");
+          }
+        }
+      }
+    }
   }
 
   /**

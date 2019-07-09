@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class HellionController extends OptionalEffectWeaponController {
   public HellionController(GameBoardController g) {
     super(g);
-    name = "HellionController";
+    name = "Hellion";
     numberOfOptionalEffects = 2;
   }
 

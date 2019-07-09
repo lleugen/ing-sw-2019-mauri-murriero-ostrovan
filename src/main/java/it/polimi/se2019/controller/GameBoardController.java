@@ -75,10 +75,10 @@ public class GameBoardController{
     this.weaponControllers.add(new ShockwaveController(this));
     this.weaponControllers.add(new SledgeHammerController(this));
 
-    this.powerUpControllers.add(new NewtonController());
-    this.powerUpControllers.add(new TagbackGrenadeController());
-    this.powerUpControllers.add(new TargetingScopeController());
-    this.powerUpControllers.add(new TeleporterController());
+    this.powerUpControllers.add(new NewtonController(this));
+    this.powerUpControllers.add(new TagbackGrenadeController(this));
+    this.powerUpControllers.add(new TargetingScopeController(this));
+    this.powerUpControllers.add(new TeleporterController(this));
   }
 
   /**
@@ -200,8 +200,16 @@ public class GameBoardController{
     this.currentPlayer = 0;
     int currentPlayerAvailableActions;
     Integer numberOfTurns = 0;
+    //spawn all players
     for(int i = 0; i<players.size(); i++){
       try{
+        sendInfo();
+        try{
+          clients.get(currentPlayer).sendGenericMessage("It is your turn to spawn");
+        }
+        catch(RemoteException f){
+          //whatever
+        }
         playerControllers.get(i).getState().spawn();
       }
       catch (UserTimeoutException e){
@@ -213,14 +221,38 @@ public class GameBoardController{
     boolean actionResult;
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
-        sendInfo();
+        //notify all players of who's turn it is
+        for(PlayerViewOnServer c : clients){
+          try{
+            if(c != clients.get(currentPlayer)){
+              c.sendGenericMessage("It is " + players.get(currentPlayer).getName() + "'s turn");
+            }
+            else{
+              c.sendGenericMessage("It is your turn");
+              c.sendGenericMessage(playerControllers.get(currentPlayer).getState().printInventory());
+            }
+          }
+          catch(RemoteException f){
+            //whatever
+          }
+        }
+
+        //ask the current player to make his actions
         currentPlayerAvailableActions = playerControllers.get(currentPlayer).getState().getAvailableActions();
         while(currentPlayerAvailableActions > 0){
+          sendInfo();
+          try{
+            clients.get(currentPlayer).sendGenericMessage("make an action");
+          }
+          catch(RemoteException f){
+            //whatever
+          }
           actionResult = playerControllers.get(currentPlayer).playTurn();
           if(actionResult){
             currentPlayerAvailableActions --;
           }
         }
+        refillSquares();
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -228,12 +260,25 @@ public class GameBoardController{
       }
       currentPlayer++;
       numberOfTurns++;
-      if(numberOfTurns > 50 || activePlayers < 1){
+      if(numberOfTurns > 500 || activePlayers < 3){
         break;
       }
       if(currentPlayer >= players.size()){
         activePlayers = this.playerControllers.size();
         currentPlayer = 0;
+      }
+    }
+  }
+
+  /**
+   * Refill all squares
+   */
+  private void refillSquares(){
+    for(int i = 0; i<3; i++){
+      for(int k = 0; k<4; k++){
+        if(gameBoard.getMap().getMapSquares()[i][k] != null){
+          gameBoard.getMap().getMapSquares()[i][k].refill();
+        }
       }
     }
   }
@@ -293,10 +338,11 @@ public class GameBoardController{
     try {
       PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
+      client.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
+
       client.sendMapInfo(this.genMapInfo());
-      for(Player p : players){
-        client.sendPlayerInfo(this.genPlayerInfo(p));
-      }
+
+
 
       client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }
@@ -356,12 +402,18 @@ public class GameBoardController{
           toReturn.add("power up");
         }
       }
+      else{
+        toReturn.add("no ammo tiles");
+      }
     }
     else {
         toReturn.add(Integer.toString(square.getItem().size()));
         for(int i = 0; i<square.getItem().size(); i++){
             if(square.getItem().get(i) != null){
                 toReturn.add(square.getItem().get(i).toString());
+            }
+            else{
+              toReturn.add("no weapon");
             }
         }
     }

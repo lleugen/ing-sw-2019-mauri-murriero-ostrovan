@@ -15,7 +15,7 @@ import java.util.List;
 public class SledgeHammerController extends AlternativeEffectWeaponController {
   public SledgeHammerController(GameBoardController g) {
     super(g);
-    name = "SledgeHammerController";
+    name = "SledgeHammer";
   }
 
   PlayerViewOnServer client;

@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.powerup;
 
+import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.model.grabbable.PowerUpCard;
 import it.polimi.se2019.model.player.Player;
@@ -17,6 +18,10 @@ import java.util.logging.Logger;
  * @author Fabio Mauri
  */
 public class TagbackGrenadeController extends PowerUpController {
+  public TagbackGrenadeController(GameBoardController g){
+    super(g);
+    name="TagbackGrenade";
+  }
   /**
    * Namespace this class logs to
    */

@@ -144,6 +144,7 @@ public class PlayerController {
    * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
   public boolean playTurn() throws UserTimeoutException{
+    System.out.println("executing an action");
     boolean result = false;
       switch (
               client.chooseAction(

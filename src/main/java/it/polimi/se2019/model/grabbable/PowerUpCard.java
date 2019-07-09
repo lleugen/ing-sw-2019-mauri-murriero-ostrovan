@@ -21,6 +21,11 @@ public class PowerUpCard extends Grabbable {
     this.description = desc;
   }
 
+  @Override
+  public String toString(){
+    return description;
+  }
+
   /**
    * A power-up can be discarded in place of an Ammo.
    * This variable represents the equivalence of the power-up in Ammos
