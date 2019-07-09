@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.player_state_controller;
 
+import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.SpawnSquare;
@@ -48,9 +49,11 @@ public class NormalStateController extends PlayerStateController {
   public boolean grabStuff() throws UserTimeoutException {
     boolean result = false;
     System.out.println("grabbing something");
-    Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
+    List<Integer> openDirections = new ArrayList<>();
+    openDirections = map.getOpenDirections(player.getPosition());
+    Integer direction = client.chooseDirection(openDirections);
     if(
-            (direction == 0 || direction == 1 || direction == 2 || direction == 3)&&
+            (openDirections.contains(direction))&&
             player.getPosition() != null &&
             player.getPosition().getAdjacencies() != null &&
             player.getPosition().getAdjacencies().get(direction) != null
@@ -131,7 +134,7 @@ public class NormalStateController extends PlayerStateController {
             buffer.append(" ");
         }
         buffer.append('\n');
-        System.console().writer().write(buffer.toString());
+        System.out.printf(buffer.toString());
     }
 
   /**
