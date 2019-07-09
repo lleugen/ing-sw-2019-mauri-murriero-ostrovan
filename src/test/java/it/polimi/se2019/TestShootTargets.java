@@ -158,7 +158,7 @@ public class TestShootTargets {
             Mockito.when(client.getName()).thenReturn("target");
             Mockito.when(shooterClient.getName()).thenReturn("shooter");
             //Mockito.when(client.chooseIndex()).thenReturn(0);
-            Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
+            //Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
             //Mockito.when(shooterClient.chooseDirection(any())).thenReturn(-1);
 
             rocketLauncherController.fire(shooter, shooterClient);
