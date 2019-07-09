@@ -185,24 +185,66 @@ public abstract class PlayerStateController {
     public boolean usePowerUp() throws UserTimeoutException {
         List<String> powerUpCardsInInventory = new ArrayList<>();
         for(PowerUpCard p : player.getInventory().getPowerUps()){
-            powerUpCardsInInventory.add(p.getDescription());
+            if(p.getDescription() == "NewtonRed" || p.getDescription() == "NewtonBlue" || p.getDescription() == "NewtonYellow"){
+                powerUpCardsInInventory.add("Newton");
+            }
+            else if(p.getDescription() == "TeleporterRed" || p.getDescription() == "TeleporterBlue" || p.getDescription() == "TeleporterYellow"){
+                powerUpCardsInInventory.add("Teleporter");
+            }
+            else if(p.getDescription() == "TagbackGrenadeRed" || p.getDescription() == "TagbackGrenadeBlue" || p.getDescription() == "TagbackGrenadeYellow"){
+                //powerUpCardsInInventory.add("TagbackGrenade");
+            }
+            else if(p.getDescription() == "TargetingScopeRed" || p.getDescription() == "TargetingScopeBlue" || p.getDescription() == "TargetingScopeYellow"){
+                //powerUpCardsInInventory.add("TargetingScope");
+            }
         }
         List<Integer> powerUpCardsToUseIndex;
         powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
-        for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
-            //identify power up controller
-            PowerUpController powerUpController = null;
-            for(PowerUpController p : gameBoardController.getPowerUpControllers()){
-                if(p.getName().equals(powerUpCardsInInventory.get(i))){
-                    powerUpController = p;
+        if(powerUpCardsToUseIndex.size() > 0){
+            for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
+                //identify power up controller
+                PowerUpController powerUpController = null;
+                for(PowerUpController p : gameBoardController.getPowerUpControllers()){
+                    if(p.getName().equals(powerUpCardsInInventory.get(i))){
+                        powerUpController = p;
+                    }
                 }
-            }
-            if(powerUpController != null){
-                powerUpController.usePowerUp(player);
-            }
+                if(powerUpController != null){
+                    powerUpController.usePowerUp(player);
+                }
 
+            }
         }
         return false;
+    }
+
+    /**
+     * Print current player's inventory
+     */
+    public String printInventory(){
+        //print the player's inventory
+        StringBuilder buffer = new StringBuilder();
+        for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
+            buffer.append(player.getInventory().getWeapons().get(i).toString());
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        buffer.append("red ammo: ");
+        buffer.append(player.getInventory().getAmmo().getRed());
+        buffer.append(" ");
+        buffer.append("blue ammo: ");
+        buffer.append(player.getInventory().getAmmo().getBlue());
+        buffer.append(" ");
+        buffer.append("yellow ammo: ");
+        buffer.append(player.getInventory().getAmmo().getYellow());
+        buffer.append(" ");
+        buffer.append('\n');
+        for(int i = 0; i<player.getInventory().getPowerUps().size(); i++){
+            buffer.append(player.getInventory().getPowerUps().get(i).toString());
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        return buffer.toString();
     }
 
     public static class InvalidMovementException extends RuntimeException{

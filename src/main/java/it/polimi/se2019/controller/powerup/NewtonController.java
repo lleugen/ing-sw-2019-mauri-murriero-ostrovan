@@ -18,8 +18,9 @@ import java.util.List;
  * @author Fabio Mauri
  */
 public class NewtonController extends PowerUpController {
-  public NewtonController() {
-    name = "NewtonController";
+  public NewtonController(GameBoardController g) {
+    super(g);
+    name = "Newton";
   }
 
   PlayerViewOnServer client;

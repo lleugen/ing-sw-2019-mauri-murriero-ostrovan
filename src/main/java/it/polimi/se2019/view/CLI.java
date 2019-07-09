@@ -295,19 +295,21 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
-
+        List<Integer> choices = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        markSection("Choose power ups to use for reloading.");
+        markSection("Choose power ups to use");
         for(String s : powerUps){
             markSection(s);
         }
         markSection("please input one number at a time, -1 to stop");
         displayRender();
-        List<Integer> choices = new ArrayList<>();
+
         int choice = 0;
         while(choice != -1){
             choice = scanner.nextInt();
-            choices.add(choice);
+            if(choice != -1){
+                choices.add(choice);
+            }
         }
 
         return choices;
@@ -329,7 +331,15 @@ public final class CLI extends UnicastRemoteObject
         markSection("0/1/2");
         displayRender();
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        int choice = 0;
+        boolean done = false;
+        while(!done){
+            choice = scanner.nextInt();
+            if(choice==0 || choice == 1 || choice == 2){
+                done = true;
+            }
+        }
+        return choice;
     }
 
     @Override
@@ -411,8 +421,11 @@ public final class CLI extends UnicastRemoteObject
         else if(choice.equals("south") || choice.equals("down") || choice.equals("2")){
             return 2;
         }
-        else{
+        else if(choice.equals("west") || choice.equals("left") || choice.equals("3")){
             return 3;
+        }
+        else{
+            return 4;
         }
     }
 
@@ -425,7 +438,7 @@ public final class CLI extends UnicastRemoteObject
                 buffer.append(" ");
             }
             buffer.append('\n');
-            buffer.append("marks assigned: " + "(" + playerInfo.get(2).size() + ") ");
+            buffer.append("marks assigned: " + "(" + playerInfo.get(1).size() + ") ");
             for(int i = 0; i<playerInfo.get(1).size(); i++){
                 buffer.append(playerInfo.get(1).get(i));
                 buffer.append(" ");

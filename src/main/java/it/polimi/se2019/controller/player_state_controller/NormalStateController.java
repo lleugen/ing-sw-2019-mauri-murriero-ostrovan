@@ -58,6 +58,7 @@ public class NormalStateController extends PlayerStateController {
             player.getPosition().getAdjacencies() != null &&
             player.getPosition().getAdjacencies().get(direction) != null
     ) {
+        System.out.println("player is moving while grabbing");
       player.move(player.getPosition().getAdjacencies().get(direction));
     }
 
@@ -90,7 +91,7 @@ public class NormalStateController extends PlayerStateController {
       }
       System.out.println("grabbed something");
 
-      printInventory();
+      //System.out.printf(printInventory());
 
     }
     else{
@@ -111,31 +112,7 @@ public class NormalStateController extends PlayerStateController {
     return result;
   }
 
-    /**
-     * Print current player's inventory
-     */
-    private void printInventory(){
-        //print the player's inventory
-        StringBuilder buffer = new StringBuilder();
-        for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
-            buffer.append(player.getInventory().getWeapons().get(i).toString());
-            buffer.append(" ");
-        }
-        buffer.append('\n');
-        buffer.append(player.getInventory().getAmmo().getRed());
-        buffer.append(" ");
-        buffer.append(player.getInventory().getAmmo().getBlue());
-        buffer.append(" ");
-        buffer.append(player.getInventory().getAmmo().getYellow());
-        buffer.append(" ");
-        buffer.append('\n');
-        for(int i = 0; i<player.getInventory().getPowerUps().size(); i++){
-            buffer.append(player.getInventory().getPowerUps().toString());
-            buffer.append(" ");
-        }
-        buffer.append('\n');
-        System.out.printf(buffer.toString());
-    }
+
 
   /**
    * Use your action to fire a weapon

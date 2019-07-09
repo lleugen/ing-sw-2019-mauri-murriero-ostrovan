@@ -74,10 +74,10 @@ public class GameBoardController{
     this.weaponControllers.add(new ShockwaveController(this));
     this.weaponControllers.add(new SledgeHammerController(this));
 
-    this.powerUpControllers.add(new NewtonController());
-    this.powerUpControllers.add(new TagbackGrenadeController());
-    this.powerUpControllers.add(new TargetingScopeController());
-    this.powerUpControllers.add(new TeleporterController());
+    this.powerUpControllers.add(new NewtonController(this));
+    this.powerUpControllers.add(new TagbackGrenadeController(this));
+    this.powerUpControllers.add(new TargetingScopeController(this));
+    this.powerUpControllers.add(new TeleporterController(this));
   }
 
   /**
@@ -221,6 +221,7 @@ public class GameBoardController{
             }
             else{
               c.sendGenericMessage("It is your turn");
+              c.sendGenericMessage(playerControllers.get(currentPlayer).getState().printInventory());
             }
           }
           catch(RemoteException f){
