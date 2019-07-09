@@ -80,10 +80,12 @@ public abstract class WeaponController {
     this.firingMode = selectFiringMode(client);
     System.out.println("choosing targets");
     List<Player> chosenTargets = findTargets(player);
-    for(Player p : chosenTargets){
-        System.out.println(p.getName());
-    }
+
     if(!chosenTargets.isEmpty()){
+        System.out.println(chosenTargets.size());
+        for(Player p : chosenTargets){
+            System.out.println(p.getName());
+        }
         System.out.println("shooting targets");
         shootTargets(player, chosenTargets);
         System.out.println("fire done");

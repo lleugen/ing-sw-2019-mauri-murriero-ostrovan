@@ -275,6 +275,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseTargets(List<String> possibleTargets){
+        Scanner scanner = new Scanner(System.in);
         displayMap();
         displayPlayerInfo();
         markSection("Who would you like to target?");
@@ -282,7 +283,8 @@ public final class CLI extends UnicastRemoteObject
             markSection(s);
         }
         displayRender();
-        return readLine();
+        int result = scanner.nextInt();
+        return possibleTargets.get(result);
     }
 
     @Override
