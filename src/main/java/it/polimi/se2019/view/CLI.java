@@ -414,19 +414,18 @@ public final class CLI extends UnicastRemoteObject
         else{
             return 3;
         }
-
     }
 
     public void displayPlayerInfo(){
         StringBuilder buffer = new StringBuilder();
         if(playerInfo != null){
-            buffer.append("damage taken: ");
+            buffer.append("damage taken: " + "(" + playerInfo.get(0).size() + ") ");
             for(int i = 0; i<playerInfo.get(0).size(); i++){
                 buffer.append(playerInfo.get(0).get(i));
                 buffer.append(" ");
             }
             buffer.append('\n');
-            buffer.append("marks assigned: ");
+            buffer.append("marks assigned: " + "(" + playerInfo.get(2).size() + ") ");
             for(int i = 0; i<playerInfo.get(1).size(); i++){
                 buffer.append(playerInfo.get(1).get(i));
                 buffer.append(" ");
@@ -434,6 +433,12 @@ public final class CLI extends UnicastRemoteObject
             buffer.append('\n');
             System.console().writer().write(buffer.toString());
         }
+    }
+
+    @Override
+    public void sendGenericMessage(String message){
+        markSection(message);
+        displayRender();
     }
 
     @Override

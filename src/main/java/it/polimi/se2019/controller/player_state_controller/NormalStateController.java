@@ -48,7 +48,7 @@ public class NormalStateController extends PlayerStateController {
     System.out.println("grabbing something");
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(
-            direction != 5 &&
+            (direction == 0 || direction == 1 || direction == 2 || direction == 3)&&
             player.getPosition() != null &&
             player.getPosition().getAdjacencies() != null &&
             player.getPosition().getAdjacencies().get(direction) != null
@@ -70,9 +70,8 @@ public class NormalStateController extends PlayerStateController {
             System.out.println("player grabbed " + player.getInventory().getWeapons().get(player.getInventory().getWeapons().size()-1).toString());
           }
           else{
-            System.out.println("something happen when grabbing a weapon");
+            System.out.println("something happened when grabbing a weapon");
           }
-
         }
         else{
           player.getInventory().addAmmoTileToInventory(position.grab(0));
@@ -80,11 +79,26 @@ public class NormalStateController extends PlayerStateController {
         }
       }
       System.out.println("grabbed something");
+      //print the player's inventory
       StringBuilder buffer = new StringBuilder();
       for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
         buffer.append(player.getInventory().getWeapons().get(i).toString());
         buffer.append(" ");
       }
+      buffer.append('\n');
+      buffer.append(player.getInventory().getAmmo().getRed());
+      buffer.append(" ");
+      buffer.append(player.getInventory().getAmmo().getBlue());
+      buffer.append(" ");
+      buffer.append(player.getInventory().getAmmo().getYellow());
+      buffer.append(" ");
+      buffer.append('\n');
+      for(int i = 0; i<player.getInventory().getPowerUps().size(); i++){
+        buffer.append(player.getInventory().getPowerUps().toString());
+        buffer.append(" ");
+      }
+      buffer.append('\n');
+      System.console().writer().write(buffer.toString());
       return true;
     }
     else{

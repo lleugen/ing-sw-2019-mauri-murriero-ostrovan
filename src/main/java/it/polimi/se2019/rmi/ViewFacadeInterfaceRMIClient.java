@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface ViewFacadeInterfaceRMIClient extends Remote, Serializable {
     /**
+     * Send a string message to a client
+     */
+    void sendGenericMessage(String message) throws RemoteException;
+    /**
      * @throws RemoteException if there is an error with the RMI connection
      * @return the name of the client
      */

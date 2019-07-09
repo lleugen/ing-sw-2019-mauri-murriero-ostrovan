@@ -195,6 +195,13 @@ public class GameBoardController{
     //spawn all players
     for(int i = 0; i<players.size(); i++){
       try{
+        sendInfo();
+        try{
+          clients.get(currentPlayer).sendGenericMessage("It is your turn to spawn");
+        }
+        catch(RemoteException f){
+          //whatever
+        }
         playerControllers.get(i).getState().spawn();
       }
       catch (UserTimeoutException e){
@@ -206,9 +213,31 @@ public class GameBoardController{
     boolean actionResult;
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
-        sendInfo();
+        //notify all players of who's turn it is
+        for(PlayerViewOnServer c : clients){
+          try{
+            if(c != clients.get(currentPlayer)){
+              c.sendGenericMessage("It is " + players.get(currentPlayer).getName() + "'s turn");
+            }
+            else{
+              c.sendGenericMessage("It is your turn");
+            }
+          }
+          catch(RemoteException f){
+            //whatever
+          }
+        }
+
+        //ask the current player to make his actions
         currentPlayerAvailableActions = playerControllers.get(currentPlayer).getState().getAvailableActions();
         while(currentPlayerAvailableActions > 0){
+          sendInfo();
+          try{
+            clients.get(currentPlayer).sendGenericMessage("make an action");
+          }
+          catch(RemoteException f){
+            //whatever
+          }
           actionResult = playerControllers.get(currentPlayer).playTurn();
           if(actionResult){
             currentPlayerAvailableActions --;
@@ -222,7 +251,7 @@ public class GameBoardController{
       }
       currentPlayer++;
       numberOfTurns++;
-      if(numberOfTurns > 50 || activePlayers < 1){
+      if(numberOfTurns > 500 || activePlayers < 1){
         break;
       }
       if(currentPlayer >= players.size()){
@@ -301,9 +330,8 @@ public class GameBoardController{
       PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
       client.sendMapInfo(this.genMapInfo());
-      for(Player p : players){
-        client.sendPlayerInfo(this.genPlayerInfo(p));
-      }
+
+      client.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
 
       client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }
