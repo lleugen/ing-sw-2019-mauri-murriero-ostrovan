@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ViewFacadeInterfaceRMIServer {
+
+    /**
+     * Send a string message to a client
+     */
+    void sendGenericMessage(String message) throws UserTimeoutException, RemoteException;
     /**
      * @return the name of the client
      * @throws UserTimeoutException if the user takes too long to make a choice or disconnects

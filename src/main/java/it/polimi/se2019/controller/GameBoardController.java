@@ -74,10 +74,10 @@ public class GameBoardController{
     this.weaponControllers.add(new ShockwaveController(this));
     this.weaponControllers.add(new SledgeHammerController(this));
 
-    this.powerUpControllers.add(new NewtonController());
-    this.powerUpControllers.add(new TagbackGrenadeController());
-    this.powerUpControllers.add(new TargetingScopeController());
-    this.powerUpControllers.add(new TeleporterController());
+    this.powerUpControllers.add(new NewtonController(this));
+    this.powerUpControllers.add(new TagbackGrenadeController(this));
+    this.powerUpControllers.add(new TargetingScopeController(this));
+    this.powerUpControllers.add(new TeleporterController(this));
   }
 
   /**
@@ -190,9 +190,18 @@ public class GameBoardController{
    */
   public void playTurns() {
     this.currentPlayer = 0;
+    int currentPlayerAvailableActions;
     Integer numberOfTurns = 0;
+    //spawn all players
     for(int i = 0; i<players.size(); i++){
       try{
+        sendInfo();
+        try{
+          clients.get(currentPlayer).sendGenericMessage("It is your turn to spawn");
+        }
+        catch(RemoteException f){
+          //whatever
+        }
         playerControllers.get(i).getState().spawn();
       }
       catch (UserTimeoutException e){
@@ -201,14 +210,41 @@ public class GameBoardController{
     }
 
     int activePlayers = this.playerControllers.size();
+    boolean actionResult;
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
       try {
-        sendInfo();
-        this.playerControllers.get(this.currentPlayer).playTurn(
-                this.playerControllers.get(
-                        this.currentPlayer
-                ).getState().getAvailableActions()
-        );
+        //notify all players of who's turn it is
+        for(PlayerViewOnServer c : clients){
+          try{
+            if(c != clients.get(currentPlayer)){
+              c.sendGenericMessage("It is " + players.get(currentPlayer).getName() + "'s turn");
+            }
+            else{
+              c.sendGenericMessage("It is your turn");
+              c.sendGenericMessage(playerControllers.get(currentPlayer).getState().printInventory());
+            }
+          }
+          catch(RemoteException f){
+            //whatever
+          }
+        }
+
+        //ask the current player to make his actions
+        currentPlayerAvailableActions = playerControllers.get(currentPlayer).getState().getAvailableActions();
+        while(currentPlayerAvailableActions > 0){
+          sendInfo();
+          try{
+            clients.get(currentPlayer).sendGenericMessage("make an action");
+          }
+          catch(RemoteException f){
+            //whatever
+          }
+          actionResult = playerControllers.get(currentPlayer).playTurn();
+          if(actionResult){
+            currentPlayerAvailableActions --;
+          }
+        }
+        refillSquares();
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -216,7 +252,7 @@ public class GameBoardController{
       }
       currentPlayer++;
       numberOfTurns++;
-      if(numberOfTurns > 50 || activePlayers < 3){
+      if(numberOfTurns > 500 || activePlayers < 1){
         break;
       }
       if(currentPlayer >= players.size()){
@@ -227,12 +263,28 @@ public class GameBoardController{
   }
 
   /**
+   * Refill all squares
+   */
+  private void refillSquares(){
+    for(int i = 0; i<3; i++){
+      for(int k = 0; k<4; k++){
+        if(gameBoard.getMap().getMapSquares()[i][k] != null){
+          gameBoard.getMap().getMapSquares()[i][k].refill();
+        }
+      }
+    }
+  }
+
+  /**
    * This method manages the final frenzy round which is played when the
    * number of skulls on the scoreboard reaches 0 after this final round the
    * scoreboard will be resolved and the game will end
    */
   public void playFrenzyTurn() {
+
     //player the last turn and end the game
+    int currentPlayerAvailableActions;
+    boolean actionResult;
     gameBoard.setFrenzy();
     for(Player p : players){
       if(p.getBoard().getDamageReceived().isEmpty()){
@@ -248,8 +300,13 @@ public class GameBoardController{
     for(int i = 0; i<players.size(); i++){
       try {
         sendInfo();
-        playerControllers.get(currentPlayer).playTurn
-              (playerControllers.get(currentPlayer).getState().getAvailableActions());
+        currentPlayerAvailableActions = playerControllers.get(currentPlayer).getState().getAvailableActions();
+        while(currentPlayerAvailableActions > 0){
+          actionResult = playerControllers.get(currentPlayer).playTurn();
+          if(actionResult){
+            currentPlayerAvailableActions --;
+          }
+        }
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -273,10 +330,11 @@ public class GameBoardController{
     try {
       PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
+      client.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
+
       client.sendMapInfo(this.genMapInfo());
-      for(Player p : players){
-        client.sendPlayerInfo(this.genPlayerInfo(p));
-      }
+
+
 
       client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }
@@ -337,6 +395,9 @@ public class GameBoardController{
           toReturn.add("power up");
         }
       }
+      else{
+        toReturn.add("no ammo tiles");
+      }
     }
     else {
         toReturn.add(Integer.toString(square.getItem().size()));
@@ -344,8 +405,13 @@ public class GameBoardController{
             if(square.getItem().get(i) != null){
                 toReturn.add(square.getItem().get(i).toString());
             }
+            else{
+              toReturn.add("no weapon");
+            }
         }
     }
+    currentSquare.clear();
+    currentSquare.add(square);
     toReturn.addAll(
             this.gameBoard.getMap().getPlayersOnSquares(currentSquare).stream()
                     .map(Player::getName)

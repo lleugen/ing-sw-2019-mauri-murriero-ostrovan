@@ -16,6 +16,11 @@ import java.util.logging.Logger;
  */
 public final class CLI extends UnicastRemoteObject
         implements ViewFacadeInterfaceRMIClient {
+
+    /**
+     * Information to display about players
+     */
+    List<ArrayList<String>> playerInfo;
     /**
      * Namespace this class logs to
      */
@@ -208,6 +213,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public String chooseAction(String state){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose your action!");
         markSection("You are in state " + state);
         if(!state.equals("Adrenaline2State")){
@@ -222,6 +228,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public int chooseSpawnLocation(List<String> powerUps){
         displayMap();
+        displayPlayerInfo();
         markSection("Discard a power up card to spawn.");
         for(String s : powerUps){
             markSection(s);
@@ -247,17 +254,29 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseWeapon(List<String> weapons){
+        Scanner scanner = new Scanner(System.in);
+        int result = 0;
+        boolean done = false;
+
         markSection("Which weapon will you use?");
         for(String s : weapons){
             markSection(s);
         }
         displayRender();
-        return readLine();
+
+        while(!done){
+            result = scanner.nextInt();
+            if((result >= 0) && (result < weapons.size())){
+                done = true;
+            }
+        }
+        return weapons.get(result);
     }
 
     @Override
     public String chooseTargets(List<String> possibleTargets){
         displayMap();
+        displayPlayerInfo();
         markSection("Who would you like to target?");
         for(String s : possibleTargets){
             markSection(s);
@@ -278,19 +297,21 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
-
+        List<Integer> choices = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        markSection("Choose power ups to use for reloading.");
+        markSection("Choose power ups to use");
         for(String s : powerUps){
             markSection(s);
         }
         markSection("please input one number at a time, -1 to stop");
         displayRender();
-        List<Integer> choices = new ArrayList<>();
+
         int choice = 0;
         while(choice != -1){
             choice = scanner.nextInt();
-            choices.add(choice);
+            if(choice != -1){
+                choices.add(choice);
+            }
         }
 
         return choices;
@@ -312,7 +333,15 @@ public final class CLI extends UnicastRemoteObject
         markSection("0/1/2");
         displayRender();
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        int choice = 0;
+        boolean done = false;
+        while(!done){
+            choice = scanner.nextInt();
+            if(choice==0 || choice == 1 || choice == 2){
+                done = true;
+            }
+        }
+        return choice;
     }
 
     @Override
@@ -338,6 +367,7 @@ public final class CLI extends UnicastRemoteObject
 
     public String chooseRoom(List<String> rooms){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose target room");
         for(String s : rooms){
             markSection(s);
@@ -348,13 +378,14 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose target square");
         markSection("please choose from the following possible");
         int currentX;
         int currentY;
         for (List<Integer> targettableSquareCoordinate : targettableSquareCoordinates) {
             currentX = targettableSquareCoordinate.get(0);
-            currentY = targettableSquareCoordinate.get(0);
+            currentY = targettableSquareCoordinate.get(1);
             markSection("x : " + currentX + " " + " y : " + currentY);
         }
         displayRender();
@@ -367,6 +398,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public Integer chooseDirection(List<Integer> possibleDirections){
         displayMap();
+        displayPlayerInfo();
         markSection("Choose which way you want to go");
         String[] availableDirections = new String[]{
                 "/north/",
@@ -391,10 +423,37 @@ public final class CLI extends UnicastRemoteObject
         else if(choice.equals("south") || choice.equals("down") || choice.equals("2")){
             return 2;
         }
-        else{
+        else if(choice.equals("west") || choice.equals("left") || choice.equals("3")){
             return 3;
         }
+        else{
+            return 4;
+        }
+    }
 
+    public void displayPlayerInfo(){
+        StringBuilder buffer = new StringBuilder();
+        if(playerInfo != null){
+            buffer.append("damage taken: " + "(" + playerInfo.get(0).size() + ") ");
+            for(int i = 0; i<playerInfo.get(0).size(); i++){
+                buffer.append(playerInfo.get(0).get(i));
+                buffer.append(" ");
+            }
+            buffer.append('\n');
+            buffer.append("marks assigned: " + "(" + playerInfo.get(1).size() + ") ");
+            for(int i = 0; i<playerInfo.get(1).size(); i++){
+                buffer.append(playerInfo.get(1).get(i));
+                buffer.append(" ");
+            }
+            buffer.append('\n');
+            System.console().writer().write(buffer.toString());
+        }
+    }
+
+    @Override
+    public void sendGenericMessage(String message){
+        markSection(message);
+        displayRender();
     }
 
     @Override
@@ -405,8 +464,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public void sendPlayerInfo(List<ArrayList<String>> pInfo)
             throws RemoteException {
-        // Implemented only because defined in the interface.
-        // Empty cause the gui doesn't needs those data
+        playerInfo = pInfo;
     }
 
     @Override

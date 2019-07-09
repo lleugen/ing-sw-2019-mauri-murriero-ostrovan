@@ -16,7 +16,7 @@ import java.util.List;
 public class FlameThrowerController extends AlternativeEffectWeaponController {
   public FlameThrowerController(GameBoardController g) {
     super(g);
-    name = "FlameThrowerController";
+    name = "FlameThrower";
   }
   Map mapReference = getGameBoardController().getGameBoard().getMap();
 

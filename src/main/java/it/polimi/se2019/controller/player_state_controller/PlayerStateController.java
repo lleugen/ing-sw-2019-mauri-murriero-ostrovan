@@ -37,9 +37,9 @@ public abstract class PlayerStateController {
         return  availableActions;
     }
 
-    public abstract void runAround() throws UserTimeoutException;
-    public abstract void grabStuff() throws UserTimeoutException;
-    public abstract void shootPeople() throws UserTimeoutException;
+    public abstract boolean runAround() throws UserTimeoutException;
+    public abstract boolean grabStuff() throws UserTimeoutException;
+    public abstract boolean shootPeople() throws UserTimeoutException;
 
     /**
      * Move the player 1 square in one of four directions
@@ -104,23 +104,38 @@ public abstract class PlayerStateController {
      * choose targets and fire.
      * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
-    public void shoot() throws UserTimeoutException {
+    public boolean shoot() throws UserTimeoutException {
+        boolean result = false;
       List<String> weapons = player.getInventory().getWeapons().stream()
               .map((Weapon::getName))
               .collect(Collectors.toList());
 
         String selectedWeapon = client.chooseWeapon(weapons);
-        List<WeaponController> selectedWeapons;
-        selectedWeapons = gameBoardController.getWeaponControllers().stream()
-                .filter((WeaponController w) ->
-                        w.getName().equals(selectedWeapon)
-                )
-                .collect(Collectors.toList());
-
-        for (WeaponController weaponController: selectedWeapons) {
-          weaponController.fire(player, client);
+        System.out.println("a client chose " + selectedWeapon);
+        WeaponController weaponController = null;
+        for(WeaponController w : gameBoardController.getWeaponControllers()){
+            if(w.getName().equals(selectedWeapon)){
+                weaponController = w;
+            }
+        }
+        if(weaponController != null){
+            System.out.println("firing " + weaponController.getName());
+            result = weaponController.fire(player, client);
         }
 
+//        List<WeaponController> selectedWeapons;
+//        selectedWeapons = gameBoardController.getWeaponControllers().stream()
+//                .filter((WeaponController w) ->
+//                        w.getName().equals(selectedWeapon)
+//                )
+//                .collect(Collectors.toList());
+//
+//        for (WeaponController weaponController: selectedWeapons) {
+//
+//          weaponController.fire(player, client);
+//        }
+        System.out.println("a weapon has been shot");
+        return result;
     }
 
     /**
@@ -182,26 +197,69 @@ public abstract class PlayerStateController {
      * Use a power up from the inventory
      * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
-    public void usePowerUp() throws UserTimeoutException {
+    public boolean usePowerUp() throws UserTimeoutException {
         List<String> powerUpCardsInInventory = new ArrayList<>();
         for(PowerUpCard p : player.getInventory().getPowerUps()){
-            powerUpCardsInInventory.add(p.getDescription());
+            if(p.getDescription() == "NewtonRed" || p.getDescription() == "NewtonBlue" || p.getDescription() == "NewtonYellow"){
+                powerUpCardsInInventory.add("Newton");
+            }
+            else if(p.getDescription() == "TeleporterRed" || p.getDescription() == "TeleporterBlue" || p.getDescription() == "TeleporterYellow"){
+                powerUpCardsInInventory.add("Teleporter");
+            }
+            else if(p.getDescription() == "TagbackGrenadeRed" || p.getDescription() == "TagbackGrenadeBlue" || p.getDescription() == "TagbackGrenadeYellow"){
+                //powerUpCardsInInventory.add("TagbackGrenade");
+            }
+            else if(p.getDescription() == "TargetingScopeRed" || p.getDescription() == "TargetingScopeBlue" || p.getDescription() == "TargetingScopeYellow"){
+                //powerUpCardsInInventory.add("TargetingScope");
+            }
         }
         List<Integer> powerUpCardsToUseIndex;
         powerUpCardsToUseIndex = client.choosePowerUpCardsForReload(powerUpCardsInInventory);
-        for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
-            //identify power up controller
-            PowerUpController powerUpController = null;
-            for(PowerUpController p : gameBoardController.getPowerUpControllers()){
-                if(p.getName().equals(powerUpCardsInInventory.get(i))){
-                    powerUpController = p;
+        if(powerUpCardsToUseIndex.size() > 0){
+            for(int i = 0; i<powerUpCardsToUseIndex.size(); i++){
+                //identify power up controller
+                PowerUpController powerUpController = null;
+                for(PowerUpController p : gameBoardController.getPowerUpControllers()){
+                    if(p.getName().equals(powerUpCardsInInventory.get(i))){
+                        powerUpController = p;
+                    }
                 }
-            }
-            if(powerUpController != null){
-                powerUpController.usePowerUp(player);
-            }
+                if(powerUpController != null){
+                    powerUpController.usePowerUp(player);
+                }
 
+            }
         }
+        return false;
+    }
+
+    /**
+     * Print current player's inventory
+     */
+    public String printInventory(){
+        //print the player's inventory
+        StringBuilder buffer = new StringBuilder();
+        for(int i = 0; i<player.getInventory().getWeapons().size(); i++){
+            buffer.append(player.getInventory().getWeapons().get(i).toString());
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        buffer.append("red ammo: ");
+        buffer.append(player.getInventory().getAmmo().getRed());
+        buffer.append(" ");
+        buffer.append("blue ammo: ");
+        buffer.append(player.getInventory().getAmmo().getBlue());
+        buffer.append(" ");
+        buffer.append("yellow ammo: ");
+        buffer.append(player.getInventory().getAmmo().getYellow());
+        buffer.append(" ");
+        buffer.append('\n');
+        for(int i = 0; i<player.getInventory().getPowerUps().size(); i++){
+            buffer.append(player.getInventory().getPowerUps().get(i).toString());
+            buffer.append(" ");
+        }
+        buffer.append('\n');
+        return buffer.toString();
     }
 
     public static class InvalidMovementException extends RuntimeException{

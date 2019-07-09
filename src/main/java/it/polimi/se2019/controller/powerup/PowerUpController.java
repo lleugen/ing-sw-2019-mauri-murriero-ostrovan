@@ -13,7 +13,8 @@ import it.polimi.se2019.view.player.PlayerViewOnServer;
  * @author Fabio Mauri
  */
 public abstract class PowerUpController {
-  public PowerUpController() {
+  public PowerUpController(GameBoardController g) {
+    gameBoardController = g;
   }
 
   protected GameBoardController gameBoardController;

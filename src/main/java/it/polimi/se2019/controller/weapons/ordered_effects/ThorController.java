@@ -14,7 +14,7 @@ import java.util.List;
 public class ThorController extends OrderedEffectsWeaponController {
   public ThorController(GameBoardController g) {
     super(g);
-    name = "ThorController";
+    name = "Thor";
     numberOfOptionalEffects = 3;
   }
 

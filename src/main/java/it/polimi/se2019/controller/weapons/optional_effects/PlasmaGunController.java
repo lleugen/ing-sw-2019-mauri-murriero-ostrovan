@@ -14,7 +14,7 @@ import java.util.List;
 public class PlasmaGunController extends OptionalEffectWeaponController {
   public PlasmaGunController(GameBoardController g) {
     super(g);
-    name = "PlasmaGunController";
+    name = "PlasmaGun";
     numberOfOptionalEffects = 3;
   }
 

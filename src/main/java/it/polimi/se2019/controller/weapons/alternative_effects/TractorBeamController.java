@@ -16,7 +16,7 @@ import java.util.List;
 public class TractorBeamController extends OptionalEffectWeaponController {
   public TractorBeamController(GameBoardController g) {
     super(g);
-    name = "TractorBeamController";
+    name = "TractorBeam";
     numberOfOptionalEffects = 1;
   }
 

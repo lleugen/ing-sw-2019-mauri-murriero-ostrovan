@@ -49,8 +49,8 @@ public class TestInventory {
 
     @Test
     public void testAddToInventoryShouldSucceed() {
-        Weapon weapon = new Weapon("a",
-                new Ammo(1,1,1),
+        Weapon weapon = new Weapon("mockWeapon",
+                new Ammo(0,0,0),
                 new Ammo(1,1,1));
         PowerUpCard powerUp = new PowerUpCard(new Ammo(1,0,0), "mockPup");
         AmmoTile ammoTile = new AmmoTile(1,1,1,false);
