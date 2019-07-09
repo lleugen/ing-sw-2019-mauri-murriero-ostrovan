@@ -361,10 +361,12 @@ public class TestShootTargets {
     public void testHellion(){
         HellionController hellionController = new HellionController(gameBoardController);
         try{
+            target.moveToSquare(gameBoard.getMap().getMapSquares()[0][1]);
             Mockito.when(client.getName()).thenReturn("target");
             Mockito.when(shooterClient.getName()).thenReturn("shooter");
             Mockito.when(shooterClient.chooseTargets(any())).thenReturn("target");
             hellionController.fire(shooter, shooterClient);
+            System.err.println(target.getBoard().getDamageReceived().size());
             assertTrue(target.getBoard().getDamageReceived().size() == 1);
             assertTrue(target.getBoard().getMarksAssigned().size() == 1);
         }
