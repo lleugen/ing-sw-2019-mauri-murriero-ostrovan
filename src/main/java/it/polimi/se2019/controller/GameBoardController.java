@@ -19,6 +19,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class GameBoardController{
   private GameBoard gameBoard;
   private List<WeaponController> weaponControllers;
   private List<PowerUpController> powerUpControllers;
-
+  private AtomicBoolean gameEnded = new AtomicBoolean(false);
 
   public GameBoardController(GameBoard g) {
     this.gameBoard = g;
@@ -176,8 +177,15 @@ public class GameBoardController{
     addPlayerControllers(p);
     playTurns();
     playFrenzyTurn();
+    this.gameEnded.set(true);
   }
 
+  /**
+   * @return true if the game handled by this board ended, false if it is running
+   */
+  public boolean isGameEnded(){
+    return this.gameEnded.get();
+  }
   /**
    * Id of the player currently playing on playerControllers
    */

@@ -7,6 +7,8 @@ import it.polimi.se2019.rmi.ViewFacadeInterfaceRMIClient;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Random;
 
 public class Client {
   /**
@@ -75,8 +77,9 @@ public class Client {
    */
   private void findLobby(ViewFacadeInterfaceRMIClient viewClient)
           throws RemoteException {
-    LocateRegistry.createRegistry(1099).rebind("client", viewClient);
-
-    this.server.connect("client", 1099);
+    int port = ((new Random().nextInt(16383)) + 49152);
+    Registry exportedRegistry = LocateRegistry.createRegistry(port);
+    exportedRegistry.rebind("client", viewClient);
+    this.server.connect("client", port);
   }
 }

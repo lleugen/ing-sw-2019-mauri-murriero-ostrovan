@@ -16,6 +16,7 @@ import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,6 +35,12 @@ public class Server implements ServerLobbyInterface, Serializable {
    * Contains the list of all lobbies active
    */
   private transient List<ServerLobby> lobbyes = new LinkedList<>();
+
+  /**
+   * Contains the mapping between an user id and a lobby an user should be
+   * registered to
+   */
+  private ConcurrentHashMap<String, ServerLobby> userLobbyMap = new ConcurrentHashMap<>();
 
   /**
    * Timeout (in seconds) before starting games in ServerLobby
@@ -84,13 +91,14 @@ public class Server implements ServerLobbyInterface, Serializable {
    * @throws RemoteException If something goes wrong with RMI
    */
   @Override
-  public synchronized void connect(String ref, int port) throws RemoteException {
+  public void connect(String ref, int port) throws RemoteException {
+    System.out.println("connect");
     try {
       ViewFacadeInterfaceRMIClient userView = (ViewFacadeInterfaceRMIClient) LocateRegistry
               .getRegistry(getClientHost(),port)
               .lookup(ref);
-      PlayerViewOnServer p = new PlayerViewOnServer(userView, this.disconnectionTimeout);
-      this.registerPlayer(p);
+      System.out.println("registering out");
+      this.registerPlayer(userView);
     }
     catch (ServerNotActiveException | NotBoundException | UserTimeoutException e){
       Logger.getLogger(LOG_NAMESPACE).log(
@@ -130,30 +138,49 @@ public class Server implements ServerLobbyInterface, Serializable {
    * If there are no lobbies availables, a new lobby is created and the player
    * is added to the newly created lobby
    *
-   * @param p VirtualView of the player to add to the lobby
+   * @param v VirtualView of the player to add to the lobby
    *
    * @throws UserTimeoutException if the user doesn't answer on time to a server
    *                              request.
    *                              If this exception is raised, the player is
    *                              not added to the lobby
+   * @throws RemoteException If something goes wrong with RMI
    */
-  private synchronized void registerPlayer(PlayerViewOnServer p)
-          throws UserTimeoutException {
-    while (
-            (this.lobbyes.isEmpty()) ||
-            !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
-    ) {
-      Integer selectedMap = 0;
-      try {
-        selectedMap = p.chooseMap();
-        this.lobbyes.add(new ServerLobby(selectedMap, this.lobbyTimeout));
+  private void registerPlayer(ViewFacadeInterfaceRMIClient v)
+          throws UserTimeoutException, RemoteException {
+    System.out.println("Starting Registering");
+    if (
+            this.userLobbyMap.containsKey(v.getName()) &&
+            this.userLobbyMap.get(v.getName()).isGameRunning()
+    ){
+      // Reconnecting user
+      PlayerViewOnServer.registerPlayer(v.getName(), v);
+    }
+    else {
+      // Creating a new user
+      PlayerViewOnServer p = new PlayerViewOnServer(v, this.disconnectionTimeout);
+
+      if (!this.lobbyes.isEmpty()){
+        this.userLobbyMap.put(v.getName(), this.lobbyes.get(0));
       }
-      catch (UnknownMapTypeException e){
-        Logger.getLogger(LOG_NAMESPACE).log(
-                Level.INFO,
-                "User choose an unknown map type <{0}>",
-                selectedMap
-        );
+
+      while (
+              (this.lobbyes.isEmpty()) ||
+              !(this.lobbyes.get(0).addPlayer(p, p.getName(), p.getCharacter()))
+      ) {
+        Integer selectedMap = 0;
+        try {
+          selectedMap = p.chooseMap();
+          this.lobbyes.add(new ServerLobby(selectedMap, this.lobbyTimeout));
+        }
+        catch (UnknownMapTypeException e){
+          Logger.getLogger(LOG_NAMESPACE).log(
+                  Level.INFO,
+                  "User choose an unknown map type <{0}>",
+                  selectedMap
+          );
+        }
+        this.userLobbyMap.put(v.getName(), this.lobbyes.get(0));
       }
     }
   }
