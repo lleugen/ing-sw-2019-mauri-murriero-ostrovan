@@ -75,12 +75,21 @@ public abstract class WeaponController {
    * @param player the player who is firing the weapon
    * @throws UserTimeoutException if the user takes too long to respond or disconnects
    */
-  public void fire(Player player, PlayerViewOnServer client) throws UserTimeoutException {
+  public boolean fire(Player player, PlayerViewOnServer client) throws UserTimeoutException {
+      System.out.println("choosing firing mode");
     this.firingMode = selectFiringMode(client);
-
+    System.out.println("choosing targets");
     List<Player> chosenTargets = findTargets(player);
-
-    shootTargets(player, chosenTargets);
+    for(Player p : chosenTargets){
+        System.out.println(p.getName());
+    }
+    if(!chosenTargets.isEmpty()){
+        System.out.println("shooting targets");
+        shootTargets(player, chosenTargets);
+        System.out.println("fire done");
+        return true;
+    }
+    return false;
   }
 
     /**

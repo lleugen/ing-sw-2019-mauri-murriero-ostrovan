@@ -119,8 +119,9 @@ public class NormalStateController extends PlayerStateController {
    */
   @Override
   public boolean shootPeople() throws UserTimeoutException {
-    shoot();
+    boolean result = false;
+    result  = shoot();
 
-    return true;
+    return result;
   }
 }

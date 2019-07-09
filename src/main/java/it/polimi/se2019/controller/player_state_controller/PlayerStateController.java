@@ -104,7 +104,8 @@ public abstract class PlayerStateController {
      * choose targets and fire.
      * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
-    public void shoot() throws UserTimeoutException {
+    public boolean shoot() throws UserTimeoutException {
+        boolean result = false;
       List<String> weapons = player.getInventory().getWeapons().stream()
               .map((Weapon::getName))
               .collect(Collectors.toList());
@@ -119,7 +120,7 @@ public abstract class PlayerStateController {
         }
         if(weaponController != null){
             System.out.println("firing " + weaponController.getName());
-            weaponController.fire(player, client);
+            result = weaponController.fire(player, client);
         }
 
 //        List<WeaponController> selectedWeapons;
@@ -134,6 +135,7 @@ public abstract class PlayerStateController {
 //          weaponController.fire(player, client);
 //        }
         System.out.println("a weapon has been shot");
+        return result;
     }
 
     /**
