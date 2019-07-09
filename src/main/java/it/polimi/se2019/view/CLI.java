@@ -254,14 +254,16 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseWeapon(List<String> weapons){
+        Scanner scanner = new Scanner(System.in);
+        int result = 0;
+        boolean done = false;
+
         markSection("Which weapon will you use?");
         for(String s : weapons){
             markSection(s);
         }
         displayRender();
-        Scanner scanner = new Scanner(System.in);
-        int result = 0;
-        boolean done = false;
+
         while(!done){
             result = scanner.nextInt();
             if((result >= 0) && (result < weapons.size())){

@@ -15,7 +15,7 @@ import java.util.List;
 public class VortexCannonController extends OptionalEffectWeaponController {
   public VortexCannonController(GameBoardController g) {
     super(g);
-    name = "VortexCannonController";
+    name = "VortexCannon";
     numberOfOptionalEffects = 2;
   }
 

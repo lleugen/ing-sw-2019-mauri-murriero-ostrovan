@@ -110,17 +110,30 @@ public abstract class PlayerStateController {
               .collect(Collectors.toList());
 
         String selectedWeapon = client.chooseWeapon(weapons);
-        List<WeaponController> selectedWeapons;
-        selectedWeapons = gameBoardController.getWeaponControllers().stream()
-                .filter((WeaponController w) ->
-                        w.getName().equals(selectedWeapon)
-                )
-                .collect(Collectors.toList());
-
-        for (WeaponController weaponController: selectedWeapons) {
-          weaponController.fire(player, client);
+        System.out.println("a client chose " + selectedWeapon);
+        WeaponController weaponController = null;
+        for(WeaponController w : gameBoardController.getWeaponControllers()){
+            if(w.getName().equals(selectedWeapon)){
+                weaponController = w;
+            }
+        }
+        if(weaponController != null){
+            System.out.println("firing " + weaponController.getName());
+            weaponController.fire(player, client);
         }
 
+//        List<WeaponController> selectedWeapons;
+//        selectedWeapons = gameBoardController.getWeaponControllers().stream()
+//                .filter((WeaponController w) ->
+//                        w.getName().equals(selectedWeapon)
+//                )
+//                .collect(Collectors.toList());
+//
+//        for (WeaponController weaponController: selectedWeapons) {
+//
+//          weaponController.fire(player, client);
+//        }
+        System.out.println("a weapon has been shot");
     }
 
     /**

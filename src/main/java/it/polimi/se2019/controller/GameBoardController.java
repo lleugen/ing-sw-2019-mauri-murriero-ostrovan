@@ -330,9 +330,11 @@ public class GameBoardController{
     try {
       PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
+      client.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
+
       client.sendMapInfo(this.genMapInfo());
 
-      client.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
+
 
       client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
     }

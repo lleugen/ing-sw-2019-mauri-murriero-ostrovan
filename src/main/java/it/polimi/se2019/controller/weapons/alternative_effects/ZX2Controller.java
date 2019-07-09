@@ -14,7 +14,7 @@ import java.util.List;
 public class ZX2Controller extends AlternativeEffectWeaponController {
   public ZX2Controller(GameBoardController g) {
     super(g);
-    name = "ZX2Controller";
+    name = "ZX2";
   }
 
   PlayerViewOnServer client;

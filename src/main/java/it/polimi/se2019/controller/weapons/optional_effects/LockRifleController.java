@@ -13,7 +13,7 @@ import java.util.List;
 public class LockRifleController extends OptionalEffectWeaponController {
   public LockRifleController(GameBoardController g) {
     super(g);
-    name = "LockRifleController";
+    name = "LockRifle";
     numberOfOptionalEffects = 2;
   }
 

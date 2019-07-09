@@ -15,7 +15,7 @@ import java.util.List;
 public class ShotgunController extends AlternativeEffectWeaponController {
   public ShotgunController(GameBoardController g) {
     super(g);
-    name = "ShotgunController";
+    name = "Shotgun";
   }
 
   PlayerViewOnServer client;
