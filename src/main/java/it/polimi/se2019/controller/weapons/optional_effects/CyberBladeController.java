@@ -33,11 +33,11 @@ public class CyberBladeController extends OptionalEffectWeaponController {
             )
     );
 
+    if(!playersOnSquare.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (GameBoardController.getPlayerNames(playersOnSquare))));
-
-
+    }
     return targets;
   }
 

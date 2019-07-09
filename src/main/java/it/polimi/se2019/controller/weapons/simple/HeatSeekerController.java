@@ -44,10 +44,6 @@ public class HeatSeekerController extends SimpleWeaponController {
       targets.add(gameBoardController.identifyPlayer(client.chooseTargets
               (GameBoardController.getPlayerNames(targettablePlayers))));
     }
-    if(!targets.isEmpty() && targets.get(0) != null){
-      return targets;
-    }
-    targets.clear();
     return targets;
   }
 

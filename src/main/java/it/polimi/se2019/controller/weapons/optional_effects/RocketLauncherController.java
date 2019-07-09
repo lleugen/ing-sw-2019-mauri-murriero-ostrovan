@@ -37,9 +37,12 @@ public class RocketLauncherController extends OptionalEffectWeaponController {
     }
     possibleTargets.removeAll(toRemove);
     List<Player> targets = new ArrayList<>();
+    if(!possibleTargets.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (GameBoardController.getPlayerNames(possibleTargets))));
+    }
+
 
     return targets;
   }

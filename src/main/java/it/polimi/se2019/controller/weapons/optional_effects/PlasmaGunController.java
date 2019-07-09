@@ -24,6 +24,9 @@ public class PlasmaGunController extends OptionalEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     List<Player> targets = new ArrayList<>();
     targets.add(chooseOneVisiblePlayer(shooter));
+    if (targets.contains(null)){
+      targets.clear();
+    }
     return targets;
   }
 

@@ -31,10 +31,11 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
             )
     );
     List<Player> targets = new ArrayList<>();
+    if(!visiblePlayers.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (GameBoardController.getPlayerNames(visiblePlayers))));
-
+    }
     return targets;
   }
 
