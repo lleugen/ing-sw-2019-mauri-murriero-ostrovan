@@ -144,6 +144,14 @@ public class ServerLobby implements Remote {
   }
 
   /**
+   * @return true if the game handled by this lobby is running,
+   *         false if it ended
+   */
+  public boolean isGameRunning(){
+    return !this.gameBoardController.isGameEnded();
+  }
+
+  /**
    * Contains MVC info about a player
    */
   private static class PlayerData {
