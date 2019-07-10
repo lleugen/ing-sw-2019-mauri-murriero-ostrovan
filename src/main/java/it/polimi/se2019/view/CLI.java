@@ -297,7 +297,14 @@ public final class CLI extends UnicastRemoteObject
             markSection(s);
         }
         displayRender();
-        int result = scanner.nextInt();
+        int result;
+        do {
+           result = scanner.nextInt();
+        } while (
+                result >= possibleTargets.size() ||
+                result < 0
+        );
+
         return possibleTargets.get(result);
     }
 

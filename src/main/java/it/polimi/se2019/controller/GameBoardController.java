@@ -285,6 +285,7 @@ public class GameBoardController{
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
+        activePlayers--;
         handleDisconnection(e);
       }
       currentPlayer++;
