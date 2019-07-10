@@ -81,6 +81,7 @@ public abstract class WeaponController {
     System.out.println("choosing targets");
     List<Player> chosenTargets = findTargets(player);
 
+    chosenTargets.remove(player);
     if(!chosenTargets.isEmpty()){
         System.out.println(chosenTargets.size());
         for(Player p : chosenTargets){
