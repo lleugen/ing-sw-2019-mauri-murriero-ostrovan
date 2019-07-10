@@ -36,10 +36,13 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p : possibleTargets){
         possibleTargetNames.add(p.getName());
       }
-      //make the view choose one target
-      //incompatible type error will be solved by change to the viewinterface
-      targets.add(gameBoardController.identifyPlayer
-              (client.chooseTargets(possibleTargetNames)));
+      if(!possibleTargetNames.isEmpty()){
+        //make the view choose one target
+        //incompatible type error will be solved by change to the viewinterface
+        targets.add(gameBoardController.identifyPlayer
+                (client.chooseTargets(possibleTargetNames)));
+      }
+
     }
     else{
       //rocket fist mode, one target one move away and another target two moves away, but in the same direction
@@ -55,10 +58,12 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p: firstPossibleTargets){
         firstPossibleTargetsNames.add(p.getName());
       }
-      //choose first target
-      //incompatible type error will be solved by change to the viewinterface
-      targets.add(gameBoardController.identifyPlayer
-              (client.chooseTargets(firstPossibleTargetsNames)));
+      if(!firstPossibleTargetsNames.isEmpty()){
+        //choose first target
+        //incompatible type error will be solved by change to the viewinterface
+        targets.add(gameBoardController.identifyPlayer
+                (client.chooseTargets(firstPossibleTargetsNames)));
+      }
       //get all possible second targets
       List<Player> possibleSecondTargets = new ArrayList<>();
       if(!targetSquare.getAdjacencies().get(direction).isBlocked()){
@@ -74,10 +79,13 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondTargets){
         possibleSecondTargetNames.add(p.getName());
       }
-      //choose second target
-      //incompatible type error will be solved by change to the viewinterface
-      targets.add(gameBoardController.identifyPlayer
-              (client.chooseTargets(possibleSecondTargetNames)));
+      if(!possibleSecondTargetNames.isEmpty()){
+        //choose second target
+        //incompatible type error will be solved by change to the viewinterface
+        targets.add(gameBoardController.identifyPlayer
+                (client.chooseTargets(possibleSecondTargetNames)));
+      }
+
     }
 
 

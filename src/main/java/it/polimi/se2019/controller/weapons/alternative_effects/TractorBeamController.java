@@ -50,9 +50,12 @@ public class TractorBeamController extends OptionalEffectWeaponController {
               map.getReachableSquares(shooter.getPosition(), 2)
       );
     }
+    if(!possibletargets.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
                       (GameBoardController.getPlayerNames(possibletargets))));
+    }
+
 
 
     return targets;

@@ -29,7 +29,7 @@ public class RailGunController extends AlternativeEffectWeaponController {
     directions.add(1, 1);
     directions.add(2, 2);
     directions.add(3, 3);
-    List<Player> targets = null;
+    List<Player> targets;
 
     Integer direction = client.chooseDirection(directions);
     //make a list of all players in that direction
@@ -51,18 +51,23 @@ public class RailGunController extends AlternativeEffectWeaponController {
     targets = new ArrayList<>();
     firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
-      //basic mode, one target
-      targets.add(gameBoardController.identifyPlayer
-              (client.chooseTargets(possibleTargetNames)));
+      if(!possibleTargetNames.isEmpty()){
+        //basic mode, one target
+        targets.add(gameBoardController.identifyPlayer
+                (client.chooseTargets(possibleTargetNames)));
+      }
+
     }
     else{
       //piercing mode, choose two targets
       List<String> targetNames = new ArrayList<>();
-      targetNames.add(client.chooseTargets(possibleTargetNames));
-      possibleTargetNames.remove(targetNames.get(0));
-      targetNames.add(client.chooseTargets(possibleTargetNames));
-      targets.add(gameBoardController.identifyPlayer(targetNames.get(0)));
-      targets.add(gameBoardController.identifyPlayer(targetNames.get(1)));
+      if(!possibleTargetNames.isEmpty()){
+        targetNames.add(client.chooseTargets(possibleTargetNames));
+        possibleTargetNames.remove(targetNames.get(0));
+        targetNames.add(client.chooseTargets(possibleTargetNames));
+        targets.add(gameBoardController.identifyPlayer(targetNames.get(0)));
+        targets.add(gameBoardController.identifyPlayer(targetNames.get(1)));
+      }
     }
 
     return targets;

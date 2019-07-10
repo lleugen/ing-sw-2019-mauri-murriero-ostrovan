@@ -24,15 +24,20 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
+    List<String> names = new ArrayList<>();
+    names = GameBoardController.getPlayerNames
+            (map.getPlayersOnSquares(
+                    map.getReachableSquares(
+                            shooter.getPosition(),
+                            0
+                    )
+            ));
+    if(!names.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
-                      (GameBoardController.getPlayerNames
-                              (map.getPlayersOnSquares(
-                                      map.getReachableSquares(
-                                              shooter.getPosition(),
-                                              0
-                                      )
-                              )))));
+                      (names)));
+    }
+
 
 
     return targets;

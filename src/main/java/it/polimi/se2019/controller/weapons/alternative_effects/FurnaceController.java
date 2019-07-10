@@ -25,7 +25,7 @@ public class FurnaceController extends AlternativeEffectWeaponController {
   @Override
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
-    List<Player> targets;
+    List<Player> targets = new ArrayList<>();
     firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       //basic mode, all players in a room you're not in
@@ -37,16 +37,18 @@ public class FurnaceController extends AlternativeEffectWeaponController {
               .map(Square.RoomColor::toString)
               .collect(Collectors.toList());
       //choose one room
-      Square.RoomColor targetRoom = Square.RoomColor.valueOf(
-              this.client.chooseRoom(visibleRooms)
-      );
+      if(!visibleRooms.isEmpty()){
+        Square.RoomColor targetRoom = Square.RoomColor.valueOf(
+                this.client.chooseRoom(visibleRooms)
+        );
+        //all players in the chosen room are targets
+        targets = this.gameBoardController.getPlayers().stream()
+                .filter((Player p) ->
+                        p.getPosition().getIdRoom().equals(targetRoom)
+                )
+                .collect(Collectors.toList());
+      }
 
-      //all players in the chosen room are targets
-      targets = this.gameBoardController.getPlayers().stream()
-              .filter((Player p) ->
-                      p.getPosition().getIdRoom().equals(targetRoom)
-              )
-              .collect(Collectors.toList());
     }
     else{
       //cosy fire, all players in a square one move away
@@ -61,13 +63,15 @@ public class FurnaceController extends AlternativeEffectWeaponController {
       for(Square q : adjacentSquares){
         adjacentSquaresCoordinates.add(map.getSquareCoordinates(q));
       }
-      //choose one square
-      List<Integer> targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
-      Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-      //all players on the chosen square are targets
-      for(Player p : gameBoardController.getPlayers()){
-        if(p.getPosition().equals(targetSquare)){
-          targets.add(p);
+      if(!adjacentSquaresCoordinates.isEmpty()){
+        //choose one square
+        List<Integer> targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
+        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+        //all players on the chosen square are targets
+        for(Player p : gameBoardController.getPlayers()){
+          if(p.getPosition().equals(targetSquare)){
+            targets.add(p);
+          }
         }
       }
     }
