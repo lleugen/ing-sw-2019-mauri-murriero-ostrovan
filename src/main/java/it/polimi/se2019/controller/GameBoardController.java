@@ -376,9 +376,12 @@ public class GameBoardController{
     try {
       //PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
+      for (int i = 0; i < players.size(); i++){
+        this.clients.get(i).sendPlayerInfo(
+                this.genPlayerInfo(players.get(i))
+        );
+      }
       for(PlayerViewOnServer c : clients){
-        c.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
-
         c.sendMapInfo(this.genMapInfo());
 
         c.sendKillScoreBoardInfo(this.genKillScoreboardInfo());

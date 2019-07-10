@@ -135,6 +135,11 @@ public abstract class PlayerStateController {
 //
 //          weaponController.fire(player, client);
 //        }
+          for(Weapon w : player.getInventory().getWeapons()){
+              if(w.getName().equals(selectedWeapon)){
+                  w.unload();
+              }
+          }
           System.out.println("a weapon has been shot");
       }
 
