@@ -178,6 +178,22 @@ public class GameBoardController{
     playTurns();
     playFrenzyTurn();
     this.gameEnded.set(true);
+    StringBuilder buffer = new StringBuilder();
+    for(Player a : players){
+      buffer.append(a.getName());
+      buffer.append(">>>>>>");
+      buffer.append(a.getPoints());
+      buffer.append('\n');
+    }
+    for(PlayerViewOnServer cl : clients){
+      try{
+        cl.sendGenericMessage(buffer.toString());
+      }
+      catch(RemoteException e){
+        //
+      }
+
+    }
   }
 
   /**
@@ -217,6 +233,15 @@ public class GameBoardController{
       }
     }
 
+    for(PlayerViewOnServer c : clients){
+      try{
+        c.sendGenericMessage("THE GAME HAS STARTED");
+      }
+      catch(RemoteException e){
+        //
+      }
+
+    }
     int activePlayers = this.playerControllers.size();
     boolean actionResult;
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
@@ -293,7 +318,15 @@ public class GameBoardController{
    * scoreboard will be resolved and the game will end
    */
   public void playFrenzyTurn() {
+    for(PlayerViewOnServer c : clients){
+      try{
+        c.sendGenericMessage("THE FRENZY TURN HAS STARTED");
+      }
+      catch(RemoteException e){
+        //
+      }
 
+    }
     //player the last turn and end the game
     int currentPlayerAvailableActions;
     boolean actionResult;

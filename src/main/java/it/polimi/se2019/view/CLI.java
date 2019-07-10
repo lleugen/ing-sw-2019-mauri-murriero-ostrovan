@@ -168,9 +168,9 @@ public final class CLI extends UnicastRemoteObject
                     stringBuilder.append("[]");
                     if (
                             mapInfo != null && (mapInfo.size() > o) &&
-                            mapInfo.get(o) != null && (mapInfo.get(o).size() > l) &&
-                            mapInfo.get(o).get(l) != null && (!mapInfo.get(o).get(l).isEmpty()) &&
-                            mapInfo.get(o).get(l).get(0) != null
+                                    mapInfo.get(o) != null && (mapInfo.get(o).size() > l) &&
+                                    mapInfo.get(o).get(l) != null && (!mapInfo.get(o).get(l).isEmpty()) &&
+                                    mapInfo.get(o).get(l).get(0) != null
                     ) {
                         if (!mapInfo.get(o).get(l).get(0).equals("NR")) {
                             if (m < mapInfo.get(o).get(l).size()) {
