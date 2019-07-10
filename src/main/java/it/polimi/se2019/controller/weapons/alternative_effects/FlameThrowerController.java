@@ -60,7 +60,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     }
 
 
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(1)){
       //choose one adjacent square, deal 2 damage to everybody in it and deal 1 damage to everybody on the next square in the same direction
       for(Player p : getGameBoardController().getPlayers()){

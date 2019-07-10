@@ -49,7 +49,7 @@ public class RailGunController extends AlternativeEffectWeaponController {
     List<String> possibleTargetNames = GameBoardController.getPlayerNames(possibleTargets);
     //choose targets
     targets = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       if(!possibleTargetNames.isEmpty()){
         //basic mode, one target

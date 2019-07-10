@@ -24,7 +24,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       List<String> names = new ArrayList<>();
       names = GameBoardController.getPlayerNames
@@ -70,7 +70,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(targets.size()>0){
       if(firingMode.get(0)){
 

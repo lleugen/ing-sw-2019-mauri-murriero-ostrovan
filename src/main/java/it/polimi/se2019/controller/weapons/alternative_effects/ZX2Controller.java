@@ -23,7 +23,7 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
         List<String> names = new ArrayList<>();
         names = GameBoardController.getPlayerNames

@@ -71,7 +71,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
     }
     //if the damaged target has a tagback gredade, he/she can use it now
     useTagbackGrenade(targets.get(0));
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
       if(firingMode.get(1)){
         Player target1 = gameBoardController.identifyPlayer
                 (client.chooseTargets
