@@ -80,10 +80,13 @@ public abstract class WeaponController {
     this.firingMode = selectFiringMode(client);
     System.out.println("choosing targets");
     List<Player> chosenTargets = findTargets(player);
-    for(Player p : chosenTargets){
-        System.out.println(p.getName());
-    }
+
+    chosenTargets.remove(player);
     if(!chosenTargets.isEmpty()){
+        System.out.println(chosenTargets.size());
+        for(Player p : chosenTargets){
+            System.out.println(p.getName());
+        }
         System.out.println("shooting targets");
         shootTargets(player, chosenTargets);
         System.out.println("fire done");
@@ -106,9 +109,10 @@ public abstract class WeaponController {
       );
       Player p = null;
       PlayerViewOnServer client = identifyClient(shooter);
-      p = gameBoardController.identifyPlayer
-              (client.chooseTargets(GameBoardController.getPlayerNames(possibleTargets)));
-
+      if(!possibleTargets.isEmpty()){
+          p = gameBoardController.identifyPlayer
+                  (client.chooseTargets(GameBoardController.getPlayerNames(possibleTargets)));
+      }
       return p;
   }
 

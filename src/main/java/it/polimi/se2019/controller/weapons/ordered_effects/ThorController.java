@@ -30,14 +30,19 @@ public class ThorController extends OrderedEffectsWeaponController {
         chainLength++;
       }
     }
+    List<String> possibleTargets = new ArrayList<>();
+
     for(int k = 1; k<chainLength; k++){
+      possibleTargets = GameBoardController.getPlayerNames
+              (map.getPlayersOnSquares(
+                      map.getVisibleSquares(
+                              targets.get(k-1).getPosition()
+                      )
+              ));
+      if(!possibleTargets.isEmpty()){
         targets.add(k, gameBoardController.identifyPlayer
-                (client.chooseTargets(GameBoardController.getPlayerNames
-                        (map.getPlayersOnSquares(
-                                map.getVisibleSquares(
-                                        targets.get(k-1).getPosition()
-                                )
-                        )))));
+                (client.chooseTargets(possibleTargets)));
+      }
     }
     return targets;
   }

@@ -7,6 +7,7 @@ import it.polimi.se2019.model.grabbable.Weapon;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -62,25 +63,41 @@ public class PlayerController {
    * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
   public static void reloadWeapon(PlayerViewOnServer c, Player p) throws UserTimeoutException {
-    if(c.chooseBoolean("Do you want to reload a weapon?")){
-      List<String> emptyWeapons = p.getInventory().getWeapons().stream()
-              .filter(Weapon::isUnloaded)
-              .map(Weapon::getName)
-              .collect(Collectors.toList());
+    List<String> emptyWeapons = p.getInventory().getWeapons().stream()
+            .filter(Weapon::isUnloaded)
+            .map(Weapon::getName)
+            .collect(Collectors.toList());
+    if(!emptyWeapons.isEmpty()){
+      if(c.chooseBoolean("Do you want to reload a weapon?")){
 
-      String selectedWeapon = c.chooseWeaponToReload(emptyWeapons);
 
-      List<Weapon> weaponsToReload = p.getInventory().getWeapons().stream()
-              .filter((Weapon w) -> selectedWeapon.equals(w.getName()))
-              .collect(Collectors.toList());
+        String selectedWeapon = c.chooseWeaponToReload(emptyWeapons);
 
-      for (Weapon w : weaponsToReload) {
-        w.reload(
-                getPowerUpsForReload(c, p),
-                p.getInventory().getAmmo()
-        );
+        List<Weapon> weaponsToReload = p.getInventory().getWeapons().stream()
+                .filter((Weapon w) -> selectedWeapon.equals(w.getName()))
+                .collect(Collectors.toList());
+        boolean result = false;
+        for (Weapon w : weaponsToReload) {
+          result = w.reload(
+                  getPowerUpsForReload(c, p),
+                  p.getInventory().getAmmo()
+          );
+          try{
+            if(result){
+              c.sendGenericMessage("reload succesful");
+            }
+            else{
+              c.sendGenericMessage("failed to reload");
+            }
+          }
+          catch(RemoteException g){
+            //whatever
+          }
+
+        }
       }
     }
+
   }
 
   /**

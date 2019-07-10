@@ -252,6 +252,10 @@ public class GameBoardController{
             currentPlayerAvailableActions --;
           }
         }
+        PlayerController.reloadWeapon(
+                clients.get(currentPlayer),
+                players.get(currentPlayer)
+        );
         refillSquares();
         endOfTurnDeathResolution();
       }
@@ -336,15 +340,15 @@ public class GameBoardController{
    */
   private void sendInfo() throws UserTimeoutException {
     try {
-      PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
+      //PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
-      client.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
+      for(PlayerViewOnServer c : clients){
+        c.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
 
-      client.sendMapInfo(this.genMapInfo());
+        c.sendMapInfo(this.genMapInfo());
 
-
-
-      client.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
+        c.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
+      }
     }
     catch (RemoteException e){
       throw new UserTimeoutException(e);

@@ -30,6 +30,7 @@ public class SecondFreneticStateController extends PlayerStateController {
    */
   @Override
   public boolean grabStuff() throws UserTimeoutException {
+    boolean result = false;
     List<Square> threeMovesAway = map.getReachableSquares(player.getPosition(), 3);
     List<List<Integer>> threeMovesAwayCoordinates = new ArrayList<>();
     for(Square q : threeMovesAway){
@@ -41,13 +42,19 @@ public class SecondFreneticStateController extends PlayerStateController {
       Square position = player.getPosition();
       int pickUpIndex = client.chooseItemToGrab();
       if(position instanceof SpawnSquare){
-        player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
+        result  = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
       }
       else{
-        player.getInventory().addAmmoTileToInventory(position.grab(0));
+        if(position.getItem()!=null){
+          player.getInventory().addAmmoTileToInventory(position.grab(0));
+          result = true;
+        }
+        else{
+          result = false;
+        }
       }
 
-    return true;
+    return result;
   }
 
   /**

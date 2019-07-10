@@ -26,16 +26,21 @@ public class ShotgunController extends AlternativeEffectWeaponController {
     List<Player> targets = new ArrayList<>();
     firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
-      //basic mode, shoot one target on your square
-      targets.add(gameBoardController.identifyPlayer
-              (client.chooseTargets
-                      (GameBoardController.getPlayerNames
-                              (gameBoardController.getGameBoard().getMap().getPlayersOnSquares(
-                                      map.getReachableSquares(
-                                              shooter.getPosition(),
-                                              0
-                                      )
-                              )))));
+      List<String> names = new ArrayList<>();
+      names = GameBoardController.getPlayerNames
+              (gameBoardController.getGameBoard().getMap().getPlayersOnSquares(
+                      map.getReachableSquares(
+                              shooter.getPosition(),
+                              0
+                      )
+              ));
+      if(!names.isEmpty()){
+        //basic mode, shoot one target on your square
+        targets.add(gameBoardController.identifyPlayer
+                (client.chooseTargets
+                        (names)));
+      }
+
     }
     else{
       //long barrel mode, shoot one target one move away
@@ -51,9 +56,12 @@ public class ShotgunController extends AlternativeEffectWeaponController {
         ));
       }
 
-      targets.add(gameBoardController.identifyPlayer
-              (client.chooseTargets
-                      (GameBoardController.getPlayerNames(possibleTargets))));
+      if(!possibleTargets.isEmpty()){
+        targets.add(gameBoardController.identifyPlayer
+                (client.chooseTargets
+                        (GameBoardController.getPlayerNames(possibleTargets))));
+      }
+
     }
 
     return targets;
@@ -81,10 +89,11 @@ public class ShotgunController extends AlternativeEffectWeaponController {
           possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));
         }
         List<Integer> targetSquareCoordinates;
-        targetSquareCoordinates = client.chooseTargetSquare(possibleSquaresCoordinates);
-        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-        targets.get(0).moveToSquare(targetSquare);
-
+        if(!possibleSquaresCoordinates.isEmpty()){
+          targetSquareCoordinates = client.chooseTargetSquare(possibleSquaresCoordinates);
+          Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+          targets.get(0).moveToSquare(targetSquare);
+        }
       }
       else{
         targets.get(0).takeDamage(shooter, 2);

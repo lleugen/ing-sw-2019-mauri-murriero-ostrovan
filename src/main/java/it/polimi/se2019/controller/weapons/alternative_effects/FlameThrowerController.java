@@ -25,6 +25,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
 
   @Override
   public List<Player> findTargets(Player shooter) throws UserTimeoutException{
+    List<Player> targets = new ArrayList<>();
     primaryTargets.clear();
     secondaryTargets.clear();
     PlayerViewOnServer client = identifyClient(shooter);
@@ -35,25 +36,39 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       }
     }
     Integer direction = 0;
+    if(!possibleDirections.isEmpty()){
       direction = client.chooseDirection(possibleDirections);
+    }
+    else{
+      return targets;
+    }
+
 
 
     List<Square> targetSquares = new ArrayList<>();
-    targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
-    targetSquares.add(targetSquares.get(0)
-            .getAdjacencies()
-            .get(direction)
-            .getSquare());
-    List<Player> targets = new ArrayList<>();
+    if(shooter.getPosition().getAdjacencies().get(direction).getSquare() != null){
+      targetSquares.add(shooter.getPosition().getAdjacencies().get(direction).getSquare());
+      if(targetSquares.get(0)
+              .getAdjacencies()
+              .get(direction)
+              .getSquare() != null){
+        targetSquares.add(targetSquares.get(0)
+                .getAdjacencies()
+                .get(direction)
+                .getSquare());
+      }
+    }
+
+
     firingMode = selectFiringMode(client);
     if(firingMode.get(1)){
       //choose one adjacent square, deal 2 damage to everybody in it and deal 1 damage to everybody on the next square in the same direction
       for(Player p : getGameBoardController().getPlayers()){
-        if(targetSquares.get(0).equals(p.getPosition())){
+        if(targetSquares.get(0) != null && targetSquares.get(0).equals(p.getPosition())){
           primaryTargets.add(p);
           targets.add(p);
         }
-        else if(targetSquares.get(1).equals(p.getPosition())){
+        else if(targetSquares.get(1) != null && targetSquares.get(1).equals(p.getPosition())){
           secondaryTargets.add(p);
           targets.add(p);
         }
@@ -61,12 +76,18 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     }
     else{
       //basic firing mode
-      List<Player> possiblePrimaryTargets = new ArrayList<>(mapReference.getPlayersOnSquares(
-              mapReference.getReachableSquares(targetSquares.get(0), 0)
-      ));
-      List<Player> possibleSecondaryTargets = new ArrayList<>(mapReference.getPlayersOnSquares(
-              mapReference.getReachableSquares(targetSquares.get(1), 0)
-      ));
+      List<Player> possiblePrimaryTargets = new ArrayList<>();
+      if(targetSquares.get(0) != null){
+        possiblePrimaryTargets = (mapReference.getPlayersOnSquares(
+                mapReference.getReachableSquares(targetSquares.get(0), 0)
+        ));
+      }
+      List<Player> possibleSecondaryTargets = new ArrayList<>();
+      if(targetSquares.get(1) != null){
+        possibleSecondaryTargets = (mapReference.getPlayersOnSquares(
+                mapReference.getReachableSquares(targetSquares.get(1), 0)
+        ));
+      }
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();
       List<String> possibleSecondaryTargetsNames = new ArrayList<>();
@@ -76,13 +97,14 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
+      if(!possiblePrimaryTargetsNames.isEmpty()){
         primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possiblePrimaryTargetsNames)));
+      }
+      if(!possibleSecondaryTargetsNames.isEmpty()){
         secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possibleSecondaryTargetsNames)));
-
-
-
+      }
     }
     targets.addAll(primaryTargets);
     targets.addAll(secondaryTargets);

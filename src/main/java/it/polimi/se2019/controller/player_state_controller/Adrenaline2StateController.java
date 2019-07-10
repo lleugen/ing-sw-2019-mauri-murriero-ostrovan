@@ -43,6 +43,7 @@ public class Adrenaline2StateController extends PlayerStateController {
    *
    */
   public boolean grabStuff()  throws UserTimeoutException {
+      boolean result = false;
       List<Square> twoMovesAway = map.getReachableSquares(player.getPosition(), 2);
       List<List<Integer>> twoMovesAwayCoordinates = new ArrayList<>();
       for(Square q : twoMovesAway){
@@ -53,13 +54,20 @@ public class Adrenaline2StateController extends PlayerStateController {
       Square position = player.getPosition();
       int pickUpIndex = client.chooseItemToGrab();
       if(position instanceof SpawnSquare){
-        player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
+        result = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
       }
       else{
-        player.getInventory().addAmmoTileToInventory(position.grab(0));
+          if(position.getItem()!=null){
+              player.getInventory().addAmmoTileToInventory(position.grab(0));
+              result = true;
+          }
+          else{
+              result = false;
+          }
+
       }
 
-      return true;
+      return result;
   }
 
   /**

@@ -38,23 +38,25 @@ public class VortexCannonController extends OptionalEffectWeaponController {
       oneMoveAwayFromvortex = map.getPlayersOnSquares(
               map.getReachableSquares(vortex, 1)
       );
-
-      targets.add(
-              gameBoardController.identifyPlayer(
-                      client.chooseTargets(
-                              GameBoardController.getPlayerNames(
-                                      map.getPlayersOnSquares(
-                                              map.getReachableSquares(
-                                                      vortex,
-                                                      1
-                                              )
-                                      )
-                              )
-                      )
+      List<Player> possibleTargets = new ArrayList<>();
+      possibleTargets = map.getPlayersOnSquares(
+              map.getReachableSquares(
+                      vortex,
+                      1
               )
       );
-      oneMoveAwayFromvortex.remove(targets.get(0));
-
+      if(!possibleTargets.isEmpty()){
+        targets.add(
+                gameBoardController.identifyPlayer(
+                        client.chooseTargets(
+                                GameBoardController.getPlayerNames(
+                                        possibleTargets
+                                )
+                        )
+                )
+        );
+        oneMoveAwayFromvortex.remove(targets.get(0));
+      }
     return targets;
   }
 
