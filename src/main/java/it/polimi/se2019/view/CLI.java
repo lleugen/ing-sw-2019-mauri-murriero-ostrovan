@@ -37,6 +37,11 @@ public final class CLI extends UnicastRemoteObject
     private List<ArrayList<ArrayList<String>>> mapInfo = new ArrayList<>();
 
     /**
+     * Contains information about the global scoreboard
+     */
+    List<ArrayList<String>> killScoreBoardInfo = new ArrayList<>();
+
+    /**
      * Contain the name of the player currently playing
      */
     private String name;
@@ -212,9 +217,8 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseAction(String state){
+        showTime();
         Scanner scanner = new Scanner(System.in);
-        displayMap();
-        displayPlayerInfo();
         markSection("Choose your action!");
         markSection("You are in state " + state);
         if(!state.equals("Adrenaline2State")){
@@ -239,8 +243,6 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public int chooseSpawnLocation(List<String> powerUps){
-        displayMap();
-        displayPlayerInfo();
         markSection("Discard a power up card to spawn.");
         for(String s : powerUps){
             markSection(s);
@@ -266,6 +268,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseWeapon(List<String> weapons){
+        showTime();
         Scanner scanner = new Scanner(System.in);
         int result = 0;
         boolean done = false;
@@ -287,9 +290,8 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseTargets(List<String> possibleTargets){
+        showTime();
         Scanner scanner = new Scanner(System.in);
-        displayMap();
-        displayPlayerInfo();
         markSection("Who would you like to target?");
         for(String s : possibleTargets){
             markSection(s);
@@ -301,6 +303,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseWeaponToReload(List<String> weapons){
+        showTime();
         markSection("Which weapon will you reload?");
         for(String s : weapons){
             markSection(s);
@@ -311,6 +314,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
+        showTime();
         List<Integer> choices = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         markSection("Choose power ups to use");
@@ -333,6 +337,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public Integer chooseIndex(List<String> availableEffects){
+        showTime();
         Scanner scanner = new Scanner(System.in);
         markSection("Choose one of the following:");
         for(String s : availableEffects){
@@ -343,6 +348,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public int chooseItemToGrab(){
+        showTime();
         markSection("Choose which one you would like to pick up:");
         markSection("0/1/2");
         displayRender();
@@ -360,6 +366,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public Boolean chooseFiringMode(String description){
+        showTime();
         markSection("Choose firing mode");
         markSection(description);
         markSection("input 0 for basic or 1 for alternative");
@@ -371,6 +378,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public Boolean chooseBoolean(String description){
+        showTime();
         markSection(description);
         markSection("yes/no");
         markSection("please input yes/no");
@@ -380,8 +388,7 @@ public final class CLI extends UnicastRemoteObject
 
 
     public String chooseRoom(List<String> rooms){
-        displayMap();
-        displayPlayerInfo();
+        showTime();
         markSection("Choose target room");
         for(String s : rooms){
             markSection(s);
@@ -391,8 +398,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public List<Integer> chooseTargetSquare(List<List<Integer>> targettableSquareCoordinates){
-        displayMap();
-        displayPlayerInfo();
+        showTime();
         markSection("Choose target square");
         markSection("please choose from the following possible");
         int currentX;
@@ -411,8 +417,7 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public Integer chooseDirection(List<Integer> possibleDirections){
-        displayMap();
-        displayPlayerInfo();
+        showTime();
         markSection("Choose which way you want to go");
         String[] availableDirections = new String[]{
                 "/north/",
@@ -445,6 +450,39 @@ public final class CLI extends UnicastRemoteObject
         }
     }
 
+    public void displayKillScoreBoard(){
+        StringBuilder buffer = new StringBuilder();
+        if(!killScoreBoardInfo.isEmpty()){
+            buffer.append("KILLS : ");
+            if(killScoreBoardInfo.get(0).isEmpty()){
+                buffer.append("no kills yet");
+            }
+            else{
+                for(int i = 0; i<killScoreBoardInfo.get(0).size(); i++){
+
+                    buffer.append(killScoreBoardInfo.get(0).get(i));
+                    buffer.append(" ");
+                }
+            }
+            buffer.append('\n');
+
+            buffer.append("DOUBLE KILLS : ");
+            if(killScoreBoardInfo.get(1).isEmpty()){
+                buffer.append("no double kills yet");
+            }
+            else{
+                for(int i = 0; i<killScoreBoardInfo.get(1).size(); i++){
+
+                    buffer.append(killScoreBoardInfo.get(1).get(i));
+                    buffer.append(" ");
+                }
+            }
+
+            buffer.append('\n');
+        }
+        System.out.printf(buffer.toString());
+    }
+
     public void displayPlayerInfo(){
         StringBuilder buffer = new StringBuilder();
         if(playerInfo != null){
@@ -464,8 +502,15 @@ public final class CLI extends UnicastRemoteObject
         }
     }
 
+    public void showTime(){
+        displayMap();
+        displayPlayerInfo();
+        displayKillScoreBoard();
+    }
+
     @Override
     public void sendGenericMessage(String message){
+        showTime();
         markSection(message);
         displayRender();
     }
@@ -473,7 +518,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public void sendMapInfo(List<ArrayList<ArrayList<String>>> m){
         mapInfo = m;
-        displayMap();
+        //displayMap();
     }
 
     @Override
@@ -485,8 +530,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public void sendKillScoreBoardInfo(List<ArrayList<String>> killBoardInfo)
             throws RemoteException {
-        // Implemented only because defined in the interface.
-        // Empty cause the gui doesn't needs those data
+        killScoreBoardInfo = killBoardInfo;
     }
 
     @Override

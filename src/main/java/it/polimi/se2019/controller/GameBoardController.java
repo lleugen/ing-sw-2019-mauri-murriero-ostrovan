@@ -347,8 +347,6 @@ public class GameBoardController{
 
         c.sendMapInfo(this.genMapInfo());
 
-
-
         c.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
       }
     }

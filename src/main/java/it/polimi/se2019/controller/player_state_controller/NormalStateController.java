@@ -84,9 +84,14 @@ public class NormalStateController extends PlayerStateController {
             //}
         }
         else{
-          player.getInventory().addAmmoTileToInventory(position.grab(0));
-          System.out.println("grabbed an ammo tile");
-          result = true;
+          if(position.getItem() != null){
+            player.getInventory().addAmmoTileToInventory(position.grab(0));
+            System.out.println("grabbed an ammo tile");
+            result = true;
+          }
+          else{
+            result = false;
+          }
         }
       }
       System.out.println("grabbed something");
