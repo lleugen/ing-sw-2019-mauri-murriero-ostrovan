@@ -185,7 +185,7 @@ public final class CLI extends UnicastRemoteObject
                             }
                         } else {
                             for (int n = 0; n < 8; n++) {
-                                stringBuilder.append("[]");
+                                stringBuilder.append("X");
                             }
                         }
                         stringBuilder.append("[]");

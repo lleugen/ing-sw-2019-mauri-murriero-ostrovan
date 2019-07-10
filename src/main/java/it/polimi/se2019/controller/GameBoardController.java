@@ -268,6 +268,8 @@ public class GameBoardController{
           sendInfo();
           try{
             clients.get(currentPlayer).sendGenericMessage("make an action");
+            clients.get(currentPlayer).sendGenericMessage(playerControllers.get(currentPlayer).getState().printInventory());
+
           }
           catch(RemoteException f){
             //whatever
@@ -352,6 +354,7 @@ public class GameBoardController{
             currentPlayerAvailableActions --;
           }
         }
+        refillSquares();
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
