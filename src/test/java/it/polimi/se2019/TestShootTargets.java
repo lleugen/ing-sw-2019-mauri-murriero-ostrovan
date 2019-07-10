@@ -13,6 +13,7 @@ import it.polimi.se2019.model.map.UnknownMapTypeException;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -29,6 +30,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 /**
  * @author Eugenio Ostrovan
  */
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class TestShootTargets {
     @Mock
