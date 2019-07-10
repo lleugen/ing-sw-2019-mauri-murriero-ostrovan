@@ -280,7 +280,7 @@ public final class CLI extends UnicastRemoteObject
         displayRender();
 
         while(!done){
-            result = scanner.nextInt();
+            result = readInt();
             if((result >= 0) && (result < weapons.size())){
                 done = true;
             }
@@ -297,7 +297,14 @@ public final class CLI extends UnicastRemoteObject
             markSection(s);
         }
         displayRender();
-        int result = scanner.nextInt();
+        int result;
+        do {
+           result = readInt();
+        } while (
+                result >= possibleTargets.size() ||
+                result < 0
+        );
+
         return possibleTargets.get(result);
     }
 
@@ -326,7 +333,7 @@ public final class CLI extends UnicastRemoteObject
 
         int choice = 0;
         while(choice != -1){
-            choice = scanner.nextInt();
+            choice = readInt();
             if(choice != -1){
                 choices.add(choice);
             }
@@ -343,7 +350,7 @@ public final class CLI extends UnicastRemoteObject
         for(String s : availableEffects){
             markSection(s);
         }
-        return scanner.nextInt();
+        return readInt();
     }
 
     @Override
@@ -356,7 +363,7 @@ public final class CLI extends UnicastRemoteObject
         int choice = 0;
         boolean done = false;
         while(!done){
-            choice = scanner.nextInt();
+            choice = readInt();
             if(choice==0 || choice == 1 || choice == 2){
                 done = true;
             }
@@ -373,7 +380,7 @@ public final class CLI extends UnicastRemoteObject
         displayRender();
         Scanner scanner = new Scanner(System.in);
 
-        return (scanner.nextInt() == 1);
+        return (readInt() == 1);
     }
 
     @Override
@@ -410,7 +417,7 @@ public final class CLI extends UnicastRemoteObject
         }
         displayRender();
         Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
+        int choice = readInt();
 
         return targettableSquareCoordinates.get(choice);
     }
