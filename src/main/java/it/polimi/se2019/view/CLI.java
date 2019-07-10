@@ -461,6 +461,7 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public void sendMapInfo(List<ArrayList<ArrayList<String>>> m){
         mapInfo = m;
+        displayMap();
     }
 
     @Override
