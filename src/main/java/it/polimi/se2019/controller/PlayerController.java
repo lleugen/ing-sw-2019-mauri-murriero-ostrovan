@@ -188,6 +188,15 @@ public class PlayerController {
                   state
           );
       }
+      if(!result){
+        try{
+          client.sendGenericMessage("action failed");
+        }
+        catch(RemoteException e){
+          //
+        }
+
+      }
       return result;
   }
 
