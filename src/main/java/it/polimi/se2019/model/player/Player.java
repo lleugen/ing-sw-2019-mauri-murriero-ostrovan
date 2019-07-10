@@ -71,6 +71,15 @@ public class Player {
   }
 
   /**
+   * Set the player's state
+   */
+  public void setState(int s){
+    if(s>=0 && s <=4){
+      state = s;
+    }
+  }
+
+  /**
    * @return the player's character
    */
   public String getCharacter() {
@@ -87,6 +96,15 @@ public class Player {
     for (int i = 0; i < amount; i++) {
       this.board.setDamage(sender);
     }
+    if(!gameBoardReference.isFrenzy()){
+      if(board.getDamageReceived().size()>=3 && board.getDamageReceived().size() < 6){
+        setState(1);
+      }
+      else if(board.getDamageReceived().size() >=6){
+        setState(2);
+      }
+    }
+
   }
 
   /**

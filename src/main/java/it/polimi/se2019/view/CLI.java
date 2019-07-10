@@ -212,17 +212,29 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseAction(String state){
+        Scanner scanner = new Scanner(System.in);
         displayMap();
         displayPlayerInfo();
         markSection("Choose your action!");
         markSection("You are in state " + state);
         if(!state.equals("Adrenaline2State")){
-            markSection("runAround");
+            markSection("run");
         }
-        markSection("grabStuff");
-        markSection("shootPeople");
+        markSection("grab");
+        markSection("shoot");
+        markSection("powerUp");
         displayRender();
-        return readLine();
+        String result = "run";
+        boolean done = false;
+        while(!done){
+            result = scanner.nextLine();
+            if(result.equals("run") || result.equals("grab") || result.equals("shoot") || result.equals("powerUp"))
+            {
+                done = true;
+            }
+        }
+
+        return result;
     }
 
     @Override
