@@ -163,9 +163,33 @@ public final class CLI extends UnicastRemoteObject
         }
         stringBuilder.append("\n");
         for(int o = 0; o<3; o++){
+
+            for(int colonna = 0; colonna<4; colonna++){
+                if(mapInfo.get(o).get(colonna).size()>4){
+                    if(mapInfo.get(o).get(colonna)
+                            .get(mapInfo.get(o).get(colonna).size()-4).equals("false")){
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("  ");
+                        }
+                    }
+                    else{
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("[]");
+                        }
+                    }
+                }
+            }
+            stringBuilder.append('\n');
+
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
-                    stringBuilder.append("[]");
+                    if(mapInfo.get(o).get(l).size() > 1){
+                        stringBuilder.append(mapInfo.get(o).get(l)
+                                .get(mapInfo.get(o).get(l).size()-1).equals("false") ? "  " : "[]");
+                    }
+                    else{
+                        stringBuilder.append("[]");
+                    }
                     if (
                             mapInfo != null && (mapInfo.size() > o) &&
                                     mapInfo.get(o) != null && (mapInfo.get(o).size() > l) &&
@@ -185,17 +209,43 @@ public final class CLI extends UnicastRemoteObject
                             }
                         } else {
                             for (int n = 0; n < 8; n++) {
-                                stringBuilder.append("][");
+                                stringBuilder.append("X ");
                             }
                         }
-                        stringBuilder.append("[]");
+                        if(mapInfo.get(o).get(l).size() > 3){
+                            stringBuilder.append(mapInfo.get(o).get(l)
+                                    .get(mapInfo.get(o).get(l).size()-3).equals("false") ? "  " : "[]");
+                        }
+                        else{
+                            stringBuilder.append("[]");
+                        }
+
                     }
                 }
                 stringBuilder.append("\n");
             }
+
+            for(int colonna = 0; colonna<4; colonna++){
+                if(mapInfo.get(o).get(colonna).size()>4){
+                    if(mapInfo.get(o).get(colonna)
+                            .get(mapInfo.get(o).get(colonna).size()-2).equals("false")){
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("  ");
+                        }
+                    }
+                    else{
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("[]");
+                        }
+                    }
+                }
+            }
+
+            /*
             for(int i = 0; i<40; i++){
                 stringBuilder.append("[]");
             }
+            */
             stringBuilder.append("\n");
         }
         System.console().writer().write(stringBuilder.toString());

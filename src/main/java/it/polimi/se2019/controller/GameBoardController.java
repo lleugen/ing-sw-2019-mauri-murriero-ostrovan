@@ -190,7 +190,7 @@ public class GameBoardController{
         cl.sendGenericMessage(buffer.toString());
       }
       catch(RemoteException e){
-        //
+        System.out.println("failed to send message");
       }
 
     }
@@ -217,6 +217,7 @@ public class GameBoardController{
     int currentPlayerAvailableActions;
     Integer numberOfTurns = 0;
     //spawn all players
+    System.out.println("spawning players");
     for(int i = 0; i<players.size(); i++){
       try{
         sendInfo();
@@ -224,7 +225,7 @@ public class GameBoardController{
           clients.get(currentPlayer).sendGenericMessage("It is your turn to spawn");
         }
         catch(RemoteException f){
-          //whatever
+          System.out.println("failed to send message");
         }
         playerControllers.get(i).getState().spawn();
       }
@@ -233,12 +234,13 @@ public class GameBoardController{
       }
     }
 
+    System.out.println("starting the game");
     for(PlayerViewOnServer c : clients){
       try{
         c.sendGenericMessage("THE GAME HAS STARTED");
       }
       catch(RemoteException e){
-        //
+        System.out.println("failed to send message");
       }
 
     }
@@ -258,7 +260,7 @@ public class GameBoardController{
             }
           }
           catch(RemoteException f){
-            //whatever
+            System.out.println("failed to send message");
           }
         }
 
@@ -272,7 +274,7 @@ public class GameBoardController{
 
           }
           catch(RemoteException f){
-            //whatever
+            System.out.println("failed to send message");
           }
           actionResult = playerControllers.get(currentPlayer).playTurn();
           if(actionResult){
@@ -329,7 +331,7 @@ public class GameBoardController{
         c.sendGenericMessage("THE FRENZY TURN HAS STARTED");
       }
       catch(RemoteException e){
-        //
+        System.out.println("failed to send message");
       }
 
     }
@@ -396,6 +398,7 @@ public class GameBoardController{
     catch (RemoteException e){
       throw new UserTimeoutException(e);
     }
+    System.out.println("sent info ok");
   }
 
   /**
@@ -413,6 +416,11 @@ public class GameBoardController{
         toReturn.get(i).add(k, new ArrayList<>());
         if (square != null) {
           toReturn.get(i).get(k).addAll(this.getMapSquareInfo(square));
+          List<String> walls = new ArrayList<>();
+          for(int a = 0; a<4; a++){
+            walls.add(a, square.getAdjacencies().get(a).isBlocked() ? "true" : "false");
+          }
+          toReturn.get(i).get(k).addAll(walls);
         }
         else {
           toReturn.get(i).get(k).add("NR");

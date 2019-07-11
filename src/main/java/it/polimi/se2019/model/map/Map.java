@@ -95,6 +95,20 @@ public class Map {
         updateAdjiacent(this.mapSquares, i, j);
       }
     }
+
+    //put up walls
+    switch (mapType){
+      case 0: genWalls0();
+      break;
+      case 1: genWalls1();
+      break;
+      case 2: genWalls2();
+      break;
+      case 3: genWalls3();
+      break;
+      default: System.out.println("the map is of unknown type");
+    }
+
     this.refillAll();
     for(int i = 0; i<3; i++){
       for(int k = 0; k<4; k++){
@@ -253,19 +267,26 @@ public class Map {
     mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
     mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
 
-    // walls
-    mapSquares[0][0].setBlocked(true, false, false,true);
-    mapSquares[0][1].setBlocked(true, false, true,false);
-    mapSquares[0][2].setBlocked(true, true,false,false);
-    mapSquares[1][0].setBlocked(false, false, true, true);
-    mapSquares[1][1].setBlocked(true, false, false, false);
-    mapSquares[1][2].setBlocked(false, false, true, false);
-    mapSquares[1][3].setBlocked(true, true, false, false);
-    mapSquares[2][1].setBlocked(false, false, true, true);
-    mapSquares[2][2].setBlocked(true, false, true, false);
-    mapSquares[2][3].setBlocked(false, true, true, false);
+
 
     return mapSquares;
+  }
+
+  private void genWalls0(){
+    if(mapSquares != null){
+      // walls
+      mapSquares[0][0].setBlocked(true, false, false,true);
+      mapSquares[0][1].setBlocked(true, false, true,false);
+      mapSquares[0][2].setBlocked(true, true,false,false);
+      mapSquares[1][0].setBlocked(false, false, true, true);
+      mapSquares[1][1].setBlocked(true, false, false, false);
+      mapSquares[1][2].setBlocked(false, false, true, false);
+      mapSquares[1][3].setBlocked(true, true, false, false);
+      mapSquares[2][1].setBlocked(false, false, true, true);
+      mapSquares[2][2].setBlocked(true, false, true, false);
+      mapSquares[2][3].setBlocked(false, true, true, false);
+    }
+
   }
 
   /**
@@ -294,12 +315,18 @@ public class Map {
     mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
     mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
 
-    // walls
-    mapSquares[0][1].setBlocked(true, false, true, false);
-    mapSquares[1][1]. setBlocked(true, true, false, false);
-    mapSquares[1][2].setBlocked(false, false, false, true);
+
 
     return mapSquares;
+  }
+
+  private void genWalls1(){
+    if(mapSquares != null){
+      // walls
+      mapSquares[0][1].setBlocked(true, false, true, false);
+      mapSquares[1][1]. setBlocked(true, true, false, false);
+      mapSquares[1][2].setBlocked(false, false, false, true);
+    }
   }
 
   /**
@@ -328,12 +355,18 @@ public class Map {
     mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.YELLOW, null);
     mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
 
-    // walls
-    mapSquares[1][0].setBlocked(false, true, false, true);
-    mapSquares[1][1].setBlocked(false, true, false, true);
-    mapSquares[1][2].setBlocked(false, false, false, true);
+
 
     return mapSquares;
+  }
+
+  private void genWalls2(){
+    if(mapSquares != null){
+      // walls
+      mapSquares[1][0].setBlocked(false, true, false, true);
+      mapSquares[1][1].setBlocked(false, true, false, true);
+      mapSquares[1][2].setBlocked(false, false, false, true);
+    }
   }
 
   /**
@@ -362,15 +395,21 @@ public class Map {
     mapSquares[2][2] = new AmmoSquare(mapReference,Square.RoomColor.WHITE, null);
     mapSquares[2][3] = new SpawnSquare(mapReference,Square.RoomColor.YELLOW, null);
 
-    // walls
-    mapSquares[1][0].setBlocked(false, true, false, true);
-    mapSquares[1][1].setBlocked(false, false, false, true);
-    mapSquares[1][2].setBlocked(false, false, true, false);
-    mapSquares[2][2].setBlocked(true, false, true, false);
-    mapSquares[0][2].setBlocked(true, true, false, false);
-    mapSquares[1][3].setBlocked(true, true, false, false);
+
 
     return mapSquares;
+  }
+
+  private void genWalls3(){
+    if(mapSquares != null){
+      // walls
+      mapSquares[1][0].setBlocked(false, true, false, true);
+      mapSquares[1][1].setBlocked(false, false, false, true);
+      mapSquares[1][2].setBlocked(false, false, true, false);
+      mapSquares[2][2].setBlocked(true, false, true, false);
+      mapSquares[0][2].setBlocked(true, true, false, false);
+      mapSquares[1][3].setBlocked(true, true, false, false);
+    }
   }
 
   /**

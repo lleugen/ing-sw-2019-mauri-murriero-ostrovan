@@ -83,7 +83,7 @@ public abstract class Square {
   /**
    * The list of adjacent squares
    */
-  private List<Direction> adjacencies;
+  private List<Direction> adjacencies = new ArrayList<>();
 
   /**
    * Take the item from the square
@@ -98,7 +98,7 @@ public abstract class Square {
    * @param adj the list of adjacencies to set for the square
    */
   public void setAdjacencies(List<Direction> adj){
-    adjacencies = new ArrayList<>();
+
     adjacencies.clear();
     if(adj.get(0) != null){
       adjacencies.add(0, adj.get(0));
@@ -122,10 +122,12 @@ public abstract class Square {
    * @param west whether the west side is blocked by a wall
    */
   protected void setBlocked(boolean north, boolean east, boolean south, boolean west){
-    adjacencies.get(0).setBlocked(north);
-    adjacencies.get(1).setBlocked(east);
-    adjacencies.get(2).setBlocked(south);
-    adjacencies.get(3).setBlocked(west);
+    List<Direction> newAdjacencies = new ArrayList<>();
+    newAdjacencies.add(0, new Direction(adjacencies.get(0).getSquare(), north));
+    newAdjacencies.add(1, new Direction(adjacencies.get(1).getSquare(), east));
+    newAdjacencies.add(2, new Direction(adjacencies.get(2).getSquare(), south));
+    newAdjacencies.add(3, new Direction(adjacencies.get(3).getSquare(), west));
+    setAdjacencies(newAdjacencies);
   }
 
   /**
