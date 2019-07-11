@@ -185,7 +185,7 @@ public final class CLI extends UnicastRemoteObject
                             }
                         } else {
                             for (int n = 0; n < 8; n++) {
-                                stringBuilder.append("X");
+                                stringBuilder.append("][");
                             }
                         }
                         stringBuilder.append("[]");
@@ -376,7 +376,6 @@ public final class CLI extends UnicastRemoteObject
         showTime();
         markSection("Choose firing mode");
         markSection(description);
-        markSection("input 0 for basic or 1 for alternative");
         displayRender();
         Scanner scanner = new Scanner(System.in);
 
@@ -410,10 +409,10 @@ public final class CLI extends UnicastRemoteObject
         markSection("please choose from the following possible");
         int currentX;
         int currentY;
-        for (List<Integer> targettableSquareCoordinate : targettableSquareCoordinates) {
-            currentX = targettableSquareCoordinate.get(0);
-            currentY = targettableSquareCoordinate.get(1);
-            markSection("x : " + currentX + " " + " y : " + currentY);
+        for(int i = 0; i<targettableSquareCoordinates.size(); i++){
+            currentX = targettableSquareCoordinates.get(i).get(0);
+            currentY = targettableSquareCoordinates.get(i).get(1);
+            markSection("(" + i + ")" + " x : " + currentX + " " + " y : " + currentY);
         }
         displayRender();
         Scanner scanner = new Scanner(System.in);

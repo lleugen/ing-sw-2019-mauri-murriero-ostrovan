@@ -278,6 +278,9 @@ public class GameBoardController{
           if(actionResult){
             currentPlayerAvailableActions --;
           }
+          else{
+            System.out.println("user's action failed");
+          }
         }
         PlayerController.reloadWeapon(
                 clients.get(currentPlayer),

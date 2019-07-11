@@ -46,7 +46,7 @@ public class ShockwaveController extends AlternativeEffectWeaponController {
                                 0
                         )
                 ));
-        if(!name.isEmpty()){
+        if(!names.isEmpty()){
           targets.add(gameBoardController.identifyPlayer
                   (client.chooseTargets
                           (names)));

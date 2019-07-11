@@ -64,36 +64,12 @@ public class NormalStateController extends PlayerStateController {
 
     Square position = player.getPosition();
     if(position != null){
-      int pickUpIndex = client.chooseItemToGrab();
+
 //    List<Square> spawnSquares = new ArrayList<>();
 //    spawnSquares.add(map.getRedSpawnPoint());
 //    spawnSquares.add(map.getBlueSpawnPoint());
 //    spawnSquares.add(map.getYellowSpawnPoint());
-      if(position!=null){
-        if(position instanceof SpawnSquare){
-            boolean addWepResult = false;
-            addWepResult = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
-            if(addWepResult){
-                result = true;
-            }
-            //if(player.getInventory().getWeapons().size()>0){
-            //System.out.println("player grabbed " + player.getInventory().getWeapons().get(player.getInventory().getWeapons().size()-1).toString());
-            //}
-            //else{
-            //System.out.println("something happened when grabbing a weapon");
-            //}
-        }
-        else{
-          if(position.getItem() != null){
-            player.getInventory().addAmmoTileToInventory(position.grab(0));
-            System.out.println("grabbed an ammo tile");
-            result = true;
-          }
-          else{
-            result = false;
-          }
-        }
-      }
+      result = grab();
       System.out.println("grabbed something");
 
       //System.out.printf(printInventory());
