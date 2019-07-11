@@ -26,6 +26,11 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
   protected Integer numberOfOptionalEffects;
   public List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException {
     List<Boolean> firingModeFlags = new ArrayList<>();
+    firingModeFlags.add(true);
+    for(int a = 1; a<numberOfOptionalEffects; a++){
+      firingModeFlags.add(false);
+    }
+    /*
     List<String> effects = new ArrayList<>();
     for(int i = 0; i<numberOfOptionalEffects; i++){
       effects.add("effect"+i);
@@ -41,7 +46,7 @@ public abstract class OrderedEffectsWeaponController extends WeaponController {
           firingModeFlags.add(k, false);
         }
       }
-
+    */
 
     return firingModeFlags;
   }

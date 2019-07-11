@@ -27,12 +27,18 @@ public abstract class OptionalEffectWeaponController extends WeaponController {
 
   public List<Boolean> selectFiringMode(PlayerViewOnServer client) throws UserTimeoutException{
     List<Boolean> optionalEffectFlags = new ArrayList<>();
+    optionalEffectFlags.add(true);
+    for(int a = 1; a<numberOfOptionalEffects; a++){
+      optionalEffectFlags.add(false);
+    }
+    /*
     for(int i = 0; i<numberOfOptionalEffects; i++){
         optionalEffectFlags.add
                 (client.chooseFiringMode("select effect" + i));
 
 
     }
+    */
     return optionalEffectFlags;
   }
 }
