@@ -30,7 +30,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     secondaryTargets.clear();
     PlayerViewOnServer client = identifyClient(shooter);
     List<Integer> possibleDirections = new ArrayList<>();
-    for(int i = 0; i<3; i++){
+    for(int i = 0; i<4; i++){
       if(!shooter.getPosition().getAdjacencies().get(i).isBlocked()){
         possibleDirections.add(i);
       }
@@ -78,15 +78,15 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       //basic firing mode
       List<Player> possiblePrimaryTargets = new ArrayList<>();
       if(targetSquares.get(0) != null){
-        possiblePrimaryTargets = (mapReference.getPlayersOnSquares(
-                mapReference.getReachableSquares(targetSquares.get(0), 0)
-        ));
+        List<Square> temp = new ArrayList<>();
+        temp.add(targetSquares.get(0));
+        possiblePrimaryTargets = (mapReference.getPlayersOnSquares(temp));
       }
       List<Player> possibleSecondaryTargets = new ArrayList<>();
       if(targetSquares.get(1) != null){
-        possibleSecondaryTargets = (mapReference.getPlayersOnSquares(
-                mapReference.getReachableSquares(targetSquares.get(1), 0)
-        ));
+        List<Square> temp = new ArrayList<>();
+        temp.add(targetSquares.get(1));
+        possibleSecondaryTargets = (mapReference.getPlayersOnSquares(temp));
       }
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();
