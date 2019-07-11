@@ -24,7 +24,7 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       //basic mode, one target one move away
       List<String> possibleTargetNames = new ArrayList<>();

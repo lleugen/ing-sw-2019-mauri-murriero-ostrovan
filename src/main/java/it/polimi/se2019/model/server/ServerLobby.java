@@ -72,7 +72,9 @@ public class ServerLobby implements Remote {
   private synchronized void startGame(){
     if (!this.gameStarted) {
       this.gameStarted = true;
+      System.out.println("the lobby is starting the game");
       if (this.playersData.size() >= MIN_PLAYERS) {
+        System.out.println("min number of players reached");
         this.gameBoardController.getGameBoard().addPlayers(
                 this.playersData.values().stream()
                         .map(PlayerData::getModel)

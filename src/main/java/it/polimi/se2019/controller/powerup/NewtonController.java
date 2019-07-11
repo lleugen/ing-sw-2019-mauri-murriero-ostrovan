@@ -30,6 +30,7 @@ public class NewtonController extends PowerUpController {
    */
   @Override
   public Boolean usePowerUp(Player user) throws UserTimeoutException {
+    System.out.println("using newton");
     client = identifyClient(user);
     boolean used = false;
     Map map = gameBoardController.getGameBoard().getMap();
@@ -42,11 +43,13 @@ public class NewtonController extends PowerUpController {
     List<List<Integer>> possibleSquares = new ArrayList<>();
     Square firstSquare;
     Square secondSquare;
-    for(int i = 0; i<3; i++){
+    for(int i = 0; i<4; i++){
       firstSquare = target.getPosition().getAdjacencies().get(i).getSquare();
       secondSquare = firstSquare.getAdjacencies().get(i).getSquare();
+      System.out.println("got squares");
       possibleSquares.add(map.getSquareCoordinates(firstSquare));
       possibleSquares.add(map.getSquareCoordinates(secondSquare));
+      System.out.println("got square coordinates");
     }
     List<Integer> squareCoordinates = client.chooseTargetSquare(possibleSquares);
 

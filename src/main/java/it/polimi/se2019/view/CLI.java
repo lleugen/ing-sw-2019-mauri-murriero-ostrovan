@@ -163,17 +163,41 @@ public final class CLI extends UnicastRemoteObject
         }
         stringBuilder.append("\n");
         for(int o = 0; o<3; o++){
+
+            for(int colonna = 0; colonna<4; colonna++){
+                if(mapInfo.get(o).get(colonna).size()>4){
+                    if(mapInfo.get(o).get(colonna)
+                            .get(mapInfo.get(o).get(colonna).size()-4).equals("false")){
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("  ");
+                        }
+                    }
+                    else{
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("[]");
+                        }
+                    }
+                }
+            }
+            stringBuilder.append('\n');
+
             for(int m = 0; m<10; m++){
                 for(int l = 0; l<4; l++){
-                    stringBuilder.append("[]");
+                    if(mapInfo.get(o).get(l).size() > 1){
+                        stringBuilder.append(mapInfo.get(o).get(l)
+                                .get(mapInfo.get(o).get(l).size()-1).equals("false") ? "  " : "[]");
+                    }
+                    else{
+                        stringBuilder.append("[]");
+                    }
                     if (
                             mapInfo != null && (mapInfo.size() > o) &&
-                            mapInfo.get(o) != null && (mapInfo.get(o).size() > l) &&
-                            mapInfo.get(o).get(l) != null && (!mapInfo.get(o).get(l).isEmpty()) &&
-                            mapInfo.get(o).get(l).get(0) != null
+                                    mapInfo.get(o) != null && (mapInfo.get(o).size() > l) &&
+                                    mapInfo.get(o).get(l) != null && (!mapInfo.get(o).get(l).isEmpty()) &&
+                                    mapInfo.get(o).get(l).get(0) != null
                     ) {
                         if (!mapInfo.get(o).get(l).get(0).equals("NR")) {
-                            if (m < mapInfo.get(o).get(l).size()) {
+                            if (m < mapInfo.get(o).get(l).size()-4) {
                                 stringBuilder.append(mapInfo.get(o).get(l).get(m));
                                 for (int k = 0; k < 16 - mapInfo.get(o).get(l).get(m).length(); k++) {
                                     stringBuilder.append(" ");
@@ -185,17 +209,43 @@ public final class CLI extends UnicastRemoteObject
                             }
                         } else {
                             for (int n = 0; n < 8; n++) {
-                                stringBuilder.append("[]");
+                                stringBuilder.append("X ");
                             }
                         }
-                        stringBuilder.append("[]");
+                        if(mapInfo.get(o).get(l).size() > 3){
+                            stringBuilder.append(mapInfo.get(o).get(l)
+                                    .get(mapInfo.get(o).get(l).size()-3).equals("false") ? "  " : "[]");
+                        }
+                        else{
+                            stringBuilder.append("[]");
+                        }
+
                     }
                 }
                 stringBuilder.append("\n");
             }
+
+            for(int colonna = 0; colonna<4; colonna++){
+                if(mapInfo.get(o).get(colonna).size()>4){
+                    if(mapInfo.get(o).get(colonna)
+                            .get(mapInfo.get(o).get(colonna).size()-2).equals("false")){
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("  ");
+                        }
+                    }
+                    else{
+                        for(int contatore = 0; contatore <10; contatore++){
+                            stringBuilder.append("[]");
+                        }
+                    }
+                }
+            }
+
+            /*
             for(int i = 0; i<40; i++){
                 stringBuilder.append("[]");
             }
+            */
             stringBuilder.append("\n");
         }
         System.console().writer().write(stringBuilder.toString());
@@ -280,7 +330,7 @@ public final class CLI extends UnicastRemoteObject
         displayRender();
 
         while(!done){
-            result = scanner.nextInt();
+            result = readInt();
             if((result >= 0) && (result < weapons.size())){
                 done = true;
             }
@@ -297,7 +347,14 @@ public final class CLI extends UnicastRemoteObject
             markSection(s);
         }
         displayRender();
-        int result = scanner.nextInt();
+        int result;
+        do {
+           result = readInt();
+        } while (
+                result >= possibleTargets.size() ||
+                result < 0
+        );
+
         return possibleTargets.get(result);
     }
 
@@ -326,7 +383,7 @@ public final class CLI extends UnicastRemoteObject
 
         int choice = 0;
         while(choice != -1){
-            choice = scanner.nextInt();
+            choice = readInt();
             if(choice != -1){
                 choices.add(choice);
             }
@@ -343,7 +400,7 @@ public final class CLI extends UnicastRemoteObject
         for(String s : availableEffects){
             markSection(s);
         }
-        return scanner.nextInt();
+        return readInt();
     }
 
     @Override
@@ -356,7 +413,7 @@ public final class CLI extends UnicastRemoteObject
         int choice = 0;
         boolean done = false;
         while(!done){
-            choice = scanner.nextInt();
+            choice = readInt();
             if(choice==0 || choice == 1 || choice == 2){
                 done = true;
             }
@@ -369,11 +426,10 @@ public final class CLI extends UnicastRemoteObject
         showTime();
         markSection("Choose firing mode");
         markSection(description);
-        markSection("input 0 for basic or 1 for alternative");
         displayRender();
         Scanner scanner = new Scanner(System.in);
 
-        return (scanner.nextInt() == 1);
+        return (readInt() == 1);
     }
 
     @Override
@@ -403,14 +459,14 @@ public final class CLI extends UnicastRemoteObject
         markSection("please choose from the following possible");
         int currentX;
         int currentY;
-        for (List<Integer> targettableSquareCoordinate : targettableSquareCoordinates) {
-            currentX = targettableSquareCoordinate.get(0);
-            currentY = targettableSquareCoordinate.get(1);
-            markSection("x : " + currentX + " " + " y : " + currentY);
+        for(int i = 0; i<targettableSquareCoordinates.size(); i++){
+            currentX = targettableSquareCoordinates.get(i).get(0);
+            currentY = targettableSquareCoordinates.get(i).get(1);
+            markSection("(" + i + ")" + " x : " + currentX + " " + " y : " + currentY);
         }
         displayRender();
         Scanner scanner = new Scanner(System.in);
-        int choice = scanner.nextInt();
+        int choice = readInt();
 
         return targettableSquareCoordinates.get(choice);
     }

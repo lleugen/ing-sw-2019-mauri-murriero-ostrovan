@@ -26,7 +26,7 @@ public class FurnaceController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       //basic mode, all players in a room you're not in
       //get visible rooms

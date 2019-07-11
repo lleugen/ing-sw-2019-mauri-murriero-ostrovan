@@ -12,6 +12,7 @@ import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -135,7 +136,16 @@ public abstract class PlayerStateController {
 //
 //          weaponController.fire(player, client);
 //        }
-          System.out.println("a weapon has been shot");
+          if(result){
+              for(Weapon w : player.getInventory().getWeapons()){
+                  if(w.getName().equals(selectedWeapon)){
+                      w.unload();
+                      System.out.println("a weapon has been shot");
+                  }
+              }
+          }
+
+
       }
 
         return result;
@@ -183,17 +193,47 @@ public abstract class PlayerStateController {
      * the corresponding resources to the inventory.
      * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
-    public void grab() throws UserTimeoutException{
+    public boolean grab() throws UserTimeoutException{
+        boolean result = false;
         Square position = player.getPosition();
         int index = client.chooseItemToGrab();
 
-        if(position instanceof SpawnSquare){
-            //return here when add to inventory method is finished
-            player.getInventory().addWeaponToInventory(position.grab(index));
+        if(position != null){
+            if(position.getItem() != null){
+                if(position instanceof SpawnSquare){
+                    //return here when add to inventory method is finished
+                    if(!position.getItem().isEmpty()){
+                        player.getInventory().addWeaponToInventory(position.grab(index));
+                        result = true;
+                    }
+                    else{
+                        try{
+                            client.sendGenericMessage("no more weapons here");
+                        }
+                        catch(RemoteException r){
+                            //
+                        }
+
+                    }
+                }
+                else{
+                    player.getInventory().addAmmoTileToInventory(position.grab(index));
+                    result = true;
+                }
+            }
+            else{
+                try{
+                    client.sendGenericMessage("nothing to grab here");
+                }
+                catch(RemoteException r){
+                    //
+                }
+            }
         }
         else{
-            player.getInventory().addAmmoTileToInventory(position.grab(index));
+            System.out.println("the game is broken lol");
         }
+        return result;
     }
 
     /**

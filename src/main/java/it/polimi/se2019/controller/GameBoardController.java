@@ -178,6 +178,22 @@ public class GameBoardController{
     playTurns();
     playFrenzyTurn();
     this.gameEnded.set(true);
+    StringBuilder buffer = new StringBuilder();
+    for(Player a : players){
+      buffer.append(a.getName());
+      buffer.append(">>>>>>");
+      buffer.append(a.getPoints());
+      buffer.append('\n');
+    }
+    for(PlayerViewOnServer cl : clients){
+      try{
+        cl.sendGenericMessage(buffer.toString());
+      }
+      catch(RemoteException e){
+        System.out.println("failed to send message");
+      }
+
+    }
   }
 
   /**
@@ -201,6 +217,7 @@ public class GameBoardController{
     int currentPlayerAvailableActions;
     Integer numberOfTurns = 0;
     //spawn all players
+    System.out.println("spawning players");
     for(int i = 0; i<players.size(); i++){
       try{
         sendInfo();
@@ -208,7 +225,7 @@ public class GameBoardController{
           clients.get(currentPlayer).sendGenericMessage("It is your turn to spawn");
         }
         catch(RemoteException f){
-          //whatever
+          System.out.println("failed to send message");
         }
         playerControllers.get(i).getState().spawn();
       }
@@ -217,6 +234,16 @@ public class GameBoardController{
       }
     }
 
+    System.out.println("starting the game");
+    for(PlayerViewOnServer c : clients){
+      try{
+        c.sendGenericMessage("THE GAME HAS STARTED");
+      }
+      catch(RemoteException e){
+        System.out.println("failed to send message");
+      }
+
+    }
     int activePlayers = this.playerControllers.size();
     boolean actionResult;
     while(this.gameBoard.getKillScoreBoard().gameRunning()){
@@ -233,7 +260,7 @@ public class GameBoardController{
             }
           }
           catch(RemoteException f){
-            //whatever
+            System.out.println("failed to send message");
           }
         }
 
@@ -243,13 +270,18 @@ public class GameBoardController{
           sendInfo();
           try{
             clients.get(currentPlayer).sendGenericMessage("make an action");
+            clients.get(currentPlayer).sendGenericMessage(playerControllers.get(currentPlayer).getState().printInventory());
+
           }
           catch(RemoteException f){
-            //whatever
+            System.out.println("failed to send message");
           }
           actionResult = playerControllers.get(currentPlayer).playTurn();
           if(actionResult){
             currentPlayerAvailableActions --;
+          }
+          else{
+            System.out.println("user's action failed");
           }
         }
         PlayerController.reloadWeapon(
@@ -260,6 +292,7 @@ public class GameBoardController{
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
+        activePlayers--;
         handleDisconnection(e);
       }
       currentPlayer++;
@@ -293,7 +326,15 @@ public class GameBoardController{
    * scoreboard will be resolved and the game will end
    */
   public void playFrenzyTurn() {
+    for(PlayerViewOnServer c : clients){
+      try{
+        c.sendGenericMessage("THE FRENZY TURN HAS STARTED");
+      }
+      catch(RemoteException e){
+        System.out.println("failed to send message");
+      }
 
+    }
     //player the last turn and end the game
     int currentPlayerAvailableActions;
     boolean actionResult;
@@ -319,6 +360,7 @@ public class GameBoardController{
             currentPlayerAvailableActions --;
           }
         }
+        refillSquares();
         endOfTurnDeathResolution();
       }
       catch (UserTimeoutException e){
@@ -342,9 +384,12 @@ public class GameBoardController{
     try {
       //PlayerViewOnServer client = playerControllers.get(currentPlayer).getClient();
 
+      for (int i = 0; i < players.size(); i++){
+        this.clients.get(i).sendPlayerInfo(
+                this.genPlayerInfo(players.get(i))
+        );
+      }
       for(PlayerViewOnServer c : clients){
-        c.sendPlayerInfo(this.genPlayerInfo(players.get(currentPlayer)));
-
         c.sendMapInfo(this.genMapInfo());
 
         c.sendKillScoreBoardInfo(this.genKillScoreboardInfo());
@@ -353,6 +398,7 @@ public class GameBoardController{
     catch (RemoteException e){
       throw new UserTimeoutException(e);
     }
+    System.out.println("sent info ok");
   }
 
   /**
@@ -370,6 +416,11 @@ public class GameBoardController{
         toReturn.get(i).add(k, new ArrayList<>());
         if (square != null) {
           toReturn.get(i).get(k).addAll(this.getMapSquareInfo(square));
+          List<String> walls = new ArrayList<>();
+          for(int a = 0; a<4; a++){
+            walls.add(a, square.getAdjacencies().get(a).isBlocked() ? "true" : "false");
+          }
+          toReturn.get(i).get(k).addAll(walls);
         }
         else {
           toReturn.get(i).get(k).add("NR");

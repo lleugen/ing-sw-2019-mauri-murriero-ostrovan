@@ -1,5 +1,6 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
+import it.polimi.se2019.model.map.Direction;
 import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
@@ -24,7 +25,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   public List<Player> findTargets(Player shooter) throws UserTimeoutException {
     client = identifyClient(shooter);
     List<Player> targets = new ArrayList<>();
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(firingMode.get(0)){
       List<String> names = new ArrayList<>();
       names = GameBoardController.getPlayerNames
@@ -47,6 +48,19 @@ public class ShotgunController extends AlternativeEffectWeaponController {
       List<Square> adjacentSquares =
               gameBoardController.getGameBoard().getMap().getReachableSquares(shooter.getPosition(), 1);
       List<Player> possibleTargets = new ArrayList<>();
+      List<Square> squares = new ArrayList<>();
+      for(Direction d : shooter.getPosition().getAdjacencies()){
+        if(d != null){
+          if(!d.isBlocked()){
+            if(d.getSquare() != null){
+              squares.clear();
+              squares.add(d.getSquare());
+              possibleTargets.addAll(map.getPlayersOnSquares(squares));
+            }
+          }
+        }
+      }
+      /*
       while(adjacentSquares.iterator().hasNext()){
         possibleTargets.addAll(map.getPlayersOnSquares(
                 map.getReachableSquares(
@@ -55,13 +69,13 @@ public class ShotgunController extends AlternativeEffectWeaponController {
                 )
         ));
       }
+      */
 
       if(!possibleTargets.isEmpty()){
         targets.add(gameBoardController.identifyPlayer
                 (client.chooseTargets
                         (GameBoardController.getPlayerNames(possibleTargets))));
       }
-
     }
 
     return targets;
@@ -70,7 +84,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
   @Override
   public void shootTargets(Player shooter, List<Player> targets) throws UserTimeoutException {
     client = identifyClient(shooter);
-    firingMode = selectFiringMode(client);
+    //firingMode = selectFiringMode(client);
     if(targets.size()>0){
       if(firingMode.get(0)){
 

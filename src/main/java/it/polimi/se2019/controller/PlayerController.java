@@ -161,6 +161,7 @@ public class PlayerController {
    * @throws UserTimeoutException if the player takes too long to respond or disconnects
    */
   public boolean playTurn() throws UserTimeoutException{
+    state = stateControllerList.get(player.getState());
     System.out.println("executing an action");
     boolean result = false;
       switch (
@@ -187,6 +188,15 @@ public class PlayerController {
                   "User selected a wrong action {0}",
                   state
           );
+      }
+      if(!result){
+        try{
+          client.sendGenericMessage("action failed");
+        }
+        catch(RemoteException e){
+          //
+        }
+
       }
       return result;
   }
