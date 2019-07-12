@@ -96,6 +96,10 @@ public class Player {
     for (int i = 0; i < amount; i++) {
       this.board.setDamage(sender);
     }
+    while(board.getMarksAssigned().contains(sender)){
+      board.setDamage(sender);
+      board.removeMark(sender);
+    }
     if(!gameBoardReference.isFrenzy()){
       if(board.getDamageReceived().size()>=3 && board.getDamageReceived().size() < 6){
         setState(1);

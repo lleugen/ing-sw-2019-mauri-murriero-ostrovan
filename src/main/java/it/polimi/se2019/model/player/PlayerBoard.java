@@ -87,6 +87,15 @@ public class PlayerBoard {
     marksAssigned.add(player);
   }
 
+    /**
+     * Remove one mark from sender
+     */
+    public void removeMark(Player sender){
+        if(marksAssigned.contains(sender)){
+            marksAssigned.remove(sender);
+        }
+    }
+
   /**
    * Flip the board, changing scores index
    */
