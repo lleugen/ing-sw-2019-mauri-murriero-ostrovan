@@ -268,7 +268,7 @@ public abstract class PlayerStateController {
                     }
                 }
                 if(powerUpController != null){
-                    powerUpController.usePowerUp(player);
+                    return powerUpController.usePowerUp(player);
                 }
 
             }
