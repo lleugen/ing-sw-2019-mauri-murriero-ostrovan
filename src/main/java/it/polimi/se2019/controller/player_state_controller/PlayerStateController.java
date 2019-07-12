@@ -196,11 +196,12 @@ public abstract class PlayerStateController {
     public boolean grab() throws UserTimeoutException{
         boolean result = false;
         Square position = player.getPosition();
-        int index = client.chooseItemToGrab();
+        int index = 0;
 
         if(position != null){
             if(position.getItem() != null){
                 if(position instanceof SpawnSquare){
+                    index = client.chooseItemToGrab();
                     //return here when add to inventory method is finished
                     if(!position.getItem().isEmpty()){
                         player.getInventory().addWeaponToInventory(position.grab(index));
@@ -217,7 +218,7 @@ public abstract class PlayerStateController {
                     }
                 }
                 else{
-                    player.getInventory().addAmmoTileToInventory(position.grab(index));
+                    player.getInventory().addAmmoTileToInventory(position.grab(0));
                     result = true;
                 }
             }
