@@ -35,6 +35,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
                               0
                       )
               ));
+      names.remove(shooter.getName());
       if(!names.isEmpty()){
         //basic mode, shoot one target on your square
         targets.add(gameBoardController.identifyPlayer

@@ -46,6 +46,7 @@ public class WhisperController extends SimpleWeaponController {
     //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);
+    visiblePlayers.remove(shooter);
     if(!visiblePlayers.isEmpty()){
       targets.add(gameBoardController.identifyPlayer(client.chooseTargets
               (GameBoardController.getPlayerNames(visiblePlayers))));

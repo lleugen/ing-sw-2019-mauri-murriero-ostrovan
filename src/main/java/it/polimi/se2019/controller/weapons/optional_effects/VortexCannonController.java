@@ -45,6 +45,7 @@ public class VortexCannonController extends OptionalEffectWeaponController {
                       1
               )
       );
+      possibleTargets.remove(shooter);
       if(!possibleTargets.isEmpty()){
         targets.add(
                 gameBoardController.identifyPlayer(

@@ -5,6 +5,7 @@ import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.controller.weapons.optional_effects.OptionalEffectWeaponController;
 import it.polimi.se2019.model.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * @author Eugenio OStrovan
@@ -19,9 +20,12 @@ public class ElectroscytheController extends OptionalEffectWeaponController {
 
   @Override
   public List<Player> findTargets(Player shooter){
-    return map.getPlayersOnSquares(
+    List<Player> result = new ArrayList<>();
+    result = map.getPlayersOnSquares(
             map.getReachableSquares(shooter.getPosition(), 0)
     );
+    result.remove(shooter);
+    return result;
   }
 
   @Override

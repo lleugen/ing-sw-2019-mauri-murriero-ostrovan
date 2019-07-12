@@ -32,6 +32,7 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
                             0
                     )
             ));
+    names.remove(shooter.getName());
     if(!names.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets

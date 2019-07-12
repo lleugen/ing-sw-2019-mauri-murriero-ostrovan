@@ -36,6 +36,7 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p : possibleTargets){
         possibleTargetNames.add(p.getName());
       }
+      possibleTargetNames.remove(shooter.getName());
       if(!possibleTargetNames.isEmpty()){
         //make the view choose one target
         //incompatible type error will be solved by change to the viewinterface
@@ -58,6 +59,7 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p: firstPossibleTargets){
         firstPossibleTargetsNames.add(p.getName());
       }
+      firstPossibleTargetsNames.remove(shooter.getName());
       if(!firstPossibleTargetsNames.isEmpty()){
         //choose first target
         //incompatible type error will be solved by change to the viewinterface
@@ -79,6 +81,7 @@ public class PowerGloveController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondTargets){
         possibleSecondTargetNames.add(p.getName());
       }
+      possibleSecondTargetNames.remove(shooter.getName());
       if(!possibleSecondTargetNames.isEmpty()){
         //choose second target
         //incompatible type error will be solved by change to the viewinterface

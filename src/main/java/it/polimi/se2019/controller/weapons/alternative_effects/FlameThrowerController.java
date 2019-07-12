@@ -97,10 +97,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
+      possiblePrimaryTargetsNames.remove(shooter.getName());
       if(!possiblePrimaryTargetsNames.isEmpty()){
         primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possiblePrimaryTargetsNames)));
       }
+      possibleSecondaryTargetsNames.remove(shooter.getName());
       if(!possibleSecondaryTargetsNames.isEmpty()){
         secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possibleSecondaryTargetsNames)));

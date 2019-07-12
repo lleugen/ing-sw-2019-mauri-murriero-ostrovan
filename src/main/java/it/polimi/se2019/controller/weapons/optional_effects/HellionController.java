@@ -38,6 +38,7 @@ public class HellionController extends OptionalEffectWeaponController {
             .collect(Collectors.toList());
 
     List<Player> toReturn = new ArrayList<>();
+    selectedPlayers.remove(shooter);
     if(!selectedPlayers.isEmpty()){
       toReturn.add(
               gameBoardController.identifyPlayer(

@@ -109,6 +109,7 @@ public abstract class WeaponController {
       );
       Player p = null;
       PlayerViewOnServer client = identifyClient(shooter);
+      possibleTargets.remove(shooter);
       if(!possibleTargets.isEmpty()){
           p = gameBoardController.identifyPlayer
                   (client.chooseTargets(GameBoardController.getPlayerNames(possibleTargets)));
