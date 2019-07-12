@@ -464,10 +464,12 @@ public final class CLI extends UnicastRemoteObject
 
     public String chooseRoom(List<String> rooms){
         showTime();
+        System.out.println("Choose Room");
         markSection("Choose target room");
         for(String s : rooms){
             markSection(s);
         }
+        displayRender();
         Scanner scanner = new Scanner(System.in);
         int result = 0;
         boolean done = false;
