@@ -178,6 +178,11 @@ public final class CLI extends UnicastRemoteObject
                         }
                     }
                 }
+                else{
+                    for(int contatore = 0; contatore <10; contatore++){
+                        stringBuilder.append("[]");
+                    }
+                }
             }
             stringBuilder.append('\n');
 
@@ -197,7 +202,7 @@ public final class CLI extends UnicastRemoteObject
                                     mapInfo.get(o).get(l).get(0) != null
                     ) {
                         if (!mapInfo.get(o).get(l).get(0).equals("NR")) {
-                            if (m < mapInfo.get(o).get(l).size()-4) {
+                            if (m < mapInfo.get(o).get(l).size()) {
                                 stringBuilder.append(mapInfo.get(o).get(l).get(m));
                                 for (int k = 0; k < 16 - mapInfo.get(o).get(l).get(m).length(); k++) {
                                     stringBuilder.append(" ");
@@ -237,6 +242,11 @@ public final class CLI extends UnicastRemoteObject
                         for(int contatore = 0; contatore <10; contatore++){
                             stringBuilder.append("[]");
                         }
+                    }
+                }
+                else{
+                    for(int contatore = 0; contatore <10; contatore++){
+                        stringBuilder.append("[]");
                     }
                 }
             }
