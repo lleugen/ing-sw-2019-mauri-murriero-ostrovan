@@ -48,6 +48,7 @@ public class NormalStateController extends PlayerStateController {
   @Override
   public boolean grabStuff() throws UserTimeoutException {
     boolean result = false;
+
     System.out.println("grabbing something");
     List<Integer> openDirections = new ArrayList<>();
     openDirections = map.getOpenDirections(player.getPosition());
@@ -61,6 +62,7 @@ public class NormalStateController extends PlayerStateController {
         System.out.println("player is moving while grabbing");
       player.move(player.getPosition().getAdjacencies().get(direction));
     }
+
 
     Square position = player.getPosition();
     if(position != null){
