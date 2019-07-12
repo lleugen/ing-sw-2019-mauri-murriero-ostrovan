@@ -477,11 +477,18 @@ public class Map {
    * __INFO__ The result is duplicate-free
    */
   public List<Player> getPlayersOnSquares(List<Square> b){
-    return this.gameBoard.getPlayers().stream()
-            .filter(Objects::nonNull)
-            .filter((Player p) -> b.contains(p.getPosition()))
-            .distinct()
-            .collect(Collectors.toList());
+    List<Player> players = new ArrayList<>();
+    for(Player p : gameBoard.getPlayers()){
+      if(b.contains(p.getPosition())){
+        players.add(p);
+      }
+    }
+    return players;
+//    return this.gameBoard.getPlayers().stream()
+//            .filter(Objects::nonNull)
+//            .filter((Player p) -> b.contains(p.getPosition()))
+//            .distinct()
+//            .collect(Collectors.toList());
   }
 
   /**

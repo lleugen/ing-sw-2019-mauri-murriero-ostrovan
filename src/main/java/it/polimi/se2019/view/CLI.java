@@ -370,13 +370,22 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseWeaponToReload(List<String> weapons){
+        Scanner scanner = new Scanner(System.in);
         showTime();
         markSection("Which weapon will you reload?");
         for(String s : weapons){
             markSection(s);
         }
         displayRender();
-        return readLine();
+        int result = 0;
+        boolean done = false;
+        while(!done){
+            result = scanner.nextInt();
+            if(result>=0 && result<weapons.size()){
+                done = true;
+            }
+        }
+        return weapons.get(result);
     }
 
     @Override
@@ -459,7 +468,16 @@ public final class CLI extends UnicastRemoteObject
         for(String s : rooms){
             markSection(s);
         }
-        return readLine();
+        Scanner scanner = new Scanner(System.in);
+        int result = 0;
+        boolean done = false;
+        while(!done){
+            result = scanner.nextInt();
+            if(result>=0 && result<rooms.size()){
+                done = true;
+            }
+        }
+        return rooms.get(result);
     }
 
     @Override

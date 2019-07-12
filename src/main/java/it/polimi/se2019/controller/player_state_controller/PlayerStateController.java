@@ -158,32 +158,77 @@ public abstract class PlayerStateController {
      * @throws UserTimeoutException if the user takes too long to respond or disconnects
      */
     public void reload() throws UserTimeoutException {
-        List<Integer> cardsToUseIndexes;
-        List<PowerUpCard> cardsToUse = new ArrayList<>();
-
-        //make a list of the player's weapons
-        List<String> playersWeapons = player.getInventory().getWeapons().stream()
-                .map(Weapon::getName)
-                .collect(Collectors.toList());
-
-        //choose which one to reload
-        String weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
-
-        //get the weapon given its name
+        Weapon toReload = null;
+        boolean result = false;
+        //make a list of the player's unloaded weapons
+        List<String> playersWeapons = new ArrayList<>();
         for(Weapon w : player.getInventory().getWeapons()){
-            if(w.getName().equals(weaponToReloadName)){
+            if(!w.isLoaded()){
+                playersWeapons.add(w.getName());
+            }
+        }
+
+        if(!playersWeapons.isEmpty()){
+            if(client.chooseBoolean("Would you like to reload?")){
+                List<Integer> cardsToUseIndexes = new ArrayList<>();
+                List<PowerUpCard> cardsToUse = new ArrayList<>();
+
+
+
+                //choose which one to reload
+                String weaponToReloadName = client.chooseWeaponToReload(playersWeapons);
+
+                //get the weapon given its name
+                for (Weapon w : player.getInventory().getWeapons()){
+                    if(w.getName().equals(weaponToReloadName)){
+                        toReload = w;
+                    }
+                }
+                System.out.println("reloading " + toReload.getName());
+
+                //---------------------------------
                 //choose which power up cards to use for reloading
                 List<String> powerUps = new ArrayList<>();
                 for(PowerUpCard p : player.getInventory().getPowerUps()){
                     powerUps.add(p.getDescription());
                 }
-                cardsToUseIndexes = client.choosePowerUpCardsForReload(powerUps);
-                //get the chosen cards
-                for(int i : cardsToUseIndexes){
-                    cardsToUse.add(player.getInventory().getPowerUps().get(i));
+                if(!powerUps.isEmpty()){
+                    cardsToUseIndexes = client.choosePowerUpCardsForReload(powerUps);
+                    //get the chosen cards
+                    for(int i : cardsToUseIndexes){
+                        cardsToUse.add(player.getInventory().getPowerUps().get(i));
+                    }
                 }
-                //reload the weapon
-                w.reload(cardsToUse, player.getInventory().getAmmo());
+
+                if(toReload != null){
+                    //reload the weapon
+                    result = toReload.reload(cardsToUse, player.getInventory().getAmmo());
+                    if(result){
+                        playersWeapons.remove(weaponToReloadName);
+                        if(toReload.isLoaded()){
+                            System.out.println("reloaded " + weaponToReloadName);
+                        }
+                        if(!playersWeapons.isEmpty()){
+                            reload();
+                        }
+                    }
+                    else{
+                        try{
+                            client.sendGenericMessage("failed to reload");
+                        }
+                        catch(RemoteException e){
+                            System.out.println("failed to send message");
+                        }
+
+                    }
+                }
+                else{
+                    System.out.println("this will never happen");
+                }
+
+                //---------------------------------
+
+
             }
         }
     }

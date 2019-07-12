@@ -52,8 +52,9 @@ public class Adrenaline2StateController extends PlayerStateController {
       List<Integer> moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
       Square position = player.getPosition();
-      int pickUpIndex = client.chooseItemToGrab();
+
       if(position instanceof SpawnSquare){
+          int pickUpIndex = client.chooseItemToGrab();
         result = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
       }
       else{

@@ -40,8 +40,9 @@ public class SecondFreneticStateController extends PlayerStateController {
       moveToCoordinates = client.chooseTargetSquare(threeMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
       Square position = player.getPosition();
-      int pickUpIndex = client.chooseItemToGrab();
+
       if(position instanceof SpawnSquare){
+        int pickUpIndex = client.chooseItemToGrab();
         result  = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
       }
       else{
@@ -84,7 +85,8 @@ public class SecondFreneticStateController extends PlayerStateController {
                     [moveToCoordinates.get(1)]
     );
 
-    PlayerController.reloadWeapon(client, player);
+    //PlayerController.reloadWeapon(client, player);
+    reload();
 
     shoot();
 

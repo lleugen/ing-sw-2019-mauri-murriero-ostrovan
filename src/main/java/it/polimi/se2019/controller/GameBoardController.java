@@ -284,10 +284,7 @@ public class GameBoardController{
             System.out.println("user's action failed");
           }
         }
-        PlayerController.reloadWeapon(
-                clients.get(currentPlayer),
-                players.get(currentPlayer)
-        );
+        playerControllers.get(currentPlayer).getState().reload();
         refillSquares();
         endOfTurnDeathResolution();
       }
@@ -416,6 +413,7 @@ public class GameBoardController{
         toReturn.get(i).add(k, new ArrayList<>());
         if (square != null) {
           toReturn.get(i).get(k).addAll(this.getMapSquareInfo(square));
+          toReturn.get(i).get(k).add(gameBoard.getMap().getMapSquares()[i][k].getIdRoom().toString());
           List<String> walls = new ArrayList<>();
           for(int a = 0; a<4; a++){
             walls.add(a, square.getAdjacencies().get(a).isBlocked() ? "true" : "false");

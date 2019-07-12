@@ -30,23 +30,35 @@ public class FurnaceController extends AlternativeEffectWeaponController {
     if(firingMode.get(0)){
       //basic mode, all players in a room you're not in
       //get visible rooms
-      List<String> visibleRooms = this.map.getVisibleSquares(shooter.getPosition()).stream()
-              .map(Square::getIdRoom)
-              .filter(shooter.getPosition().getIdRoom()::equals)
-              .distinct()
-              .map(Square.RoomColor::toString)
-              .collect(Collectors.toList());
+      List<String> visibleRooms = new ArrayList<>();
+      List<Square> visSquares = new ArrayList<>();
+      visSquares = map.getVisibleSquares(shooter.getPosition());
+      for(Square s : visSquares){
+        if(!visibleRooms.contains(s.getIdRoom().toString())){
+          visibleRooms.add(s.getIdRoom().toString());
+        }
+      }
+//      List<String> visibleRooms = this.map.getVisibleSquares(shooter.getPosition()).stream()
+//              .map(Square::getIdRoom)
+//              .filter(shooter.getPosition().getIdRoom()::equals)
+//              .distinct()
+//              .map(Square.RoomColor::toString)
+//              .collect(Collectors.toList());
       //choose one room
+
       if(!visibleRooms.isEmpty()){
-        Square.RoomColor targetRoom = Square.RoomColor.valueOf(
-                this.client.chooseRoom(visibleRooms)
-        );
+        System.out.println("furnace checkpoint");
+        String chosenRoom = client.chooseRoom(visibleRooms);
+        List<Square> targetSquares = new ArrayList<>();
+        for(int i = 0; i<3; i++){
+          for(int k = 0; k<4; k++){
+            if(map.getMapSquares()[i][k].getIdRoom().toString().equals(chosenRoom)){
+              targetSquares.add(map.getMapSquares()[i][k]);
+            }
+          }
+        }
         //all players in the chosen room are targets
-        targets = this.gameBoardController.getPlayers().stream()
-                .filter((Player p) ->
-                        p.getPosition().getIdRoom().equals(targetRoom)
-                )
-                .collect(Collectors.toList());
+        targets = map.getPlayersOnSquares(targetSquares);
       }
 
     }
