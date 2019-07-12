@@ -36,27 +36,43 @@ public class NewtonController extends PowerUpController {
     Map map = gameBoardController.getGameBoard().getMap();
 
     //choose target
+    System.out.println("Asking Player");
     Player target = gameBoardController.identifyPlayer(client.chooseTargets
             (GameBoardController.getPlayerNames(gameBoardController.getPlayers())));
-
+    System.out.println("Got Player");
     //choose where to move the target
     List<List<Integer>> possibleSquares = new ArrayList<>();
     Square firstSquare;
     Square secondSquare;
-    for(int i = 0; i<4; i++){
-      firstSquare = target.getPosition().getAdjacencies().get(i).getSquare();
-      secondSquare = firstSquare.getAdjacencies().get(i).getSquare();
-      System.out.println("got squares");
-      possibleSquares.add(map.getSquareCoordinates(firstSquare));
-      possibleSquares.add(map.getSquareCoordinates(secondSquare));
-      System.out.println("got square coordinates");
+
+    for(int i = 0; i<4; i++) {
+      System.out.println("loop " + i);
+      if (target.getPosition().getAdjacencies().get(i) != null && target.getPosition().getAdjacencies().get(i).getSquare() != null){
+        System.out.println("ok");
+        firstSquare = target.getPosition().getAdjacencies().get(i).getSquare();
+        if (firstSquare.getAdjacencies() != null && firstSquare.getAdjacencies().get(i) != null) {
+          System.out.println("ook");
+          secondSquare = firstSquare.getAdjacencies().get(i).getSquare();
+          if (secondSquare != null) {
+            System.out.println("got squares");
+            possibleSquares.add(map.getSquareCoordinates(firstSquare));
+            possibleSquares.add(map.getSquareCoordinates(secondSquare));
+            System.out.println("got square coordinates");
+          }
+        }
+      }
     }
     List<Integer> squareCoordinates = client.chooseTargetSquare(possibleSquares);
 
     //move the target
-    target.moveToSquare(map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)]);
-    used = true;
-
+    if (squareCoordinates.get(0) != null && squareCoordinates.get(1) != null) {
+      if (map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)] != null) {
+        System.out.println("Trying Move");
+        target.moveToSquare(map.getMapSquares()[squareCoordinates.get(0)][squareCoordinates.get(1)]);
+        System.out.println("Moved");
+        used = true;
+      }
+    }
     return used;
   }
 
