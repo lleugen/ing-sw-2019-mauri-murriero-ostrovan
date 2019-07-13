@@ -77,7 +77,10 @@ public class Adrenaline2StateController extends PlayerStateController {
   public boolean shootPeople() throws UserTimeoutException{
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(direction == 0 || direction == 1 || direction == 2 || direction == 3){
-      player.move(player.getPosition().getAdjacencies().get(direction));
+        if(!player.getPosition().getAdjacencies().get(direction).isBlocked()){
+            player.move(player.getPosition().getAdjacencies().get(direction));
+        }
+
     }
 
     shoot();

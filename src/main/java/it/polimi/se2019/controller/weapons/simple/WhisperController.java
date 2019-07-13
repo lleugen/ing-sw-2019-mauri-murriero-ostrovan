@@ -43,7 +43,6 @@ public class WhisperController extends SimpleWeaponController {
       }
     }
     visiblePlayers.removeAll(toRemove);
-    //incompatible type error will be solved by change to the viewinterface
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);
     visiblePlayers.remove(shooter);

@@ -282,11 +282,11 @@ public final class CLI extends UnicastRemoteObject
         markSection("Choose your action!");
         markSection("You are in state " + state);
         if(!state.equals("Adrenaline2State")){
-            markSection("run");
+            markSection("run/grab/shoot/powerUp");
         }
-        markSection("grab");
-        markSection("shoot");
-        markSection("powerUp");
+        else{
+            markSection("grab/shoot/powerUp");
+        }
         displayRender();
         String result = "run";
         boolean done = false;
@@ -303,11 +303,19 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public int chooseSpawnLocation(List<String> powerUps){
-        markSection("Discard a power up card to spawn.");
+        markSection("Choose which power up to use");
         for(String s : powerUps){
             markSection(s);
         }
-        return readInt();
+        boolean done = false;
+        int result = 0;
+        while(!done){
+            result = readInt();
+            if(result>=0 && result < powerUps.size()){
+                done = true;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -328,7 +336,6 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public String chooseWeapon(List<String> weapons){
-        showTime();
         Scanner scanner = new Scanner(System.in);
         int result = 0;
         boolean done = false;
@@ -371,7 +378,6 @@ public final class CLI extends UnicastRemoteObject
     @Override
     public String chooseWeaponToReload(List<String> weapons){
         Scanner scanner = new Scanner(System.in);
-        showTime();
         markSection("Which weapon will you reload?");
         for(String s : weapons){
             markSection(s);
@@ -390,7 +396,6 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public List<Integer> choosePowerUpCardsForReload(List<String> powerUps){
-        showTime();
         List<Integer> choices = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         markSection("Choose power ups to use");
@@ -442,7 +447,6 @@ public final class CLI extends UnicastRemoteObject
 
     @Override
     public Boolean chooseFiringMode(String description){
-        showTime();
         markSection("Choose firing mode");
         markSection(description);
         displayRender();

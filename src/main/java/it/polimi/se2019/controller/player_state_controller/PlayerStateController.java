@@ -107,9 +107,17 @@ public abstract class PlayerStateController {
      */
     public boolean shoot() throws UserTimeoutException {
         boolean result = false;
-      List<String> weapons = player.getInventory().getWeapons().stream()
-              .map((Weapon::getName))
-              .collect(Collectors.toList());
+        List<Weapon> weps = player.getInventory().getWeapons();
+        for(Weapon w : weps){
+            if(!w.isLoaded()){
+                weps.remove(w);
+            }
+        }
+        List<String> weapons = weps.stream().map(Weapon::getName).collect(Collectors.toList());
+//      List<String> weapons = player.getInventory().getWeapons().stream()
+//              .map((Weapon::getName))
+//              .collect(Collectors.toList());
+
 
       if(!weapons.isEmpty()){
           String selectedWeapon = client.chooseWeapon(weapons);

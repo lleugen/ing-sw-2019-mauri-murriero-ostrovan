@@ -283,6 +283,7 @@ public class GameBoardController{
           else{
             System.out.println("user's action failed");
           }
+          sendInfo();
         }
         playerControllers.get(currentPlayer).getState().reload();
         refillSquares();

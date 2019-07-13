@@ -132,7 +132,9 @@ public class Player {
    *                  3 : west
    */
   public void move(Direction direction) {
-    this.position = direction.getSquare();
+    if(!direction.isBlocked()){
+      this.position = direction.getSquare();
+    }
   }
 
   /**
