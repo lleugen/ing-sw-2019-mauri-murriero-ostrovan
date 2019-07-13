@@ -208,6 +208,8 @@ public class Player {
    */
   public void respawn(Square spawnPoint) {
     board.getDamageReceived().clear();
+    board.getMarksAssigned().clear();
+    state = 0;
     position = spawnPoint;
   }
 

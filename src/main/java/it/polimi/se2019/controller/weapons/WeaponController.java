@@ -44,6 +44,7 @@ public abstract class WeaponController {
                   || card.getDescription().equals("TagbackGrenadeBlue")
                   || card.getDescription().equals("TagbackGrenadeYellow")){
               gameBoardController.getPowerUpControllers().get(1).usePowerUp(p);
+              break;
           }
       }
   }
