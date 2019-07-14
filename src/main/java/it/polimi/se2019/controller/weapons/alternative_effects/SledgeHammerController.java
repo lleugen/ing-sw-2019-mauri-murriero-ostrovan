@@ -32,6 +32,7 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
                             0
                     )
             ));
+    names.remove(shooter.getName());
     if(!names.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets
@@ -68,13 +69,15 @@ public class SledgeHammerController extends AlternativeEffectWeaponController {
       List<Square> possibleSquares = new ArrayList<>(map.getReachableSquares(targets.get(0).getPosition(), 1));
       possibleSquares.add(targets.get(0).getPosition());
 
-      while(possibleSquares.iterator().hasNext()){
-        possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));
+      for(Square s : possibleSquares){
+        possibleSquaresCoordinates.add(map.getSquareCoordinates(s));
       }
       List<Integer> targetSquareCoordinates;
-      targetSquareCoordinates = identifyClient(shooter).chooseTargetSquare(possibleSquaresCoordinates);
-      Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-      targets.get(0).moveToSquare(targetSquare);
+      if(!possibleSquaresCoordinates.isEmpty()){
+        targetSquareCoordinates = identifyClient(shooter).chooseTargetSquare(possibleSquaresCoordinates);
+        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+        targets.get(0).moveToSquare(targetSquare);
+      }
     }
   }
 }

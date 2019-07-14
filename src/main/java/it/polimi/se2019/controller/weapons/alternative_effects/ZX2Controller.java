@@ -32,6 +32,7 @@ public class ZX2Controller extends AlternativeEffectWeaponController {
                                 shooter.getPosition()
                         )
                 ));
+        names.remove(shooter.getName());
         if(!names.isEmpty()){
           targets.add
                   (gameBoardController.identifyPlayer

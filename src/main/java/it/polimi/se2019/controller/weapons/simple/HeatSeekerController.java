@@ -40,6 +40,7 @@ public class HeatSeekerController extends SimpleWeaponController {
     }
     List<Player> targets = new ArrayList<>();
     PlayerViewOnServer client = identifyClient(shooter);
+    targettablePlayers.remove(shooter);
     if(!targettablePlayers.isEmpty()){
       targets.add(gameBoardController.identifyPlayer(client.chooseTargets
               (GameBoardController.getPlayerNames(targettablePlayers))));

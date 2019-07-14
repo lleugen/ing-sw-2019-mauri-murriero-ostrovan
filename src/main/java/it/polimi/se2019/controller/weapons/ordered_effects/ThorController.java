@@ -32,6 +32,7 @@ public class ThorController extends OrderedEffectsWeaponController {
     }
     List<String> possibleTargets = new ArrayList<>();
 
+    possibleTargets.remove(shooter);
     for(int k = 1; k<chainLength; k++){
       possibleTargets = GameBoardController.getPlayerNames
               (map.getPlayersOnSquares(

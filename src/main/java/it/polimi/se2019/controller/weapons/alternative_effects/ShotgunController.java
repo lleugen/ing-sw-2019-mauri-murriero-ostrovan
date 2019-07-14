@@ -35,6 +35,7 @@ public class ShotgunController extends AlternativeEffectWeaponController {
                               0
                       )
               ));
+      names.remove(shooter.getName());
       if(!names.isEmpty()){
         //basic mode, shoot one target on your square
         targets.add(gameBoardController.identifyPlayer
@@ -88,26 +89,36 @@ public class ShotgunController extends AlternativeEffectWeaponController {
     if(targets.size()>0){
       if(firingMode.get(0)){
 
-        targets.get(0).takeDamage(shooter, 3);
-        //add one more point of damage if the player chooses to use a targeting scope
-        if(useTargetingScope(shooter)){
-          targets.get(0).takeDamage(shooter, 1);
+        if(!targets.isEmpty() && targets.get(0) != null){
+          targets.get(0).takeDamage(shooter, 3);
+          //add one more point of damage if the player chooses to use a targeting scope
+          if(useTargetingScope(shooter)){
+            targets.get(0).takeDamage(shooter, 1);
+          }
+          //if the damaged target has a tagback gredade, he/she can use it now
+          useTagbackGrenade(targets.get(0));
+          //optionally move the target by one square
+          List<Integer> openDirections = map.getOpenDirections(targets.get(0).getPosition());
+          if(!openDirections.isEmpty()){
+            Integer choice = client.chooseDirection(openDirections);
+            targets.get(0).move(targets.get(0).getPosition().getAdjacencies().get(choice));
+          }
         }
-        //if the damaged target has a tagback gredade, he/she can use it now
-        useTagbackGrenade(targets.get(0));
-        //optionally move the target by one square
-        List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();
-        List<Square> possibleSquares = new ArrayList<>(map.getReachableSquares(targets.get(0).getPosition(), 1));
-        possibleSquares.add(targets.get(0).getPosition());
-        while(possibleSquares.iterator().hasNext()){
-          possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));
-        }
-        List<Integer> targetSquareCoordinates;
-        if(!possibleSquaresCoordinates.isEmpty()){
-          targetSquareCoordinates = client.chooseTargetSquare(possibleSquaresCoordinates);
-          Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-          targets.get(0).moveToSquare(targetSquare);
-        }
+
+
+
+//        List<List<Integer>> possibleSquaresCoordinates = new ArrayList<>();
+//        List<Square> possibleSquares = new ArrayList<>(map.getReachableSquares(targets.get(0).getPosition(), 1));
+//        possibleSquares.add(targets.get(0).getPosition());
+//        while(possibleSquares.iterator().hasNext()){
+//          possibleSquaresCoordinates.add(map.getSquareCoordinates(possibleSquares.iterator().next()));
+//        }
+//        List<Integer> targetSquareCoordinates;
+//        if(!possibleSquaresCoordinates.isEmpty()){
+//          targetSquareCoordinates = client.chooseTargetSquare(possibleSquaresCoordinates);
+//          Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+//          targets.get(0).moveToSquare(targetSquare);
+//        }
       }
       else{
         targets.get(0).takeDamage(shooter, 2);

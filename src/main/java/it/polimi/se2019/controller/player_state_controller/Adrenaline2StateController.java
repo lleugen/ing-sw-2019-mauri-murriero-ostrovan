@@ -52,8 +52,9 @@ public class Adrenaline2StateController extends PlayerStateController {
       List<Integer> moveToCoordinates = client.chooseTargetSquare(twoMovesAwayCoordinates);
       player.moveToSquare(map.getMapSquares()[moveToCoordinates.get(0)][moveToCoordinates.get(1)]);
       Square position = player.getPosition();
-      int pickUpIndex = client.chooseItemToGrab();
+
       if(position instanceof SpawnSquare){
+          int pickUpIndex = client.chooseItemToGrab();
         result = player.getInventory().addWeaponToInventory(position.grab(pickUpIndex));
       }
       else{
@@ -76,7 +77,10 @@ public class Adrenaline2StateController extends PlayerStateController {
   public boolean shootPeople() throws UserTimeoutException{
     Integer direction = client.chooseDirection(map.getOpenDirections(player.getPosition()));
     if(direction == 0 || direction == 1 || direction == 2 || direction == 3){
-      player.move(player.getPosition().getAdjacencies().get(direction));
+        if(!player.getPosition().getAdjacencies().get(direction).isBlocked()){
+            player.move(player.getPosition().getAdjacencies().get(direction));
+        }
+
     }
 
     shoot();

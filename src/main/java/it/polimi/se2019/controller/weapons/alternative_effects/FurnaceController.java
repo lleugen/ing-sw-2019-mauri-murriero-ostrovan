@@ -1,15 +1,14 @@
 package it.polimi.se2019.controller.weapons.alternative_effects;
 
-import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.controller.GameBoardController;
 import it.polimi.se2019.model.map.Square;
 import it.polimi.se2019.model.player.Player;
+import it.polimi.se2019.rmi.UserTimeoutException;
 import it.polimi.se2019.view.player.PlayerViewOnServer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 /**
  * @author Eugenio OStrovan
  * @author Fabio Mauri
@@ -30,23 +29,38 @@ public class FurnaceController extends AlternativeEffectWeaponController {
     if(firingMode.get(0)){
       //basic mode, all players in a room you're not in
       //get visible rooms
-      List<String> visibleRooms = this.map.getVisibleSquares(shooter.getPosition()).stream()
-              .map(Square::getIdRoom)
-              .filter(shooter.getPosition().getIdRoom()::equals)
-              .distinct()
-              .map(Square.RoomColor::toString)
-              .collect(Collectors.toList());
+      List<String> visibleRooms = new ArrayList<>();
+      List<Square> visSquares = new ArrayList<>();
+      visSquares = map.getVisibleSquares(shooter.getPosition());
+      for(Square s : visSquares){
+        if(!visibleRooms.contains(s.getIdRoom().toString())){
+          visibleRooms.add(s.getIdRoom().toString());
+        }
+      }
+//      List<String> visibleRooms = this.map.getVisibleSquares(shooter.getPosition()).stream()
+//              .map(Square::getIdRoom)
+//              .filter(shooter.getPosition().getIdRoom()::equals)
+//              .distinct()
+//              .map(Square.RoomColor::toString)
+//              .collect(Collectors.toList());
       //choose one room
+
       if(!visibleRooms.isEmpty()){
-        Square.RoomColor targetRoom = Square.RoomColor.valueOf(
-                this.client.chooseRoom(visibleRooms)
-        );
-        //all players in the chosen room are targets
-        targets = this.gameBoardController.getPlayers().stream()
-                .filter((Player p) ->
-                        p.getPosition().getIdRoom().equals(targetRoom)
-                )
-                .collect(Collectors.toList());
+        System.out.println("furnace checkpoint");
+        String chosenRoom = client.chooseRoom(visibleRooms);
+        System.out.println("Got Room " + chosenRoom);
+        if (chosenRoom != null) {
+          List<Square> targetSquares = new ArrayList<>();
+          for (int i = 0; i < 3; i++) {
+            for (int k = 0; k < 4; k++) {
+              if ((map.getMapSquares()[i][k] != null) && (map.getMapSquares()[i][k].getIdRoom().toString().equals(chosenRoom))) {
+                targetSquares.add(map.getMapSquares()[i][k]);
+              }
+            }
+          }
+          //all players in the chosen room are targets
+          targets = map.getPlayersOnSquares(targetSquares);
+        }
       }
 
     }
@@ -56,21 +70,29 @@ public class FurnaceController extends AlternativeEffectWeaponController {
       targets = new LinkedList<>();
       List<Square> adjacentSquares = new ArrayList<>();
       for(int i = 0; i<3; i++){
-        adjacentSquares.add(shooter.getPosition().getAdjacencies().get(i).getSquare());
+        if (shooter.getPosition().getAdjacencies().get(i) != null && shooter.getPosition().getAdjacencies().get(i).getSquare() != null) {
+          adjacentSquares.add(shooter.getPosition().getAdjacencies().get(i).getSquare());
+        }
       }
       //get their coordinates
       List<List<Integer>> adjacentSquaresCoordinates = new ArrayList<>();
       for(Square q : adjacentSquares){
-        adjacentSquaresCoordinates.add(map.getSquareCoordinates(q));
+        if (q != null) {
+          adjacentSquaresCoordinates.add(map.getSquareCoordinates(q));
+        }
       }
       if(!adjacentSquaresCoordinates.isEmpty()){
         //choose one square
         List<Integer> targetSquareCoordinates = client.chooseTargetSquare(adjacentSquaresCoordinates);
-        Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
-        //all players on the chosen square are targets
-        for(Player p : gameBoardController.getPlayers()){
-          if(p.getPosition().equals(targetSquare)){
-            targets.add(p);
+        if (targetSquareCoordinates != null && targetSquareCoordinates.get(0) != null && targetSquareCoordinates.get(1) != null) {
+          Square targetSquare = map.getMapSquares()[targetSquareCoordinates.get(0)][targetSquareCoordinates.get(1)];
+          if (targetSquare != null) {
+            //all players on the chosen square are targets
+            for (Player p : gameBoardController.getPlayers()) {
+              if (p.getPosition().equals(targetSquare)) {
+                targets.add(p);
+              }
+            }
           }
         }
       }

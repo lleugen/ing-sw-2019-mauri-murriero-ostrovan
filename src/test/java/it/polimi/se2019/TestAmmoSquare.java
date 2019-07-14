@@ -63,7 +63,7 @@ public class TestAmmoSquare {
         player.moveToSquare(ammoSquare);
 
         try{
-            Mockito.when(client.chooseItemToGrab()).thenReturn(0);
+            //Mockito.when(client.chooseItemToGrab()).thenReturn(0);
             playerController.getState().grab();
         }
         catch (UserTimeoutException e){

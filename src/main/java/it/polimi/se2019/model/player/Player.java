@@ -96,6 +96,10 @@ public class Player {
     for (int i = 0; i < amount; i++) {
       this.board.setDamage(sender);
     }
+    while(board.getMarksAssigned().contains(sender)){
+      board.setDamage(sender);
+      board.removeMark(sender);
+    }
     if(!gameBoardReference.isFrenzy()){
       if(board.getDamageReceived().size()>=3 && board.getDamageReceived().size() < 6){
         setState(1);
@@ -128,7 +132,9 @@ public class Player {
    *                  3 : west
    */
   public void move(Direction direction) {
-    this.position = direction.getSquare();
+    if(!direction.isBlocked()){
+      this.position = direction.getSquare();
+    }
   }
 
   /**
@@ -202,6 +208,8 @@ public class Player {
    */
   public void respawn(Square spawnPoint) {
     board.getDamageReceived().clear();
+    board.getMarksAssigned().clear();
+    state = 0;
     position = spawnPoint;
   }
 

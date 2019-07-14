@@ -31,6 +31,7 @@ public class GrenadeLauncherController extends OptionalEffectWeaponController {
             )
     );
     List<Player> targets = new ArrayList<>();
+    visiblePlayers.remove(shooter);
     if(!visiblePlayers.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets

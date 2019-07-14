@@ -50,6 +50,7 @@ public class RailGunController extends AlternativeEffectWeaponController {
     //choose targets
     targets = new ArrayList<>();
     //firingMode = selectFiringMode(client);
+    possibleTargetNames.remove(shooter.getName());
     if(firingMode.get(0)){
       if(!possibleTargetNames.isEmpty()){
         //basic mode, one target

@@ -32,6 +32,7 @@ public class MachineGunController extends OptionalEffectWeaponController {
     );
     List<String> possibleTargetNames = GameBoardController.getPlayerNames(visiblePlayers);
 
+    visiblePlayers.remove(shooter);
     if(!visiblePlayers.isEmpty()){
       targets.add(gameBoardController.identifyPlayer
               (client.chooseTargets(possibleTargetNames)));

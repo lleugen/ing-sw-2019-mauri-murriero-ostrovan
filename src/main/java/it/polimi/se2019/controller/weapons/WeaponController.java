@@ -44,6 +44,7 @@ public abstract class WeaponController {
                   || card.getDescription().equals("TagbackGrenadeBlue")
                   || card.getDescription().equals("TagbackGrenadeYellow")){
               gameBoardController.getPowerUpControllers().get(1).usePowerUp(p);
+              break;
           }
       }
   }
@@ -109,6 +110,7 @@ public abstract class WeaponController {
       );
       Player p = null;
       PlayerViewOnServer client = identifyClient(shooter);
+      possibleTargets.remove(shooter);
       if(!possibleTargets.isEmpty()){
           p = gameBoardController.identifyPlayer
                   (client.chooseTargets(GameBoardController.getPlayerNames(possibleTargets)));

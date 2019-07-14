@@ -59,6 +59,7 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       }
     }
 
+    System.out.println("flamethrower checkpoint 1");
 
     //firingMode = selectFiringMode(client);
     if(firingMode.get(1)){
@@ -77,17 +78,25 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
     else{
       //basic firing mode
       List<Player> possiblePrimaryTargets = new ArrayList<>();
-      if(targetSquares.get(0) != null){
-        List<Square> temp = new ArrayList<>();
-        temp.add(targetSquares.get(0));
-        possiblePrimaryTargets = (mapReference.getPlayersOnSquares(temp));
+      if(targetSquares.size()>0){
+        if(targetSquares.get(0) != null){
+          List<Square> temp = new ArrayList<>();
+          temp.add(targetSquares.get(0));
+          possiblePrimaryTargets = (mapReference.getPlayersOnSquares(temp));
+        }
       }
+
       List<Player> possibleSecondaryTargets = new ArrayList<>();
-      if(targetSquares.get(1) != null){
-        List<Square> temp = new ArrayList<>();
-        temp.add(targetSquares.get(1));
-        possibleSecondaryTargets = (mapReference.getPlayersOnSquares(temp));
+      if(targetSquares.size()>1){
+        if(targetSquares.get(1) != null){
+          List<Square> temp = new ArrayList<>();
+          temp.add(targetSquares.get(1));
+          possibleSecondaryTargets = (mapReference.getPlayersOnSquares(temp));
+        }
       }
+
+
+      System.out.println("flamethrower checkpoint 2");
 
       List<String> possiblePrimaryTargetsNames = new ArrayList<>();
       List<String> possibleSecondaryTargetsNames = new ArrayList<>();
@@ -97,10 +106,12 @@ public class FlameThrowerController extends AlternativeEffectWeaponController {
       for(Player p : possibleSecondaryTargets){
         possibleSecondaryTargetsNames.add(p.getName());
       }
+      possiblePrimaryTargetsNames.remove(shooter.getName());
       if(!possiblePrimaryTargetsNames.isEmpty()){
         primaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possiblePrimaryTargetsNames)));
       }
+      possibleSecondaryTargetsNames.remove(shooter.getName());
       if(!possibleSecondaryTargetsNames.isEmpty()){
         secondaryTargets.add(getGameBoardController().identifyPlayer(client.chooseTargets
                 (possibleSecondaryTargetsNames)));

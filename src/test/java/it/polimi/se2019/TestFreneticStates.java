@@ -53,7 +53,7 @@ public class TestFreneticStates {
             }
 
             Mockito.when(client.chooseTargetSquare(twoMovesAwayCoordinates)).thenReturn(twoMovesAwayCoordinates.get(0));
-            Mockito.when(client.chooseItemToGrab()).thenReturn(0);
+            //Mockito.when(client.chooseItemToGrab()).thenReturn(0);
 
             playerController.setState(3);
             twoMovesAway.get(0).refill();
@@ -106,7 +106,7 @@ public class TestFreneticStates {
             }
 
             Mockito.when(client.chooseTargetSquare(threeMovesAwayCoordinates)).thenReturn(threeMovesAwayCoordinates.get(0));
-            Mockito.when(client.chooseItemToGrab()).thenReturn(0);
+            //Mockito.when(client.chooseItemToGrab()).thenReturn(0);
             PowerUpCard powerUpCard = new PowerUpCard(new Ammo(1, 0, 0), "NewtonController");
             //Mockito.when(decksReference.drawPowerUp()).thenReturn(powerUpCard);
 
