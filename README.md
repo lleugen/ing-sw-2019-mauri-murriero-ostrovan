@@ -24,10 +24,7 @@ This was mostly a learning exercise and the final project does not satisfy optim
 The game requires Java 8 or later versions to run.
 
 #### Launch instructions
-First launch the RMI registry
-```sh
-$ rmiregistry
-```
+rmiregistry doesn't have to be launched manually, it is started automatically
 To launch the jar as a server
 ```sh
 $ java -jar -Djava.security.policy=policy adrenalina.jar type=server host=\<server IP or FQDN\> lobbyTimeout=\<seconds before closing an incomplete room\> disconnectionTimeout=\<seconds to wait for getting a response from a user\>
