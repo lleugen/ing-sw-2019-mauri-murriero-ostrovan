@@ -8,11 +8,11 @@ This project implements the complete rules of the game[ {1} ](https://czechgames
 
 The [Deliveries](/Deliveries) folder contains JAR file, UML diagrams, Sonarqube reports and Javadoc.
 
-The src folder contains source code and unit tests.
+The [src](/src) folder contains source code and unit tests.
 
 The [policy](/policy) file specifies security permissions for RMI.
 
-This was mostly a learning exercise and the final project does not satisfy optimal production quality requirements
+This was mostly a learning exercise and the final project does not satisfy optimal production quality requirements.
 
 #### Known issues and possible improvements
 * The architecture could be better, the game flow is entirely controller by the server and clients can only act when prompted.
@@ -20,7 +20,14 @@ This was mostly a learning exercise and the final project does not satisfy optim
 * There are a few known bugs on some of the weapons.
 * More functionalities can be added, such as multiple matches on one server or game saving.
 
+####Requirements
+The game requires Java 8 or later versions to run.
+
 #### Launch instructions
+First launch the RMI registry
+```sh
+$ rmiregistry
+```
 To launch the jar as a server
 ```sh
 $ java -jar -Djava.security.policy=policy adrenalina.jar type=server host=\<server IP or FQDN\> lobbyTimeout=\<seconds before closing an incomplete room\> disconnectionTimeout=\<seconds to wait for getting a response from a user\>
