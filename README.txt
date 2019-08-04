@@ -1,9 +1,9 @@
-###Software engineering course project 2019
+### Software engineering course project 2019
 ![Adrenaline : game cover](https://geekandsundry.com/wp-content/uploads/2016/11/adrenalinecover.jpg)
 
-####[Adrenaline](https://czechgames.com/en/adrenaline/) implementation (java 8)
+#### [Adrenaline](https://czechgames.com/en/adrenaline/) implementation (java 8)
 
-####Overview
+#### Overview
 This project implements the complete rules of the game[1](https://czechgames.com/files/rules/adrenaline-rules-en.pdf)[2](https://czechgames.com/files/rules/adrenaline-rules-weapons-en.pdf) with a command line interface using RMI for client-server communication.
 The [Deliveries](/Deliveries) folder contains JAR file, UML diagrams, Sonarqube reports and Javadoc.
 The src folder contains source code and unit tests.
@@ -11,13 +11,13 @@ The [policy](/policy) file specifies security permissions for RMI.
 
 This was mostly a learning exercise and the final project does not satisfy optimal production quality requirements
 
-####Known issues and possible improvements
+#### Known issues and possible improvements
 *The architecture could be better, the game flow is entirely controller by the server and clients can only act when prompted.
 *GUI interface can be added and CLI interface could be rendered more interactive and pretty.
 *There are a few known bugs on some of the weapons.
 *More functionalities can be added, such as multiple matches on one server or game saving.
 
-####Launch instructions
+#### Launch instructions
 To launch the jar as a server
 > java -jar -Djava.security.policy=policy adrenalina.jar type=server host=<server IP or FQDN> lobbyTimeout=<seconds before closing an incomplete room> disconnectionTimeout=<seconds to wait for getting a response from an user>
 e.g.:
@@ -30,9 +30,9 @@ e.g.:
 
 NOTE : The jar file and the policy files must be located in the same folder, and they must be located in the folder the two commands are being launched in
 
-####Developers
+#### Developers
 *[Eugenio Ostrovan](https://github.com/lleugen)
 *[Fabio Mauri](https://github.com/cripty2001)
 *[Riccardo Murriero](https://github.com/reymurry)
 
-######This project is licensed under the terms of the MIT license.
+###### This project is licensed under the terms of the MIT license.
