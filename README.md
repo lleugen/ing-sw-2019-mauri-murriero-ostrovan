@@ -1,12 +1,15 @@
-### Software engineering course project 2019
+### Software engineering course project (Politecnico di Milano 2019)
 ![Adrenaline : game cover](https://geekandsundry.com/wp-content/uploads/2016/11/adrenalinecover.jpg)
 
 #### [Adrenaline](https://czechgames.com/en/adrenaline/) implementation (java 8)
 
 #### Overview
-This project implements the complete rules of the game[1](https://czechgames.com/files/rules/adrenaline-rules-en.pdf)[2](https://czechgames.com/files/rules/adrenaline-rules-weapons-en.pdf) with a command line interface using RMI for client-server communication.
+This project implements the complete rules of the game[ {1} ](https://czechgames.com/files/rules/adrenaline-rules-en.pdf)[ {2} ](https://czechgames.com/files/rules/adrenaline-rules-weapons-en.pdf) with a command line interface using RMI for client-server communication.
+
 The [Deliveries](/Deliveries) folder contains JAR file, UML diagrams, Sonarqube reports and Javadoc.
+
 The src folder contains source code and unit tests.
+
 The [policy](/policy) file specifies security permissions for RMI.
 
 This was mostly a learning exercise and the final project does not satisfy optimal production quality requirements
@@ -20,11 +23,13 @@ This was mostly a learning exercise and the final project does not satisfy optim
 #### Launch instructions
 To launch the jar as a server
 > java -jar -Djava.security.policy=policy adrenalina.jar type=server host=<server IP or FQDN> lobbyTimeout=<seconds before closing an incomplete room> disconnectionTimeout=<seconds to wait for getting a response from an user>
+  
 e.g.:
 > java -jar -Djava.security.policy=policy adrenalina.jar type=server host=localhost lobbyTimeout=15 disconnectionTimeout=180
 
 To launch the jar as a client
 > java -jar -Djava.security.policy=policy adrenalina.jar type=client host=<server IP or FQDN> ui=cli
+  
 e.g.:
 > java -jar -Djava.security.policy=policy adrenalina.jar type=client host=localhost ui=cli
 
