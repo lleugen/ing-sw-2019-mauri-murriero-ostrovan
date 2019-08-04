@@ -20,7 +20,7 @@ This was mostly a learning exercise and the final project does not satisfy optim
 * There are a few known bugs on some of the weapons.
 * More functionalities can be added, such as multiple matches on one server or game saving.
 
-####Requirements
+#### Requirements
 The game requires Java 8 or later versions to run.
 
 #### Launch instructions
