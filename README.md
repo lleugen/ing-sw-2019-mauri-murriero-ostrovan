@@ -22,13 +22,13 @@ This was mostly a learning exercise and the final project does not satisfy optim
 
 #### Launch instructions
 To launch the jar as a server
-> java -jar -Djava.security.policy=policy adrenalina.jar type=server host=<server IP or FQDN> lobbyTimeout=<seconds before closing an incomplete room> disconnectionTimeout=<seconds to wait for getting a response from an user>
+> java -jar -Djava.security.policy=policy adrenalina.jar type=server host=\<server IP or FQDN\> lobbyTimeout=\<seconds before closing an incomplete room\> disconnectionTimeout=\<seconds to wait for getting a response from an user\>
   
 e.g.:
 > java -jar -Djava.security.policy=policy adrenalina.jar type=server host=localhost lobbyTimeout=15 disconnectionTimeout=180
 
 To launch the jar as a client
-> java -jar -Djava.security.policy=policy adrenalina.jar type=client host=<server IP or FQDN> ui=cli
+> java -jar -Djava.security.policy=policy adrenalina.jar type=client host=\<server IP or FQDN\> ui=cli
   
 e.g.:
 > java -jar -Djava.security.policy=policy adrenalina.jar type=client host=localhost ui=cli
